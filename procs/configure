@@ -1,0 +1,55 @@
+#!/bin/sh
+
+prefix=/usr/local
+srcdir=$(pwd)
+builddir=$(pwd)
+debugsym=false
+
+for arg in "$@"; do
+    case "$arg" in
+    --prefix=*)
+        prefix=`echo $arg | sed 's/--prefix=//'`
+        ;;
+
+    --srcdir=*)
+        srcdir=`echo $arg | sed 's/--srcdir=//'`
+        ;;
+
+    --enable-debug)
+        debugsym=true;;
+
+    --help)
+        echo 'usage: ./configure [options]'
+        echo 'options:'
+        echo '  --prefix=<path>: installation prefix'
+        echo '  --srcdir=<path>: source directory'
+        echo '  --enable-debug: include debug symbols'
+        echo '  --disable-debug: do not include debug symbols'
+        echo 'all invalid options are silently ignored'
+        exit 0
+        ;;
+    esac
+done
+
+#Check source directory existence
+srcdir="$srcdir"/src
+if ls $srcdir/*.c* 1> /dev/null 2>&1; then
+	echo "Checking source files... o.k."
+else
+    echo "Error: could not find source files"
+    echo "Source directory: $srcdir"
+    exit 1
+fi
+
+echo 'generating makefile ...'
+echo '# This is an automatically generated file. Do not modify.' >Makefile
+echo '' >>Makefile
+echo "PREFIX = $prefix" >>Makefile
+echo "SRCDIR = $srcdir" >>Makefile
+echo "BUILDDIR = $builddir" >>Makefile
+if $debugsym; then
+    echo 'dbg = -g' >>Makefile
+fi
+cat "$srcdir"/../Makefile.in >>Makefile
+echo 'configuration complete, type make to build.'
+exit 0
