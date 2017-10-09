@@ -1,0 +1,11 @@
+MediaProcessors's utilities library ("utils") is a set of independent source and header files all licensed under the 3-Clause BSD License.
+
+The rest of the MediaProcessors's libraries are dual-licensed under the GNU Lesser General Public License version 3 or later (LGPL v3+) and under the GNU General Public License version 2 or later (GPL v2+).
+
+Some of the libraries dependencies (dynamically linked) are licensed under the GPL v2+. To use these dependencies, you have to explicitly pass --enable-gpl to configure to activate them. In this case, MediaProcessors's license changes to GPL v2+. Otherwise, it is assumed that MediaProcessors license is LGPL v3+
+
+IMPORTANT NOTE:
+In this first commitment -until imminent makefiles update-, option --enable-gpl is enabled by default and cannot be disabled.
+
+Please find the referenced licenses texts attached to this project.
+
