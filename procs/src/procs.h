@@ -145,8 +145,8 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * @code
  * char *rest_str= NULL;
  * ...
- * ret_code= procs_opt(PROCS_POST, "bypass_processor", "setting1=100",
- *     &rest_str);
+ * ret_code= procs_opt(procs_ctx, PROCS_POST, "bypass_processor",
+ *     "setting1=100", &rest_str);
  * @endcode
  *
  * Tag "PROCS_GET":
@@ -158,7 +158,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * @code
  * char *rest_str= NULL;
  * ...
- * ret_code= procs_opt(PROCS_GET, &rest_str);
+ * ret_code= procs_opt(procs_ctx, PROCS_GET, &rest_str);
  * @endcode
  *
  * Tag "PROCS_ID_DELETE":
@@ -167,7 +167,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * @param proc_id Processor instance unambiguous Id.
  * Code example:
  * @code
- * ret_code= procs_opt(PROCS_ID_DELETE, proc_id);
+ * ret_code= procs_opt(procs_ctx, PROCS_ID_DELETE, proc_id);
  * @endcode
  *
  * Tag "PROCS_ID_GET":
@@ -181,7 +181,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * @code
  * char *rest_str= NULL;
  * ...
- * ret_code= procs_opt(PROCS_ID_GET, proc_id, &rest_str);
+ * ret_code= procs_opt(procs_ctx, PROCS_ID_GET, proc_id, &rest_str);
  * @endcode
  *
  * Tag "PROCS_ID_PUT":
@@ -194,7 +194,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  *
  * Code example:
  * @code
- * ret_code= procs_opt(PROCS_ID_PUT, proc_id, "setting1=100");
+ * ret_code= procs_opt(procs_ctx, PROCS_ID_PUT, proc_id, "setting1=100");
  * @endcode
 
  * @param ... Variable list of parameters according to selected option. Refer
