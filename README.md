@@ -43,30 +43,30 @@ codecs and multiplexers are implemented as a particularization of the generic
 processor interface (and in consequence, all codecs and muxers offer the same 
 generic interface/API).\
 Dependencies:
->utils
->uriparser
->cjson
+>utils\
+>uriparser\
+>cjson\
 >valgrind, unittest-cpp for unit-testing
 
 3.- codecs: Wrappers/implementations of several audio and video codecs.\
 Dependencies:
->utils
->procs
->uriparser
->cjson
->lame
->x264
->FFmpeg libraries and its dependencies (nasm, yasm)
+>utils\
+>procs\
+>uriparser\
+>cjson\
+>lame\
+>x264\
+>FFmpeg libraries and its dependencies (nasm, yasm)\
 >mongoose, valgrind, unittest-cpp for unit-testing
 
 4.- muxers: Wrappers and implementations of several multimedia 
 multiplexing/demultiplexing formats.\
 Dependencies:
->utils
->procs
->uriparser
->cjson
->Live555 lbraries and its dependencies
+>utils\
+>procs\
+>uriparser\
+>cjson\
+>Live555 lbraries and its dependencies\
 >mongoose, valgrind, unittest-cpp for unit-testing
 
 Each library can be configured and compiled as usual, providing a prefix if 
