@@ -74,7 +74,7 @@ desired. That is:
 >$ ./configue\
 >$ make clean; make all
 
-*ALTERNATIVE INSTALLATION:*\
+*ALTERNATIVE INSTALLATION:* (recommended)\
 To facilitate compilation and installation, a self-contained wrapper is provided 
 in the repository named 'MediaProcessors_selfcontained' 
 (https://github.com/rantoniello/MediaProcessors_selfcontained).
