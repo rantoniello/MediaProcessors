@@ -42,10 +42,10 @@
 
 //#define ENABLE_DEBUG_LOGS
 #ifdef ENABLE_DEBUG_LOGS
-	#define LOGD_CTX_INIT LOG_CTX_INIT
+	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
 	#define LOGD(FORMAT, ...) LOGV(FORMAT, ##__VA_ARGS__)
 #else
-	#define LOGD_CTX_INIT
+	#define LOGD_CTX_INIT(CTX)
 	#define LOGD(...)
 #endif
 
