@@ -14,7 +14,6 @@ version tested and license is specified in parenthesis):
 >live555 (version dated July 18, 2017; LGPL)\
 >mongoose (6.8; GPL)\
 >nasm (2.14rc0; 2-clause BSD)\
->pcre (8.40 11; BSD)\
 >sdl (2.0;  zlib license)\
 >unittest-cpp (2.0.0, MIT)\
 >uriparser (0.8.2.; The 3-Clause BSD)\
