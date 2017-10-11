@@ -74,6 +74,8 @@ extern "C" {
 #define SETTINGS_SAMPLE_RATE 	"44100" // [samples/second]
 #define SETTINGS_AUDIO_BITRATE 	"128000" // [bits/second]
 
+#define RESPONSE_BUF_SIZE	512*1024
+
 /* Debugging purposes: un-comment the next definition to save output raw
  * YUV 4:2:0 video to a file (.yuv extension) and s16 interlaced audio
  * (.wav extension).
@@ -180,7 +182,7 @@ typedef struct thr_ctx_s {
 
 typedef struct ev_user_data_s {
 	volatile int flag_exit;
-	char *ref_response_str;
+	const char *ref_response_str;
 	procs_ctx_t *procs_ctx;
 } ev_user_data_t;
 
@@ -202,9 +204,12 @@ static void http_client_event_handler(struct mg_connection *nc, int ev,
 		if(hm->body.len> 0 && hm->body.p!= NULL) {
 			//printf("Got reply-:\n%.*s (%d)\n", (int)hm->body.len,
 			//		hm->body.p, (int)hm->body.len); //comment-me
-			data->ref_response_str= (char*)calloc(1, hm->body.len+ 1);
-			if(data->ref_response_str!= NULL)
+			if(hm->body.len< RESPONSE_BUF_SIZE) {
 				memcpy((void*)data->ref_response_str, hm->body.p, hm->body.len);
+			} else {
+				fprintf(stderr, "Message too big!'%s()'\n", __FUNCTION__);
+				exit(1);
+			}
 		}
 		nc->flags|= MG_F_SEND_AND_CLOSE;
 		data->flag_exit= 1;
@@ -217,7 +222,7 @@ static void http_client_event_handler(struct mg_connection *nc, int ev,
 	}
 }
 
-static const char* http_client_request(const char *method, const char *url,
+static char* http_client_request(const char *method, const char *url,
 		const char *qstring, const char *content)
 {
 	size_t content_size;
@@ -225,7 +230,8 @@ static const char* http_client_request(const char *method, const char *url,
 	struct mg_connection *nc;
 	struct mg_connect_opts opts;
 	const char *error_str= NULL;
-	struct ev_user_data_s ev_user_data= {0, NULL, NULL};
+	char response_buf[RESPONSE_BUF_SIZE]= {0};
+	struct ev_user_data_s ev_user_data= {0, response_buf, NULL};
 
 	/* Check arguments.
 	 * Note that 'content' may be NULL.
@@ -266,7 +272,7 @@ static const char* http_client_request(const char *method, const char *url,
 	//if(ev_user_data.ref_response_str!= NULL)
 	//	printf("Got reply: '%s'\n",
 	//			ev_user_data.ref_response_str); //comment-me
-	return ev_user_data.ref_response_str;
+	return strlen(response_buf)> 0? strdup(response_buf): NULL;
 }
 
 static void http_event_handler(struct mg_connection *c, int ev, void *p)
@@ -964,14 +970,17 @@ static void encdec_loopback(const proc_if_t *proc_if_enc,
 		 */
 		printf("\nNew settings\n"); //comment-me
 		printf("//------------------------//\n"); fflush(stdout); //comment-me
-		http_client_request("PUT", "/procs/0.json", query_str, NULL);
+		rest_str= http_client_request("PUT", "/procs/0.json", query_str, NULL);
 		if(ret_code!= STAT_SUCCESS) {
 			CHECK(false);
 			goto end;
 		}
+		if(rest_str!= NULL) {
+			free(rest_str); rest_str= NULL;
+		}
 
 		/* Check new settings */
-		rest_str= (char*)http_client_request("GET", "/procs/0.json", NULL,
+		rest_str= http_client_request("GET", "/procs/0.json", NULL,
 				NULL);
 		if(ret_code!= STAT_SUCCESS || rest_str== NULL) {
 			CHECK(false);
@@ -1058,3 +1067,4 @@ SUITE(UTESTS_ENCODE_DECODE_1)
 				MEDIA_TYPE_AUDIO, MIN_PSNR_VAL);
 	}
 }
+
