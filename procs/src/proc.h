@@ -22,12 +22,12 @@
  * @brief Generic processor (PROC) module.
  * @author Rafael Antoniello
  *
- * A typical application would use a generic processor as follows:
+ * A typical application would use a generic processor as follows:<br>
  * 1) Application prologue: Open the processor using function 'proc_open()' and
  * obtain its context structure (or handler). Opening the processor is
  * performed only once at the beginning of the application.
  * Function 'proc_open()' will internally initialize and launch necessary
- * processing threads.
+ * processing threads.<br>
  * 2) Application cyclic: Launch a producer thread and a consumer thread for
  * processing data. Use a control thread to manage processor run-time options.
  * The producer should use 'proc_send_frame()' function to put new frames of
@@ -35,11 +35,11 @@
  * The consumer should use 'proc_recv_frame()' to obtain processed frames from
  * the processor's output FIFO buffer.
  * The control thread may use the function 'proc_opt()' to manage processor
- * options.
+ * options.<br>
  * 3) Application epilogue: Close the processor using the function
  * 'proc_close()'. Function 'proc_close()' internally joins the processing
- * threads and release all related resources.
- *
+ * threads and release all related resources.<br>
+ * <br>
  * Concurrency: The processor (PROC) module is thread-safe, thus run-time
  * functions can be executed concurrently (at the exception of 'proc_open()'
  * and 'proc_close()' functions).
@@ -186,40 +186,45 @@ int proc_recv_frame(proc_ctx_t *proc_ctx,
  *
  * @param proc_ctx Pointer to the processor (PROC) context structure obtained
  * in a previous call to the 'proc_open()' function.
- *
  * @param tag Processor option tag, namely, option identifier string.
  * The following options are available:
- *
- * Tag "PROC_UNBLOCK":
- * Unblock processor input/output FIFO buffers.
- * No additional variable arguments are needed for calling function
- * proc_opt() with this tag.
- *
- * Tag "PROC_GET":
- * Get processor representational state (including current settings).
- * Variable arguments for function proc_opt() are:
- * @param ref_str Reference to the pointer to a character string
- * returning the processor's representational state.
- *
- * Tag "PROC_PUT":
- * Put (pass) new settings to processor.
- * Variable arguments for function proc_opt() are:
- * @param str Pointer to a character string containing new settings for
- * the processor. String format can be either a query-string or JSON.
- *
+ *     -# PROC_UNBLOCK
+ *     -# PROC_GET
+ *     -# PROC_PUT
+ *     .
  * @param ... Variable list of parameters according to selected option. Refer
- * to tag argument to see the different parameters corresponding to each
- * option tag.
- *
+ * to <b>Tags description</b> below to see the different additional parameters
+ * corresponding to  each option tag.
  * @return Status code (STAT_SUCCESS code in case of success, for other code
  * values please refer to .stat_codes.h).
  *
- * The function proc_vopt() is the same as proc_opt() except that it is called
- * with a va_list instead of a variable number of arguments. This function
- * does not call the va_end macro. Because they invoke the va_arg macro, the
- * value of ap is undefined after the call.
+ * ### Tags description (additional variable arguments per tag)
+ * <ul>
+ * <li> <b>Tag "PROC_UNBLOCK":</b> <br>
+ * Unblock processor input/output FIFO buffers.<br>
+ * No additional variable arguments are needed for calling function
+ * proc_opt() with this tag.
+ *
+ * Tag "PROC_GET":</b> <br>
+ * Get processor representational state (including current settings).<br>
+ * Additional variable arguments for function proc_opt() are:<br>
+ * @param ref_str Reference to the pointer to a character string
+ * returning the processor's representational state.
+ *
+ * Tag "PROC_PUT":</b> <br>
+ * Put (pass) new settings to processor.<br>
+ * Additional variable arguments for function proc_opt() are:<br>
+ * @param str Pointer to a character string containing new settings for
+ * the processor. String format can be either a query-string or JSON.
  */
 int proc_opt(proc_ctx_t *proc_ctx, const char *tag, ...);
+
+/**
+ * The function 'proc_vopt()' is the same as proc_opt() except that it is
+ * called with a va_list instead of a variable number of arguments.
+ * This function does not call the va_end macro. Because they invoke the
+ * va_arg macro, the value of the argument pointer is undefined after the call.
+ */
 int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg);
 
 #endif /* MEDIAPROCESSORS_SRC_PROC_H_ */

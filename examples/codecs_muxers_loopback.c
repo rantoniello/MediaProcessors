@@ -649,6 +649,9 @@ int main(int argc, char* argv[])
 	char *rest_str= NULL, *settings_str= NULL;
 	cJSON *cjson_rest= NULL, *cjson_aux= NULL;
     thr_ctx_t thr_ctx= {0};
+    const char *video_settings=
+    		"width_output="VIDEO_WIDTH
+			"&height_output="VIDEO_HEIGHT;
 #define MPEG2_VIDEO
 #ifdef MPEG2_VIDEO
     const proc_if_t *proc_if_enc= &proc_if_ffmpeg_m2v_enc;
@@ -715,7 +718,7 @@ int main(int argc, char* argv[])
 	}
 
     /* Register an encoder instance and get corresponding processor Id. */
-	procs_post(procs_ctx, proc_if_enc->proc_name, "", &enc_proc_id);
+	procs_post(procs_ctx, proc_if_enc->proc_name, video_settings, &enc_proc_id);
 
     /* Register a decoder instance and get corresponding processor Id. */
 	procs_post(procs_ctx, proc_if_dec->proc_name, "", &dec_proc_id);

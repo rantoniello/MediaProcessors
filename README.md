@@ -80,3 +80,24 @@ in the repository named 'MediaProcessors_selfcontained'
 (https://github.com/rantoniello/MediaProcessors_selfcontained).
 Download or clone the repo 'MediaProcessors_selfcontained' and follow the README 
 steps.
+
+Documentation
+=====================
+
+First o all, please <b>generate the documentation</b>.
+Go to the 'docs' folder
+
+> $ cd MediaProcessors/docs/
+
+and perform
+
+> $ doxygen Doxyfile
+
+Change to the 'docs/html' folder
+
+> $ cd html
+
+and open the file 'index.html' (documentation index) with any browser. 
+
+Now please continue ahead with MediaProcessors 
+[documentation](md_DOCUMENTATION.html)

@@ -59,10 +59,20 @@ void procs_module_close();
  *
  * @param tag Processors option tag, namely, option identifier string.
  * The following options are available:
+ *     -# PROCS_REGISTER_TYPE
+ *     -# PROCS_UNREGISTER_TYPE
+ *     .
+ * @param ... Variable list of parameters according to selected option. Refer
+ * to <b>Tags description</b> below to see the different additional parameters
+ * corresponding to  each option tag.
+ * @return Status code (STAT_SUCCESS code in case of success, for other code
+ * values please refer to .stat_codes.h).
  *
- * Tag "PROCS_REGISTER_TYPE":
- * Register interface of an specific processor type.
- * Variable arguments for function procs_opt() are:
+ * ### Tags description (additional variable arguments per tag)
+ * <ul>
+ * <li> <b>Tag "PROCS_REGISTER_TYPE":</b><br>
+ * Register interface of an specific processor type.<br>
+ * Additional variable arguments for function procs_module_opt() are:<br>
  * @param proc_if Pointer to the processor interface structure (static
  * and unambiguous interface of the type of processor we are registering).
  * Code example:
@@ -79,25 +89,19 @@ void procs_module_close();
  *     NULL, NULL, NULL
  * };
  * ...
- * ret_code= procs_opt(PROCS_REGISTER_TYPE, &proc_if_bypass_proc);
+ * ret_code= procs_module_opt(PROCS_REGISTER_TYPE, &proc_if_bypass_proc);
  * @endcode
  *
- * Tag "PROCS_UNREGISTER_TYPE":
- * Unregister interface of an specific processor type.
- * Variable arguments for function procs_opt() are:
+ * <li> <b>Tag "PROCS_UNREGISTER_TYPE":</b><br>
+ * Unregister interface of an specific processor type.<br>
+ * Additional variable arguments for function procs_module_opt() are:<br>
  * @param proc_name Pointer to a character string with the unambiguous
  * processor type name.
  * Code example:
  * @code
- * ret_code= procs_opt(PROCS_UNREGISTER_TYPE, "bypass_processor");
+ * ret_code= procs_module_opt(PROCS_UNREGISTER_TYPE, "bypass_processor");
  * @endcode
- *
- * @param ... Variable list of parameters according to selected option. Refer
- * to 'tag' argument to see the different parameters corresponding to each
- * option tag.
- *
- * @return Status code (STAT_SUCCESS code in case of success, for other code
- * values please refer to .stat_codes.h).
+ * </ul>
  */
 int procs_module_opt(const char *tag, ...);
 
@@ -127,13 +131,25 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  *
  * @param procs_ctx Pointer to the processors (PROCS) module instance context
  * structure.
- *
  * @param tag Processors option tag, namely, option identifier string.
  * The following options are available:
+ *     -# PROCS_POST
+ *     -# PROCS_GET
+ *     -# PROCS_ID_DELETE
+ *     -# PROCS_ID_GET
+ *     -# PROCS_ID_PUT
+ *     .
+ * @param ... Variable list of parameters according to selected option. Refer
+ * to <b>Tags description</b> below to see the different additional parameters
+ * corresponding to  each option tag.
+ * @return Status code (STAT_SUCCESS code in case of success, for other code
+ * values please refer to .stat_codes.h).
  *
- * Tag "PROCS_POST":
- * Instantiate and register new processor.
- * Variable arguments for function procs_opt() are:
+ * ### Tags description (additional variable arguments per tag)
+ * <ul>
+ * <li> <b>Tag "PROCS_POST":</b><br>
+ * Instantiate and register new processor.<br>
+ * Additional variable arguments for function procs_opt() are:<br>
  * @param proc_name Pointer to a character string with the unambiguous
  * processor type name.
  * @param settings_str Character string containing initial settings for
@@ -149,9 +165,9 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  *     "setting1=100", &rest_str);
  * @endcode
  *
- * Tag "PROCS_GET":
- * Get the representational state of the processors instances list.
- * Variable arguments for function procs_opt() are:
+ * <li> <b>Tag "PROCS_GET":</b><br>
+ * Get the representational state of the processors instances list.<br>
+ * Additional variable arguments for function procs_opt() are:<br>
  * @param ref_str Reference to the pointer to a character string
  * returning the processors list representational state.
  * Code example:
@@ -161,19 +177,19 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * ret_code= procs_opt(procs_ctx, PROCS_GET, &rest_str);
  * @endcode
  *
- * Tag "PROCS_ID_DELETE":
- * Unregister and release a processor instance.
- * Variable arguments for function procs_opt() are:
+ * <li> <b>Tag "PROCS_ID_DELETE":</b><br>
+ * Unregister and release a processor instance.<br>
+ * Additional variable arguments for function procs_opt() are:<br>
  * @param proc_id Processor instance unambiguous Id.
  * Code example:
  * @code
  * ret_code= procs_opt(procs_ctx, PROCS_ID_DELETE, proc_id);
  * @endcode
  *
- * Tag "PROCS_ID_GET":
+ * <li> <b>Tag "PROCS_ID_GET":</b><br>
  * Get the representational state of a processor instance (including
- * current settings).
- * Variable arguments for function procs_opt() are:
+ * current settings).<br>
+ * Additional variable arguments for function procs_opt() are:<br>
  * @param proc_id Processor instance unambiguous Id.
  * @param ref_str Reference to the pointer to a character string
  * returning the processor's representational state.
@@ -184,25 +200,17 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * ret_code= procs_opt(procs_ctx, PROCS_ID_GET, proc_id, &rest_str);
  * @endcode
  *
- * Tag "PROCS_ID_PUT":
- * Put (pass) new settings to a processor instance.
- * Variable arguments for function procs_opt() are:
+ * <li> <b>Tag "PROCS_ID_PUT":</b><br>
+ * Put (pass) new settings to a processor instance.<br>
+ * Additional variable arguments for function procs_opt() are:<br>
  * @param proc_id Processor instance unambiguous Id.
  * @param str Pointer to a character string containing new settings for
  * the processor instance. String format can be either a query-string or
  * JSON.
- *
  * Code example:
  * @code
  * ret_code= procs_opt(procs_ctx, PROCS_ID_PUT, proc_id, "setting1=100");
  * @endcode
-
- * @param ... Variable list of parameters according to selected option. Refer
- * to tag argument to see the different parameters corresponding to each
- * option tag.
- *
- * @return Status code (STAT_SUCCESS code in case of success, for other code
- * values please refer to .stat_codes.h).
  */
 int procs_opt(procs_ctx_t *procs_ctx, const char *tag, ...);
 
