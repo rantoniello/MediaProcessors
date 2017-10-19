@@ -373,6 +373,34 @@ static void setupNextSubsession(RTSPClient* rtspClient);
 static void shutdownStream(RTSPClient* rtspClient, int exitCode= 1);
 
 /**
+ * This class wraps MediaSubsession with the objective of implementing our
+ * particular version of the method MediaSubsession::createSourceObjects.
+ */
+class SimpleClientMediaSubsession: public MediaSubsession
+{
+public:
+	SimpleClientMediaSubsession(MediaSession& parent);
+protected:
+	virtual Boolean createSourceObjects(int useSpecialRTPoffset);
+};
+
+/**
+ * This class wraps MediaSession with the objective of implementing our
+ * particular version of the method MediaSession::createNewMediaSubsession.
+ * The idea is to use instead of the Live555's MediaSubsession class our
+ * wrapper class SimpleClientMediaSubsession.
+ */
+class SimpleClientSession: public MediaSession
+{
+public:
+	static SimpleClientSession* createNew(UsageEnvironment& env,
+			char const* sdpDescription);
+protected:
+	SimpleClientSession(UsageEnvironment& env);
+	virtual MediaSubsession* createNewMediaSubsession();
+};
+
+/**
  * This class is used to hold per-stream RTSP client state that we maintain
  * throughout each stream's lifetime.
  */
@@ -383,7 +411,7 @@ public:
 
 public:
   MediaSubsessionIterator* iter;
-  MediaSession* session;
+  SimpleClientSession* session;
   MediaSubsession* subsession;
   TaskToken streamTimerTask;
   double duration;
@@ -2260,8 +2288,8 @@ static void continueAfterDESCRIBE(RTSPClient *rtspClient, int resultCode,
 	 * Create a media session object from this SDP description
 	 */
 	LOGW("Got a SDP description: %s\n", resultString);
-	streamClientState->session = MediaSession::createNew(*usageEnvironment,
-			resultString);
+	streamClientState->session = SimpleClientSession::createNew(
+			*usageEnvironment, resultString);
 	if(streamClientState->session== NULL) {
 		LOGE("[URL: '%s'] Failed to create a MediaSession object from the SDP "
 				"description: %s\n", rtspClient->url(),
@@ -2566,6 +2594,47 @@ SimpleRTSPClient::SimpleRTSPClient(UsageEnvironment& env, char const* rtspURL,
 
 SimpleRTSPClient::~SimpleRTSPClient()
 {}
+
+SimpleClientMediaSubsession::SimpleClientMediaSubsession(MediaSession& parent):
+		MediaSubsession(parent)
+{
+}
+
+Boolean SimpleClientMediaSubsession::createSourceObjects(
+		int useSpecialRTPoffset)
+{
+	Boolean doNormalMBitRule= False; // default behavior
+	char mimeType[strlen(mediumName())+ strlen(codecName())+ 2];
+	snprintf(mimeType, sizeof(mimeType), "%s/%s", mediumName(), codecName());
+
+	fReadSource= fRTPSource= SimpleRTPSource::createNew(env(), fRTPSocket,
+			fRTPPayloadFormat, fRTPTimestampFrequency, mimeType,
+			(unsigned)useSpecialRTPoffset, doNormalMBitRule);
+	return True;
+}
+
+SimpleClientSession* SimpleClientSession::createNew(UsageEnvironment& env,
+		char const* sdpDescription)
+{
+	SimpleClientSession* newSession = new SimpleClientSession(env);
+	if (newSession != NULL) {
+		if (!newSession->initializeWithSDP(sdpDescription)) {
+			delete newSession;
+			return NULL;
+		}
+	}
+	return newSession;
+}
+
+SimpleClientSession::SimpleClientSession(UsageEnvironment& env):
+				MediaSession(env)
+{
+}
+
+MediaSubsession* SimpleClientSession::createNewMediaSubsession()
+{
+	return new SimpleClientMediaSubsession(*this);
+}
 
 StreamClientState::StreamClientState(): iter(NULL), session(NULL),
 		subsession(NULL), streamTimerTask(NULL), duration(0.0)
