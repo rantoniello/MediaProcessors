@@ -59,8 +59,8 @@ void procs_module_close();
  *
  * @param tag Processors option tag, namely, option identifier string.
  * The following options are available:
- *     -# PROCS_REGISTER_TYPE
- *     -# PROCS_UNREGISTER_TYPE
+ *     -# "PROCS_REGISTER_TYPE"
+ *     -# "PROCS_UNREGISTER_TYPE"
  *     .
  * @param ... Variable list of parameters according to selected option. Refer
  * to <b>Tags description</b> below to see the different additional parameters
@@ -89,7 +89,7 @@ void procs_module_close();
  *     NULL, NULL, NULL
  * };
  * ...
- * ret_code= procs_module_opt(PROCS_REGISTER_TYPE, &proc_if_bypass_proc);
+ * ret_code= procs_module_opt("PROCS_REGISTER_TYPE", &proc_if_bypass_proc);
  * @endcode
  *
  * <li> <b>Tag "PROCS_UNREGISTER_TYPE":</b><br>
@@ -99,7 +99,7 @@ void procs_module_close();
  * processor type name.
  * Code example:
  * @code
- * ret_code= procs_module_opt(PROCS_UNREGISTER_TYPE, "bypass_processor");
+ * ret_code= procs_module_opt("PROCS_UNREGISTER_TYPE", "bypass_processor");
  * @endcode
  * </ul>
  */
@@ -133,11 +133,11 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * structure.
  * @param tag Processors option tag, namely, option identifier string.
  * The following options are available:
- *     -# PROCS_POST
- *     -# PROCS_GET
- *     -# PROCS_ID_DELETE
- *     -# PROCS_ID_GET
- *     -# PROCS_ID_PUT
+ *     -# "PROCS_POST"
+ *     -# "PROCS_GET"
+ *     -# "PROCS_ID_DELETE"
+ *     -# "PROCS_ID_GET"
+ *     -# "PROCS_ID_PUT"
  *     .
  * @param ... Variable list of parameters according to selected option. Refer
  * to <b>Tags description</b> below to see the different additional parameters
@@ -161,7 +161,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * @code
  * char *rest_str= NULL;
  * ...
- * ret_code= procs_opt(procs_ctx, PROCS_POST, "bypass_processor",
+ * ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",
  *     "setting1=100", &rest_str);
  * @endcode
  *
@@ -174,7 +174,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * @code
  * char *rest_str= NULL;
  * ...
- * ret_code= procs_opt(procs_ctx, PROCS_GET, &rest_str);
+ * ret_code= procs_opt(procs_ctx, "PROCS_GET", &rest_str);
  * @endcode
  *
  * <li> <b>Tag "PROCS_ID_DELETE":</b><br>
@@ -183,7 +183,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * @param proc_id Processor instance unambiguous Id.
  * Code example:
  * @code
- * ret_code= procs_opt(procs_ctx, PROCS_ID_DELETE, proc_id);
+ * ret_code= procs_opt(procs_ctx, "PROCS_ID_DELETE", proc_id);
  * @endcode
  *
  * <li> <b>Tag "PROCS_ID_GET":</b><br>
@@ -197,7 +197,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * @code
  * char *rest_str= NULL;
  * ...
- * ret_code= procs_opt(procs_ctx, PROCS_ID_GET, proc_id, &rest_str);
+ * ret_code= procs_opt(procs_ctx, "PROCS_ID_GET", proc_id, &rest_str);
  * @endcode
  *
  * <li> <b>Tag "PROCS_ID_PUT":</b><br>
@@ -209,7 +209,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * JSON.
  * Code example:
  * @code
- * ret_code= procs_opt(procs_ctx, PROCS_ID_PUT, proc_id, "setting1=100");
+ * ret_code= procs_opt(procs_ctx, "PROCS_ID_PUT", proc_id, "setting1=100");
  * @endcode
  */
 int procs_opt(procs_ctx_t *procs_ctx, const char *tag, ...);
