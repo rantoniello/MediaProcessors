@@ -30,6 +30,7 @@
 #include <pthread.h>
 
 #include <libcjson/cJSON.h>
+#include <libmediaprocsutils/uri_parser.h>
 #include <libavcodec/avcodec.h>
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
@@ -53,6 +54,10 @@ typedef struct ffmpeg_x264_enc_settings_ctx_s {
 	 * video_settings_enc_ctx_s.
 	 */
 	struct video_settings_enc_ctx_s video_settings_enc_ctx;
+	/**
+	 * Apply zero-latency tuning. Default value is 'false' (0).
+	 */
+	int flag_zerolatency;
 } ffmpeg_x264_enc_settings_ctx_t;
 
 /**
@@ -310,10 +315,14 @@ end:
  */
 static int ffmpeg_x264_enc_rest_put(proc_ctx_t *proc_ctx, const char *str)
 {
-	int ret_code;
+	int ret_code, end_code= STAT_ERROR;
+	int flag_is_query= 0; // 0-> JSON / 1->query string
 	ffmpeg_x264_enc_ctx_t *ffmpeg_x264_enc_ctx= NULL;
 	volatile ffmpeg_x264_enc_settings_ctx_t *ffmpeg_x264_enc_settings_ctx= NULL;
 	volatile video_settings_enc_ctx_t *video_settings_enc_ctx= NULL;
+	ffmpeg_video_enc_ctx_t *ffmpeg_video_enc_ctx= NULL;
+	cJSON *cjson_rest= NULL, *cjson_aux= NULL;
+	char *flag_zerolatency_str= NULL;
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
@@ -335,15 +344,62 @@ static int ffmpeg_x264_enc_rest_put(proc_ctx_t *proc_ctx, const char *str)
 	if(ret_code!= STAT_SUCCESS)
 		return ret_code;
 
-	/* PUT specific x264 video encoder settings */
+	/* **** PUT specific x264 video encoder settings **** */
+
+	ffmpeg_video_enc_ctx= &ffmpeg_x264_enc_ctx->ffmpeg_video_enc_ctx;
+
+	/* Guess string representation format (JSON-REST or Query) */
+	flag_is_query= (str[0]=='{' && str[strlen(str)-1]=='}')? 0: 1;
+
+	/* Parse RESTful string to get specific settings parameters */
+	if(flag_is_query== 1) {
+
+		/* 'flag_zerolatency' */
+		flag_zerolatency_str= uri_parser_query_str_get_value(
+				"flag_zerolatency", str);
+		if(flag_zerolatency_str!= NULL)
+			ffmpeg_x264_enc_settings_ctx->flag_zerolatency= (strncmp(
+					flag_zerolatency_str, "true", strlen("true"))== 0)? 1: 0;
+
+	} else {
+
+		/* In the case string format is JSON-REST, parse to cJSON structure */
+		cjson_rest= cJSON_Parse(str);
+		CHECK_DO(cjson_rest!= NULL, goto end);
+
+		/* 'flag_zerolatency' */
+		cjson_aux= cJSON_GetObjectItem(cjson_rest, "flag_zerolatency");
+		if(cjson_aux!= NULL)
+			ffmpeg_x264_enc_settings_ctx->flag_zerolatency=
+					(cjson_aux->type==cJSON_True)?1 : 0;
+	}
+
+	/* Put the FFmpeg's dictionary entries we are using in our settings.
+	 * Note (taken from FFmpeg's documentation):
+	 * Dictionaries are used for storing key:value pairs. To create an
+	 * "AVDictionary", simply pass an address of a NULL pointer to
+	 * av_dict_set(). NULL can be used as an empty dictionary wherever a
+	 * pointer to an AVDictionary is required.
+	 */
+	if(ffmpeg_x264_enc_settings_ctx->flag_zerolatency!= 0)
+		av_dict_set(&ffmpeg_video_enc_ctx->avdictionary, "tune",
+				"zerolatency", 0);
+
 	// Reserved for future use
+	// add here new specific parameters...
 
 	/* Finally that we have new settings parsed, reset FFMPEG processor */
 	ffmpeg_video_reset_on_new_settings(proc_ctx,
 			(volatile void*)video_settings_enc_ctx, 1/*Signal is an encoder*/,
 			LOG_CTX_GET());
 
-	return STAT_SUCCESS;
+	end_code= STAT_SUCCESS;
+end:
+	if(cjson_rest!= NULL)
+		cJSON_Delete(cjson_rest);
+	if(flag_zerolatency_str!= NULL)
+		free(flag_zerolatency_str);
+	return end_code;
 }
 
 /**
@@ -359,7 +415,7 @@ static int ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 	volatile ffmpeg_x264_enc_settings_ctx_t *ffmpeg_x264_enc_settings_ctx= NULL;
 	volatile video_settings_enc_ctx_t *video_settings_enc_ctx= NULL;
 	cJSON *cjson_rest= NULL, *cjson_settings= NULL;
-	//cJSON *cjson_aux= NULL; // Do not release // Reserved for future use
+	cJSON *cjson_aux= NULL; // Do not release
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
@@ -396,8 +452,15 @@ static int ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 			&cjson_settings, LOG_CTX_GET());
 	CHECK_DO(ret_code== STAT_SUCCESS && cjson_settings!= NULL, goto end);
 
-	/* GET specific x264 video encoder settings */
-	// Reserved for future use: attach to 'cjson_settings' (should be != NULL)
+	/* **** GET specific x264 video encoder settings **** */
+
+	/* 'flag_zerolatency' */
+	cjson_aux= cJSON_CreateBool(ffmpeg_x264_enc_settings_ctx->flag_zerolatency);
+	CHECK_DO(cjson_aux!= NULL, goto end);
+	cJSON_AddItemToObject(cjson_settings, "flag_zerolatency", cjson_aux);
+
+	// Reserved for future use
+	// attach new settings to 'cjson_settings' (should be != NULL)
 
 	/* Attach settings object to REST response */
 	cJSON_AddItemToObject(cjson_rest, "settings", cjson_settings);
@@ -457,8 +520,12 @@ static int ffmpeg_x264_enc_settings_ctx_init(
 	if(ret_code!= STAT_SUCCESS)
 		return ret_code;
 
-	/* Initialize specific x264 video encoder settings */
+	/* **** Initialize specific x264 video encoder settings **** */
+
+	ffmpeg_x264_enc_settings_ctx->flag_zerolatency= 0; // "false"
+
 	// Reserved for future use
+	// add new initializations here...
 
 	return STAT_SUCCESS;
 }

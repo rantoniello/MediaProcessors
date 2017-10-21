@@ -1008,7 +1008,12 @@ static void encdec_loopback(const proc_if_t *proc_if_enc,
 		}
 		printf("Response: '%s'\n", settings_str); //comment-me
 		fflush(stdout); //comment-me
-		CHECK(strcmp(settings_str, json_str)== 0);
+		/* Check response.
+		 * Note we omit specific codec parameters -as response may be an
+		 * extended settings version- and the closing '}' character
+		 * (thus the '-1').
+		 */
+		CHECK(strncmp(settings_str, json_str, strlen(json_str)- 1)== 0);
 		free(rest_str); rest_str= NULL;
 		cJSON_Delete(cjson_rest); cjson_rest= NULL;
 
