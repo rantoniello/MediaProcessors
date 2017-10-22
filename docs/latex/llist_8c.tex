@@ -1,0 +1,75 @@
+\hypertarget{llist_8c}{}\section{llist.\+c File Reference}
+\label{llist_8c}\index{llist.\+c@{llist.\+c}}
+{\ttfamily \#include \char`\"{}llist.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}check\+\_\+utils.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}log.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}stat\+\_\+codes.\+h\char`\"{}}\\*
+Include dependency graph for llist.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{llist_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{llist_8c_a51aae99f75f43a1b4a5ca3eeb15a401d}{llist\+\_\+push} (\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$$\ast$ref\+\_\+llist\+\_\+head, void $\ast$data)
+\item 
+void $\ast$ \hyperlink{llist_8c_a0d83d366ad71633395a7b1578b6537fc}{llist\+\_\+pop} (\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$$\ast$ref\+\_\+llist\+\_\+head)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{llist.\+c@{llist.\+c}!llist\+\_\+pop@{llist\+\_\+pop}}
+\index{llist\+\_\+pop@{llist\+\_\+pop}!llist.\+c@{llist.\+c}}
+\subsubsection[{\texorpdfstring{llist\+\_\+pop(llist\+\_\+t $\ast$$\ast$ref\+\_\+llist\+\_\+head)}{llist_pop(llist_t **ref_llist_head)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ llist\+\_\+pop (
+\begin{DoxyParamCaption}
+\item[{{\bf llist\+\_\+t} $\ast$$\ast$}]{ref\+\_\+llist\+\_\+head}
+\end{DoxyParamCaption}
+)}\hypertarget{llist_8c_a0d83d366ad71633395a7b1578b6537fc}{}\label{llist_8c_a0d83d366ad71633395a7b1578b6537fc}
+Extract the data from the head node of the list, delete the node, and advance the head pointer to point at the next node list. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+llist\+\_\+head} & Reference to the pointer to the so-\/called \char`\"{}head\char`\"{} of the list. The head pointer will be updated to point to the next node of the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Data element popped, or N\+U\+LL in the case of error due to wrong parameter or empty list. 
+\end{DoxyReturn}
+
+
+Definition at line 75 of file llist.\+c.
+
+\index{llist.\+c@{llist.\+c}!llist\+\_\+push@{llist\+\_\+push}}
+\index{llist\+\_\+push@{llist\+\_\+push}!llist.\+c@{llist.\+c}}
+\subsubsection[{\texorpdfstring{llist\+\_\+push(llist\+\_\+t $\ast$$\ast$ref\+\_\+llist\+\_\+head, void $\ast$data)}{llist_push(llist_t **ref_llist_head, void *data)}}]{\setlength{\rightskip}{0pt plus 5cm}int llist\+\_\+push (
+\begin{DoxyParamCaption}
+\item[{{\bf llist\+\_\+t} $\ast$$\ast$}]{ref\+\_\+llist\+\_\+head, }
+\item[{void $\ast$}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{llist_8c_a51aae99f75f43a1b4a5ca3eeb15a401d}{}\label{llist_8c_a51aae99f75f43a1b4a5ca3eeb15a401d}
+Creates a new link node with the given data and pushes it onto the front of the list. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+llist\+\_\+head} & Reference to the pointer to the so-\/called \char`\"{}head\char`\"{} of the list. If the list is empty, the head pointer should be N\+U\+LL. The head pointer will be updated to the newly created node. \\
+\hline
+{\em data} & Pointer to a new data element to be inserted in the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (refer to \textquotesingle{}stat\+\_\+codes\+\_\+ctx\+\_\+t\textquotesingle{} type). 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+stat\+\_\+codes\+\_\+ctx\+\_\+t 
+\end{DoxySeeAlso}
+
+
+Definition at line 57 of file llist.\+c.
+

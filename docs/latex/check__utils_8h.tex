@@ -1,0 +1,78 @@
+\hypertarget{check__utils_8h}{}\section{check\+\_\+utils.\+h File Reference}
+\label{check__utils_8h}\index{check\+\_\+utils.\+h@{check\+\_\+utils.\+h}}
+{\ttfamily \#include \char`\"{}log.\+h\char`\"{}}\\*
+Include dependency graph for check\+\_\+utils.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{check__utils_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{check__utils_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+}(C\+O\+ND,  A\+C\+T\+I\+ON,  L\+OG)
+\item 
+\#define \hyperlink{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{A\+S\+S\+E\+RT}(C\+O\+ND)~C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+(C\+O\+ND, , L\+O\+GE(\char`\"{}Assertion failed.\textbackslash{}n\char`\"{}))
+\item 
+\#define \hyperlink{check__utils_8h_a6c71a346e1280fe78e59e2e909dbf53e}{C\+H\+E\+C\+K\+\_\+\+DO}(C\+O\+ND,  A\+C\+T\+I\+ON)~C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+(C\+O\+ND, A\+C\+T\+I\+ON, L\+O\+GE(\char`\"{}Check point failed.\textbackslash{}n\char`\"{}))
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{check\+\_\+utils.\+h@{check\+\_\+utils.\+h}!A\+S\+S\+E\+RT@{A\+S\+S\+E\+RT}}
+\index{A\+S\+S\+E\+RT@{A\+S\+S\+E\+RT}!check\+\_\+utils.\+h@{check\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{A\+S\+S\+E\+RT}{ASSERT}}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+S\+E\+RT(
+\begin{DoxyParamCaption}
+\item[{}]{C\+O\+ND}
+\end{DoxyParamCaption}
+)~C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+(C\+O\+ND, , L\+O\+GE(\char`\"{}Assertion failed.\textbackslash{}n\char`\"{}))}\hypertarget{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{}\label{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}
+Simple A\+S\+S\+E\+RT implementation\+: does not exit the program but just outputs an error trace. 
+
+Definition at line 51 of file check\+\_\+utils.\+h.
+
+\index{check\+\_\+utils.\+h@{check\+\_\+utils.\+h}!C\+H\+E\+C\+K\+\_\+\+DO@{C\+H\+E\+C\+K\+\_\+\+DO}}
+\index{C\+H\+E\+C\+K\+\_\+\+DO@{C\+H\+E\+C\+K\+\_\+\+DO}!check\+\_\+utils.\+h@{check\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{C\+H\+E\+C\+K\+\_\+\+DO}{CHECK_DO}}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\+H\+E\+C\+K\+\_\+\+DO(
+\begin{DoxyParamCaption}
+\item[{}]{C\+O\+ND, }
+\item[{}]{A\+C\+T\+I\+ON}
+\end{DoxyParamCaption}
+)~C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+(C\+O\+ND, A\+C\+T\+I\+ON, L\+O\+GE(\char`\"{}Check point failed.\textbackslash{}n\char`\"{}))}\hypertarget{check__utils_8h_a6c71a346e1280fe78e59e2e909dbf53e}{}\label{check__utils_8h_a6c71a346e1280fe78e59e2e909dbf53e}
+Generic trace for tracking check-\/points failures. 
+
+Definition at line 57 of file check\+\_\+utils.\+h.
+
+\index{check\+\_\+utils.\+h@{check\+\_\+utils.\+h}!C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+@{C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+}}
+\index{C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+@{C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+}!check\+\_\+utils.\+h@{check\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+}{CHECK_UTILS_DO_}}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\+H\+E\+C\+K\+\_\+\+U\+T\+I\+L\+S\+\_\+\+D\+O\+\_\+(
+\begin{DoxyParamCaption}
+\item[{}]{C\+O\+ND, }
+\item[{}]{A\+C\+T\+I\+ON, }
+\item[{}]{L\+OG}
+\end{DoxyParamCaption}
+)}\hypertarget{check__utils_8h_a39e06c83e7a58803e280f66ca3da6ed9}{}\label{check__utils_8h_a39e06c83e7a58803e280f66ca3da6ed9}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if}(!(COND)) \{\(\backslash\)
+        LOG;\(\backslash\)
+        ACTION;\(\backslash\)
+    \}
+\end{DoxyCode}
+
+
+Definition at line 41 of file check\+\_\+utils.\+h.
+

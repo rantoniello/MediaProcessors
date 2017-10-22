@@ -1,0 +1,59 @@
+\hypertarget{structprocs__ctx__s}{}\section{procs\+\_\+ctx\+\_\+s Struct Reference}
+\label{structprocs__ctx__s}\index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
+
+
+Collaboration diagram for procs\+\_\+ctx\+\_\+s\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structprocs__ctx__s__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+pthread\+\_\+mutex\+\_\+t \hyperlink{structprocs__ctx__s_a27330c986436226abfa1b5a00b7bdeb1}{api\+\_\+mutex}
+\item 
+\hyperlink{procs_8c_a63a78f7c86536e71715f3fcef28e11c5}{procs\+\_\+reg\+\_\+elem\+\_\+t} \hyperlink{structprocs__ctx__s_a08985565adf1f547b44b58addd85cbbe}{procs\+\_\+reg\+\_\+elem\+\_\+array} \mbox{[}\hyperlink{procs_8c_a3ed23854256df248c5c1352b3999275e}{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}\mbox{]}
+\item 
+\hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{structprocs__ctx__s_ab5d529e82924052baf26478afca901fa}{log\+\_\+ctx}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Module\textquotesingle{}s instance context structure. P\+R\+O\+CS module context structure is statically defined in the program. 
+
+Definition at line 145 of file procs.\+c.
+
+
+
+\subsection{Member Data Documentation}
+\index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!api\+\_\+mutex@{api\+\_\+mutex}}
+\index{api\+\_\+mutex@{api\+\_\+mutex}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{api\+\_\+mutex}{api_mutex}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+mutex\+\_\+t procs\+\_\+ctx\+\_\+s\+::api\+\_\+mutex}\hypertarget{structprocs__ctx__s_a27330c986436226abfa1b5a00b7bdeb1}{}\label{structprocs__ctx__s_a27330c986436226abfa1b5a00b7bdeb1}
+Module\textquotesingle{}s instance A\+PI mutual exclusion lock. This lock is used to provide a critical section for external applications to be able to operate concurrently and asynchronously on this module. A\+PI options are available through the function \hyperlink{procs_8c_a7af2e6f2788006cfc96ca8d811922ffa}{procs\+\_\+opt()}. \begin{DoxySeeAlso}{See also}
+\hyperlink{procs_8h_a7af2e6f2788006cfc96ca8d811922ffa}{procs\+\_\+opt} 
+\end{DoxySeeAlso}
+
+
+Definition at line 153 of file procs.\+c.
+
+\index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!log\+\_\+ctx@{log\+\_\+ctx}}
+\index{log\+\_\+ctx@{log\+\_\+ctx}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{log\+\_\+ctx}{log_ctx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf log\+\_\+ctx\+\_\+t}$\ast$ procs\+\_\+ctx\+\_\+s\+::log\+\_\+ctx}\hypertarget{structprocs__ctx__s_ab5d529e82924052baf26478afca901fa}{}\label{structprocs__ctx__s_ab5d529e82924052baf26478afca901fa}
+Externally defined L\+OG module instance context structure. 
+
+Definition at line 166 of file procs.\+c.
+
+\index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!procs\+\_\+reg\+\_\+elem\+\_\+array@{procs\+\_\+reg\+\_\+elem\+\_\+array}}
+\index{procs\+\_\+reg\+\_\+elem\+\_\+array@{procs\+\_\+reg\+\_\+elem\+\_\+array}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{procs\+\_\+reg\+\_\+elem\+\_\+array}{procs_reg_elem_array}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+reg\+\_\+elem\+\_\+t} procs\+\_\+ctx\+\_\+s\+::procs\+\_\+reg\+\_\+elem\+\_\+array\mbox{[}{\bf P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}\mbox{]}}\hypertarget{structprocs__ctx__s_a08985565adf1f547b44b58addd85cbbe}{}\label{structprocs__ctx__s_a08985565adf1f547b44b58addd85cbbe}
+Array listing the registered processor instances. The idea behind using an array is to have a mean to fast fetch a processor for input (receive) or output (send) operations. This array is defined with a fixed maximum size of P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES; each element of the array has a set of locks already initialized to enable concurrency. 
+
+Definition at line 162 of file procs.\+c.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{procs_8c}{procs.\+c}\end{DoxyCompactItemize}

@@ -1,0 +1,81 @@
+\hypertarget{procs__api__http_8h}{}\section{procs\+\_\+api\+\_\+http.\+h File Reference}
+\label{procs__api__http_8h}\index{procs\+\_\+api\+\_\+http.\+h@{procs\+\_\+api\+\_\+http.\+h}}
+
+
+Processors (P\+R\+O\+CS) module H\+T\+TP A\+PI adaptation layer.  
+
+
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+Include dependency graph for procs\+\_\+api\+\_\+http.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{procs__api__http_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{procs__api__http_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structprocs__ctx__s}{procs\+\_\+ctx\+\_\+s} {\bfseries procs\+\_\+ctx\+\_\+t}\hypertarget{procs__api__http_8h_ab630d67154256bc674d010e9bf2bc3c9}{}\label{procs__api__http_8h_ab630d67154256bc674d010e9bf2bc3c9}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{procs__api__http_8h_af95ab7d53c13d03d65d8cd0dacd3463f}{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, const char $\ast$url, const char $\ast$query\+\_\+string, const char $\ast$request\+\_\+method, char $\ast$content, size\+\_\+t content\+\_\+len, char $\ast$$\ast$ref\+\_\+str\+\_\+response)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Processors (P\+R\+O\+CS) module H\+T\+TP A\+PI adaptation layer. 
+
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{procs\+\_\+api\+\_\+http.\+h@{procs\+\_\+api\+\_\+http.\+h}!procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler@{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler}}
+\index{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler@{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler}!procs\+\_\+api\+\_\+http.\+h@{procs\+\_\+api\+\_\+http.\+h}}
+\subsubsection[{\texorpdfstring{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler(procs\+\_\+ctx\+\_\+t $\ast$procs\+\_\+ctx, const char $\ast$url, const char $\ast$query\+\_\+string, const char $\ast$request\+\_\+method, char $\ast$content, size\+\_\+t content\+\_\+len, char $\ast$$\ast$ref\+\_\+str\+\_\+response)}{procs_api_http_req_handler(procs_ctx_t *procs_ctx, const char *url, const char *query_string, const char *request_method, char *content, size_t content_len, char **ref_str_response)}}]{\setlength{\rightskip}{0pt plus 5cm}int procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf procs\+\_\+ctx\+\_\+t} $\ast$}]{procs\+\_\+ctx, }
+\item[{const char $\ast$}]{url, }
+\item[{const char $\ast$}]{query\+\_\+string, }
+\item[{const char $\ast$}]{request\+\_\+method, }
+\item[{char $\ast$}]{content, }
+\item[{size\+\_\+t}]{content\+\_\+len, }
+\item[{char $\ast$$\ast$}]{ref\+\_\+str\+\_\+response}
+\end{DoxyParamCaption}
+)}\hypertarget{procs__api__http_8h_af95ab7d53c13d03d65d8cd0dacd3463f}{}\label{procs__api__http_8h_af95ab7d53c13d03d65d8cd0dacd3463f}
+H\+T\+T\+P-\/\+A\+PI request handler function. 
+\begin{DoxyParams}{Parameters}
+{\em procs\+\_\+ctx} & \\
+\hline
+{\em url} & \\
+\hline
+{\em query\+\_\+string} & \\
+\hline
+{\em request\+\_\+method} & \\
+\hline
+{\em content} & \\
+\hline
+{\em content\+\_\+len} & \\
+\hline
+{\em ref\+\_\+str\+\_\+response} & Reference to the pointer to a character string returning the representational state associated with this request. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 82 of file procs\+\_\+api\+\_\+http.\+c.
+

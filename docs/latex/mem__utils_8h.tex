@@ -1,0 +1,66 @@
+\hypertarget{mem__utils_8h}{}\section{mem\+\_\+utils.\+h File Reference}
+\label{mem__utils_8h}\index{mem\+\_\+utils.\+h@{mem\+\_\+utils.\+h}}
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+Include dependency graph for mem\+\_\+utils.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{mem__utils_8h__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{mem__utils_8h_a51c326f7c7f4a8800412f87127bae426}{C\+T\+X\+\_\+\+S\+\_\+\+B\+A\+S\+E\+\_\+\+A\+L\+I\+GN}~sizeof(uint64\+\_\+t)
+\item 
+\#define \hyperlink{mem__utils_8h_adbf5f527c8125b78adab5ac636a14809}{E\+X\+T\+E\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+O\+\_\+\+M\+U\+L\+T\+I\+P\+LE}(S\+I\+ZE,  M\+U\+L\+T\+I\+P\+LE)
+\item 
+\#define \hyperlink{mem__utils_8h_ab1a1602451b782f990edc06a7ec7d9b2}{S\+I\+Z\+E\+\_\+\+I\+S\+\_\+\+M\+U\+L\+T\+I\+P\+LE}(S\+I\+ZE,  M\+U\+L\+T\+I\+P\+LE)~(((S\+I\+ZE)\% M\+U\+L\+T\+I\+P\+LE)== 0)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{mem\+\_\+utils.\+h@{mem\+\_\+utils.\+h}!C\+T\+X\+\_\+\+S\+\_\+\+B\+A\+S\+E\+\_\+\+A\+L\+I\+GN@{C\+T\+X\+\_\+\+S\+\_\+\+B\+A\+S\+E\+\_\+\+A\+L\+I\+GN}}
+\index{C\+T\+X\+\_\+\+S\+\_\+\+B\+A\+S\+E\+\_\+\+A\+L\+I\+GN@{C\+T\+X\+\_\+\+S\+\_\+\+B\+A\+S\+E\+\_\+\+A\+L\+I\+GN}!mem\+\_\+utils.\+h@{mem\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{C\+T\+X\+\_\+\+S\+\_\+\+B\+A\+S\+E\+\_\+\+A\+L\+I\+GN}{CTX_S_BASE_ALIGN}}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\+T\+X\+\_\+\+S\+\_\+\+B\+A\+S\+E\+\_\+\+A\+L\+I\+GN~sizeof(uint64\+\_\+t)}\hypertarget{mem__utils_8h_a51c326f7c7f4a8800412f87127bae426}{}\label{mem__utils_8h_a51c326f7c7f4a8800412f87127bae426}
+Byte-\/size alignment constant used for accessing structures and sub-\/structures. 
+
+Definition at line 47 of file mem\+\_\+utils.\+h.
+
+\index{mem\+\_\+utils.\+h@{mem\+\_\+utils.\+h}!E\+X\+T\+E\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+O\+\_\+\+M\+U\+L\+T\+I\+P\+LE@{E\+X\+T\+E\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+O\+\_\+\+M\+U\+L\+T\+I\+P\+LE}}
+\index{E\+X\+T\+E\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+O\+\_\+\+M\+U\+L\+T\+I\+P\+LE@{E\+X\+T\+E\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+O\+\_\+\+M\+U\+L\+T\+I\+P\+LE}!mem\+\_\+utils.\+h@{mem\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{E\+X\+T\+E\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+O\+\_\+\+M\+U\+L\+T\+I\+P\+LE}{EXTEND_SIZE_TO_MULTIPLE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\+X\+T\+E\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+O\+\_\+\+M\+U\+L\+T\+I\+P\+LE(
+\begin{DoxyParamCaption}
+\item[{}]{S\+I\+ZE, }
+\item[{}]{M\+U\+L\+T\+I\+P\+LE}
+\end{DoxyParamCaption}
+)}\hypertarget{mem__utils_8h_adbf5f527c8125b78adab5ac636a14809}{}\label{mem__utils_8h_adbf5f527c8125b78adab5ac636a14809}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+(\(\backslash\)
+        (SIZE)% MULTIPLE? (SIZE)+ (MULTIPLE- ((SIZE)% MULTIPLE)): (SIZE)\(\backslash\)
+    )
+\end{DoxyCode}
+Extend S\+I\+ZE to a multiple of M\+U\+L\+T\+I\+P\+LE. 
+
+Definition at line 52 of file mem\+\_\+utils.\+h.
+
+\index{mem\+\_\+utils.\+h@{mem\+\_\+utils.\+h}!S\+I\+Z\+E\+\_\+\+I\+S\+\_\+\+M\+U\+L\+T\+I\+P\+LE@{S\+I\+Z\+E\+\_\+\+I\+S\+\_\+\+M\+U\+L\+T\+I\+P\+LE}}
+\index{S\+I\+Z\+E\+\_\+\+I\+S\+\_\+\+M\+U\+L\+T\+I\+P\+LE@{S\+I\+Z\+E\+\_\+\+I\+S\+\_\+\+M\+U\+L\+T\+I\+P\+LE}!mem\+\_\+utils.\+h@{mem\+\_\+utils.\+h}}
+\subsubsection[{\texorpdfstring{S\+I\+Z\+E\+\_\+\+I\+S\+\_\+\+M\+U\+L\+T\+I\+P\+LE}{SIZE_IS_MULTIPLE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\+I\+Z\+E\+\_\+\+I\+S\+\_\+\+M\+U\+L\+T\+I\+P\+LE(
+\begin{DoxyParamCaption}
+\item[{}]{S\+I\+ZE, }
+\item[{}]{M\+U\+L\+T\+I\+P\+LE}
+\end{DoxyParamCaption}
+)~(((S\+I\+ZE)\% M\+U\+L\+T\+I\+P\+LE)== 0)}\hypertarget{mem__utils_8h_ab1a1602451b782f990edc06a7ec7d9b2}{}\label{mem__utils_8h_ab1a1602451b782f990edc06a7ec7d9b2}
+Boolean\+: is S\+I\+ZE multiple of M\+U\+L\+T\+I\+P\+LE? 
+
+Definition at line 60 of file mem\+\_\+utils.\+h.
+

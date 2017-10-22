@@ -1,0 +1,367 @@
+\hypertarget{video__settings_8h}{}\section{video\+\_\+settings.\+h File Reference}
+\label{video__settings_8h}\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+
+
+Video encoder and decoder generic settings.  
+
+
+{\ttfamily \#include $<$libmediaprocsutils/mem\+\_\+utils.\+h$>$}\\*
+Include dependency graph for video\+\_\+settings.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{video__settings_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{video__settings_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+s} {\bfseries log\+\_\+ctx\+\_\+t}\hypertarget{video__settings_8h_a01e036219a22bb5933ddbc277cee8776}{}\label{video__settings_8h_a01e036219a22bb5933ddbc277cee8776}
+
+\item 
+typedef struct c\+J\+S\+ON {\bfseries c\+J\+S\+ON}\hypertarget{video__settings_8h_a4c146234dfd7b6adbf13b49505e995bc}{}\label{video__settings_8h_a4c146234dfd7b6adbf13b49505e995bc}
+
+\item 
+typedef struct \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+s} \hyperlink{video__settings_8h_acb2bb4104d5fea75056b70c4bb44e494}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t}
+\item 
+typedef struct \hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+s} \hyperlink{video__settings_8h_ae280ebf4444a12d6fb6abd18af42507e}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{video__settings_8h_a3c4dd139fc1ef3edd4880d7f33c5eb23}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate} ()
+\item 
+void \hyperlink{video__settings_8h_a78b7a2dbd283e460b7b3d3857f12fedd}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release} (\hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+video\+\_\+settings\+\_\+enc\+\_\+ctx)
+\item 
+int \hyperlink{video__settings_8h_a7f68dc64dd18f55405c616c00efb532c}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init} (volatile \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx)
+\item 
+void \hyperlink{video__settings_8h_abb8d0f4637c2866454af394552039881}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx)
+\item 
+int \hyperlink{video__settings_8h_a410854e8938a5e7f9d365092ee593f20}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy} (const \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+src, \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+dst)
+\item 
+int \hyperlink{video__settings_8h_adfc26182b7526d99f157f1d487cbf7a7}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put} (volatile \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx, const char $\ast$str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+int \hyperlink{video__settings_8h_a0c4cd5fbf11c118fe0995ee569721589}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get} (volatile \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx, c\+J\+S\+ON $\ast$$\ast$ref\+\_\+cjson\+\_\+rest, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+\hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{video__settings_8h_a6f709b6b2d5b21d71c9ca3198a184cf4}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+allocate} ()
+\item 
+void \hyperlink{video__settings_8h_ab6280c50bea0651a5ddb8f331629cead}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release} (\hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+video\+\_\+settings\+\_\+dec\+\_\+ctx)
+\item 
+int \hyperlink{video__settings_8h_a6aa5ea2f5a0a45c95fcfd500c9528d6b}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init} (volatile \hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx)
+\item 
+void \hyperlink{video__settings_8h_abaf484553b592e8b7bf9db4d87c48653}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx)
+\item 
+int \hyperlink{video__settings_8h_af979978d9ecf91ed388068095e718581}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy} (const \hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+src, \hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+dst)
+\item 
+int \hyperlink{video__settings_8h_aa4677168460f325c63a70b4786fcba1e}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put} (volatile \hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx, const char $\ast$str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+int \hyperlink{video__settings_8h_a6b0531d176c0ba8d42716b7c5157a695}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get} (volatile \hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx, c\+J\+S\+ON $\ast$$\ast$ref\+\_\+cjson\+\_\+rest, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Video encoder and decoder generic settings. 
+
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t}}
+\index{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t}{video_settings_dec_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+s}  {\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t}}\hypertarget{video__settings_8h_ae280ebf4444a12d6fb6abd18af42507e}{}\label{video__settings_8h_ae280ebf4444a12d6fb6abd18af42507e}
+Generic video decoder settings context structure. This structure may be extended by any specific implementation of a video decoder. \index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t}}
+\index{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t}{video_settings_enc_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+s}  {\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t}}\hypertarget{video__settings_8h_acb2bb4104d5fea75056b70c4bb44e494}{}\label{video__settings_8h_acb2bb4104d5fea75056b70c4bb44e494}
+Generic video encoder settings context structure. This structure may be extended by any specific implementation of a video encoder. 
+
+\subsection{Function Documentation}
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+allocate@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+allocate}}
+\index{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+allocate@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+allocate}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+allocate()}{video_settings_dec_ctx_allocate()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t}$\ast$ video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+allocate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_a6f709b6b2d5b21d71c9ca3198a184cf4}{}\label{video__settings_8h_a6f709b6b2d5b21d71c9ca3198a184cf4}
+Allocate generic video decoder settings context structure. \begin{DoxyReturn}{Returns}
+Pointer to the generic video decoder settings context structure. 
+\end{DoxyReturn}
+
+
+Definition at line 311 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy}}
+\index{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy(const video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+src, video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+dst)}{video_settings_dec_ctx_cpy(const video_settings_dec_ctx_t *video_settings_dec_ctx_src, video_settings_dec_ctx_t *video_settings_dec_ctx_dst)}}]{\setlength{\rightskip}{0pt plus 5cm}int video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy (
+\begin{DoxyParamCaption}
+\item[{const {\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+src, }
+\item[{{\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+dst}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_af979978d9ecf91ed388068095e718581}{}\label{video__settings_8h_af979978d9ecf91ed388068095e718581}
+Copy video decoder generic settings members, duplicating any existent heap allocation. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+src} & Pointer to the generic video decoder settings context structure to be copied (namely, the source structure). \\
+\hline
+{\em video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+dst} & Pointer to the generic video decoder settings context structure that holds the copy (namely, the destination structure). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 354 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit}}
+\index{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit(volatile video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx)}{video_settings_dec_ctx_deinit(volatile video_settings_dec_ctx_t *video_settings_dec_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+dec\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_abaf484553b592e8b7bf9db4d87c48653}{}\label{video__settings_8h_abaf484553b592e8b7bf9db4d87c48653}
+De-\/initialize video decoder generic settings. This function release any heap-\/allocated field or structure member. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+dec\+\_\+ctx} & Pointer to the generic video decoder settings context structure to be de-\/initialized. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 347 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init}}
+\index{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init(volatile video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx)}{video_settings_dec_ctx_init(volatile video_settings_dec_ctx_t *video_settings_dec_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+dec\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_a6aa5ea2f5a0a45c95fcfd500c9528d6b}{}\label{video__settings_8h_a6aa5ea2f5a0a45c95fcfd500c9528d6b}
+Initialize video decoder generic settings to defaults. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+dec\+\_\+ctx} & Pointer to the generic video decoder settings context structure to be initialized. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 332 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release}}
+\index{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release(video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+video\+\_\+settings\+\_\+dec\+\_\+ctx)}{video_settings_dec_ctx_release(video_settings_dec_ctx_t **ref_video_settings_dec_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release (
+\begin{DoxyParamCaption}
+\item[{{\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+video\+\_\+settings\+\_\+dec\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_ab6280c50bea0651a5ddb8f331629cead}{}\label{video__settings_8h_ab6280c50bea0651a5ddb8f331629cead}
+Release generic video decoder settings context structure previously allocated by \textquotesingle{}\hyperlink{video__settings_8h_a6f709b6b2d5b21d71c9ca3198a184cf4}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+allocate()}\textquotesingle{}. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+video\+\_\+settings\+\_\+dec\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 317 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get}}
+\index{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get(volatile video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx, c\+J\+S\+O\+N $\ast$$\ast$ref\+\_\+cjson\+\_\+rest, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{video_settings_dec_ctx_restful_get(volatile video_settings_dec_ctx_t *video_settings_dec_ctx, cJSON **ref_cjson_rest, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+dec\+\_\+ctx, }
+\item[{c\+J\+S\+ON $\ast$$\ast$}]{ref\+\_\+cjson\+\_\+rest, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_a6b0531d176c0ba8d42716b7c5157a695}{}\label{video__settings_8h_a6b0531d176c0ba8d42716b7c5157a695}
+Translate and get the video decoder generic settings in a c\+J\+S\+ON structure. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+dec\+\_\+ctx} & Pointer to the generic video decoder settings context structure to be translated. \\
+\hline
+{\em ref\+\_\+cjson\+\_\+rest} & Reference to a pointer to a c\+J\+S\+ON structure in which the translated settings are returned (by argument). \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 432 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put}}
+\index{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put@{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put(volatile video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+dec\+\_\+ctx, const char $\ast$str, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{video_settings_dec_ctx_restful_put(volatile video_settings_dec_ctx_t *video_settings_dec_ctx, const char *str, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+dec\+\_\+ctx, }
+\item[{const char $\ast$}]{str, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_aa4677168460f325c63a70b4786fcba1e}{}\label{video__settings_8h_aa4677168460f325c63a70b4786fcba1e}
+Put new settings passed by argument in query-\/string or J\+S\+ON format. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+dec\+\_\+ctx} & Pointer to the generic video decoder settings context structure to be modified. \\
+\hline
+{\em str} & New parameters passed in query-\/string or J\+S\+ON format. \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 370 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate}}
+\index{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate()}{video_settings_enc_ctx_allocate()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t}$\ast$ video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_a3c4dd139fc1ef3edd4880d7f33c5eb23}{}\label{video__settings_8h_a3c4dd139fc1ef3edd4880d7f33c5eb23}
+Allocate generic video encoder settings context structure. \begin{DoxyReturn}{Returns}
+Pointer to the generic video encoder settings context structure. 
+\end{DoxyReturn}
+
+
+Definition at line 38 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy}}
+\index{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy(const video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+src, video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+dst)}{video_settings_enc_ctx_cpy(const video_settings_enc_ctx_t *video_settings_enc_ctx_src, video_settings_enc_ctx_t *video_settings_enc_ctx_dst)}}]{\setlength{\rightskip}{0pt plus 5cm}int video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy (
+\begin{DoxyParamCaption}
+\item[{const {\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+src, }
+\item[{{\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+dst}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_a410854e8938a5e7f9d365092ee593f20}{}\label{video__settings_8h_a410854e8938a5e7f9d365092ee593f20}
+Copy video encoder generic settings members, duplicating any existent heap allocation. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+src} & Pointer to the generic video encoder settings context structure to be copied (namely, the source structure). \\
+\hline
+{\em video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+dst} & Pointer to the generic video encoder settings context structure that holds the copy (namely, the destination structure). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 84 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit}}
+\index{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit(volatile video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx)}{video_settings_enc_ctx_deinit(volatile video_settings_enc_ctx_t *video_settings_enc_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+enc\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_abb8d0f4637c2866454af394552039881}{}\label{video__settings_8h_abb8d0f4637c2866454af394552039881}
+De-\/initialize video encoder generic settings. This function release any heap-\/allocated field or structure member. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+enc\+\_\+ctx} & Pointer to the generic video encoder settings context structure to be de-\/initialized. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 77 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init}}
+\index{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init(volatile video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx)}{video_settings_enc_ctx_init(volatile video_settings_enc_ctx_t *video_settings_enc_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+enc\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_a7f68dc64dd18f55405c616c00efb532c}{}\label{video__settings_8h_a7f68dc64dd18f55405c616c00efb532c}
+Initialize video encoder generic settings to defaults. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+enc\+\_\+ctx} & Pointer to the generic video encoder settings context structure to be initialized. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 59 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release}}
+\index{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release(video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+video\+\_\+settings\+\_\+enc\+\_\+ctx)}{video_settings_enc_ctx_release(video_settings_enc_ctx_t **ref_video_settings_enc_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release (
+\begin{DoxyParamCaption}
+\item[{{\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+video\+\_\+settings\+\_\+enc\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_a78b7a2dbd283e460b7b3d3857f12fedd}{}\label{video__settings_8h_a78b7a2dbd283e460b7b3d3857f12fedd}
+Release generic video encoder settings context structure previously allocated by \textquotesingle{}\hyperlink{video__settings_8h_a3c4dd139fc1ef3edd4880d7f33c5eb23}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate()}\textquotesingle{}. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+video\+\_\+settings\+\_\+enc\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 44 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get}}
+\index{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get(volatile video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx, c\+J\+S\+O\+N $\ast$$\ast$ref\+\_\+cjson\+\_\+rest, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{video_settings_enc_ctx_restful_get(volatile video_settings_enc_ctx_t *video_settings_enc_ctx, cJSON **ref_cjson_rest, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+enc\+\_\+ctx, }
+\item[{c\+J\+S\+ON $\ast$$\ast$}]{ref\+\_\+cjson\+\_\+rest, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_a0c4cd5fbf11c118fe0995ee569721589}{}\label{video__settings_8h_a0c4cd5fbf11c118fe0995ee569721589}
+Translate and get the video encoder generic settings in a c\+J\+S\+ON structure. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+enc\+\_\+ctx} & Pointer to the generic video encoder settings context structure to be translated. \\
+\hline
+{\em ref\+\_\+cjson\+\_\+rest} & Reference to a pointer to a c\+J\+S\+ON structure in which the translated settings are returned (by argument). \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 235 of file video\+\_\+settings.\+c.
+
+\index{video\+\_\+settings.\+h@{video\+\_\+settings.\+h}!video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put}}
+\index{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put@{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put}!video\+\_\+settings.\+h@{video\+\_\+settings.\+h}}
+\subsubsection[{\texorpdfstring{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put(volatile video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t $\ast$video\+\_\+settings\+\_\+enc\+\_\+ctx, const char $\ast$str, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{video_settings_enc_ctx_restful_put(volatile video_settings_enc_ctx_t *video_settings_enc_ctx, const char *str, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$}]{video\+\_\+settings\+\_\+enc\+\_\+ctx, }
+\item[{const char $\ast$}]{str, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{video__settings_8h_adfc26182b7526d99f157f1d487cbf7a7}{}\label{video__settings_8h_adfc26182b7526d99f157f1d487cbf7a7}
+Put new settings passed by argument in query-\/string or J\+S\+ON format. 
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+settings\+\_\+enc\+\_\+ctx} & Pointer to the generic video encoder settings context structure to be modified. \\
+\hline
+{\em str} & New parameters passed in query-\/string or J\+S\+ON format. \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 103 of file video\+\_\+settings.\+c.
+

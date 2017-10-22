@@ -1,0 +1,145 @@
+\hypertarget{procs__api__http_8c}{}\section{procs\+\_\+api\+\_\+http.\+c File Reference}
+\label{procs__api__http_8c}\index{procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}}
+{\ttfamily \#include \char`\"{}procs\+\_\+api\+\_\+http.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/uri\+\_\+parser.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}procs.\+h\char`\"{}}\\*
+Include dependency graph for procs\+\_\+api\+\_\+http.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{procs__api__http_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{procs__api__http_8c_a05ed92208045e6475b4192c0bbc6651e}{R\+E\+S\+P\+O\+N\+S\+E\+\_\+\+F\+MT}~\char`\"{}\{\textbackslash{}\char`\"{}code\textbackslash{}\char`\"{}\+:\%d,\textbackslash{}\char`\"{}status\textbackslash{}\char`\"{}\+:\%s,\textbackslash{}\char`\"{}message\textbackslash{}\char`\"{}\+:\%s,\textbackslash{}\char`\"{}data\textbackslash{}\char`\"{}\+:\%s\}\char`\"{}
+\item 
+\#define \hyperlink{procs__api__http_8c_a44945206dff08f717f662ee745ee272b}{U\+R\+L\+\_\+\+H\+AS}(N\+E\+E\+D\+LE)~(url!= N\+U\+LL \&\& strstr(url, N\+E\+E\+D\+LE)!= N\+U\+LL)
+\item 
+\#define \hyperlink{procs__api__http_8c_ac0a1db7f690adec66c4cc3ff1c65936c}{U\+R\+L\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+IS}(T\+AG)
+\item 
+\#define \hyperlink{procs__api__http_8c_a02e6d59009dee759528ec81fc9a8eeff}{H\+T\+T\+P\+\_\+\+OK}~\char`\"{}\textbackslash{}\char`\"{}O\+K\textbackslash{}\char`\"{}\char`\"{}
+\item 
+\#define {\bfseries H\+T\+T\+P\+\_\+\+C\+R\+E\+A\+T\+ED}~\char`\"{}\textbackslash{}\char`\"{}Created\textbackslash{}\char`\"{}\char`\"{}\hypertarget{procs__api__http_8c_ac19a79fb4cf575d20efd0633c1669ed9}{}\label{procs__api__http_8c_ac19a79fb4cf575d20efd0633c1669ed9}
+
+\item 
+\#define {\bfseries H\+T\+T\+P\+\_\+\+N\+O\+C\+O\+N\+T\+E\+NT}~\char`\"{}\textbackslash{}\char`\"{}No Content\textbackslash{}\char`\"{}\char`\"{}\hypertarget{procs__api__http_8c_ac5e3a483119375a05d199c30709f2b8e}{}\label{procs__api__http_8c_ac5e3a483119375a05d199c30709f2b8e}
+
+\item 
+\#define {\bfseries H\+T\+T\+P\+\_\+\+N\+O\+T\+F\+O\+U\+ND}~\char`\"{}\textbackslash{}\char`\"{}Not Found\textbackslash{}\char`\"{}\char`\"{}\hypertarget{procs__api__http_8c_a1f5b9c02b018640c890e5f27207fa6c0}{}\label{procs__api__http_8c_a1f5b9c02b018640c890e5f27207fa6c0}
+
+\item 
+\#define {\bfseries H\+T\+T\+P\+\_\+\+N\+O\+T\+M\+O\+D\+IF}~\char`\"{}\textbackslash{}\char`\"{}Not Modified\textbackslash{}\char`\"{}\char`\"{}\hypertarget{procs__api__http_8c_a8d42565185692bb31f24d4ead23cf347}{}\label{procs__api__http_8c_a8d42565185692bb31f24d4ead23cf347}
+
+\item 
+\#define {\bfseries H\+T\+T\+P\+\_\+\+C\+R\+E\+A\+T\+ED}~\char`\"{}\textbackslash{}\char`\"{}Created\textbackslash{}\char`\"{}\char`\"{}\hypertarget{procs__api__http_8c_ac19a79fb4cf575d20efd0633c1669ed9}{}\label{procs__api__http_8c_ac19a79fb4cf575d20efd0633c1669ed9}
+
+\item 
+\#define {\bfseries H\+T\+T\+P\+\_\+\+C\+O\+N\+F\+L\+I\+CT}~\char`\"{}\textbackslash{}\char`\"{}Conflict\textbackslash{}\char`\"{}\char`\"{}\hypertarget{procs__api__http_8c_aec883057ad9f0c80b611818dc33bc990}{}\label{procs__api__http_8c_aec883057ad9f0c80b611818dc33bc990}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{procs__api__http_8c_af95ab7d53c13d03d65d8cd0dacd3463f}{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, const char $\ast$url, const char $\ast$query\+\_\+string, const char $\ast$request\+\_\+method, char $\ast$content, size\+\_\+t content\+\_\+len, char $\ast$$\ast$ref\+\_\+str\+\_\+response)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}!H\+T\+T\+P\+\_\+\+OK@{H\+T\+T\+P\+\_\+\+OK}}
+\index{H\+T\+T\+P\+\_\+\+OK@{H\+T\+T\+P\+\_\+\+OK}!procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}}
+\subsubsection[{\texorpdfstring{H\+T\+T\+P\+\_\+\+OK}{HTTP_OK}}]{\setlength{\rightskip}{0pt plus 5cm}\#define H\+T\+T\+P\+\_\+\+OK~\char`\"{}\textbackslash{}\char`\"{}O\+K\textbackslash{}\char`\"{}\char`\"{}}\hypertarget{procs__api__http_8c_a02e6d59009dee759528ec81fc9a8eeff}{}\label{procs__api__http_8c_a02e6d59009dee759528ec81fc9a8eeff}
+H\+T\+TP status textual 
+
+Definition at line 70 of file procs\+\_\+api\+\_\+http.\+c.
+
+\index{procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}!R\+E\+S\+P\+O\+N\+S\+E\+\_\+\+F\+MT@{R\+E\+S\+P\+O\+N\+S\+E\+\_\+\+F\+MT}}
+\index{R\+E\+S\+P\+O\+N\+S\+E\+\_\+\+F\+MT@{R\+E\+S\+P\+O\+N\+S\+E\+\_\+\+F\+MT}!procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}}
+\subsubsection[{\texorpdfstring{R\+E\+S\+P\+O\+N\+S\+E\+\_\+\+F\+MT}{RESPONSE_FMT}}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+E\+S\+P\+O\+N\+S\+E\+\_\+\+F\+MT~\char`\"{}\{\textbackslash{}\char`\"{}code\textbackslash{}\char`\"{}\+:\%d,\textbackslash{}\char`\"{}status\textbackslash{}\char`\"{}\+:\%s,\textbackslash{}\char`\"{}message\textbackslash{}\char`\"{}\+:\%s,\textbackslash{}\char`\"{}data\textbackslash{}\char`\"{}\+:\%s\}\char`\"{}}\hypertarget{procs__api__http_8c_a05ed92208045e6475b4192c0bbc6651e}{}\label{procs__api__http_8c_a05ed92208045e6475b4192c0bbc6651e}
+J\+S\+ON wrapped response format; is as follows\+: \{ \char`\"{}code\char`\"{}\+:number, \char`\"{}status\char`\"{}\+:string, \char`\"{}message\char`\"{}\+:string, \char`\"{}data\char`\"{}\+: \{...\} // object returned by P\+R\+O\+CS if any or null. \} 
+
+Definition at line 52 of file procs\+\_\+api\+\_\+http.\+c.
+
+\index{procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}!U\+R\+L\+\_\+\+H\+AS@{U\+R\+L\+\_\+\+H\+AS}}
+\index{U\+R\+L\+\_\+\+H\+AS@{U\+R\+L\+\_\+\+H\+AS}!procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}}
+\subsubsection[{\texorpdfstring{U\+R\+L\+\_\+\+H\+AS}{URL_HAS}}]{\setlength{\rightskip}{0pt plus 5cm}\#define U\+R\+L\+\_\+\+H\+AS(
+\begin{DoxyParamCaption}
+\item[{}]{N\+E\+E\+D\+LE}
+\end{DoxyParamCaption}
+)~(url!= N\+U\+LL \&\& strstr(url, N\+E\+E\+D\+LE)!= N\+U\+LL)}\hypertarget{procs__api__http_8c_a44945206dff08f717f662ee745ee272b}{}\label{procs__api__http_8c_a44945206dff08f717f662ee745ee272b}
+Returns non-\/zero if given U\+RL string contains \textquotesingle{}needle\textquotesingle{} sub-\/string. 
+
+Definition at line 57 of file procs\+\_\+api\+\_\+http.\+c.
+
+\index{procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}!U\+R\+L\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+IS@{U\+R\+L\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+IS}}
+\index{U\+R\+L\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+IS@{U\+R\+L\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+IS}!procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}}
+\subsubsection[{\texorpdfstring{U\+R\+L\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+IS}{URL_METHOD_IS}}]{\setlength{\rightskip}{0pt plus 5cm}\#define U\+R\+L\+\_\+\+M\+E\+T\+H\+O\+D\+\_\+\+IS(
+\begin{DoxyParamCaption}
+\item[{}]{T\+AG}
+\end{DoxyParamCaption}
+)}\hypertarget{procs__api__http_8c_ac0a1db7f690adec66c4cc3ff1c65936c}{}\label{procs__api__http_8c_ac0a1db7f690adec66c4cc3ff1c65936c}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+(request\_method!= NULL && \(\backslash\)
+        strncmp(request\_method, TAG, strlen(TAG))== 0)
+\end{DoxyCode}
+Compares given required method string description. 
+
+Definition at line 63 of file procs\+\_\+api\+\_\+http.\+c.
+
+
+
+\subsection{Function Documentation}
+\index{procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}!procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler@{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler}}
+\index{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler@{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler}!procs\+\_\+api\+\_\+http.\+c@{procs\+\_\+api\+\_\+http.\+c}}
+\subsubsection[{\texorpdfstring{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler(procs\+\_\+ctx\+\_\+t $\ast$procs\+\_\+ctx, const char $\ast$url, const char $\ast$query\+\_\+string, const char $\ast$request\+\_\+method, char $\ast$content, size\+\_\+t content\+\_\+len, char $\ast$$\ast$ref\+\_\+str\+\_\+response)}{procs_api_http_req_handler(procs_ctx_t *procs_ctx, const char *url, const char *query_string, const char *request_method, char *content, size_t content_len, char **ref_str_response)}}]{\setlength{\rightskip}{0pt plus 5cm}int procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf procs\+\_\+ctx\+\_\+t} $\ast$}]{procs\+\_\+ctx, }
+\item[{const char $\ast$}]{url, }
+\item[{const char $\ast$}]{query\+\_\+string, }
+\item[{const char $\ast$}]{request\+\_\+method, }
+\item[{char $\ast$}]{content, }
+\item[{size\+\_\+t}]{content\+\_\+len, }
+\item[{char $\ast$$\ast$}]{ref\+\_\+str\+\_\+response}
+\end{DoxyParamCaption}
+)}\hypertarget{procs__api__http_8c_af95ab7d53c13d03d65d8cd0dacd3463f}{}\label{procs__api__http_8c_af95ab7d53c13d03d65d8cd0dacd3463f}
+H\+T\+T\+P-\/\+A\+PI request handler function. 
+\begin{DoxyParams}{Parameters}
+{\em procs\+\_\+ctx} & \\
+\hline
+{\em url} & \\
+\hline
+{\em query\+\_\+string} & \\
+\hline
+{\em request\+\_\+method} & \\
+\hline
+{\em content} & \\
+\hline
+{\em content\+\_\+len} & \\
+\hline
+{\em ref\+\_\+str\+\_\+response} & Reference to the pointer to a character string returning the representational state associated with this request. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 82 of file procs\+\_\+api\+\_\+http.\+c.
+

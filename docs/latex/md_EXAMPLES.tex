@@ -1,0 +1,41 @@
+\section*{Application examples }
+
+\subsection*{How to run an example}
+
+Application examples source codes are available at
+
+\begin{quote}
+$<$..$>$/\+Media\+Processors\+\_\+selfcontained/\+Media\+Processors/examples/ \end{quote}
+
+
+Each example is compiled automatically and the corresponding binary is installed at
+
+\begin{quote}
+$<$...$>$/\+Media\+Processors\+\_\+selfcontained/\+\_\+install\+\_\+dir\+\_\+x86/bin \end{quote}
+
+
+To run, let\textquotesingle{}s say, the \textquotesingle{}codecs\+\_\+muxers\+\_\+loopback\textquotesingle{} example, just type\+:
+
+\begin{quote}
+L\+D\+\_\+\+L\+I\+B\+R\+A\+R\+Y\+\_\+\+P\+A\+TH=$<$...$>$/\+Media\+Processors\+\_\+selfcontained/\+\_\+install\+\_\+dir\+\_\+x86/lib $<$...$>$/\+Media\+Processors\+\_\+selfcontained/\+\_\+install\+\_\+dir\+\_\+x86/bin/mediaprocs\+\_\+codecs\+\_\+muxers\+\_\+loopback \end{quote}
+
+
+\subsection*{codecs\+\_\+muxers\+\_\+loopback example}
+
+This example implements a full video coding and muxing loopback path\+:
+\begin{DoxyItemize}
+\item Server side\+:
+\begin{DoxyItemize}
+\item generates a video raw source;
+\item encodes the video source (in one of the following\+: H.\+264, M\+P\+E\+G2-\/video or M\+L\+HE);
+\item multiplex the video encoded elementary stream in R\+T\+SP session;
+\end{DoxyItemize}
+\item Client side\+:
+\begin{DoxyItemize}
+\item de-\/multiplex video elementary stream;
+\item decodes the video;
+\item renders the video in a frame buffer.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+Please refer to the \href{md_CODECS_MUXERS_LOOPBACK_EXAMPLE.html}{\tt codecs\+\_\+muxers\+\_\+loopback example documentation}. 

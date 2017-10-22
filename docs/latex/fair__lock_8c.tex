@@ -1,0 +1,42 @@
+\hypertarget{fair__lock_8c}{}\section{fair\+\_\+lock.\+c File Reference}
+\label{fair__lock_8c}\index{fair\+\_\+lock.\+c@{fair\+\_\+lock.\+c}}
+{\ttfamily \#include \char`\"{}fair\+\_\+lock.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}check\+\_\+utils.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}log.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}stat\+\_\+codes.\+h\char`\"{}}\\*
+Include dependency graph for fair\+\_\+lock.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{fair__lock_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structfair__lock__s}{fair\+\_\+lock\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structfair__lock__s}{fair\+\_\+lock\+\_\+s} {\bfseries fair\+\_\+lock\+\_\+t}\hypertarget{fair__lock_8c_a02f701110cecac21c6c5616bea1fb474}{}\label{fair__lock_8c_a02f701110cecac21c6c5616bea1fb474}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structfair__lock__s}{fair\+\_\+lock\+\_\+t} $\ast$ {\bfseries fair\+\_\+lock\+\_\+open} ()\hypertarget{fair__lock_8c_a974d8373f313fca35ee3abd73426161a}{}\label{fair__lock_8c_a974d8373f313fca35ee3abd73426161a}
+
+\item 
+void {\bfseries fair\+\_\+lock\+\_\+close} (\hyperlink{structfair__lock__s}{fair\+\_\+lock\+\_\+t} $\ast$$\ast$ref\+\_\+fair\+\_\+lock)\hypertarget{fair__lock_8c_a24e9e48156630c4a80d312fb0185e3c5}{}\label{fair__lock_8c_a24e9e48156630c4a80d312fb0185e3c5}
+
+\item 
+void {\bfseries fair\+\_\+lock} (\hyperlink{structfair__lock__s}{fair\+\_\+lock\+\_\+t} $\ast$fair\+\_\+lock)\hypertarget{fair__lock_8c_a0a682e813368241546bab6ddf1757771}{}\label{fair__lock_8c_a0a682e813368241546bab6ddf1757771}
+
+\item 
+void {\bfseries fair\+\_\+unlock} (\hyperlink{structfair__lock__s}{fair\+\_\+lock\+\_\+t} $\ast$fair\+\_\+lock)\hypertarget{fair__lock_8c_a72557d555db586301bc877db7512bfb7}{}\label{fair__lock_8c_a72557d555db586301bc877db7512bfb7}
+
+\end{DoxyCompactItemize}

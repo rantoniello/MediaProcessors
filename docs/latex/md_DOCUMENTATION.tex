@@ -1,0 +1,311 @@
+\section*{Processor concept }
+
+The basic idea is to define a generic structure to wrap any multimedia processor type. By \char`\"{}multimedia processor\char`\"{} we mean any encoder, decoder, multiplexer or demultiplexer. Namely, any \char`\"{}codec\char`\"{} or \char`\"{}muxer\char`\"{} will be implemented as a particularization of this generic processor interface, and in consequence, they all will offer the same generic interface/\+A\+PI (despite each particularization may extend the common interface as desired).
+
+A processor defined in this library has two basic forms of interfacing\+:~\newline
+ 1.-\/ Control (C\+T\+RL) interface;~\newline
+ 2.-\/ Input/output (I/O) interface.~\newline
+
+
+The latter is used to send or receive processed data, and may suppose a bit-\/rate as high as desired. This is important to remark, as the I/O interface should carefully take into account fast-\/fetching and efficient data transfers without interruptions.~\newline
+ The former suppose insignificant bit-\/rate, but should be unlinked -\/as possible-\/ to the I/O interface; in other words, control commands should not interfere with I/O operations performance.~\newline
+ The processor generic implementation provides not only these characteristics, but also\+:~\newline
+
+\begin{DoxyItemize}
+\item I/O operations and C\+T\+RL operations can be executed concurrently without any risks (e.\+g. you can delete a processor while other thread is performing I/O operations on it without crashing risk);~\newline
+
+\item C\+T\+RL operations are though to change the processor state (P\+UT operation) asynchronously -\/any-\/time-\/ and concurrently. This may imply changing I/O data characteristics;~\newline
+
+\item C\+T\+RL operations are though to get the processor state (G\+ET operation ) asynchronously and concurrently;~\newline
+
+\item Analogously, through C\+T\+RL operations we may create (P\+O\+ST operation) or delete (D\+E\+L\+E\+TE operation) a processor asynchronously and concurrently.~\newline
+
+\end{DoxyItemize}
+
+In view of the above, the processor A\+PI has the following fundamental operations\+:~\newline
+
+\begin{DoxyEnumerate}
+\item Control (C\+T\+RL) interface
+\begin{DoxyItemize}
+\item P\+O\+ST~\newline
+
+\item D\+E\+L\+E\+TE~\newline
+
+\item G\+ET~\newline
+
+\item P\+UT
+\end{DoxyItemize}
+\item Input/output (I/O) interface
+\begin{DoxyItemize}
+\item send~\newline
+
+\item recieve
+\end{DoxyItemize}
+\end{DoxyEnumerate}
+
+ {\itshape Figure 1\+: The processor structure}
+
+The C\+T\+RL operations, as implemented in this library, use textual information formatted in the Java\+Script Object Notation (J\+S\+ON).~\newline
+ The C\+TR interface interoperability philosophy is based on the Representational State Transfer (R\+E\+ST)\+: the processor resources are accessible as textual representations through the G\+ET operation, and may be manipulable using the P\+UT operation.
+
+To analyze the processor A\+PI, it is interesting to have a picture of how a processor fits in a typical application.~\newline
+ In the next section we have a brief insight on \hyperlink{md_DOCUMENTATION_How_to_use_a_Processor_the_API}{How to use a Processor}.\hypertarget{md_DOCUMENTATION_How_to_use_a_Processor_the_API}{}\section{How to use a Processor\+: the A\+P\+I }\label{md_DOCUMENTATION_How_to_use_a_Processor_the_API}
+A typical application would use a generic processor as follows (refer to the figure 2)\+:~\newline
+
+
+ {\itshape Figure 2\+: Typical processing flow}
+
+
+\begin{DoxyItemize}
+\item Application prologue\+:
+\begin{DoxyEnumerate}
+\item Initialize (open) the processors (P\+R\+O\+CS) module to be able to use it through the life of the application (this is done by calling function \textquotesingle{}\hyperlink{procs_8c_af5f91a46882b5706b25327384ba347d8}{procs\+\_\+module\+\_\+open()}\textquotesingle{} only once at the beginning of the app.).
+\item Register the processor types you will support in your application. This is performed using the operation \textquotesingle{}P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+T\+Y\+PE\textquotesingle{} provided through the function \textquotesingle{}\hyperlink{procs_8c_a226ac6dfd7598a59b9ceab3a92239a80}{procs\+\_\+module\+\_\+opt()}\textquotesingle{}.~\newline
+ By \char`\"{}processor type\char`\"{} we mean, for example, H.\+264 codec, M\+P3 codec, R\+T\+SP format, etc. Note that at this step we are registering the supported types; later we will be able to instantiate any number of codecs/muxers of any of the types that we registered.
+\item Create (open) an instance of the P\+R\+O\+CS module using the function \textquotesingle{}\hyperlink{procs_8c_a6fae33560b633113d848f6ec5e8461e5}{procs\+\_\+open()}\textquotesingle{} which will return an instance handler. With that single handler will be able to create, manipulate and destroy any instance of any specific processor type.
+\item Actually create a processor instance (of any of the registered types) by performing a P\+O\+ST operation on the module handler. This is requested using the operation \textquotesingle{}P\+R\+O\+C\+S\+\_\+\+P\+O\+ST\textquotesingle{} with the function \textquotesingle{}\hyperlink{procs_8c_a7af2e6f2788006cfc96ca8d811922ffa}{procs\+\_\+opt()}\textquotesingle{} and requires specifying the processor type and optional initial settings. ~\newline
+ If succeed, a unique processor identifier will be supplied to the calling application. This Id. will be used as an A\+PI parameter to handle the processor instance through the entire life of the application (or until the instance is deleted).~\newline
+ When instantiating a processor, the library will transparently initialize and launch the necessary processing threads.
+\item Typically launch a producer thread and a consumer thread for processing data (I/O operations). Also, use a control thread to manage control operations (P\+UT, G\+ET) in run-\/time. ~\newline
+
+\end{DoxyEnumerate}
+\item Application cyclic\+:
+\begin{DoxyEnumerate}
+\item Regarding to I/O A\+PI operations (right hand side of figure 2), the producer should use \textquotesingle{}\hyperlink{procs_8c_aef6df524cba850594fa9fa23715ca3af}{procs\+\_\+send\+\_\+frame()}\textquotesingle{} function to put new frames of data into the processor\textquotesingle{}s input F\+I\+FO buffer, and the consumer should use \textquotesingle{}\hyperlink{procs_8c_a5be3851dc586c77c4ac8bb31654a6e2a}{procs\+\_\+recv\+\_\+frame()}\textquotesingle{} to obtain processed frames from the processor\textquotesingle{}s output F\+I\+FO buffer (note that some processors, e.\+g. a muxer, may only implement one of these I/O functions).~\newline
+ For the sake of simplifying the I/O interfacing as much as possible, all the processor types (codecs or muxers) use the same unique frame interface for both input and output operations\+: any frame will be represented using the structure \textquotesingle{}\hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+s}\textquotesingle{}.~\newline
+
+\item The control thread may use the function \textquotesingle{}\hyperlink{procs_8c_a7af2e6f2788006cfc96ca8d811922ffa}{procs\+\_\+opt()}\textquotesingle{} to manage the processor options, which are basically the G\+ET (\textquotesingle{}P\+R\+O\+C\+S\+\_\+\+I\+D\+\_\+\+G\+ET\textquotesingle{}) and P\+UT (\textquotesingle{}P\+R\+O\+C\+S\+\_\+\+I\+D\+\_\+\+P\+UT\textquotesingle{}) operations.~\newline
+ Despite the representational state can be specific for each processor, the representation clearly separates between state-\/information data (which is unmodifiable) and the available settings (modifiable parameters). Refer to the \hyperlink{md_DOCUMENTATION_How_to_use_a_Processor_the_REST}{corresponding section} below (\char`\"{}\+How to use a Processor\+: the representational state\char`\"{}) for more details. ~\newline
+
+\end{DoxyEnumerate}
+\item Application epilogue\+:
+\begin{DoxyEnumerate}
+\item Delete running processor instance using the function \textquotesingle{}\hyperlink{procs_8c_a7af2e6f2788006cfc96ca8d811922ffa}{procs\+\_\+opt()}\textquotesingle{} to perform a \textquotesingle{}P\+R\+O\+C\+S\+\_\+\+I\+D\+\_\+\+D\+E\+L\+E\+TE\textquotesingle{} operation. The library will transparently unblock I/O operations, join the processor\textquotesingle{}s internal processing threads and release all the related resources.~\newline
+ It is important to remark that the {\bfseries processor instance deletion must be performed before trying to join any of the producer or consumer thread}. This is because by deleting a processor we make sure we will not get blocked in an I/O operation.
+\item Join our application threads.
+\item Delete (close) the instance of the P\+R\+O\+CS module using function \textquotesingle{}\hyperlink{procs_8c_a0806c10ed3203ce53115ffb1a89e83d3}{procs\+\_\+close()}\textquotesingle{}. The handler will be released.
+\item Finally, close the P\+R\+O\+CS module using the \textquotesingle{}\hyperlink{procs_8c_a0947527d95117e432f21354103c390a6}{procs\+\_\+module\+\_\+close()}\textquotesingle{} function. ~\newline
+
+\end{DoxyEnumerate}
+\end{DoxyItemize}\hypertarget{md_DOCUMENTATION_How_to_use_a_Processor_the_REST}{}\section{The representational state }\label{md_DOCUMENTATION_How_to_use_a_Processor_the_REST}
+Considering that any external application can implement and register a private processor type, doing a formal documentation of all the available processor types representational states may be an impossible task. Despite the library defines some common data and settings for video and audio codecs, {\bfseries the easiest -\/and recommendable-\/ way to fetch any processor\textquotesingle{}s R\+E\+ST is to actually \char`\"{}ask\char`\"{} this information to the processor} (request through the A\+PI).~\newline
+ The only thing you need to know is the general form of the R\+E\+ST all the processors should comply, which is represented in the following J\+S\+ON string\+:~\newline
+ 
+\begin{DoxyCode}
+1 \{
+2     "settings":
+3     \{
+4         ... here you will find the settings ...
+5     \},
+6     ... anything outside object 'settings' is state-information data -informative, cannot be modified-
+7 \}
+\end{DoxyCode}
+
+
+The following sample code shows how to G\+ET a processor\textquotesingle{}s instance R\+E\+ST (see \textquotesingle{}\hyperlink{procs_8c_a7af2e6f2788006cfc96ca8d811922ffa}{procs\+\_\+opt()}\textquotesingle{} function)\+:
+
+
+\begin{DoxyCode}
+1 char *rest\_str= NULL;
+2 ...
+3 ret\_code= procs\_opt(procs\_ctx, "PROCS\_ID\_GET", proc\_id, &rest\_str);
+\end{DoxyCode}
+
+
+Let\textquotesingle{}s suppose the answer is the following J\+S\+ON string (e.\+g. given by a video encoder)\+:
+
+
+\begin{DoxyCode}
+1 \{
+2     ... any data ....
+3     "settings": \{
+4          "bit\_rate\_output":1024000,
+5          "frame\_rate\_output":25,
+6          "width\_output":720,
+7          "height\_output":576,
+8          "gop\_size":25,
+9          "conf\_preset":"ultrafast"
+10     \}
+11 \}
+\end{DoxyCode}
+
+
+Then, all the parameters that can be manipulated in the processor are specified within the \char`\"{}settings\char`\"{} object. If we want to change the output width and height, for example, we can perform a P\+UT operation passing the corresponding parameters either as a query string
+
+
+\begin{DoxyCode}
+1 ret\_code= procs\_opt(procs\_ctx, "PROCS\_ID\_PUT", proc\_id, "width\_output=352&height\_output=288");
+\end{DoxyCode}
+
+
+or as a J\+S\+ON string (both are accepted)
+
+
+\begin{DoxyCode}
+1 ret\_code= procs\_opt(procs\_ctx, "PROCS\_ID\_PUT", proc\_id, 
+2         "\{\(\backslash\)"width\_output\(\backslash\)":352,\(\backslash\)"height\_output\(\backslash\)":288\}");
+\end{DoxyCode}
+
+
+Requesting the settings R\+E\+ST to the processor is effective but may be not always self-\/explanatory (parameters are not documented in a R\+E\+ST response). To get formal documentation of each specific processor (any codec or muxer) you will have to go to the processor\textquotesingle{}s code and analyze corresponding settings structure and the associated doxygen specifications.~\newline
+ To do that, consider the following example.~\newline
+ The video settings which are common to all video codec types (\char`\"{}generic\char`\"{} video codec settings) are defined at the structures \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+s} and \hyperlink{structvideo__settings__dec__ctx__s}{video\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+s} (encoding and decoding respectively) at the \textquotesingle{}codecs\textquotesingle{} library. Similarly, common audio settings are defined at \hyperlink{structaudio__settings__enc__ctx__s}{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+s} and \hyperlink{structaudio__settings__dec__ctx__s}{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+s}.~\newline
+ Any video codec is supposed to use this common settings and extend them as desired. As a concrete example, the H.\+264 encoder implemented at \hyperlink{ffmpeg__x264_8c}{ffmpeg\+\_\+x264.\+c} (Media\+Processors\textquotesingle{}s wrapper of the F\+Fmpeg x.\+264 codec facility) extends the video common settings in the structure defined as \hyperlink{structffmpeg__x264__enc__settings__ctx__s}{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+s}. Then, all the settings for this specific codec are documented at \hyperlink{structffmpeg__x264__enc__settings__ctx__s}{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+s} and the extended common structure \hyperlink{structvideo__settings__enc__ctx__s}{video\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+s}.~\newline
+ The rest of the codecs implemented in the \textquotesingle{}codecs\textquotesingle{} library use analogue structure extensions as the above mentioned, so you can generalize this rule to see the settings parameters of any codec type implementation.\hypertarget{md_DOCUMENTATION_How_to_use_a_Processor_the_RESTful}{}\section{The R\+E\+S\+Tful H\+T\+T\+P/web-\/services adapter }\label{md_DOCUMENTATION_How_to_use_a_Processor_the_RESTful}
+R\+E\+ST philosophy of the A\+PI enables straightforward implementation of an H\+T\+TP web service exposing the C\+T\+RL A\+PI. Figure 3 depicts the basic scheme\+:
+
+
+\begin{DoxyItemize}
+\item First of all, an H\+T\+TP server has to be integrated in the solution (later, you will see a full \href{md_EXAMPLES.html}{\tt example} code running a 3rd party server);
+\item The H\+T\+TP server you integrate will offer to your application a kind of Common Gateway Interface (C\+GI). The C\+GI typically exposes\+:
+\begin{DoxyItemize}
+\item The destination U\+RL of the H\+T\+TP request;
+\item The request method (P\+O\+ST, D\+E\+L\+E\+TE, G\+ET or P\+UT);
+\item A query string with parameters (if any);
+\item Body content if present.
+\end{DoxyItemize}
+\item The R\+E\+S\+Tful adapter translates the H\+T\+TP request to a corresponding C\+T\+RL A\+PI request, and returns a response back to be used by the server.
+\end{DoxyItemize}
+
+Translation of an H\+T\+TP request to a C\+T\+RL A\+PI request is immediate, and is implemented for reference, and for your application, at \hyperlink{procs__api__http_8h}{procs\+\_\+api\+\_\+http.\+h} / \hyperlink{procs__api__http_8c}{procs\+\_\+api\+\_\+http.\+c}.~\newline
+ The function \textquotesingle{}\hyperlink{procs__api__http_8c_af95ab7d53c13d03d65d8cd0dacd3463f}{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler()}\textquotesingle{} is in charge of translating the H\+T\+TP request and returning the corresponding response.~\newline
+
+
+ {\itshape Figure 3\+: A R\+E\+S\+Tful H\+T\+T\+P/web-\/services adapter}
+
+\paragraph*{R\+E\+S\+Tful wrapped responses}
+
+The function \textquotesingle{}\hyperlink{procs__api__http_8c_af95ab7d53c13d03d65d8cd0dacd3463f}{procs\+\_\+api\+\_\+http\+\_\+req\+\_\+handler()}\textquotesingle{} adds a J\+S\+ON wrapper object to the response given by the C\+T\+RL A\+PI. This wrapper is a proper adaptation to the H\+T\+TP environment.~\newline
+ Because in many web-\/services frameworks (e.\+g. Java\+Script) the H\+T\+TP status response codes can not be easily reached by end-\/developers, a wrapped response is included in the message body with the following properties\+:
+\begin{DoxyItemize}
+\item code\+: contains the H\+T\+TP response status code as an integer;
+\item status\+: contains the text “success”, “fail”, or “error”; where “fail” is for H\+T\+TP status response values from 500-\/599, “error” is for statuses 400-\/499, and “success” is for everything else (e.\+g. 1\+XX, 2\+XX and 3\+XX responses).
+\item message\+: only used for “fail” and “error” statuses to contain the error message.
+\item data\+: Contains the response body. In the case of “error” or “fail” statuses, data may be set to \textquotesingle{}null\textquotesingle{}.
+\end{DoxyItemize}
+
+Schematically, the R\+E\+S\+Tful adapter response has then the following form\+: 
+\begin{DoxyCode}
+1 \{
+2     "code":number,
+3     "status":string,
+4     "message":string,
+5     "data": \{...\} // object returned by PROCS CTR API if any or null.
+6 \}
+\end{DoxyCode}
+
+
+\paragraph*{Returning and requesting representation extensions}
+
+For this project R\+E\+S\+Tful specification, services use the file extension \textquotesingle{}.json\textquotesingle{} (e.\+g. all the request will have the form\+: \textquotesingle{}\href{http://server_url:port/my/url/path.json'}{\tt http\+://server\+\_\+url\+:port/my/url/path.\+json\textquotesingle{}}).
+
+\paragraph*{Pluralization}
+
+For this project R\+E\+S\+Tful specification, the use of pluralizations in name nodes is mandatory and generalized.~\newline
+ Example\+:~\newline
+ For referencing a specific processor with identifier \textquotesingle{}0\textquotesingle{} , we always use (note the plural \textquotesingle{}proc{\bfseries s}\textquotesingle{} at the U\+RL path)\+: 
+\begin{DoxyCode}
+1 http://server\_url:port/procs/:processor\_id.json
+\end{DoxyCode}
+ rather than\+:~\newline
+ 
+\begin{DoxyCode}
+1 http://server\_url:port/proc/:processor\_id.json
+\end{DoxyCode}
+
+
+\paragraph*{R\+E\+S\+Tful minimal hyper-\/linking practices}
+
+The R\+E\+S\+Tful A\+PI is navigable via its links to the various components of the representation.~\newline
+ Example\+:~\newline
+ Consider we are running our Media\+Processor based application with a 3rd party H\+T\+TP server with address 127.\+0.\+0.\+1 (\textquotesingle{}localhost\textquotesingle{}) listening to port 8088. By default, the U\+RL base the R\+E\+S\+Tful adapter (\hyperlink{procs__api__http_8h}{procs\+\_\+api\+\_\+http.\+h} / \hyperlink{procs__api__http_8c}{procs\+\_\+api\+\_\+http.\+c}) use is \textquotesingle{}/procs\textquotesingle{}; thus, any remote H\+T\+TP request to our application would have an U\+RL of the form \textquotesingle{}127.\+0.\+0.\+1\+:8088/procs\mbox{[}...\mbox{]}.json\textquotesingle{}.~\newline
+ The \textquotesingle{}entrance point\textquotesingle{} of the A\+PI is given by the base U\+RL (\textquotesingle{}/procs\textquotesingle{}); thus, if we perform from a remote H\+T\+TP client the following request\+:~\newline
+ 
+\begin{DoxyCode}
+1 GET 127.0.0.1:8088/procs.json
+\end{DoxyCode}
+ We will have a response similar to the following\+: 
+\begin{DoxyCode}
+1 \{
+2    "code":200,
+3    "status":"OK",
+4    "message":null,
+5    "data":\{
+6       "procs":[
+7          \{
+8             "proc\_id":0,
+9             "type\_name":"my\_codec\_type",
+10             "links":[
+11                \{
+12                   "rel":"self",
+13                   "href":"/procs/0.json"
+14                \}
+15             ]
+16          \},
+17          \{
+18             "proc\_id":1,
+19             "type\_name":"other\_codec\_type",
+20             "links":[
+21                \{
+22                   "rel":"self",
+23                   "href":"/procs/1.json"
+24                \}
+25             ]
+26          \}, ...
+27       ]
+28    \}
+29 \}
+\end{DoxyCode}
+
+
+For navigating through the rest of the resources representations we just need to follow the links; e.\+g. for requesting the state of processor with identifier \textquotesingle{}0\textquotesingle{}\+: 
+\begin{DoxyCode}
+1 GET 127.0.0.1:8088/procs/0.json
+\end{DoxyCode}
+ A sample response\+: 
+\begin{DoxyCode}
+1 \{
+2    "code":200,
+3    "status":"OK",
+4    "message":null,
+5    "data":\{
+6       "settings":\{
+7          "bit\_rate\_output":307200,
+8          "frame\_rate\_output":15,
+9          "width\_output":352,
+10          "height\_output":288,
+11          "gop\_size":15,
+12          "conf\_preset":null
+13       \}
+14    \}
+15 \}
+\end{DoxyCode}
+
+
+Processor with Id. \textquotesingle{}0\textquotesingle{} has settings; we can manipulate them using the P\+UT method\+: 
+\begin{DoxyCode}
+1 PUT 127.0.0.1:8088/procs/0.json?width\_output=720&height\_output=480
+\end{DoxyCode}
+
+
+If we request again proessor\textquotesingle{}s state\+: 
+\begin{DoxyCode}
+1 \{
+2    "code":200,
+3    "status":"OK",
+4    "message":null,
+5    "data":\{
+6       "settings":\{
+7           ...
+8          "width\_output":720,
+9          "height\_output":480,
+10          ...
+11       \}
+12    \}
+13 \}
+\end{DoxyCode}
+
+
+\section*{How to use a Processor\+: hands-\/on }
+
+Please continue with the \href{md_EXAMPLES.html}{\tt examples} documentation. 

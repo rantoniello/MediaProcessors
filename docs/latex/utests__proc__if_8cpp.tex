@@ -1,0 +1,65 @@
+\hypertarget{utests__proc__if_8cpp}{}\section{utests\+\_\+proc\+\_\+if.\+cpp File Reference}
+\label{utests__proc__if_8cpp}\index{utests\+\_\+proc\+\_\+if.\+cpp@{utests\+\_\+proc\+\_\+if.\+cpp}}
+
+
+P\+R\+O\+C-\/\+IF unit testing.  
+
+
+{\ttfamily \#include $<$Unit\+Test++/\+Unit\+Test++.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/stat.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc\+\_\+if.\+h$>$}\\*
+Include dependency graph for utests\+\_\+proc\+\_\+if.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{utests__proc__if_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ {\bfseries dummy\+\_\+proc\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)\hypertarget{utests__proc__if_8cpp_a8ef76283715e83f6960ff7e8680bb055}{}\label{utests__proc__if_8cpp_a8ef76283715e83f6960ff7e8680bb055}
+
+\item 
+static void {\bfseries dummy\+\_\+proc\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$)\hypertarget{utests__proc__if_8cpp_aa209dff7411388ddb444e0bb58c65bf4}{}\label{utests__proc__if_8cpp_aa209dff7411388ddb444e0bb58c65bf4}
+
+\item 
+static int {\bfseries dummy\+\_\+proc\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$, const char $\ast$str)\hypertarget{utests__proc__if_8cpp_ac6535e999821850ec4e9e1954f3d17ce}{}\label{utests__proc__if_8cpp_ac6535e999821850ec4e9e1954f3d17ce}
+
+\item 
+static int {\bfseries dummy\+\_\+proc\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$, char $\ast$$\ast$rest\+\_\+str)\hypertarget{utests__proc__if_8cpp_a842521c5ebda92cc00db5611c3b01db1}{}\label{utests__proc__if_8cpp_a842521c5ebda92cc00db5611c3b01db1}
+
+\item 
+static int {\bfseries dummy\+\_\+proc\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$i, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$o)\hypertarget{utests__proc__if_8cpp_aa293e251b98c72d3e7058d0984ab0327}{}\label{utests__proc__if_8cpp_aa293e251b98c72d3e7058d0984ab0327}
+
+\item 
+static int {\bfseries dummy\+\_\+proc\+\_\+opt} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$, const char $\ast$tag, va\+\_\+list arg)\hypertarget{utests__proc__if_8cpp_a7f287bd70facea9507347fd058bb6b88}{}\label{utests__proc__if_8cpp_a7f287bd70facea9507347fd058bb6b88}
+
+\item 
+static void $\ast$ {\bfseries dummy\+\_\+proc\+\_\+iput\+\_\+fifo\+\_\+elem\+\_\+dup} (const \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$)\hypertarget{utests__proc__if_8cpp_a5e65c0e6cfc7de02e35a24460f3b3157}{}\label{utests__proc__if_8cpp_a5e65c0e6cfc7de02e35a24460f3b3157}
+
+\item 
+static void {\bfseries dummy\+\_\+proc\+\_\+iput\+\_\+fifo\+\_\+elem\+\_\+release} (void $\ast$$\ast$)\hypertarget{utests__proc__if_8cpp_a0d5da83e7bcefa7f515105573ea44a46}{}\label{utests__proc__if_8cpp_a0d5da83e7bcefa7f515105573ea44a46}
+
+\item 
+static \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$ {\bfseries dummy\+\_\+proc\+\_\+oput\+\_\+fifo\+\_\+elem\+\_\+dup} (const void $\ast$)\hypertarget{utests__proc__if_8cpp_aa9b8cf9c94c7f9a98a5a7811688d6d1f}{}\label{utests__proc__if_8cpp_aa9b8cf9c94c7f9a98a5a7811688d6d1f}
+
+\item 
+{\bfseries S\+U\+I\+TE} (U\+T\+E\+S\+T\+S\+\_\+\+P\+R\+O\+C\+\_\+\+IF)\hypertarget{utests__proc__if_8cpp_a81efc84c534e53db9d8cf8f27b9158dd}{}\label{utests__proc__if_8cpp_a81efc84c534e53db9d8cf8f27b9158dd}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+P\+R\+O\+C-\/\+IF unit testing. 
+
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}

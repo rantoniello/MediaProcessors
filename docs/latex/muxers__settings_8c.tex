@@ -1,0 +1,333 @@
+\hypertarget{muxers__settings_8c}{}\section{muxers\+\_\+settings.\+c File Reference}
+\label{muxers__settings_8c}\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+{\ttfamily \#include \char`\"{}muxers\+\_\+settings.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/uri\+\_\+parser.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc\+\_\+if.\+h$>$}\\*
+Include dependency graph for muxers\+\_\+settings.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{muxers__settings_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{muxers__settings_8h_a27a0aad585a1ed125c84dd32f5a9b78a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{muxers__settings_8c_a394b1cd465138bb5d15e5b5d5afa7bf0}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+allocate} ()
+\item 
+void \hyperlink{muxers__settings_8c_a7663fa1cc4686cd36b6fcf25db0adda1}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+release} (\hyperlink{muxers__settings_8h_a27a0aad585a1ed125c84dd32f5a9b78a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+muxers\+\_\+settings\+\_\+mux\+\_\+ctx)
+\item 
+int \hyperlink{muxers__settings_8c_a9f5043411bdc865c1dc34781971f6d8a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+init} (volatile \hyperlink{muxers__settings_8h_a27a0aad585a1ed125c84dd32f5a9b78a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx)
+\item 
+void \hyperlink{muxers__settings_8c_ac97899ca99cc1d5abd85d614eb69432b}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{muxers__settings_8h_a27a0aad585a1ed125c84dd32f5a9b78a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx)
+\item 
+int \hyperlink{muxers__settings_8c_a1cb75c5b4e1294b1d947ff157e195142}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+cpy} (const \hyperlink{muxers__settings_8h_a27a0aad585a1ed125c84dd32f5a9b78a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+src, \hyperlink{muxers__settings_8h_a27a0aad585a1ed125c84dd32f5a9b78a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+dst)
+\item 
+int \hyperlink{muxers__settings_8c_abf7e450203bf959e649a7229e47f94fd}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+put} (volatile \hyperlink{muxers__settings_8h_a27a0aad585a1ed125c84dd32f5a9b78a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx, const char $\ast$str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+int \hyperlink{muxers__settings_8c_ad56ef9b0415e5d4e9d820375cf92d9db}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+get} (volatile \hyperlink{muxers__settings_8h_a27a0aad585a1ed125c84dd32f5a9b78a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx, c\+J\+S\+ON $\ast$$\ast$ref\+\_\+cjson\+\_\+rest, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+\hyperlink{muxers__settings_8h_a390103cb3b936f2e053ade49bd318618}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{muxers__settings_8c_a13c5d6c92f202c8b1f5ce5e60453ba49}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+allocate} ()
+\item 
+void \hyperlink{muxers__settings_8c_a0dc969714ae074a3f2071b3e3df99820}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+release} (\hyperlink{muxers__settings_8h_a390103cb3b936f2e053ade49bd318618}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+muxers\+\_\+settings\+\_\+dmux\+\_\+ctx)
+\item 
+int \hyperlink{muxers__settings_8c_a3c028f617b631c2a928672d282b60d09}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+init} (volatile \hyperlink{muxers__settings_8h_a390103cb3b936f2e053ade49bd318618}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx)
+\item 
+void \hyperlink{muxers__settings_8c_a1243ce044eade70cb9c75d94df4ffb84}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{muxers__settings_8h_a390103cb3b936f2e053ade49bd318618}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx)
+\item 
+int \hyperlink{muxers__settings_8c_a749303abd5ebd82d2a3ca617bc762019}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+cpy} (const \hyperlink{muxers__settings_8h_a390103cb3b936f2e053ade49bd318618}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+src, \hyperlink{muxers__settings_8h_a390103cb3b936f2e053ade49bd318618}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+dst)
+\item 
+int \hyperlink{muxers__settings_8c_a406b203a43c6df1f02a7eb2c4099cf74}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+put} (volatile \hyperlink{muxers__settings_8h_a390103cb3b936f2e053ade49bd318618}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx, const char $\ast$str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+int \hyperlink{muxers__settings_8c_a4cc9fb0a48504d60f469156b19d0e858}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+get} (volatile \hyperlink{muxers__settings_8h_a390103cb3b936f2e053ade49bd318618}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx, c\+J\+S\+ON $\ast$$\ast$ref\+\_\+cjson\+\_\+rest, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+allocate@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+allocate}}
+\index{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+allocate@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+allocate}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+allocate()}{muxers_settings_dmux_ctx_allocate()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t}$\ast$ muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+allocate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a13c5d6c92f202c8b1f5ce5e60453ba49}{}\label{muxers__settings_8c_a13c5d6c92f202c8b1f5ce5e60453ba49}
+Allocate generic de-\/multiplexer settings context structure. \begin{DoxyReturn}{Returns}
+Pointer to the generic de-\/multiplexer settings context structure. 
+\end{DoxyReturn}
+
+
+Definition at line 273 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+cpy@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+cpy}}
+\index{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+cpy@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+cpy}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+cpy(const muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+src, muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+dst)}{muxers_settings_dmux_ctx_cpy(const muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx_src, muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx_dst)}}]{\setlength{\rightskip}{0pt plus 5cm}int muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+cpy (
+\begin{DoxyParamCaption}
+\item[{const {\bf muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+src, }
+\item[{{\bf muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+dst}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a749303abd5ebd82d2a3ca617bc762019}{}\label{muxers__settings_8c_a749303abd5ebd82d2a3ca617bc762019}
+Copy de-\/multiplexer generic settings members, duplicating any existent heap allocation. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+src} & Pointer to the generic de-\/multiplexer settings context structure to be copied (namely, the source structure). \\
+\hline
+{\em muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+dst} & Pointer to the generic de-\/multiplexer settings context structure that holds the copy (namely, the destination structure). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 327 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+deinit@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+deinit}}
+\index{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+deinit@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+deinit}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+deinit(volatile muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx)}{muxers_settings_dmux_ctx_deinit(volatile muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a1243ce044eade70cb9c75d94df4ffb84}{}\label{muxers__settings_8c_a1243ce044eade70cb9c75d94df4ffb84}
+De-\/initialize de-\/multiplexer generic settings. This function release any heap-\/allocated field or structure member. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+dmux\+\_\+ctx} & Pointer to the generic de-\/multiplexer settings context structure to be de-\/initialized. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 312 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+init@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+init}}
+\index{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+init@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+init}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+init(volatile muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx)}{muxers_settings_dmux_ctx_init(volatile muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a3c028f617b631c2a928672d282b60d09}{}\label{muxers__settings_8c_a3c028f617b631c2a928672d282b60d09}
+Initialize de-\/multiplexer generic settings to defaults. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+dmux\+\_\+ctx} & Pointer to the generic de-\/multiplexer settings context structure to be initialized. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 299 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+release@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+release}}
+\index{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+release@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+release}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+release(muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+muxers\+\_\+settings\+\_\+dmux\+\_\+ctx)}{muxers_settings_dmux_ctx_release(muxers_settings_dmux_ctx_t **ref_muxers_settings_dmux_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+release (
+\begin{DoxyParamCaption}
+\item[{{\bf muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+muxers\+\_\+settings\+\_\+dmux\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a0dc969714ae074a3f2071b3e3df99820}{}\label{muxers__settings_8c_a0dc969714ae074a3f2071b3e3df99820}
+Release generic de-\/multiplexer settings context structure previously allocated by \textquotesingle{}\hyperlink{muxers__settings_8h_a13c5d6c92f202c8b1f5ce5e60453ba49}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+allocate()}\textquotesingle{}. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+muxers\+\_\+settings\+\_\+dmux\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 279 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+get@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+get}}
+\index{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+get@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+get}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+get(volatile muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx, c\+J\+S\+O\+N $\ast$$\ast$ref\+\_\+cjson\+\_\+rest, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{muxers_settings_dmux_ctx_restful_get(volatile muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx, cJSON **ref_cjson_rest, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx, }
+\item[{c\+J\+S\+ON $\ast$$\ast$}]{ref\+\_\+cjson\+\_\+rest, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a4cc9fb0a48504d60f469156b19d0e858}{}\label{muxers__settings_8c_a4cc9fb0a48504d60f469156b19d0e858}
+Translate and get the de-\/multiplexer generic settings in a c\+J\+S\+ON structure. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+dmux\+\_\+ctx} & Pointer to the generic de-\/multiplexer settings context structure to be translated. \\
+\hline
+{\em ref\+\_\+cjson\+\_\+rest} & Reference to a pointer to a c\+J\+S\+ON structure in which the translated settings are returned (by argument). \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 421 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+put@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+put}}
+\index{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+put@{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+put}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+put(volatile muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx, const char $\ast$str, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{muxers_settings_dmux_ctx_restful_put(volatile muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx, const char *str, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+restful\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx, }
+\item[{const char $\ast$}]{str, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a406b203a43c6df1f02a7eb2c4099cf74}{}\label{muxers__settings_8c_a406b203a43c6df1f02a7eb2c4099cf74}
+Put new settings passed by argument in query-\/string or J\+S\+ON format. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+dmux\+\_\+ctx} & Pointer to the generic de-\/multiplexer settings context structure to be modified. \\
+\hline
+{\em str} & New parameters passed in query-\/string or J\+S\+ON format. \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 349 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+allocate@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+allocate}}
+\index{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+allocate@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+allocate}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+allocate()}{muxers_settings_mux_ctx_allocate()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t}$\ast$ muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+allocate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a394b1cd465138bb5d15e5b5d5afa7bf0}{}\label{muxers__settings_8c_a394b1cd465138bb5d15e5b5d5afa7bf0}
+Allocate generic multiplexer settings context structure. \begin{DoxyReturn}{Returns}
+Pointer to the generic multiplexer settings context structure. 
+\end{DoxyReturn}
+
+
+Definition at line 38 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+cpy@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+cpy}}
+\index{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+cpy@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+cpy}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+cpy(const muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+src, muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+dst)}{muxers_settings_mux_ctx_cpy(const muxers_settings_mux_ctx_t *muxers_settings_mux_ctx_src, muxers_settings_mux_ctx_t *muxers_settings_mux_ctx_dst)}}]{\setlength{\rightskip}{0pt plus 5cm}int muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+cpy (
+\begin{DoxyParamCaption}
+\item[{const {\bf muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+src, }
+\item[{{\bf muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+dst}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a1cb75c5b4e1294b1d947ff157e195142}{}\label{muxers__settings_8c_a1cb75c5b4e1294b1d947ff157e195142}
+Copy multiplexer generic settings members, duplicating any existent heap allocation. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+src} & Pointer to the generic multiplexer settings context structure to be copied (namely, the source structure). \\
+\hline
+{\em muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+dst} & Pointer to the generic multiplexer settings context structure that holds the copy (namely, the destination structure). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 91 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+deinit@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+deinit}}
+\index{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+deinit@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+deinit}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+deinit(volatile muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx)}{muxers_settings_mux_ctx_deinit(volatile muxers_settings_mux_ctx_t *muxers_settings_mux_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+mux\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_ac97899ca99cc1d5abd85d614eb69432b}{}\label{muxers__settings_8c_ac97899ca99cc1d5abd85d614eb69432b}
+De-\/initialize multiplexer generic settings. This function release any heap-\/allocated field or structure member. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+mux\+\_\+ctx} & Pointer to the generic multiplexer settings context structure to be de-\/initialized. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 76 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+init@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+init}}
+\index{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+init@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+init}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+init(volatile muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx)}{muxers_settings_mux_ctx_init(volatile muxers_settings_mux_ctx_t *muxers_settings_mux_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+mux\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a9f5043411bdc865c1dc34781971f6d8a}{}\label{muxers__settings_8c_a9f5043411bdc865c1dc34781971f6d8a}
+Initialize multiplexer generic settings to defaults. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+mux\+\_\+ctx} & Pointer to the generic multiplexer settings context structure to be initialized. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 59 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+release@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+release}}
+\index{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+release@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+release}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+release(muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+muxers\+\_\+settings\+\_\+mux\+\_\+ctx)}{muxers_settings_mux_ctx_release(muxers_settings_mux_ctx_t **ref_muxers_settings_mux_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+release (
+\begin{DoxyParamCaption}
+\item[{{\bf muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+muxers\+\_\+settings\+\_\+mux\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_a7663fa1cc4686cd36b6fcf25db0adda1}{}\label{muxers__settings_8c_a7663fa1cc4686cd36b6fcf25db0adda1}
+Release generic multiplexer settings context structure previously allocated by \textquotesingle{}\hyperlink{muxers__settings_8h_a394b1cd465138bb5d15e5b5d5afa7bf0}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+allocate()}\textquotesingle{}. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+muxers\+\_\+settings\+\_\+mux\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 44 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+get@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+get}}
+\index{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+get@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+get}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+get(volatile muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx, c\+J\+S\+O\+N $\ast$$\ast$ref\+\_\+cjson\+\_\+rest, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{muxers_settings_mux_ctx_restful_get(volatile muxers_settings_mux_ctx_t *muxers_settings_mux_ctx, cJSON **ref_cjson_rest, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+mux\+\_\+ctx, }
+\item[{c\+J\+S\+ON $\ast$$\ast$}]{ref\+\_\+cjson\+\_\+rest, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_ad56ef9b0415e5d4e9d820375cf92d9db}{}\label{muxers__settings_8c_ad56ef9b0415e5d4e9d820375cf92d9db}
+Translate and get the multiplexer generic settings in a c\+J\+S\+ON structure. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+mux\+\_\+ctx} & Pointer to the generic multiplexer settings context structure to be translated. \\
+\hline
+{\em ref\+\_\+cjson\+\_\+rest} & Reference to a pointer to a c\+J\+S\+ON structure in which the translated settings are returned (by argument). \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 221 of file muxers\+\_\+settings.\+c.
+
+\index{muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}!muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+put@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+put}}
+\index{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+put@{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+put}!muxers\+\_\+settings.\+c@{muxers\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+put(volatile muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx, const char $\ast$str, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{muxers_settings_mux_ctx_restful_put(volatile muxers_settings_mux_ctx_t *muxers_settings_mux_ctx, const char *str, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+restful\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{muxers\+\_\+settings\+\_\+mux\+\_\+ctx, }
+\item[{const char $\ast$}]{str, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{muxers__settings_8c_abf7e450203bf959e649a7229e47f94fd}{}\label{muxers__settings_8c_abf7e450203bf959e649a7229e47f94fd}
+Put new settings passed by argument in query-\/string or J\+S\+ON format. 
+\begin{DoxyParams}{Parameters}
+{\em muxers\+\_\+settings\+\_\+mux\+\_\+ctx} & Pointer to the generic multiplexer settings context structure to be modified. \\
+\hline
+{\em str} & New parameters passed in query-\/string or J\+S\+ON format. \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 114 of file muxers\+\_\+settings.\+c.
+
