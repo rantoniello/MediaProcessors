@@ -52,8 +52,8 @@ Mkfile.old
 dkms.conf
 
 # Doxygen generated files
-#docs/html/
-#docs/latex/
+docs/html/
+docs/latex/
 
 # My private files/drafts
 private
