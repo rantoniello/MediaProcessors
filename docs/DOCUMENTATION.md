@@ -71,9 +71,8 @@ It is important to remark that the <b>processor instance deletion must be perfor
 How to use a Processor: the representational state {#How_to_use_a_Processor_the_REST}
 ==================================================
 
-Considering that any external application can define and register a private processor type, documenting all the available processor types representational states may be an impossible task.
-Despite the library defines some common data and settings for video and audio codecs, <b>the easiest -and recommendable- way to fetch any processor's REST is to actually ask the processor!</b>.
-
+Considering that any external application can implement and register a private processor type, doing a formal documentation of all the available processor types representational states may be an impossible task.
+Despite the library defines some common data and settings for video and audio codecs, <b>the easiest -and recommendable- way to fetch any processor's REST is to actually "ask" this information to the processor</b> (request through the API).<br>
 The only thing you need to know is the general form of the REST all the processors should comply, which is represented in the following JSON string:<br>
 @code
 {
@@ -123,11 +122,157 @@ ret_code= procs_opt(procs_ctx, "PROCS_ID_PUT", proc_id,
         "{\"width_output\":352,\"height_output\":288}");
 @endcode
 
-As was mentioned previously at the beginning of this section, the MediaProcessors library defines some common data and settings for video and audio codecs, as for multiplexers.<br>
-This information is not so intended for the library users but for eventual developers.<br>
-For the sake of exemplification, common video settings are defined at the structures video_settings_enc_ctx_s and video_settings_dec_ctx_s (encoding and decoding respectively; at the codecs library); common audio settings are defined at audio_settings_enc_ctx_s and audio_settings_dec_ctx_s.<br>
-Any video codec is supposed to use this common settings and extend them as desired. For example, the H.264 encoder implemented at .ffmpeg_x264.c (MediaProcessors's wrapper of the FFmpeg x.264 codec facility) extends the video common settings in the structure defined as ffmpeg_x264_enc_settings_ctx_s.<br>
-The rest of the codecs implemented in the 'codecs' library use analogue structure extensions as the above mentioned.
+Requesting the settings REST to the processor is effective but may be not always self-explanatory (parameters are not documented in a REST response).
+To get formal documentation of each specific processor (any codec or muxer) you will have to go to the processor's code and analyze corresponding settings structure and the associated doxygen specifications.<br>
+To do that, consider the following example.<br>
+The video settings which are common to all video codec types ("generic" video codec settings) are defined at the structures video_settings_enc_ctx_s and video_settings_dec_ctx_s (encoding and decoding respectively) at the 'codecs' library. Similarly, common audio settings are defined at audio_settings_enc_ctx_s and audio_settings_dec_ctx_s.<br>
+Any video codec is supposed to use this common settings and extend them as desired. As a concrete example, the H.264 encoder implemented at ffmpeg_x264.c (MediaProcessors's wrapper of the FFmpeg x.264 codec facility) extends the video common settings in the structure defined as ffmpeg_x264_enc_settings_ctx_s. Then, all the settings for this specific codec are documented at ffmpeg_x264_enc_settings_ctx_s and the extended common structure video_settings_enc_ctx_s.<br>
+The rest of the codecs implemented in the 'codecs' library use analogue structure extensions as the above mentioned, so you can generalize this rule to see the settings parameters of any codec type implementation.
+
+How to use a Processor: the RESTful HTTP/web-services adapter {#How_to_use_a_Processor_the_RESTful}
+=============================================================
+
+REST philosophy of the API enables straightforward implementation of an HTTP web service exposing the CTRL API. Figure 3 depicts the basic scheme:
+
+ - First of all, an HTTP server has to be integrated in the solution (later, you will see a full [example](md_EXAMPLES.html) code running a 3rd party server);
+ - The HTTP server you integrate will offer to your application a kind of Common Gateway Interface (CGI). The CGI typically exposes:
+     - The destination URL of the HTTP request;
+     - The request method (POST, DELETE, GET or PUT);
+     - A query string with parameters (if any);
+     - Body content if present.
+ - The RESTful adapter translates the HTTP request to a corresponding CTRL API request, and returns a response back to be used by the server.
+
+Translation of an HTTP request to a CTRL API request is immediate, and is implemented for reference, and for your application, at procs_api_http.h / procs_api_http.c.<br>
+The function 'procs_api_http_req_handler()' is in charge of translating the HTTP request and returning the corresponding response.<br>
+
+<img align="left" src="../img3_processor_restful_adaptation_small.png" alt style="margin-left:10%;margin-right:90%;">
+<em align="left" style="margin-left:calc(10% + 250px);">Figure 3: A RESTful HTTP/web-services adapter</em>
+
+#### RESTful wrapped responses
+
+The function 'procs_api_http_req_handler()' adds a JSON wrapper object to the response given by the CTRL API. This wrapper is a proper adaptation to the HTTP environment.<br>
+Because in many web-services frameworks (e.g. JavaScript) the HTTP status response codes can not be easily reached by end-developers, a wrapped response is included in the message body with the following properties:
+    - code: contains the HTTP response status code as an integer;
+    - status: contains the text “success”, “fail”, or “error”; where “fail” is for HTTP status response values from 500-599, “error” is for statuses 400-499, and “success” is for everything else (e.g. 1XX, 2XX and 3XX responses).
+    - message: only used for “fail” and “error” statuses to contain the error message.
+    - data: Contains the response body. In the case of “error” or “fail” statuses, data may be set to 'null'.
+
+Schematically, the RESTful adapter response has then the following form:
+@code
+{
+    "code":number,
+    "status":string,
+    "message":string,
+    "data": {...} // object returned by PROCS CTR API if any or null.
+}
+@endcode
+
+#### Returning and requesting representation extensions
+
+For this project RESTful specification, services use the file extension '.json' 
+(e.g. all the request will have the form: 'http://server_url:port/my/url/path.json').
+
+#### Pluralization
+
+For this project RESTful specification, the use of pluralizations in name nodes is mandatory and generalized.<br>
+Example:<br>
+For referencing a specific processor with identifier '0' , we always use (note the plural 'proc<b>s</b>' at the URL path):
+@code
+http://server_url:port/procs/:processor_id.json
+@endcode
+rather than:<br>
+@code
+http://server_url:port/proc/:processor_id.json
+@endcode
+
+#### RESTful minimal hyper-linking practices
+
+The RESTful API is navigable via its links to the various components of the representation.<br>
+Example:<br>
+Consider we are running our MediaProcessor based application with a 3rd party HTTP server with address 127.0.0.1 ('localhost') listening to port 8088.
+By default, the URL base the RESTful adapter (procs_api_http.h / procs_api_http.c) use is '/procs'; thus, any remote HTTP request to our application would have an URL of the form '127.0.0.1:8088/procs[...].json'.<br>
+The 'entrance point' of the API is given by the base URL ('/procs'); thus, 
+if we perform from a remote HTTP client the following request:<br>
+@code
+GET 127.0.0.1:8088/procs.json
+@endcode
+We will have a response similar to the following:
+@code
+{
+   "code":200,
+   "status":"OK",
+   "message":null,
+   "data":{
+      "procs":[
+         {
+            "proc_id":0,
+            "type_name":"my_codec_type",
+            "links":[
+               {
+                  "rel":"self",
+                  "href":"/procs/0.json"
+               }
+            ]
+         },
+         {
+            "proc_id":1,
+            "type_name":"other_codec_type",
+            "links":[
+               {
+                  "rel":"self",
+                  "href":"/procs/1.json"
+               }
+            ]
+         }, ...
+      ]
+   }
+}
+@endcode
+
+For navigating through the rest of the resources representations we just need to follow the links; e.g. for requesting the state of processor with identifier '0':
+@code
+GET 127.0.0.1:8088/procs/0.json
+@endcode
+A sample response:
+@code
+{
+   "code":200,
+   "status":"OK",
+   "message":null,
+   "data":{
+      "settings":{
+         "bit_rate_output":307200,
+         "frame_rate_output":15,
+         "width_output":352,
+         "height_output":288,
+         "gop_size":15,
+         "conf_preset":null
+      }
+   }
+}
+@endcode
+
+Processor with Id. '0' has settings; we can manipulate them using the PUT method:
+@code
+PUT 127.0.0.1:8088/procs/0.json?width_output=720&height_output=480
+@endcode
+
+If we request again proessor's state:
+@code
+{
+   "code":200,
+   "status":"OK",
+   "message":null,
+   "data":{
+      "settings":{
+          ...
+         "width_output":720,
+         "height_output":480,
+         ...
+      }
+   }
+}
+@endcode
 
 How to use a Processor: hands-on
 =================================
