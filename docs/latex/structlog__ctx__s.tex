@@ -1,0 +1,83 @@
+\hypertarget{structlog__ctx__s}{}\section{log\+\_\+ctx\+\_\+s Struct Reference}
+\label{structlog__ctx__s}\index{log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}}
+
+
+Collaboration diagram for log\+\_\+ctx\+\_\+s\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{structlog__ctx__s__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{structlog__ctx__s_a56a669a98c9bf4cf34f233ce1343f956}{id}
+\item 
+pthread\+\_\+mutex\+\_\+t \hyperlink{structlog__ctx__s_a4b1f68253562a2a0bb7f40f8d9f51aee}{mutex}
+\item 
+\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$ \hyperlink{structlog__ctx__s_a388b23d6920493eb0370fde713dd3cd4}{log\+\_\+line\+\_\+ctx\+\_\+llist}
+\item 
+\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$$\ast$ \hyperlink{structlog__ctx__s_aeb3572f72559503e327e99525d28ca85}{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+tail\+\_\+ref}
+\item 
+\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$$\ast$ \hyperlink{structlog__ctx__s_a8f6f89d568b21e624a2e30f023c96e2c}{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+oldest\+\_\+ref}
+\item 
+int \hyperlink{structlog__ctx__s_a03f1fa736dac6969657399b55a1d1838}{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+len}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+L\+OG module instance context structure 
+
+Definition at line 102 of file log.\+c.
+
+
+
+\subsection{Member Data Documentation}
+\index{log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}!id@{id}}
+\index{id@{id}!log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{id}{id}}]{\setlength{\rightskip}{0pt plus 5cm}int log\+\_\+ctx\+\_\+s\+::id}\hypertarget{structlog__ctx__s_a56a669a98c9bf4cf34f233ce1343f956}{}\label{structlog__ctx__s_a56a669a98c9bf4cf34f233ce1343f956}
+Private identifier. This integer is written as a \char`\"{}label\char`\"{} in the log trace, and can be used to identify a specific module, application block, name-\/space, etc. 
+
+Definition at line 108 of file log.\+c.
+
+\index{log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}!log\+\_\+line\+\_\+ctx\+\_\+llist@{log\+\_\+line\+\_\+ctx\+\_\+llist}}
+\index{log\+\_\+line\+\_\+ctx\+\_\+llist@{log\+\_\+line\+\_\+ctx\+\_\+llist}!log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{log\+\_\+line\+\_\+ctx\+\_\+llist}{log_line_ctx_llist}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf llist\+\_\+t}$\ast$ log\+\_\+ctx\+\_\+s\+::log\+\_\+line\+\_\+ctx\+\_\+llist}\hypertarget{structlog__ctx__s_a388b23d6920493eb0370fde713dd3cd4}{}\label{structlog__ctx__s_a388b23d6920493eb0370fde713dd3cd4}
+L\+O\+G-\/traces list. 
+
+Definition at line 116 of file log.\+c.
+
+\index{log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}!log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+len@{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+len}}
+\index{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+len@{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+len}!log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+len}{log_line_ctx_llist_len}}]{\setlength{\rightskip}{0pt plus 5cm}int log\+\_\+ctx\+\_\+s\+::log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+len}\hypertarget{structlog__ctx__s_a03f1fa736dac6969657399b55a1d1838}{}\label{structlog__ctx__s_a03f1fa736dac6969657399b55a1d1838}
+L\+O\+G-\/traces list length. 
+
+Definition at line 129 of file log.\+c.
+
+\index{log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}!log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+oldest\+\_\+ref@{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+oldest\+\_\+ref}}
+\index{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+oldest\+\_\+ref@{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+oldest\+\_\+ref}!log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+oldest\+\_\+ref}{log_line_ctx_llist_oldest_ref}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf llist\+\_\+t}$\ast$$\ast$ log\+\_\+ctx\+\_\+s\+::log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+oldest\+\_\+ref}\hypertarget{structlog__ctx__s_a8f6f89d568b21e624a2e30f023c96e2c}{}\label{structlog__ctx__s_a8f6f89d568b21e624a2e30f023c96e2c}
+Reference to the pointer to the oldest object of the L\+O\+G-\/traces list. 
+
+Definition at line 125 of file log.\+c.
+
+\index{log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}!log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+tail\+\_\+ref@{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+tail\+\_\+ref}}
+\index{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+tail\+\_\+ref@{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+tail\+\_\+ref}!log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+tail\+\_\+ref}{log_line_ctx_llist_tail_ref}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf llist\+\_\+t}$\ast$$\ast$ log\+\_\+ctx\+\_\+s\+::log\+\_\+line\+\_\+ctx\+\_\+llist\+\_\+tail\+\_\+ref}\hypertarget{structlog__ctx__s_aeb3572f72559503e327e99525d28ca85}{}\label{structlog__ctx__s_aeb3572f72559503e327e99525d28ca85}
+Reference to the pointer to the last object of the L\+O\+G-\/traces list (reference to the tail of the list). 
+
+Definition at line 121 of file log.\+c.
+
+\index{log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}!mutex@{mutex}}
+\index{mutex@{mutex}!log\+\_\+ctx\+\_\+s@{log\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{mutex}{mutex}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+mutex\+\_\+t log\+\_\+ctx\+\_\+s\+::mutex}\hypertarget{structlog__ctx__s_a4b1f68253562a2a0bb7f40f8d9f51aee}{}\label{structlog__ctx__s_a4b1f68253562a2a0bb7f40f8d9f51aee}
+L\+OG instance mutual-\/exclusion lock 
+
+Definition at line 112 of file log.\+c.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+log.\+c\end{DoxyCompactItemize}

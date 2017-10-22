@@ -1,0 +1,649 @@
+\hypertarget{live555__rtsp_8cpp}{}\section{live555\+\_\+rtsp.\+cpp File Reference}
+\label{live555__rtsp_8cpp}\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+{\ttfamily \#include $<$mutex$>$}\\*
+{\ttfamily \#include \char`\"{}live555\+\_\+rtsp.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/uri\+\_\+parser.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/schedule.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/fair\+\_\+lock.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/fifo.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc\+\_\+if.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/procs.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}muxers\+\_\+settings.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}proc\+\_\+muxer.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$live\+Media/live\+Media.\+hh$>$}\\*
+{\ttfamily \#include $<$Basic\+Usage\+Environment/\+Basic\+Usage\+Environment.\+hh$>$}\\*
+{\ttfamily \#include $<$Simple\+R\+T\+P\+Sink.\+hh$>$}\\*
+Include dependency graph for live555\+\_\+rtsp.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{live555__rtsp_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structlive555__rtsp__mux__settings__ctx__s}{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structlive555__rtsp__mux__ctx__s}{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structlive555__rtsp__es__mux__settings__ctx__s}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structlive555__rtsp__es__mux__ctx__s}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structlive555__rtsp__dmux__settings__ctx__s}{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structlive555__rtsp__dmux__ctx__s}{live555\+\_\+rtsp\+\_\+dmux\+\_\+ctx\+\_\+s}
+\item 
+class \hyperlink{classSimpleFramedSource}{Simple\+Framed\+Source}
+\item 
+class \hyperlink{classSimpleMediaSubsession}{Simple\+Media\+Subsession}
+\item 
+class \hyperlink{classSimpleClientMediaSubsession}{Simple\+Client\+Media\+Subsession}
+\item 
+class \hyperlink{classSimpleClientSession}{Simple\+Client\+Session}
+\item 
+class \hyperlink{classStreamClientState}{Stream\+Client\+State}
+\item 
+class \hyperlink{classSimpleRTSPClient}{Simple\+R\+T\+S\+P\+Client}
+\item 
+class \hyperlink{classDummySink}{Dummy\+Sink}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries S\+E\+R\+V\+E\+R\+\_\+\+T\+O\+UT}~10\hypertarget{live555__rtsp_8cpp_ae008cde8b9b583dabc423b58c60191c4}{}\label{live555__rtsp_8cpp_ae008cde8b9b583dabc423b58c60191c4}
+
+\item 
+\#define {\bfseries F\+R\+A\+M\+E\+D\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+F\+I\+F\+O\+\_\+\+S\+L\+O\+TS}~256\hypertarget{live555__rtsp_8cpp_a42241aeef36063f99e93d23924664147}{}\label{live555__rtsp_8cpp_a42241aeef36063f99e93d23924664147}
+
+\item 
+\#define {\bfseries S\+I\+N\+K\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}~200000\hypertarget{live555__rtsp_8cpp_a1804958c871ba20b087420ea82878dda}{}\label{live555__rtsp_8cpp_a1804958c871ba20b087420ea82878dda}
+
+\item 
+\#define {\bfseries L\+O\+G\+D\+\_\+\+C\+T\+X\+\_\+\+I\+N\+IT}(C\+TX)\hypertarget{live555__rtsp_8cpp_a78f3ba7226e65b5f2d9efd92036d689e}{}\label{live555__rtsp_8cpp_a78f3ba7226e65b5f2d9efd92036d689e}
+
+\item 
+\#define {\bfseries L\+O\+GD}(...)\hypertarget{live555__rtsp_8cpp_aa839997a58e14061861cd634fdb7664d}{}\label{live555__rtsp_8cpp_aa839997a58e14061861cd634fdb7664d}
+
+\item 
+\#define \hyperlink{live555__rtsp_8cpp_a8995a191e541088a47aec1798a8cec4b}{T\+A\+G\+\_\+\+H\+AS}(N\+E\+E\+D\+LE)~(strstr(tag, N\+E\+E\+D\+LE)!= N\+U\+LL)
+\item 
+\#define \hyperlink{live555__rtsp_8cpp_a914faae84f39085695352bd45c0fca62}{T\+A\+G\+\_\+\+IS}(T\+AG)~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)
+\item 
+\#define {\bfseries P\+R\+O\+C\+\_\+\+I\+D\+\_\+\+S\+T\+R\+\_\+\+F\+MT}~\char`\"{}\{\textbackslash{}\char`\"{}elementary\+\_\+stream\+\_\+id\textbackslash{}\char`\"{}\+:\%d\}\char`\"{}\hypertarget{live555__rtsp_8cpp_a54cbf5496734caa93dd096e26a796049}{}\label{live555__rtsp_8cpp_a54cbf5496734caa93dd096e26a796049}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structlive555__rtsp__mux__settings__ctx__s}{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+s} \hyperlink{live555__rtsp_8cpp_a9ac661b1cd70ad4289851411ae00138e}{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}
+\item 
+typedef struct \hyperlink{structlive555__rtsp__mux__ctx__s}{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+s} \hyperlink{live555__rtsp_8cpp_a6261967be7712af24d2a808785fca955}{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t}
+\item 
+typedef struct \hyperlink{structlive555__rtsp__es__mux__settings__ctx__s}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+s} \hyperlink{live555__rtsp_8cpp_a7e27ada4b10e120c5a3695816e1b8715}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}
+\item 
+typedef struct \hyperlink{structlive555__rtsp__es__mux__ctx__s}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+ctx\+\_\+s} {\bfseries live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+ctx\+\_\+t}\hypertarget{live555__rtsp_8cpp_ab959a4ff09497030ee7db6ca33ebe474}{}\label{live555__rtsp_8cpp_ab959a4ff09497030ee7db6ca33ebe474}
+
+\item 
+typedef struct \hyperlink{structlive555__rtsp__dmux__settings__ctx__s}{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+s} \hyperlink{live555__rtsp_8cpp_a6a4a1fc32ed08405761d2858703042e4}{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t}
+\item 
+typedef struct \hyperlink{structlive555__rtsp__dmux__ctx__s}{live555\+\_\+rtsp\+\_\+dmux\+\_\+ctx\+\_\+s} {\bfseries live555\+\_\+rtsp\+\_\+dmux\+\_\+ctx\+\_\+t}\hypertarget{live555__rtsp_8cpp_acea66c04824cf3fcaf515f8f79557a7f}{}\label{live555__rtsp_8cpp_acea66c04824cf3fcaf515f8f79557a7f}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{live555__rtsp_8cpp_a2f593befac270f3c0f87fd59306c9a07}{live555\+\_\+rtsp\+\_\+mux\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)
+\item 
+static int {\bfseries live555\+\_\+rtsp\+\_\+mux\+\_\+init\+\_\+given\+\_\+settings} (\hyperlink{live555__rtsp_8cpp_a6261967be7712af24d2a808785fca955}{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+mux\+\_\+ctx, const \hyperlink{muxers__settings_8h_a27a0aad585a1ed125c84dd32f5a9b78a}{muxers\+\_\+settings\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+mux\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{live555__rtsp_8cpp_a1572ee3ad62031af301b9fb37183bc3e}{}\label{live555__rtsp_8cpp_a1572ee3ad62031af301b9fb37183bc3e}
+
+\item 
+static void \hyperlink{live555__rtsp_8cpp_ae36c82c14b171460aad0cdf9b167c5b0}{live555\+\_\+rtsp\+\_\+mux\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
+\item 
+static void \hyperlink{live555__rtsp_8cpp_a30be2a6d7c8e8c64b7c3d3ca4d712584}{live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings} (\hyperlink{live555__rtsp_8cpp_a6261967be7712af24d2a808785fca955}{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+mux\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_ad71374130a2220d19874d40b086b1631}{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_abe47b6b8febe17d311ecede4da45aea0}{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_ad353f75943a3ca57089e984dd6a63821}{live555\+\_\+rtsp\+\_\+mux\+\_\+opt} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$tag, va\+\_\+list arg)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_a3f56cffbb3c31acc00a84d9e48a966cc}{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)
+\item 
+static int {\bfseries live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get\+\_\+es\+\_\+array} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx\+\_\+es\+\_\+muxers, c\+J\+S\+ON $\ast$$\ast$ref\+\_\+cjson\+\_\+es\+\_\+array, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{live555__rtsp_8cpp_ae7aae14020d074edce87943c2737a1ac}{}\label{live555__rtsp_8cpp_ae7aae14020d074edce87943c2737a1ac}
+
+\item 
+static int \hyperlink{live555__rtsp_8cpp_a20331a8785c164b0f9979a410a05d54f}{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{live555__rtsp_8cpp_a9ac661b1cd70ad4289851411ae00138e}{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+static void \hyperlink{live555__rtsp_8cpp_a1315ae5dc3f6ffef91df7dc3d03232c4}{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{live555__rtsp_8cpp_a9ac661b1cd70ad4289851411ae00138e}{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+static void $\ast$ {\bfseries task\+Scheduler\+\_\+thr} (void $\ast$t)\hypertarget{live555__rtsp_8cpp_a9528d0848a45bcf52448746d89d351f9}{}\label{live555__rtsp_8cpp_a9528d0848a45bcf52448746d89d351f9}
+
+\item 
+static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ {\bfseries live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)\hypertarget{live555__rtsp_8cpp_a0a207609bc5a4079a828fe84a66e16da}{}\label{live555__rtsp_8cpp_a0a207609bc5a4079a828fe84a66e16da}
+
+\item 
+static void \hyperlink{live555__rtsp_8cpp_a5ecc6f5de6844803a83fab12a13476a2}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_abb290dc91efdc5ecf11447a219348321}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_ab43b1de001e299f5a71b7c6ca41c3835}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_ac4cfec4d7d7a00d103544d0e9438c8cd}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)
+\item 
+static int {\bfseries live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{live555__rtsp_8cpp_a7e27ada4b10e120c5a3695816e1b8715}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{live555__rtsp_8cpp_a4cafefe0d5b9076c03a66faa5c7c0e2c}{}\label{live555__rtsp_8cpp_a4cafefe0d5b9076c03a66faa5c7c0e2c}
+
+\item 
+static void {\bfseries live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{live555__rtsp_8cpp_a7e27ada4b10e120c5a3695816e1b8715}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{live555__rtsp_8cpp_a94f0c373d6e54ef2e6d637e8e1d5490e}{}\label{live555__rtsp_8cpp_a94f0c373d6e54ef2e6d637e8e1d5490e}
+
+\item 
+static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{live555__rtsp_8cpp_a47ff243b0d13dd2e2fa45e543957d4e5}{live555\+\_\+rtsp\+\_\+dmux\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)
+\item 
+static int {\bfseries live555\+\_\+rtsp\+\_\+dmux\+\_\+init\+\_\+given\+\_\+settings} (\hyperlink{structlive555__rtsp__dmux__ctx__s}{live555\+\_\+rtsp\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+dmux\+\_\+ctx, const \hyperlink{muxers__settings_8h_a390103cb3b936f2e053ade49bd318618}{muxers\+\_\+settings\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$muxers\+\_\+settings\+\_\+dmux\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{live555__rtsp_8cpp_a5113283050f29da99546d7723e44ed5e}{}\label{live555__rtsp_8cpp_a5113283050f29da99546d7723e44ed5e}
+
+\item 
+static void \hyperlink{live555__rtsp_8cpp_a6725a20c83725a3080c2eca916800dab}{live555\+\_\+rtsp\+\_\+dmux\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
+\item 
+static void {\bfseries live555\+\_\+rtsp\+\_\+dmux\+\_\+deinit\+\_\+except\+\_\+settings} (\hyperlink{structlive555__rtsp__dmux__ctx__s}{live555\+\_\+rtsp\+\_\+dmux\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+dmux\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{live555__rtsp_8cpp_ac839fef4f792fe6fc0669d9712fb4d4c}{}\label{live555__rtsp_8cpp_ac839fef4f792fe6fc0669d9712fb4d4c}
+
+\item 
+static int \hyperlink{live555__rtsp_8cpp_a75d0994e1122c13adc35ab70d1ebc334}{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_a7424e763a4f50f3b4563f86b28569f9d}{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_abd61654410d5c9ce8d3d7fc52430d8be}{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
+\item 
+static int \hyperlink{live555__rtsp_8cpp_aa1c3a652807d2aee91e4dda8ca66e42f}{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{live555__rtsp_8cpp_a6a4a1fc32ed08405761d2858703042e4}{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+static void \hyperlink{live555__rtsp_8cpp_a31187c92536dd0b24032da4bff0770cc}{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{live555__rtsp_8cpp_a6a4a1fc32ed08405761d2858703042e4}{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+static void {\bfseries continue\+After\+D\+E\+S\+C\+R\+I\+BE} (R\+T\+S\+P\+Client $\ast$rtsp\+Client, int result\+Code, char $\ast$result\+String)\hypertarget{live555__rtsp_8cpp_ac1347ae6d640bc261e25c419eb514d50}{}\label{live555__rtsp_8cpp_ac1347ae6d640bc261e25c419eb514d50}
+
+\item 
+static void {\bfseries continue\+After\+S\+E\+T\+UP} (R\+T\+S\+P\+Client $\ast$rtsp\+Client, int result\+Code, char $\ast$result\+String)\hypertarget{live555__rtsp_8cpp_a658f98718bb8809463f29d24a8576d23}{}\label{live555__rtsp_8cpp_a658f98718bb8809463f29d24a8576d23}
+
+\item 
+static void {\bfseries continue\+After\+P\+L\+AY} (R\+T\+S\+P\+Client $\ast$rtsp\+Client, int result\+Code, char $\ast$result\+String)\hypertarget{live555__rtsp_8cpp_af5530547cafe8f9a492fff310e11fe73}{}\label{live555__rtsp_8cpp_af5530547cafe8f9a492fff310e11fe73}
+
+\item 
+static void \hyperlink{live555__rtsp_8cpp_a48b85c08a53c246bf3b9e8353b04676b}{subsession\+After\+Playing} (void $\ast$client\+Data)
+\item 
+static void \hyperlink{live555__rtsp_8cpp_ac3ec7faed4d59081b32fbd1dc93d2a68}{subsession\+Bye\+Handler} (void $\ast$client\+Data)
+\item 
+static void \hyperlink{live555__rtsp_8cpp_a25d0e5450a3553a50ca44562cdae755d}{setup\+Next\+Subsession} (R\+T\+S\+P\+Client $\ast$rtsp\+Client)
+\item 
+static void \hyperlink{live555__rtsp_8cpp_a745d51722cac48201443f303b01506c9}{shutdown\+Stream} (R\+T\+S\+P\+Client $\ast$rtsp\+Client, int exit\+Code=1)
+\item 
+void {\bfseries live555\+\_\+rtsp\+\_\+reset\+\_\+on\+\_\+new\+\_\+settings} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, int flag\+\_\+is\+\_\+muxer, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{live555__rtsp_8cpp_a1d6d41291ee9ef838378d21c2a27523e}{}\label{live555__rtsp_8cpp_a1d6d41291ee9ef838378d21c2a27523e}
+
+\item 
+void {\bfseries live555\+\_\+rtsp\+\_\+reset\+\_\+on\+\_\+new\+\_\+settings\+\_\+es\+\_\+mux} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{live555__rtsp_8cpp_a583ff210797441deeb2ae3cae460d49e}{}\label{live555__rtsp_8cpp_a583ff210797441deeb2ae3cae460d49e}
+
+\item 
+void {\bfseries live555\+\_\+rtsp\+\_\+reset\+\_\+on\+\_\+new\+\_\+settings\+\_\+es\+\_\+dmux} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{live555__rtsp_8cpp_acde2ded419df9190d405fb1d23986350}{}\label{live555__rtsp_8cpp_acde2ded419df9190d405fb1d23986350}
+
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} \hyperlink{live555__rtsp_8cpp_a2e0ae0daf73d6d5c1e4062c8d6c8a3ab}{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux}
+\item 
+static const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} {\bfseries proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux}
+\item 
+const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} \hyperlink{live555__rtsp_8cpp_a7cfaffcc90dde2eeac028b6b9a598251}{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+dmux}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!T\+A\+G\+\_\+\+H\+AS@{T\+A\+G\+\_\+\+H\+AS}}
+\index{T\+A\+G\+\_\+\+H\+AS@{T\+A\+G\+\_\+\+H\+AS}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+A\+G\+\_\+\+H\+AS}{TAG_HAS}}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\+A\+G\+\_\+\+H\+AS(
+\begin{DoxyParamCaption}
+\item[{}]{N\+E\+E\+D\+LE}
+\end{DoxyParamCaption}
+)~(strstr(tag, N\+E\+E\+D\+LE)!= N\+U\+LL)}\hypertarget{live555__rtsp_8cpp_a8995a191e541088a47aec1798a8cec4b}{}\label{live555__rtsp_8cpp_a8995a191e541088a47aec1798a8cec4b}
+Returns non-\/zero if given \textquotesingle{}tag\textquotesingle{} string contains \textquotesingle{}needle\textquotesingle{} sub-\/string. 
+
+Definition at line 76 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!T\+A\+G\+\_\+\+IS@{T\+A\+G\+\_\+\+IS}}
+\index{T\+A\+G\+\_\+\+IS@{T\+A\+G\+\_\+\+IS}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+A\+G\+\_\+\+IS}{TAG_IS}}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\+A\+G\+\_\+\+IS(
+\begin{DoxyParamCaption}
+\item[{}]{T\+AG}
+\end{DoxyParamCaption}
+)~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)}\hypertarget{live555__rtsp_8cpp_a914faae84f39085695352bd45c0fca62}{}\label{live555__rtsp_8cpp_a914faae84f39085695352bd45c0fca62}
+Returns non-\/zero if \textquotesingle{}tag\textquotesingle{} string is equal to given T\+AG string. 
+
+Definition at line 81 of file live555\+\_\+rtsp.\+cpp.
+
+
+
+\subsection{Typedef Documentation}
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t}}
+\index{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t}{live555_rtsp_dmux_settings_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+s}  {\bf live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t}}\hypertarget{live555__rtsp_8cpp_a6a4a1fc32ed08405761d2858703042e4}{}\label{live555__rtsp_8cpp_a6a4a1fc32ed08405761d2858703042e4}
+Live555\textquotesingle{}s R\+T\+SP de-\/multiplexer settings context structure. \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}}
+\index{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}{live555_rtsp_es_mux_settings_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+s}  {\bf live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}}\hypertarget{live555__rtsp_8cpp_a7e27ada4b10e120c5a3695816e1b8715}{}\label{live555__rtsp_8cpp_a7e27ada4b10e120c5a3695816e1b8715}
+Live555\textquotesingle{}s R\+T\+SP elementary stream (ES) multiplexer settings context structure. \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t@{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t@{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t}{live555_rtsp_mux_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+s}  {\bf live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t}}\hypertarget{live555__rtsp_8cpp_a6261967be7712af24d2a808785fca955}{}\label{live555__rtsp_8cpp_a6261967be7712af24d2a808785fca955}
+Live555\textquotesingle{}s R\+T\+SP multiplexer context structure. \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}{live555_rtsp_mux_settings_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+s}  {\bf live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t}}\hypertarget{live555__rtsp_8cpp_a9ac661b1cd70ad4289851411ae00138e}{}\label{live555__rtsp_8cpp_a9ac661b1cd70ad4289851411ae00138e}
+Live555\textquotesingle{}s R\+T\+SP multiplexer settings context structure. 
+
+\subsection{Function Documentation}
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+close@{live555\+\_\+rtsp\+\_\+dmux\+\_\+close}}
+\index{live555\+\_\+rtsp\+\_\+dmux\+\_\+close@{live555\+\_\+rtsp\+\_\+dmux\+\_\+close}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+dmux\+\_\+close(proc\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)}{live555_rtsp_dmux_close(proc_ctx_t **ref_proc_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void live555\+\_\+rtsp\+\_\+dmux\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+proc\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a6725a20c83725a3080c2eca916800dab}{}\label{live555__rtsp_8cpp_a6725a20c83725a3080c2eca916800dab}
+Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 2029 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+open@{live555\+\_\+rtsp\+\_\+dmux\+\_\+open}}
+\index{live555\+\_\+rtsp\+\_\+dmux\+\_\+open@{live555\+\_\+rtsp\+\_\+dmux\+\_\+open}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+dmux\+\_\+open(const proc\+\_\+if\+\_\+t $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx, va\+\_\+list arg)}{live555_rtsp_dmux_open(const proc_if_t *proc_if, const char *settings_str, log_ctx_t *log_ctx, va_list arg)}}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf proc\+\_\+ctx\+\_\+t} $\ast$ live555\+\_\+rtsp\+\_\+dmux\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{const {\bf proc\+\_\+if\+\_\+t} $\ast$}]{proc\+\_\+if, }
+\item[{const char $\ast$}]{settings\+\_\+str, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx, }
+\item[{va\+\_\+list}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a47ff243b0d13dd2e2fa45e543957d4e5}{}\label{live555__rtsp_8cpp_a47ff243b0d13dd2e2fa45e543957d4e5}
+Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 1941 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame}}
+\index{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$iput\+\_\+fifo\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$oput\+\_\+fifo\+\_\+ctx)}{live555_rtsp_dmux_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{iput\+\_\+fifo\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{oput\+\_\+fifo\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a7424e763a4f50f3b4563f86b28569f9d}{}\label{live555__rtsp_8cpp_a7424e763a4f50f3b4563f86b28569f9d}
+Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 2240 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get}}
+\index{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)}{live555_rtsp_dmux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{char $\ast$$\ast$}]{rest\+\_\+str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a75d0994e1122c13adc35ab70d1ebc334}{}\label{live555__rtsp_8cpp_a75d0994e1122c13adc35ab70d1ebc334}
+Implements the \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 2091 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put}}
+\index{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const char $\ast$str)}{live555_rtsp_dmux_rest_put(proc_ctx_t *proc_ctx, const char *str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{const char $\ast$}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_abd61654410d5c9ce8d3d7fc52430d8be}{}\label{live555__rtsp_8cpp_abd61654410d5c9ce8d3d7fc52430d8be}
+Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 2332 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit}}
+\index{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit(volatile live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t $\ast$live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{live555_rtsp_dmux_settings_ctx_deinit(volatile live555_rtsp_dmux_settings_ctx_t *live555_rtsp_dmux_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a31187c92536dd0b24032da4bff0770cc}{}\label{live555__rtsp_8cpp_a31187c92536dd0b24032da4bff0770cc}
+Release specific Live555 R\+T\+SP de-\/multiplexer settings (allocated in heap memory). 
+\begin{DoxyParams}{Parameters}
+{\em live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 2408 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init}}
+\index{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init(volatile live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t $\ast$live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{live555_rtsp_dmux_settings_ctx_init(volatile live555_rtsp_dmux_settings_ctx_t *live555_rtsp_dmux_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_aa1c3a652807d2aee91e4dda8ca66e42f}{}\label{live555__rtsp_8cpp_aa1c3a652807d2aee91e4dda8ca66e42f}
+Initialize specific Live555 R\+T\+SP de-\/multiplexer settings to defaults. 
+\begin{DoxyParams}{Parameters}
+{\em live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 2377 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close}}
+\index{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close(proc\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)}{live555_rtsp_es_mux_close(proc_ctx_t **ref_proc_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+proc\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a5ecc6f5de6844803a83fab12a13476a2}{}\label{live555__rtsp_8cpp_a5ecc6f5de6844803a83fab12a13476a2}
+Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 1304 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame}}
+\index{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$iput\+\_\+fifo\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$oput\+\_\+fifo\+\_\+ctx)}{live555_rtsp_es_mux_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{iput\+\_\+fifo\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{oput\+\_\+fifo\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_abb290dc91efdc5ecf11447a219348321}{}\label{live555__rtsp_8cpp_abb290dc91efdc5ecf11447a219348321}
+Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 1335 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get}}
+\index{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)}{live555_rtsp_es_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{char $\ast$$\ast$}]{rest\+\_\+str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ac4cfec4d7d7a00d103544d0e9438c8cd}{}\label{live555__rtsp_8cpp_ac4cfec4d7d7a00d103544d0e9438c8cd}
+Implements the \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 1492 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put}}
+\index{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const char $\ast$str)}{live555_rtsp_es_mux_rest_put(proc_ctx_t *proc_ctx, const char *str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{const char $\ast$}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ab43b1de001e299f5a71b7c6ca41c3835}{}\label{live555__rtsp_8cpp_ab43b1de001e299f5a71b7c6ca41c3835}
+Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 1387 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+close@{live555\+\_\+rtsp\+\_\+mux\+\_\+close}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+close@{live555\+\_\+rtsp\+\_\+mux\+\_\+close}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+close(proc\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)}{live555_rtsp_mux_close(proc_ctx_t **ref_proc_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void live555\+\_\+rtsp\+\_\+mux\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+proc\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ae36c82c14b171460aad0cdf9b167c5b0}{}\label{live555__rtsp_8cpp_ae36c82c14b171460aad0cdf9b167c5b0}
+Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 692 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings@{live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings@{live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings(live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t $\ast$live555\+\_\+rtsp\+\_\+mux\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{live555_rtsp_mux_deinit_except_settings(live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings (
+\begin{DoxyParamCaption}
+\item[{{\bf live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a30be2a6d7c8e8c64b7c3d3ca4d712584}{}\label{live555__rtsp_8cpp_a30be2a6d7c8e8c64b7c3d3ca4d712584}
+Release R\+T\+SP multiplexer at the exception of its settings context structure. 
+
+Definition at line 723 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+open@{live555\+\_\+rtsp\+\_\+mux\+\_\+open}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+open@{live555\+\_\+rtsp\+\_\+mux\+\_\+open}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+open(const proc\+\_\+if\+\_\+t $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx, va\+\_\+list arg)}{live555_rtsp_mux_open(const proc_if_t *proc_if, const char *settings_str, log_ctx_t *log_ctx, va_list arg)}}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf proc\+\_\+ctx\+\_\+t} $\ast$ live555\+\_\+rtsp\+\_\+mux\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{const {\bf proc\+\_\+if\+\_\+t} $\ast$}]{proc\+\_\+if, }
+\item[{const char $\ast$}]{settings\+\_\+str, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx, }
+\item[{va\+\_\+list}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a2f593befac270f3c0f87fd59306c9a07}{}\label{live555__rtsp_8cpp_a2f593befac270f3c0f87fd59306c9a07}
+Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 557 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+opt@{live555\+\_\+rtsp\+\_\+mux\+\_\+opt}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+opt@{live555\+\_\+rtsp\+\_\+mux\+\_\+opt}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+opt(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const char $\ast$tag, va\+\_\+list arg)}{live555_rtsp_mux_opt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+mux\+\_\+opt (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{const char $\ast$}]{tag, }
+\item[{va\+\_\+list}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ad353f75943a3ca57089e984dd6a63821}{}\label{live555__rtsp_8cpp_ad353f75943a3ca57089e984dd6a63821}
+Implements the \hyperlink{structproc__if__s_a4ca0939d6721f368d2560851197fca36}{proc\+\_\+if\+\_\+s\+::opt} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 855 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$iput\+\_\+fifo\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$oput\+\_\+fifo\+\_\+ctx)}{live555_rtsp_mux_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{iput\+\_\+fifo\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{oput\+\_\+fifo\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ad71374130a2220d19874d40b086b1631}{}\label{live555__rtsp_8cpp_ad71374130a2220d19874d40b086b1631}
+Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 801 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)}{live555_rtsp_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{char $\ast$$\ast$}]{rest\+\_\+str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a3f56cffbb3c31acc00a84d9e48a966cc}{}\label{live555__rtsp_8cpp_a3f56cffbb3c31acc00a84d9e48a966cc}
+Implements the \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 962 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const char $\ast$str)}{live555_rtsp_mux_rest_put(proc_ctx_t *proc_ctx, const char *str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{const char $\ast$}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_abe47b6b8febe17d311ecede4da45aea0}{}\label{live555__rtsp_8cpp_abe47b6b8febe17d311ecede4da45aea0}
+Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 920 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit(volatile live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t $\ast$live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{live555_rtsp_mux_settings_ctx_deinit(volatile live555_rtsp_mux_settings_ctx_t *live555_rtsp_mux_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a1315ae5dc3f6ffef91df7dc3d03232c4}{}\label{live555__rtsp_8cpp_a1315ae5dc3f6ffef91df7dc3d03232c4}
+Release specific Live555 R\+T\+SP multiplexer settings (allocated in heap memory). 
+\begin{DoxyParams}{Parameters}
+{\em live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1182 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init}}
+\index{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init(volatile live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t $\ast$live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{live555_rtsp_mux_settings_ctx_init(volatile live555_rtsp_mux_settings_ctx_t *live555_rtsp_mux_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a20331a8785c164b0f9979a410a05d54f}{}\label{live555__rtsp_8cpp_a20331a8785c164b0f9979a410a05d54f}
+Initialize specific Live555 R\+T\+SP multiplexer settings to defaults. 
+\begin{DoxyParams}{Parameters}
+{\em live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 1151 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!setup\+Next\+Subsession@{setup\+Next\+Subsession}}
+\index{setup\+Next\+Subsession@{setup\+Next\+Subsession}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{setup\+Next\+Subsession(\+R\+T\+S\+P\+Client $\ast$rtsp\+Client)}{setupNextSubsession(RTSPClient *rtspClient)}}]{\setlength{\rightskip}{0pt plus 5cm}static void setup\+Next\+Subsession (
+\begin{DoxyParamCaption}
+\item[{R\+T\+S\+P\+Client $\ast$}]{rtsp\+Client}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a25d0e5450a3553a50ca44562cdae755d}{}\label{live555__rtsp_8cpp_a25d0e5450a3553a50ca44562cdae755d}
+Iterate through each stream\textquotesingle{}s \textquotesingle{}sub-\/sessions\textquotesingle{}, setting up each one. 
+
+Definition at line 2486 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!shutdown\+Stream@{shutdown\+Stream}}
+\index{shutdown\+Stream@{shutdown\+Stream}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{shutdown\+Stream(\+R\+T\+S\+P\+Client $\ast$rtsp\+Client, int exit\+Code=1)}{shutdownStream(RTSPClient *rtspClient, int exitCode=1)}}]{\setlength{\rightskip}{0pt plus 5cm}static void shutdown\+Stream (
+\begin{DoxyParamCaption}
+\item[{R\+T\+S\+P\+Client $\ast$}]{rtsp\+Client, }
+\item[{int}]{exit\+Code}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a745d51722cac48201443f303b01506c9}{}\label{live555__rtsp_8cpp_a745d51722cac48201443f303b01506c9}
+Used to shut down and close a stream (including its \char`\"{}\+R\+T\+S\+P\+Client\char`\"{} object). 
+
+Definition at line 2687 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!subsession\+After\+Playing@{subsession\+After\+Playing}}
+\index{subsession\+After\+Playing@{subsession\+After\+Playing}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{subsession\+After\+Playing(void $\ast$client\+Data)}{subsessionAfterPlaying(void *clientData)}}]{\setlength{\rightskip}{0pt plus 5cm}static void subsession\+After\+Playing (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{client\+Data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a48b85c08a53c246bf3b9e8353b04676b}{}\label{live555__rtsp_8cpp_a48b85c08a53c246bf3b9e8353b04676b}
+called when a stream\textquotesingle{}s sub-\/session (e.\+g., audio or video sub-\/stream) ends. 
+
+Definition at line 2634 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!subsession\+Bye\+Handler@{subsession\+Bye\+Handler}}
+\index{subsession\+Bye\+Handler@{subsession\+Bye\+Handler}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{subsession\+Bye\+Handler(void $\ast$client\+Data)}{subsessionByeHandler(void *clientData)}}]{\setlength{\rightskip}{0pt plus 5cm}static void subsession\+Bye\+Handler (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{client\+Data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ac3ec7faed4d59081b32fbd1dc93d2a68}{}\label{live555__rtsp_8cpp_ac3ec7faed4d59081b32fbd1dc93d2a68}
+Called when a R\+T\+CP \char`\"{}\+B\+Y\+E\char`\"{} is received for a sub-\/session. 
+
+Definition at line 2664 of file live555\+\_\+rtsp.\+cpp.
+
+
+
+\subsection{Variable Documentation}
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+dmux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+dmux}}
+\index{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+dmux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+dmux}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+dmux}{proc_if_live555_rtsp_dmux}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf proc\+\_\+if\+\_\+t} proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+dmux}\hypertarget{live555__rtsp_8cpp_a7cfaffcc90dde2eeac028b6b9a598251}{}\label{live555__rtsp_8cpp_a7cfaffcc90dde2eeac028b6b9a598251}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+\{
+    \textcolor{stringliteral}{"live555\_rtsp\_dmux"},
+    \hyperlink{live555__rtsp_8cpp_a47ff243b0d13dd2e2fa45e543957d4e5}{live555\_rtsp\_dmux\_open},
+    \hyperlink{live555__rtsp_8cpp_a6725a20c83725a3080c2eca916800dab}{live555\_rtsp\_dmux\_close},
+    \hyperlink{live555__rtsp_8cpp_abd61654410d5c9ce8d3d7fc52430d8be}{live555\_rtsp\_dmux\_rest\_put},
+    \hyperlink{live555__rtsp_8cpp_a75d0994e1122c13adc35ab70d1ebc334}{live555\_rtsp\_dmux\_rest\_get},
+    \hyperlink{live555__rtsp_8cpp_a7424e763a4f50f3b4563f86b28569f9d}{live555\_rtsp\_dmux\_process\_frame},
+    NULL, 
+    NULL, 
+    NULL, 
+    NULL, 
+\}
+\end{DoxyCode}
+Processor interface implementing the wrapper of the live555 R\+T\+SP de-\/multiplexer. 
+
+Definition at line 538 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux}}
+\index{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux}{proc_if_live555_rtsp_es_mux}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf proc\+\_\+if\+\_\+t} proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_add651b6d00832c68964b6fbbfe3ea78a}{}\label{live555__rtsp_8cpp_add651b6d00832c68964b6fbbfe3ea78a}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+\{
+    \textcolor{stringliteral}{"live555\_rtsp\_es\_mux"},
+    live555\_rtsp\_es\_mux\_open,
+    \hyperlink{live555__rtsp_8cpp_a5ecc6f5de6844803a83fab12a13476a2}{live555\_rtsp\_es\_mux\_close},
+    NULL, 
+    \hyperlink{live555__rtsp_8cpp_ac4cfec4d7d7a00d103544d0e9438c8cd}{live555\_rtsp\_es\_mux\_rest\_get},
+    \hyperlink{live555__rtsp_8cpp_abb290dc91efdc5ecf11447a219348321}{live555\_rtsp\_es\_mux\_process\_frame},
+    NULL, 
+    NULL,
+    NULL,
+    NULL,
+\}
+\end{DoxyCode}
+
+
+Definition at line 524 of file live555\+\_\+rtsp.\+cpp.
+
+\index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux}}
+\index{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
+\subsubsection[{\texorpdfstring{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux}{proc_if_live555_rtsp_mux}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf proc\+\_\+if\+\_\+t} proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux}\hypertarget{live555__rtsp_8cpp_a2e0ae0daf73d6d5c1e4062c8d6c8a3ab}{}\label{live555__rtsp_8cpp_a2e0ae0daf73d6d5c1e4062c8d6c8a3ab}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+\{
+    \textcolor{stringliteral}{"live555\_rtsp\_mux"},
+    \hyperlink{live555__rtsp_8cpp_a2f593befac270f3c0f87fd59306c9a07}{live555\_rtsp\_mux\_open},
+    \hyperlink{live555__rtsp_8cpp_ae36c82c14b171460aad0cdf9b167c5b0}{live555\_rtsp\_mux\_close},
+    \hyperlink{live555__rtsp_8cpp_abe47b6b8febe17d311ecede4da45aea0}{live555\_rtsp\_mux\_rest\_put},
+    \hyperlink{live555__rtsp_8cpp_a3f56cffbb3c31acc00a84d9e48a966cc}{live555\_rtsp\_mux\_rest\_get},
+    \hyperlink{live555__rtsp_8cpp_ad71374130a2220d19874d40b086b1631}{live555\_rtsp\_mux\_process\_frame},
+    \hyperlink{live555__rtsp_8cpp_ad353f75943a3ca57089e984dd6a63821}{live555\_rtsp\_mux\_opt},
+    NULL, 
+    NULL, 
+    NULL, 
+\}
+\end{DoxyCode}
+Processor interface implementing the wrapper of the live555 R\+T\+SP multiplexer. 
+
+Definition at line 510 of file live555\+\_\+rtsp.\+cpp.
+

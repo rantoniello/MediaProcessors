@@ -1,0 +1,194 @@
+\hypertarget{fifo_8c}{}\section{fifo.\+c File Reference}
+\label{fifo_8c}\index{fifo.\+c@{fifo.\+c}}
+{\ttfamily \#include \char`\"{}fifo.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}check\+\_\+utils.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}log.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}stat\+\_\+codes.\+h\char`\"{}}\\*
+Include dependency graph for fifo.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{fifo_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structfifo__elem__ctx__s}{fifo\+\_\+elem\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structfifo__elem__ctx__s}{fifo\+\_\+elem\+\_\+ctx\+\_\+s} {\bfseries fifo\+\_\+elem\+\_\+ctx\+\_\+t}\hypertarget{fifo_8c_a3236a0200db719fdeb6d875a415ca7c9}{}\label{fifo_8c_a3236a0200db719fdeb6d875a415ca7c9}
+
+\item 
+typedef struct \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+s} {\bfseries fifo\+\_\+ctx\+\_\+t}\hypertarget{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{}\label{fifo_8c_acf3f21e64cbabccd8420c306740820c1}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static int {\bfseries fifo\+\_\+input} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx, void $\ast$$\ast$ref\+\_\+elem, size\+\_\+t elem\+\_\+size, int dup\+\_\+flag)\hypertarget{fifo_8c_afcb545f297176708c0d59ee27aa83e07}{}\label{fifo_8c_afcb545f297176708c0d59ee27aa83e07}
+
+\item 
+static int {\bfseries fifo\+\_\+output} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx, void $\ast$$\ast$ref\+\_\+elem, size\+\_\+t $\ast$ref\+\_\+elem\+\_\+size, int flush\+\_\+flag)\hypertarget{fifo_8c_a36259a59b4f79991a0c6983fd5306671}{}\label{fifo_8c_a36259a59b4f79991a0c6983fd5306671}
+
+\item 
+\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{fifo_8c_a7b4779d8cb0709b6aabd9294ae41035d}{fifo\+\_\+open} (uint32\+\_\+t buf\+\_\+max\+\_\+size, uint32\+\_\+t flags, const \hyperlink{structfifo__elem__alloc__fxn__s}{fifo\+\_\+elem\+\_\+alloc\+\_\+fxn\+\_\+t} $\ast$fifo\+\_\+elem\+\_\+alloc\+\_\+fxn)
+\item 
+void \hyperlink{fifo_8c_a2611719de8a50e56a040036114de9e88}{fifo\+\_\+set\+\_\+blocking\+\_\+mode} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx, int do\+\_\+block)
+\item 
+void \hyperlink{fifo_8c_a61d859a72c44a1ca7ad537435cf1388a}{fifo\+\_\+close} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$$\ast$pfifo\+\_\+ctx)
+\item 
+int \hyperlink{fifo_8c_ae01dccc89399239175f99002572151e0}{fifo\+\_\+put\+\_\+dup} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx, const void $\ast$elem, size\+\_\+t elem\+\_\+size)
+\item 
+int \hyperlink{fifo_8c_a2fe81cc19210968f18f23493a35b6a49}{fifo\+\_\+put} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx, void $\ast$$\ast$ref\+\_\+elem, size\+\_\+t elem\+\_\+size)
+\item 
+int \hyperlink{fifo_8c_a85a5e85ab81f3a1ea3464ff57fcf8f88}{fifo\+\_\+get} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx, void $\ast$$\ast$ref\+\_\+elem, size\+\_\+t $\ast$ref\+\_\+elem\+\_\+size)
+\item 
+int \hyperlink{fifo_8c_a0793bad9ac8a0db8c1cd54a530a8e7ac}{fifo\+\_\+show} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx, void $\ast$$\ast$elem, size\+\_\+t $\ast$elem\+\_\+size)
+\item 
+ssize\+\_\+t \hyperlink{fifo_8c_ad11b8d4bba268df196ddd3b3a8df3033}{fifo\+\_\+get\+\_\+buffer\+\_\+level} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx)
+\item 
+int \hyperlink{fifo_8c_acebb289956cc3f7254d0e8bb5b6ca38a}{fifo\+\_\+traverse} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx, int elem\+\_\+cnt, void($\ast$it\+\_\+fxn)(void $\ast$elem, ssize\+\_\+t elem\+\_\+size, int idx, void $\ast$it\+\_\+arg, int $\ast$ref\+\_\+flag\+\_\+break), void $\ast$it\+\_\+arg)
+\item 
+void \hyperlink{fifo_8c_a2c0c91155b8d071ae30a07fa866372bc}{fifo\+\_\+empty} (\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+close@{fifo\+\_\+close}}
+\index{fifo\+\_\+close@{fifo\+\_\+close}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+close(fifo\+\_\+ctx\+\_\+t $\ast$$\ast$pfifo\+\_\+ctx)}{fifo_close(fifo_ctx_t **pfifo_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void fifo\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{pfifo\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_a61d859a72c44a1ca7ad537435cf1388a}{}\label{fifo_8c_a61d859a72c44a1ca7ad537435cf1388a}
+//\+T\+O\+DO 
+
+Definition at line 183 of file fifo.\+c.
+
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+empty@{fifo\+\_\+empty}}
+\index{fifo\+\_\+empty@{fifo\+\_\+empty}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+empty(fifo\+\_\+ctx\+\_\+t $\ast$fifo\+\_\+ctx)}{fifo_empty(fifo_ctx_t *fifo_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void fifo\+\_\+empty (
+\begin{DoxyParamCaption}
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{fifo\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_a2c0c91155b8d071ae30a07fa866372bc}{}\label{fifo_8c_a2c0c91155b8d071ae30a07fa866372bc}
+//\+T\+O\+DO 
+
+Definition at line 315 of file fifo.\+c.
+
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+get@{fifo\+\_\+get}}
+\index{fifo\+\_\+get@{fifo\+\_\+get}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+get(fifo\+\_\+ctx\+\_\+t $\ast$fifo\+\_\+ctx, void $\ast$$\ast$ref\+\_\+elem, size\+\_\+t $\ast$ref\+\_\+elem\+\_\+size)}{fifo_get(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size)}}]{\setlength{\rightskip}{0pt plus 5cm}int fifo\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{fifo\+\_\+ctx, }
+\item[{void $\ast$$\ast$}]{ref\+\_\+elem, }
+\item[{size\+\_\+t $\ast$}]{ref\+\_\+elem\+\_\+size}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_a85a5e85ab81f3a1ea3464ff57fcf8f88}{}\label{fifo_8c_a85a5e85ab81f3a1ea3464ff57fcf8f88}
+//\+T\+O\+DO 
+
+Definition at line 241 of file fifo.\+c.
+
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+get\+\_\+buffer\+\_\+level@{fifo\+\_\+get\+\_\+buffer\+\_\+level}}
+\index{fifo\+\_\+get\+\_\+buffer\+\_\+level@{fifo\+\_\+get\+\_\+buffer\+\_\+level}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+get\+\_\+buffer\+\_\+level(fifo\+\_\+ctx\+\_\+t $\ast$fifo\+\_\+ctx)}{fifo_get_buffer_level(fifo_ctx_t *fifo_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}ssize\+\_\+t fifo\+\_\+get\+\_\+buffer\+\_\+level (
+\begin{DoxyParamCaption}
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{fifo\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_ad11b8d4bba268df196ddd3b3a8df3033}{}\label{fifo_8c_ad11b8d4bba268df196ddd3b3a8df3033}
+//\+T\+O\+DO 
+
+Definition at line 251 of file fifo.\+c.
+
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+open@{fifo\+\_\+open}}
+\index{fifo\+\_\+open@{fifo\+\_\+open}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+open(uint32\+\_\+t buf\+\_\+max\+\_\+size, uint32\+\_\+t flags, const fifo\+\_\+elem\+\_\+alloc\+\_\+fxn\+\_\+t $\ast$fifo\+\_\+elem\+\_\+alloc\+\_\+fxn)}{fifo_open(uint32_t buf_max_size, uint32_t flags, const fifo_elem_alloc_fxn_t *fifo_elem_alloc_fxn)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fifo\+\_\+ctx\+\_\+t}$\ast$ fifo\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{uint32\+\_\+t}]{buf\+\_\+max\+\_\+size, }
+\item[{uint32\+\_\+t}]{flags, }
+\item[{const {\bf fifo\+\_\+elem\+\_\+alloc\+\_\+fxn\+\_\+t} $\ast$}]{fifo\+\_\+elem\+\_\+alloc\+\_\+fxn}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_a7b4779d8cb0709b6aabd9294ae41035d}{}\label{fifo_8c_a7b4779d8cb0709b6aabd9294ae41035d}
+//\+T\+O\+DO 
+
+Definition at line 122 of file fifo.\+c.
+
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+put@{fifo\+\_\+put}}
+\index{fifo\+\_\+put@{fifo\+\_\+put}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+put(fifo\+\_\+ctx\+\_\+t $\ast$fifo\+\_\+ctx, void $\ast$$\ast$ref\+\_\+elem, size\+\_\+t elem\+\_\+size)}{fifo_put(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t elem_size)}}]{\setlength{\rightskip}{0pt plus 5cm}int fifo\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{fifo\+\_\+ctx, }
+\item[{void $\ast$$\ast$}]{ref\+\_\+elem, }
+\item[{size\+\_\+t}]{elem\+\_\+size}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_a2fe81cc19210968f18f23493a35b6a49}{}\label{fifo_8c_a2fe81cc19210968f18f23493a35b6a49}
+//\+T\+O\+DO 
+
+Definition at line 236 of file fifo.\+c.
+
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+put\+\_\+dup@{fifo\+\_\+put\+\_\+dup}}
+\index{fifo\+\_\+put\+\_\+dup@{fifo\+\_\+put\+\_\+dup}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+put\+\_\+dup(fifo\+\_\+ctx\+\_\+t $\ast$fifo\+\_\+ctx, const void $\ast$elem, size\+\_\+t elem\+\_\+size)}{fifo_put_dup(fifo_ctx_t *fifo_ctx, const void *elem, size_t elem_size)}}]{\setlength{\rightskip}{0pt plus 5cm}int fifo\+\_\+put\+\_\+dup (
+\begin{DoxyParamCaption}
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{fifo\+\_\+ctx, }
+\item[{const void $\ast$}]{elem, }
+\item[{size\+\_\+t}]{elem\+\_\+size}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_ae01dccc89399239175f99002572151e0}{}\label{fifo_8c_ae01dccc89399239175f99002572151e0}
+//\+T\+O\+DO 
+
+Definition at line 230 of file fifo.\+c.
+
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+set\+\_\+blocking\+\_\+mode@{fifo\+\_\+set\+\_\+blocking\+\_\+mode}}
+\index{fifo\+\_\+set\+\_\+blocking\+\_\+mode@{fifo\+\_\+set\+\_\+blocking\+\_\+mode}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+set\+\_\+blocking\+\_\+mode(fifo\+\_\+ctx\+\_\+t $\ast$fifo\+\_\+ctx, int do\+\_\+block)}{fifo_set_blocking_mode(fifo_ctx_t *fifo_ctx, int do_block)}}]{\setlength{\rightskip}{0pt plus 5cm}void fifo\+\_\+set\+\_\+blocking\+\_\+mode (
+\begin{DoxyParamCaption}
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{fifo\+\_\+ctx, }
+\item[{int}]{do\+\_\+block}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_a2611719de8a50e56a040036114de9e88}{}\label{fifo_8c_a2611719de8a50e56a040036114de9e88}
+//\+T\+O\+DO 
+
+Definition at line 161 of file fifo.\+c.
+
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+show@{fifo\+\_\+show}}
+\index{fifo\+\_\+show@{fifo\+\_\+show}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+show(fifo\+\_\+ctx\+\_\+t $\ast$fifo\+\_\+ctx, void $\ast$$\ast$elem, size\+\_\+t $\ast$elem\+\_\+size)}{fifo_show(fifo_ctx_t *fifo_ctx, void **elem, size_t *elem_size)}}]{\setlength{\rightskip}{0pt plus 5cm}int fifo\+\_\+show (
+\begin{DoxyParamCaption}
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{fifo\+\_\+ctx, }
+\item[{void $\ast$$\ast$}]{elem, }
+\item[{size\+\_\+t $\ast$}]{elem\+\_\+size}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_a0793bad9ac8a0db8c1cd54a530a8e7ac}{}\label{fifo_8c_a0793bad9ac8a0db8c1cd54a530a8e7ac}
+//\+T\+O\+DO 
+
+Definition at line 246 of file fifo.\+c.
+
+\index{fifo.\+c@{fifo.\+c}!fifo\+\_\+traverse@{fifo\+\_\+traverse}}
+\index{fifo\+\_\+traverse@{fifo\+\_\+traverse}!fifo.\+c@{fifo.\+c}}
+\subsubsection[{\texorpdfstring{fifo\+\_\+traverse(fifo\+\_\+ctx\+\_\+t $\ast$fifo\+\_\+ctx, int elem\+\_\+cnt, void($\ast$it\+\_\+fxn)(void $\ast$elem, ssize\+\_\+t elem\+\_\+size, int idx, void $\ast$it\+\_\+arg, int $\ast$ref\+\_\+flag\+\_\+break), void $\ast$it\+\_\+arg)}{fifo_traverse(fifo_ctx_t *fifo_ctx, int elem_cnt, void(*it_fxn)(void *elem, ssize_t elem_size, int idx, void *it_arg, int *ref_flag_break), void *it_arg)}}]{\setlength{\rightskip}{0pt plus 5cm}int fifo\+\_\+traverse (
+\begin{DoxyParamCaption}
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{fifo\+\_\+ctx, }
+\item[{int}]{elem\+\_\+cnt, }
+\item[{void($\ast$)(void $\ast$elem, ssize\+\_\+t elem\+\_\+size, int idx, void $\ast$it\+\_\+arg, int $\ast$ref\+\_\+flag\+\_\+break)}]{it\+\_\+fxn, }
+\item[{void $\ast$}]{it\+\_\+arg}
+\end{DoxyParamCaption}
+)}\hypertarget{fifo_8c_acebb289956cc3f7254d0e8bb5b6ca38a}{}\label{fifo_8c_acebb289956cc3f7254d0e8bb5b6ca38a}
+//\+T\+O\+DO 
+
+Definition at line 266 of file fifo.\+c.
+

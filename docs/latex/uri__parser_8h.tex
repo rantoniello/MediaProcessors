@@ -1,0 +1,49 @@
+\hypertarget{uri__parser_8h}{}\section{uri\+\_\+parser.\+h File Reference}
+\label{uri__parser_8h}\index{uri\+\_\+parser.\+h@{uri\+\_\+parser.\+h}}
+
+
+U\+RI parser wrapper.  
+
+
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=148pt]{uri__parser_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef enum uri\+\_\+parser\+\_\+uri\+\_\+parts {\bfseries uri\+\_\+parser\+\_\+uri\+\_\+parts\+\_\+t}\hypertarget{uri__parser_8h_ad8bc5c55ce3df3b5acc39c6d5ab09a87}{}\label{uri__parser_8h_ad8bc5c55ce3df3b5acc39c6d5ab09a87}
+
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries uri\+\_\+parser\+\_\+uri\+\_\+parts} \{ {\bfseries S\+C\+H\+E\+ME} = 0, 
+{\bfseries H\+O\+S\+T\+T\+E\+XT}, 
+{\bfseries P\+O\+R\+T\+T\+E\+XT}
+ \}\hypertarget{uri__parser_8h_abeb185ae2d681449278db867e4e3842b}{}\label{uri__parser_8h_abeb185ae2d681449278db867e4e3842b}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ {\bfseries uri\+\_\+parser\+\_\+get\+\_\+uri\+\_\+part} (const char $\ast$uri, uri\+\_\+parser\+\_\+uri\+\_\+parts\+\_\+t part)\hypertarget{uri__parser_8h_a0be83ad7e788d9e90ede8d431e516855}{}\label{uri__parser_8h_a0be83ad7e788d9e90ede8d431e516855}
+
+\item 
+char $\ast$ {\bfseries uri\+\_\+parser\+\_\+query\+\_\+str\+\_\+get\+\_\+value} (const char $\ast$key, const char $\ast$query\+\_\+str)\hypertarget{uri__parser_8h_ad166be95d4a864025d73dad397461a65}{}\label{uri__parser_8h_ad166be95d4a864025d73dad397461a65}
+
+\item 
+int {\bfseries uri\+\_\+parser\+\_\+get\+\_\+id\+\_\+from\+\_\+rest\+\_\+url} (const char $\ast$url, const char $\ast$needle, long long $\ast$ref\+\_\+id)\hypertarget{uri__parser_8h_a9157066a89f0562e1a77071738083936}{}\label{uri__parser_8h_a9157066a89f0562e1a77071738083936}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+U\+RI parser wrapper. 
+
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}

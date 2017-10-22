@@ -1,0 +1,62 @@
+\hypertarget{classSimpleMediaSubsession}{}\section{Simple\+Media\+Subsession Class Reference}
+\label{classSimpleMediaSubsession}\index{Simple\+Media\+Subsession@{Simple\+Media\+Subsession}}
+
+
+Inheritance diagram for Simple\+Media\+Subsession\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{classSimpleMediaSubsession__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Simple\+Media\+Subsession\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{classSimpleMediaSubsession__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries deliver\+Frame} (\hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$$\ast$)\hypertarget{classSimpleMediaSubsession_a69d4f42c52f6a045ce862b56a17107d9}{}\label{classSimpleMediaSubsession_a69d4f42c52f6a045ce862b56a17107d9}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classSimpleMediaSubsession}{Simple\+Media\+Subsession} $\ast$ {\bfseries create\+New} (Usage\+Environment \&env, const char $\ast$sdp\+\_\+mimetype, port\+Num\+Bits initial\+Port\+Num=6970, Boolean multiplex\+R\+T\+C\+P\+With\+R\+TP=False)\hypertarget{classSimpleMediaSubsession_adc34ab9574a6ed91240fa829e6c2a5f9}{}\label{classSimpleMediaSubsession_adc34ab9574a6ed91240fa829e6c2a5f9}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Simple\+Media\+Subsession} (Usage\+Environment \&env, const char $\ast$sdp\+\_\+mimetype, port\+Num\+Bits initial\+Port\+Num=6970, Boolean multiplex\+R\+T\+C\+P\+With\+R\+TP=False)\hypertarget{classSimpleMediaSubsession_a138fc3680387851d5bcf973555b80113}{}\label{classSimpleMediaSubsession_a138fc3680387851d5bcf973555b80113}
+
+\item 
+virtual Framed\+Source $\ast$ {\bfseries create\+New\+Stream\+Source} (unsigned client\+Session\+Id, unsigned \&est\+Bitrate)\hypertarget{classSimpleMediaSubsession_af89b24bdd0593d86ebbaf080abe6e27f}{}\label{classSimpleMediaSubsession_af89b24bdd0593d86ebbaf080abe6e27f}
+
+\item 
+virtual void {\bfseries delete\+Stream} (unsigned client\+Session\+Id, void $\ast$\&stream\+Token)\hypertarget{classSimpleMediaSubsession_ae8860a3c2f76d66c38bab610f876f3dc}{}\label{classSimpleMediaSubsession_ae8860a3c2f76d66c38bab610f876f3dc}
+
+\item 
+virtual void {\bfseries close\+Stream\+Source} (Framed\+Source $\ast$input\+Source)\hypertarget{classSimpleMediaSubsession_a88cdf48dd34d9b856bfa35ddd626df65}{}\label{classSimpleMediaSubsession_a88cdf48dd34d9b856bfa35ddd626df65}
+
+\item 
+virtual R\+T\+P\+Sink $\ast$ {\bfseries create\+New\+R\+T\+P\+Sink} (Groupsock $\ast$rtp\+Groupsock, unsigned char rtp\+Payload\+Type\+If\+Dynamic, Framed\+Source $\ast$input\+Source)\hypertarget{classSimpleMediaSubsession_a50a8947658acf0170aa66b9c9b00e3f1}{}\label{classSimpleMediaSubsession_a50a8947658acf0170aa66b9c9b00e3f1}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+So-\/called \char`\"{}media sub-\/session\char`\"{} class prototype. 
+
+Definition at line 326 of file live555\+\_\+rtsp.\+cpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{live555__rtsp_8cpp}{live555\+\_\+rtsp.\+cpp}\end{DoxyCompactItemize}

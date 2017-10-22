@@ -1,0 +1,177 @@
+\hypertarget{llist_8h}{}\section{llist.\+h File Reference}
+\label{llist_8h}\index{llist.\+h@{llist.\+h}}
+
+
+Simple linked-\/list utility implementation.  
+
+
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+Include dependency graph for llist.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{llist_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=176pt]{llist_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structllist__s}{llist\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{llist_8h_a03c73e9b03035a8a4f310c37ee90fb1b}{L\+L\+I\+S\+T\+\_\+\+D\+U\+P\+L\+I\+C\+A\+TE}(ref\+\_\+llist\+\_\+dst,  llist\+\_\+src,  node\+\_\+dup\+\_\+fxn,  node\+\_\+dup\+\_\+fxn\+\_\+t,  ret\+\_\+code)
+\item 
+\#define \hyperlink{llist_8h_a5a3d6dfc2b9e830609e181ae3e8023d1}{L\+L\+I\+S\+T\+\_\+\+R\+E\+L\+E\+A\+SE}(ref\+\_\+llist\+\_\+head,  node\+\_\+release\+\_\+fxn,  node\+\_\+type)
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structllist__s}{llist\+\_\+s} \hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{llist_8h_a51aae99f75f43a1b4a5ca3eeb15a401d}{llist\+\_\+push} (\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$$\ast$ref\+\_\+llist\+\_\+head, void $\ast$data)
+\item 
+void $\ast$ \hyperlink{llist_8h_a0d83d366ad71633395a7b1578b6537fc}{llist\+\_\+pop} (\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$$\ast$ref\+\_\+llist\+\_\+head)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Simple linked-\/list utility implementation. 
+
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{llist.\+h@{llist.\+h}!L\+L\+I\+S\+T\+\_\+\+D\+U\+P\+L\+I\+C\+A\+TE@{L\+L\+I\+S\+T\+\_\+\+D\+U\+P\+L\+I\+C\+A\+TE}}
+\index{L\+L\+I\+S\+T\+\_\+\+D\+U\+P\+L\+I\+C\+A\+TE@{L\+L\+I\+S\+T\+\_\+\+D\+U\+P\+L\+I\+C\+A\+TE}!llist.\+h@{llist.\+h}}
+\subsubsection[{\texorpdfstring{L\+L\+I\+S\+T\+\_\+\+D\+U\+P\+L\+I\+C\+A\+TE}{LLIST_DUPLICATE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+L\+I\+S\+T\+\_\+\+D\+U\+P\+L\+I\+C\+A\+TE(
+\begin{DoxyParamCaption}
+\item[{}]{ref\+\_\+llist\+\_\+dst, }
+\item[{}]{llist\+\_\+src, }
+\item[{}]{node\+\_\+dup\+\_\+fxn, }
+\item[{}]{node\+\_\+dup\+\_\+fxn\+\_\+t, }
+\item[{}]{ret\+\_\+code}
+\end{DoxyParamCaption}
+)}\hypertarget{llist_8h_a03c73e9b03035a8a4f310c37ee90fb1b}{}\label{llist_8h_a03c73e9b03035a8a4f310c37ee90fb1b}
+Duplicate entire linked list (M\+A\+C\+RO). 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+llist\+\_\+dst} & Reference to the pointer to the so-\/called \char`\"{}head\char`\"{} of the destination list (where the nodes are to be copied). \\
+\hline
+{\em Pointer} & to the \char`\"{}head\char`\"{} of the list to be copied. \\
+\hline
+{\em node\+\_\+dup\+\_\+fxn} & Pointer to the function to be applied to copy each of the node-\/elements of the source list. The prototype of this function is\+: \textquotesingle{}node\+\_\+dup\+\_\+fxn\+\_\+t$\ast$({\itshape node\+\_\+dup\+\_\+fxn)(const node\+\_\+dup\+\_\+fxn\+\_\+t})\textquotesingle{}. \\
+\hline
+{\em node\+\_\+dup\+\_\+fxn\+\_\+t} & Data type used in function \textquotesingle{}node\+\_\+dup\+\_\+fxn\textquotesingle{}. \\
+\hline
+{\em ret\+\_\+code} & Status code set as result (refer to \textquotesingle{}stat\+\_\+codes\+\_\+ctx\+\_\+t\textquotesingle{} type). \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+stat\+\_\+codes\+\_\+ctx\+\_\+t 
+\end{DoxySeeAlso}
+
+
+Definition at line 91 of file llist.\+h.
+
+\index{llist.\+h@{llist.\+h}!L\+L\+I\+S\+T\+\_\+\+R\+E\+L\+E\+A\+SE@{L\+L\+I\+S\+T\+\_\+\+R\+E\+L\+E\+A\+SE}}
+\index{L\+L\+I\+S\+T\+\_\+\+R\+E\+L\+E\+A\+SE@{L\+L\+I\+S\+T\+\_\+\+R\+E\+L\+E\+A\+SE}!llist.\+h@{llist.\+h}}
+\subsubsection[{\texorpdfstring{L\+L\+I\+S\+T\+\_\+\+R\+E\+L\+E\+A\+SE}{LLIST_RELEASE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+L\+I\+S\+T\+\_\+\+R\+E\+L\+E\+A\+SE(
+\begin{DoxyParamCaption}
+\item[{}]{ref\+\_\+llist\+\_\+head, }
+\item[{}]{node\+\_\+release\+\_\+fxn, }
+\item[{}]{node\+\_\+type}
+\end{DoxyParamCaption}
+)}\hypertarget{llist_8h_a5a3d6dfc2b9e830609e181ae3e8023d1}{}\label{llist_8h_a5a3d6dfc2b9e830609e181ae3e8023d1}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{while}((*ref\_llist\_head)!= NULL) \{\(\backslash\)
+    void (*\_node\_release\_fxn)(node\_type**)= node\_release\_fxn;\(\backslash\)
+    node\_type *node= (node\_type*)\hyperlink{llist_8h_a0d83d366ad71633395a7b1578b6537fc}{llist\_pop}(ref\_llist\_head);\(\backslash\)
+    if(node!= NULL) \_node\_release\_fxn(&node);\(\backslash\)
+    \hyperlink{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{ASSERT}(node== NULL);\(\backslash\)
+\}
+\end{DoxyCode}
+Release the entire linked list (M\+A\+C\+RO). 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+llist\+\_\+head} & Reference to the pointer to the so-\/called \char`\"{}head\char`\"{} of the list to be released. \\
+\hline
+{\em node\+\_\+release\+\_\+fxn} & Pointer to the function to be applied to release each of the node-\/elements of the given list. The prototype of this function is\+: \textquotesingle{}void ($\ast$node\+\_\+release\+\_\+fxn)(node\+\_\+type$\ast$$\ast$)\textquotesingle{}. \\
+\hline
+{\em node\+\_\+type} & Data type used in function \textquotesingle{}node\+\_\+release\+\_\+fxn\textquotesingle{}. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 135 of file llist.\+h.
+
+
+
+\subsection{Typedef Documentation}
+\index{llist.\+h@{llist.\+h}!llist\+\_\+t@{llist\+\_\+t}}
+\index{llist\+\_\+t@{llist\+\_\+t}!llist.\+h@{llist.\+h}}
+\subsubsection[{\texorpdfstring{llist\+\_\+t}{llist_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf llist\+\_\+s} {\bf llist\+\_\+t}}\hypertarget{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{}\label{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}
+Linked list type structure. 
+
+Definition at line 44 of file llist.\+h.
+
+
+
+\subsection{Function Documentation}
+\index{llist.\+h@{llist.\+h}!llist\+\_\+pop@{llist\+\_\+pop}}
+\index{llist\+\_\+pop@{llist\+\_\+pop}!llist.\+h@{llist.\+h}}
+\subsubsection[{\texorpdfstring{llist\+\_\+pop(llist\+\_\+t $\ast$$\ast$ref\+\_\+llist\+\_\+head)}{llist_pop(llist_t **ref_llist_head)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ llist\+\_\+pop (
+\begin{DoxyParamCaption}
+\item[{{\bf llist\+\_\+t} $\ast$$\ast$}]{ref\+\_\+llist\+\_\+head}
+\end{DoxyParamCaption}
+)}\hypertarget{llist_8h_a0d83d366ad71633395a7b1578b6537fc}{}\label{llist_8h_a0d83d366ad71633395a7b1578b6537fc}
+Extract the data from the head node of the list, delete the node, and advance the head pointer to point at the next node list. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+llist\+\_\+head} & Reference to the pointer to the so-\/called \char`\"{}head\char`\"{} of the list. The head pointer will be updated to point to the next node of the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Data element popped, or N\+U\+LL in the case of error due to wrong parameter or empty list. 
+\end{DoxyReturn}
+
+
+Definition at line 75 of file llist.\+c.
+
+\index{llist.\+h@{llist.\+h}!llist\+\_\+push@{llist\+\_\+push}}
+\index{llist\+\_\+push@{llist\+\_\+push}!llist.\+h@{llist.\+h}}
+\subsubsection[{\texorpdfstring{llist\+\_\+push(llist\+\_\+t $\ast$$\ast$ref\+\_\+llist\+\_\+head, void $\ast$data)}{llist_push(llist_t **ref_llist_head, void *data)}}]{\setlength{\rightskip}{0pt plus 5cm}int llist\+\_\+push (
+\begin{DoxyParamCaption}
+\item[{{\bf llist\+\_\+t} $\ast$$\ast$}]{ref\+\_\+llist\+\_\+head, }
+\item[{void $\ast$}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{llist_8h_a51aae99f75f43a1b4a5ca3eeb15a401d}{}\label{llist_8h_a51aae99f75f43a1b4a5ca3eeb15a401d}
+Creates a new link node with the given data and pushes it onto the front of the list. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+llist\+\_\+head} & Reference to the pointer to the so-\/called \char`\"{}head\char`\"{} of the list. If the list is empty, the head pointer should be N\+U\+LL. The head pointer will be updated to the newly created node. \\
+\hline
+{\em data} & Pointer to a new data element to be inserted in the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (refer to \textquotesingle{}stat\+\_\+codes\+\_\+ctx\+\_\+t\textquotesingle{} type). 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+stat\+\_\+codes\+\_\+ctx\+\_\+t 
+\end{DoxySeeAlso}
+
+
+Definition at line 57 of file llist.\+c.
+

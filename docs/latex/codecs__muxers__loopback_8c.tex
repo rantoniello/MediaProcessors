@@ -1,0 +1,192 @@
+\hypertarget{codecs__muxers__loopback_8c}{}\section{codecs\+\_\+muxers\+\_\+loopback.\+c File Reference}
+\label{codecs__muxers__loopback_8c}\index{codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}}
+
+
+Complete encoding-\/$>$multiplexing-\/$>$demultiplexing-\/$>$decoding-\/$>$rendering loopback example.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$mongoose.\+h$>$}\\*
+{\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\\*
+{\ttfamily \#include $<$libavcodec/avcodec.\+h$>$}\\*
+{\ttfamily \#include $<$libavutil/opt.\+h$>$}\\*
+{\ttfamily \#include $<$libavutil/imgutils.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/fifo.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/schedule.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc\+\_\+if.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/procs.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/procs\+\_\+api\+\_\+http.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsmuxers/live555\+\_\+rtsp.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocscodecs/ffmpeg\+\_\+x264.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocscodecs/ffmpeg\+\_\+m2v.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocscodecs/ffmpeg\+\_\+mp3.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocscodecs/ffmpeg\+\_\+lhe.\+h$>$}\\*
+Include dependency graph for codecs\+\_\+muxers\+\_\+loopback.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{codecs__muxers__loopback_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structthr__ctx__s}{thr\+\_\+ctx\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries L\+I\+S\+T\+E\+N\+I\+N\+G\+\_\+\+P\+O\+RT}~\char`\"{}8088\char`\"{}\hypertarget{codecs__muxers__loopback_8c_a6add37a3a6b770ee16acc23503c4a915}{}\label{codecs__muxers__loopback_8c_a6add37a3a6b770ee16acc23503c4a915}
+
+\item 
+\#define {\bfseries L\+I\+S\+T\+E\+N\+I\+N\+G\+\_\+\+H\+O\+ST}~\char`\"{}127.\+0.\+0.\+1\char`\"{}\hypertarget{codecs__muxers__loopback_8c_a88607e6411305be1109c81fedd95e353}{}\label{codecs__muxers__loopback_8c_a88607e6411305be1109c81fedd95e353}
+
+\item 
+\#define {\bfseries V\+I\+D\+E\+O\+\_\+\+W\+I\+D\+TH}~\char`\"{}352\char`\"{}\hypertarget{codecs__muxers__loopback_8c_aa4887fe2baec2a43eacbd4bdd58e0330}{}\label{codecs__muxers__loopback_8c_aa4887fe2baec2a43eacbd4bdd58e0330}
+
+\item 
+\#define {\bfseries V\+I\+D\+E\+O\+\_\+\+H\+E\+I\+G\+HT}~\char`\"{}288\char`\"{}\hypertarget{codecs__muxers__loopback_8c_a4ad30f5e21957a142524fdcaf9b4e298}{}\label{codecs__muxers__loopback_8c_a4ad30f5e21957a142524fdcaf9b4e298}
+
+\item 
+\#define {\bfseries R\+E\+F\+R\+E\+S\+H\+\_\+\+E\+V\+E\+NT}~(S\+D\+L\+\_\+\+U\+S\+E\+R\+E\+V\+E\+NT + 1)\hypertarget{codecs__muxers__loopback_8c_abfac2243aa71f3e15398bf7cf2737190}{}\label{codecs__muxers__loopback_8c_abfac2243aa71f3e15398bf7cf2737190}
+
+\item 
+\#define {\bfseries B\+R\+E\+A\+K\+\_\+\+E\+V\+E\+NT}~(S\+D\+L\+\_\+\+U\+S\+E\+R\+E\+V\+E\+NT + 2)\hypertarget{codecs__muxers__loopback_8c_abb7b7ae6000dacf0f52da38f2325c06b}{}\label{codecs__muxers__loopback_8c_abb7b7ae6000dacf0f52da38f2325c06b}
+
+\item 
+\#define {\bfseries U\+R\+I\+\_\+\+M\+AX}~4096\hypertarget{codecs__muxers__loopback_8c_a979f94138dd60d9a284b815812824248}{}\label{codecs__muxers__loopback_8c_a979f94138dd60d9a284b815812824248}
+
+\item 
+\#define {\bfseries M\+E\+T\+H\+\_\+\+M\+AX}~16\hypertarget{codecs__muxers__loopback_8c_a4e5decc1c25a560237ac0fea6c81e22e}{}\label{codecs__muxers__loopback_8c_a4e5decc1c25a560237ac0fea6c81e22e}
+
+\item 
+\#define {\bfseries B\+O\+D\+Y\+\_\+\+M\+AX}~4096000\hypertarget{codecs__muxers__loopback_8c_a92b7721e4a0b642cf1fe625e56c079ee}{}\label{codecs__muxers__loopback_8c_a92b7721e4a0b642cf1fe625e56c079ee}
+
+\item 
+\#define {\bfseries M\+P\+E\+G2\+\_\+\+V\+I\+D\+EO}\hypertarget{codecs__muxers__loopback_8c_a8a600729712cfedb5d4dfc3627f8c590}{}\label{codecs__muxers__loopback_8c_a8a600729712cfedb5d4dfc3627f8c590}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structthr__ctx__s}{thr\+\_\+ctx\+\_\+s} \hyperlink{codecs__muxers__loopback_8c_ae8bc5627a784b63c3505e81e9f7b08ab}{thr\+\_\+ctx\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void {\bfseries prepare\+\_\+and\+\_\+send\+\_\+raw\+\_\+video\+\_\+data} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, int enc\+\_\+proc\+\_\+id, volatile int $\ast$ref\+\_\+flag\+\_\+exit)\hypertarget{codecs__muxers__loopback_8c_a4ebb80e2ef7dd237d578a03bd861dca9}{}\label{codecs__muxers__loopback_8c_a4ebb80e2ef7dd237d578a03bd861dca9}
+
+\item 
+static void $\ast$ \hyperlink{codecs__muxers__loopback_8c_a8ff235c61c50a710e093a6b27e80243e}{producer\+\_\+thr\+\_\+video} (void $\ast$t)
+\item 
+static void $\ast$ \hyperlink{codecs__muxers__loopback_8c_a494104de8b24b4783b3e8de4609c761e}{mux\+\_\+thr} (void $\ast$t)
+\item 
+static void $\ast$ \hyperlink{codecs__muxers__loopback_8c_ae66adca53cb5b2afde52cb2381a2384a}{dmux\+\_\+thr} (void $\ast$t)
+\item 
+static void $\ast$ {\bfseries consumer\+\_\+thr\+\_\+video} (void $\ast$t)\hypertarget{codecs__muxers__loopback_8c_ae774d9ccdbb2ef14c7419ec05e4aef7d}{}\label{codecs__muxers__loopback_8c_ae774d9ccdbb2ef14c7419ec05e4aef7d}
+
+\item 
+static void {\bfseries http\+\_\+event\+\_\+handler} (struct mg\+\_\+connection $\ast$c, int ev, void $\ast$p)\hypertarget{codecs__muxers__loopback_8c_a27d1e0fefe1a534667f424108019faa8}{}\label{codecs__muxers__loopback_8c_a27d1e0fefe1a534667f424108019faa8}
+
+\item 
+static void $\ast$ \hyperlink{codecs__muxers__loopback_8c_ac951c8a0976a758893de3bcfcf89b49e}{http\+\_\+server\+\_\+thr} (void $\ast$t)
+\item 
+static void {\bfseries stream\+\_\+proc\+\_\+quit\+\_\+signal\+\_\+handler} ()\hypertarget{codecs__muxers__loopback_8c_adc0c67c00a9a0ffdfc0f75c5cbebdaa9}{}\label{codecs__muxers__loopback_8c_adc0c67c00a9a0ffdfc0f75c5cbebdaa9}
+
+\item 
+static void \hyperlink{codecs__muxers__loopback_8c_a6b8ea89b3d67b7e8a21ab9760aa2840d}{procs\+\_\+post} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, const char $\ast$proc\+\_\+name, const char $\ast$proc\+\_\+settings, int $\ast$ref\+\_\+proc\+\_\+id)
+\item 
+int {\bfseries main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})\hypertarget{codecs__muxers__loopback_8c_a0ddf1224851353fc92bfbff6f499fa97}{}\label{codecs__muxers__loopback_8c_a0ddf1224851353fc92bfbff6f499fa97}
+
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static volatile int {\bfseries flag\+\_\+app\+\_\+exit} = 0\hypertarget{codecs__muxers__loopback_8c_af4c14595d2e543d2d7cd2c86cc50ec0c}{}\label{codecs__muxers__loopback_8c_af4c14595d2e543d2d7cd2c86cc50ec0c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Complete encoding-\/$>$multiplexing-\/$>$demultiplexing-\/$>$decoding-\/$>$rendering loopback example. 
+
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}!thr\+\_\+ctx\+\_\+t@{thr\+\_\+ctx\+\_\+t}}
+\index{thr\+\_\+ctx\+\_\+t@{thr\+\_\+ctx\+\_\+t}!codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}}
+\subsubsection[{\texorpdfstring{thr\+\_\+ctx\+\_\+t}{thr_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf thr\+\_\+ctx\+\_\+s}  {\bf thr\+\_\+ctx\+\_\+t}}\hypertarget{codecs__muxers__loopback_8c_ae8bc5627a784b63c3505e81e9f7b08ab}{}\label{codecs__muxers__loopback_8c_ae8bc5627a784b63c3505e81e9f7b08ab}
+Common data passed to all the threads launched by this application. To simplify, we put all the necessary data together in the same type of structure. 
+
+\subsection{Function Documentation}
+\index{codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}!dmux\+\_\+thr@{dmux\+\_\+thr}}
+\index{dmux\+\_\+thr@{dmux\+\_\+thr}!codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}}
+\subsubsection[{\texorpdfstring{dmux\+\_\+thr(void $\ast$t)}{dmux_thr(void *t)}}]{\setlength{\rightskip}{0pt plus 5cm}static void$\ast$ dmux\+\_\+thr (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{codecs__muxers__loopback_8c_ae66adca53cb5b2afde52cb2381a2384a}{}\label{codecs__muxers__loopback_8c_ae66adca53cb5b2afde52cb2381a2384a}
+De-\/multiplexer thread. 
+
+Definition at line 233 of file codecs\+\_\+muxers\+\_\+loopback.\+c.
+
+\index{codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}!http\+\_\+server\+\_\+thr@{http\+\_\+server\+\_\+thr}}
+\index{http\+\_\+server\+\_\+thr@{http\+\_\+server\+\_\+thr}!codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}}
+\subsubsection[{\texorpdfstring{http\+\_\+server\+\_\+thr(void $\ast$t)}{http_server_thr(void *t)}}]{\setlength{\rightskip}{0pt plus 5cm}static void$\ast$ http\+\_\+server\+\_\+thr (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{codecs__muxers__loopback_8c_ac951c8a0976a758893de3bcfcf89b49e}{}\label{codecs__muxers__loopback_8c_ac951c8a0976a758893de3bcfcf89b49e}
+Runs H\+T\+TP server thread, listening to the given port. 
+
+Definition at line 566 of file codecs\+\_\+muxers\+\_\+loopback.\+c.
+
+\index{codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}!mux\+\_\+thr@{mux\+\_\+thr}}
+\index{mux\+\_\+thr@{mux\+\_\+thr}!codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}}
+\subsubsection[{\texorpdfstring{mux\+\_\+thr(void $\ast$t)}{mux_thr(void *t)}}]{\setlength{\rightskip}{0pt plus 5cm}static void$\ast$ mux\+\_\+thr (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{codecs__muxers__loopback_8c_a494104de8b24b4783b3e8de4609c761e}{}\label{codecs__muxers__loopback_8c_a494104de8b24b4783b3e8de4609c761e}
+Multiplexer thread. 
+
+Definition at line 179 of file codecs\+\_\+muxers\+\_\+loopback.\+c.
+
+\index{codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}!procs\+\_\+post@{procs\+\_\+post}}
+\index{procs\+\_\+post@{procs\+\_\+post}!codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}}
+\subsubsection[{\texorpdfstring{procs\+\_\+post(procs\+\_\+ctx\+\_\+t $\ast$procs\+\_\+ctx, const char $\ast$proc\+\_\+name, const char $\ast$proc\+\_\+settings, int $\ast$ref\+\_\+proc\+\_\+id)}{procs_post(procs_ctx_t *procs_ctx, const char *proc_name, const char *proc_settings, int *ref_proc_id)}}]{\setlength{\rightskip}{0pt plus 5cm}static void procs\+\_\+post (
+\begin{DoxyParamCaption}
+\item[{{\bf procs\+\_\+ctx\+\_\+t} $\ast$}]{procs\+\_\+ctx, }
+\item[{const char $\ast$}]{proc\+\_\+name, }
+\item[{const char $\ast$}]{proc\+\_\+settings, }
+\item[{int $\ast$}]{ref\+\_\+proc\+\_\+id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{codecs__muxers__loopback_8c_a6b8ea89b3d67b7e8a21ab9760aa2840d}{}\label{codecs__muxers__loopback_8c_a6b8ea89b3d67b7e8a21ab9760aa2840d}
+Register (open) a processor instance\+: 1.-\/ Register processor with given initial settings if desired, 2.-\/ Parse J\+S\+O\+N-\/\+R\+E\+ST response to get processor Id. 
+
+Definition at line 613 of file codecs\+\_\+muxers\+\_\+loopback.\+c.
+
+\index{codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}!producer\+\_\+thr\+\_\+video@{producer\+\_\+thr\+\_\+video}}
+\index{producer\+\_\+thr\+\_\+video@{producer\+\_\+thr\+\_\+video}!codecs\+\_\+muxers\+\_\+loopback.\+c@{codecs\+\_\+muxers\+\_\+loopback.\+c}}
+\subsubsection[{\texorpdfstring{producer\+\_\+thr\+\_\+video(void $\ast$t)}{producer_thr_video(void *t)}}]{\setlength{\rightskip}{0pt plus 5cm}static void$\ast$ producer\+\_\+thr\+\_\+video (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{codecs__muxers__loopback_8c_a8ff235c61c50a710e093a6b27e80243e}{}\label{codecs__muxers__loopback_8c_a8ff235c61c50a710e093a6b27e80243e}
+Raw data producer and encoding thread. 
+
+Definition at line 157 of file codecs\+\_\+muxers\+\_\+loopback.\+c.
+

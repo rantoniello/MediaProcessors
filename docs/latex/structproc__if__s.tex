@@ -1,0 +1,199 @@
+\hypertarget{structproc__if__s}{}\section{proc\+\_\+if\+\_\+s Struct Reference}
+\label{structproc__if__s}\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+
+
+{\ttfamily \#include $<$proc\+\_\+if.\+h$>$}
+
+
+
+Collaboration diagram for proc\+\_\+if\+\_\+s\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structproc__if__s__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const char $\ast$ \hyperlink{structproc__if__s_aa284f1d0bdde2fae0b51101f658430ee}{proc\+\_\+name}
+\item 
+\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$($\ast$ \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{open} )(const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)
+\item 
+void($\ast$ \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{close} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
+\item 
+int($\ast$ \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{rest\+\_\+put} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
+\item 
+int($\ast$ \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{rest\+\_\+get} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$ref\+\_\+str)
+\item 
+int($\ast$ \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{process\+\_\+frame} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+iput, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+oput)
+\item 
+int($\ast$ \hyperlink{structproc__if__s_a4ca0939d6721f368d2560851197fca36}{opt} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$tag, va\+\_\+list arg)
+\item 
+void $\ast$($\ast$ \hyperlink{structproc__if__s_a558cec57df436699d4154775894f2313}{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup} )(const \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx)
+\item 
+void($\ast$ \hyperlink{structproc__if__s_aec3bf948ff945ac2f5a4c834ea3b57da}{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release} )(void $\ast$$\ast$ref\+\_\+t)
+\item 
+\hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$($\ast$ \hyperlink{structproc__if__s_a7806bbda25988d9ee54f6d0bb143c697}{oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup} )(const void $\ast$t)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+P\+R\+OC interface structure prototype. Each P\+R\+OC type will define a static and unambiguous interface of this type. 
+
+Definition at line 149 of file proc\+\_\+if.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!close@{close}}
+\index{close@{close}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{close}{close}}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ proc\+\_\+if\+\_\+s\+::close) ({\bf proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)}\hypertarget{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{}\label{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}
+Ends processing thread, de-\/initialize and release the processor (P\+R\+OC) context structure and all the related resources. This callback is mandatory (cannot be N\+U\+LL). 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+proc\+\_\+ctx} & Reference to the pointer to the processor (P\+R\+OC) context structure to be release, that was obtained in a previous call to the \textquotesingle{}\hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{open()}\textquotesingle{} callback method. Pointer is set to N\+U\+LL on return. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 177 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup@{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}}
+\index{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup@{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}{iput_fifo_elem_opaque_dup}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$($\ast$ proc\+\_\+if\+\_\+s\+::iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup) (const {\bf proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx)}\hypertarget{structproc__if__s_a558cec57df436699d4154775894f2313}{}\label{structproc__if__s_a558cec57df436699d4154775894f2313}
+This callback is registered in the F\+I\+FO management A\+PI and is used to internally duplicate the input frame structure when it is pushed to the processor input F\+I\+FO. Typically, this callback is used to transform the input type proc\+\_\+frame\+\_\+ctx\+\_\+t to another structure type that will be actually allocated in the F\+I\+FO. This callback is optional, and can be set to N\+U\+LL. In that case, the processor input frame structure is assumed to be of type proc\+\_\+frame\+\_\+ctx\+\_\+t (thus will be duplicated using function \textquotesingle{}\hyperlink{proc__if_8c_a26df07b260850afd03ec73572608a034}{proc\+\_\+frame\+\_\+ctx\+\_\+allocate()}\textquotesingle{}). 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+frame\+\_\+ctx} & Processor frame context structure (see proc\+\_\+frame\+\_\+ctx\+\_\+t). return Opaque structure (can be private format) duplicating the input frame. This structure will be pushed to the processor input F\+I\+FO. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 249 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release@{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release}}
+\index{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release@{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release}{iput_fifo_elem_opaque_release}}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ proc\+\_\+if\+\_\+s\+::iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release) (void $\ast$$\ast$ref\+\_\+t)}\hypertarget{structproc__if__s_aec3bf948ff945ac2f5a4c834ea3b57da}{}\label{structproc__if__s_aec3bf948ff945ac2f5a4c834ea3b57da}
+This callback is registered in the F\+I\+FO management A\+PI and is complementary to the callback \textquotesingle{}\hyperlink{structproc__if__s_a558cec57df436699d4154775894f2313}{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup()}\textquotesingle{}\+: it is the function used to release the elements duplicated and stored in the processor input F\+I\+FO using \textquotesingle{}\hyperlink{structproc__if__s_a558cec57df436699d4154775894f2313}{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup()}\textquotesingle{}. This callback is optional, and can be set to N\+U\+LL. In that case, the processor input frame structure is assumed to be of type proc\+\_\+frame\+\_\+ctx\+\_\+t (thus will be released using function \textquotesingle{}\hyperlink{proc__if_8c_afad6906a6da22ba369b736863c1e204e}{proc\+\_\+frame\+\_\+ctx\+\_\+release()}\textquotesingle{}). 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+t} & Opaque reference to a pointer to the structure type to be released. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 262 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!open@{open}}
+\index{open@{open}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{open}{open}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proc\+\_\+ctx\+\_\+t}$\ast$($\ast$ proc\+\_\+if\+\_\+s\+::open) (const {\bf proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, {\bf log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)}\hypertarget{structproc__if__s_a34999576771394dfb721463c8455ba06}{}\label{structproc__if__s_a34999576771394dfb721463c8455ba06}
+Allocates specific processor (P\+R\+OC) context structure, initializes, and launches processing thread. This callback is mandatory (cannot be N\+U\+LL). 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+if} & Pointer to the processor interface structure (static and unambiguous interface of the type of processor we are opening). \\
+\hline
+{\em settings\+\_\+str} & Character string containing initial settings for the processor. String format can be either a query-\/string or J\+S\+ON. \\
+\hline
+{\em log\+\_\+ctx} & Pointer to the L\+OG module context structure. \\
+\hline
+{\em arg} & Variable list of parameters defined by user. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the processor context structure on success, N\+U\+LL if fails. 
+\end{DoxyReturn}
+
+
+Definition at line 167 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!opt@{opt}}
+\index{opt@{opt}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{opt}{opt}}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ proc\+\_\+if\+\_\+s\+::opt) ({\bf proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$tag, va\+\_\+list arg)}\hypertarget{structproc__if__s_a4ca0939d6721f368d2560851197fca36}{}\label{structproc__if__s_a4ca0939d6721f368d2560851197fca36}
+Request for specific processor options. This callback is optional (can be set to N\+U\+LL). 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+ctx} & Pointer to the processor (P\+R\+OC) context structure obtained in a previous call to the \textquotesingle{}\hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{open()}\textquotesingle{} callback method. \\
+\hline
+{\em tag} & Processor option tag, namely, option identifier string. Refer to the specific implementation of this function to see the available options. arg Variable list of parameters according to selected option. Refer to the specific implementation of this function to see the parameters corresponding to each available option. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 233 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup@{oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}}
+\index{oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup@{oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}{oput_fifo_elem_opaque_dup}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proc\+\_\+frame\+\_\+ctx\+\_\+t}$\ast$($\ast$ proc\+\_\+if\+\_\+s\+::oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup) (const void $\ast$t)}\hypertarget{structproc__if__s_a7806bbda25988d9ee54f6d0bb143c697}{}\label{structproc__if__s_a7806bbda25988d9ee54f6d0bb143c697}
+This callback is registered in the F\+I\+FO management A\+PI and is used to internally duplicate the processor\textquotesingle{}s output frame structure when it is pushed into the processor output F\+I\+FO. Typically, this callback is used to transform the processor\textquotesingle{}s opaque output type to the type proc\+\_\+frame\+\_\+ctx\+\_\+t that will be actually allocated in the F\+I\+FO. This callback is optional, and can be set to N\+U\+LL. In that case, the processor output frame structure is assumed to be of type proc\+\_\+frame\+\_\+ctx\+\_\+t (thus will be duplicated using function \textquotesingle{}\hyperlink{proc__if_8c_a26df07b260850afd03ec73572608a034}{proc\+\_\+frame\+\_\+ctx\+\_\+allocate()}\textquotesingle{}). 
+\begin{DoxyParams}{Parameters}
+{\em t} & Opaque processor\textquotesingle{}s output frame structure. return Processor frame context structure (see proc\+\_\+frame\+\_\+ctx\+\_\+t). This structure will be pushed to the processor output F\+I\+FO. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 277 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!proc\+\_\+name@{proc\+\_\+name}}
+\index{proc\+\_\+name@{proc\+\_\+name}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{proc\+\_\+name}{proc_name}}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ proc\+\_\+if\+\_\+s\+::proc\+\_\+name}\hypertarget{structproc__if__s_aa284f1d0bdde2fae0b51101f658430ee}{}\label{structproc__if__s_aa284f1d0bdde2fae0b51101f658430ee}
+Unambiguous P\+R\+OC identifier name (character string). 
+
+Definition at line 153 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!process\+\_\+frame@{process\+\_\+frame}}
+\index{process\+\_\+frame@{process\+\_\+frame}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{process\+\_\+frame}{process_frame}}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ proc\+\_\+if\+\_\+s\+::process\+\_\+frame) ({\bf proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, {\bf fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+iput, {\bf fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+oput)}\hypertarget{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{}\label{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}
+Process one frame of data. The frame is read from the input F\+I\+FO buffer and is completely processed. If an output frame is produced, is written to the output F\+I\+FO buffer. This callback is mandatory (cannot be N\+U\+LL). 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+ctx} & Pointer to the processor (P\+R\+OC) context structure obtained in a previous call to the \textquotesingle{}\hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{open()}\textquotesingle{} callback method. \\
+\hline
+{\em fifo\+\_\+ctx\+\_\+iput} & Pointer to the input F\+I\+FO buffer context structure. \\
+\hline
+{\em fifo\+\_\+ctx\+\_\+oput} & Pointer to the output F\+I\+FO buffer context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 217 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!rest\+\_\+get@{rest\+\_\+get}}
+\index{rest\+\_\+get@{rest\+\_\+get}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{rest\+\_\+get}{rest_get}}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ proc\+\_\+if\+\_\+s\+::rest\+\_\+get) ({\bf proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$ref\+\_\+str)}\hypertarget{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{}\label{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}
+Get current processor (P\+R\+OC) settings. Settings are returned by argument in a character string in J\+S\+ON format. This method is asynchronous and thread safe. This callback is optional (can be set to N\+U\+LL). 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+ctx} & Pointer to the processor (P\+R\+OC) context structure obtained in a previous call to the \textquotesingle{}\hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{open()}\textquotesingle{} callback method. \\
+\hline
+{\em ref\+\_\+str} & Reference to the pointer to a character string returning the processor\textquotesingle{}s representational state (including current settings). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 204 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!rest\+\_\+put@{rest\+\_\+put}}
+\index{rest\+\_\+put@{rest\+\_\+put}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{rest\+\_\+put}{rest_put}}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ proc\+\_\+if\+\_\+s\+::rest\+\_\+put) ({\bf proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)}\hypertarget{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{}\label{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}
+Put new processor (P\+R\+OC) settings. Parameters can be passed either as a query-\/string or J\+S\+ON. This method is asynchronous and thread safe. This callback is optional (can be set to N\+U\+LL). 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+ctx} & Pointer to the processor (P\+R\+OC) context structure obtained in a previous call to the \textquotesingle{}\hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{open()}\textquotesingle{} callback method. \\
+\hline
+{\em str} & Pointer to a character string containing new settings for the processor. String format can be either a query-\/string or J\+S\+ON. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 190 of file proc\+\_\+if.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{proc__if_8h}{proc\+\_\+if.\+h}\end{DoxyCompactItemize}

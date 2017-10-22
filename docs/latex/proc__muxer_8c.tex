@@ -1,0 +1,78 @@
+\hypertarget{proc__muxer_8c}{}\section{proc\+\_\+muxer.\+c File Reference}
+\label{proc__muxer_8c}\index{proc\+\_\+muxer.\+c@{proc\+\_\+muxer.\+c}}
+{\ttfamily \#include \char`\"{}proc\+\_\+muxer.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/procs.\+h$>$}\\*
+Include dependency graph for proc\+\_\+muxer.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{proc__muxer_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{proc__muxer_8c_ad76388b1572f0a69e3050fe5c531b5be}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init} (\hyperlink{proc__muxer_8h_a9ba70ba44a602c29e7c35635183d1d1e}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+muxer\+\_\+mux\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+void \hyperlink{proc__muxer_8c_a83c9cc2947383faf9d3a759c5e590269}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit} (\hyperlink{proc__muxer_8h_a9ba70ba44a602c29e7c35635183d1d1e}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+muxer\+\_\+mux\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{proc\+\_\+muxer.\+c@{proc\+\_\+muxer.\+c}!proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit}}
+\index{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit}!proc\+\_\+muxer.\+c@{proc\+\_\+muxer.\+c}}
+\subsubsection[{\texorpdfstring{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit(proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t $\ast$proc\+\_\+muxer\+\_\+mux\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{proc_muxer_mux_ctx_deinit(proc_muxer_mux_ctx_t *proc_muxer_mux_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+muxer\+\_\+mux\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{proc__muxer_8c_a83c9cc2947383faf9d3a759c5e590269}{}\label{proc__muxer_8c_a83c9cc2947383faf9d3a759c5e590269}
+De-\/initialize multiplexer common context structure previously allocated by a call to \textquotesingle{}\hyperlink{proc__muxer_8h_ad76388b1572f0a69e3050fe5c531b5be}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init()}\textquotesingle{}. This function release any heap-\/allocated field or structure member. 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+muxer\+\_\+mux\+\_\+ctx} & Pointer to the multiplexer common context structure to be de-\/initialized. \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 64 of file proc\+\_\+muxer.\+c.
+
+\index{proc\+\_\+muxer.\+c@{proc\+\_\+muxer.\+c}!proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init}}
+\index{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init}!proc\+\_\+muxer.\+c@{proc\+\_\+muxer.\+c}}
+\subsubsection[{\texorpdfstring{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init(proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t $\ast$proc\+\_\+muxer\+\_\+mux\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{proc_muxer_mux_ctx_init(proc_muxer_mux_ctx_t *proc_muxer_mux_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+muxer\+\_\+mux\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{proc__muxer_8c_ad76388b1572f0a69e3050fe5c531b5be}{}\label{proc__muxer_8c_ad76388b1572f0a69e3050fe5c531b5be}
+Initialize multiplexer common context structure. 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+muxer\+\_\+mux\+\_\+ctx} & Pointer to the multiplexer common context structure to be initialized. \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 45 of file proc\+\_\+muxer.\+c.
+

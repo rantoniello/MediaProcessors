@@ -1,0 +1,100 @@
+\hypertarget{proc__muxer_8h}{}\section{proc\+\_\+muxer.\+h File Reference}
+\label{proc__muxer_8h}\index{proc\+\_\+muxer.\+h@{proc\+\_\+muxer.\+h}}
+
+
+Generic processor module context (see type proc\+\_\+ctx\+\_\+t) extension for multiplexers and de-\/multiplexers.  
+
+
+{\ttfamily \#include $<$libmediaprocs/proc.\+h$>$}\\*
+Include dependency graph for proc\+\_\+muxer.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=187pt]{proc__muxer_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{proc__muxer_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structproc__muxer__mux__ctx__s}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structprocs__ctx__s}{procs\+\_\+ctx\+\_\+s} {\bfseries procs\+\_\+ctx\+\_\+t}\hypertarget{proc__muxer_8h_ab630d67154256bc674d010e9bf2bc3c9}{}\label{proc__muxer_8h_ab630d67154256bc674d010e9bf2bc3c9}
+
+\item 
+typedef struct \hyperlink{structproc__muxer__mux__ctx__s}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+s} \hyperlink{proc__muxer_8h_a9ba70ba44a602c29e7c35635183d1d1e}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{proc__muxer_8h_ad76388b1572f0a69e3050fe5c531b5be}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init} (\hyperlink{proc__muxer_8h_a9ba70ba44a602c29e7c35635183d1d1e}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+muxer\+\_\+mux\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+void \hyperlink{proc__muxer_8h_a83c9cc2947383faf9d3a759c5e590269}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit} (\hyperlink{proc__muxer_8h_a9ba70ba44a602c29e7c35635183d1d1e}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+muxer\+\_\+mux\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Generic processor module context (see type proc\+\_\+ctx\+\_\+t) extension for multiplexers and de-\/multiplexers. 
+
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{proc\+\_\+muxer.\+h@{proc\+\_\+muxer.\+h}!proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t}}
+\index{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t}!proc\+\_\+muxer.\+h@{proc\+\_\+muxer.\+h}}
+\subsubsection[{\texorpdfstring{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t}{proc_muxer_mux_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+s}  {\bf proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t}}\hypertarget{proc__muxer_8h_a9ba70ba44a602c29e7c35635183d1d1e}{}\label{proc__muxer_8h_a9ba70ba44a602c29e7c35635183d1d1e}
+Multiplexer processing common context structure. 
+
+\subsection{Function Documentation}
+\index{proc\+\_\+muxer.\+h@{proc\+\_\+muxer.\+h}!proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit}}
+\index{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit}!proc\+\_\+muxer.\+h@{proc\+\_\+muxer.\+h}}
+\subsubsection[{\texorpdfstring{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit(proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t $\ast$proc\+\_\+muxer\+\_\+mux\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{proc_muxer_mux_ctx_deinit(proc_muxer_mux_ctx_t *proc_muxer_mux_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+muxer\+\_\+mux\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{proc__muxer_8h_a83c9cc2947383faf9d3a759c5e590269}{}\label{proc__muxer_8h_a83c9cc2947383faf9d3a759c5e590269}
+De-\/initialize multiplexer common context structure previously allocated by a call to \textquotesingle{}\hyperlink{proc__muxer_8h_ad76388b1572f0a69e3050fe5c531b5be}{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init()}\textquotesingle{}. This function release any heap-\/allocated field or structure member. 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+muxer\+\_\+mux\+\_\+ctx} & Pointer to the multiplexer common context structure to be de-\/initialized. \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 64 of file proc\+\_\+muxer.\+c.
+
+\index{proc\+\_\+muxer.\+h@{proc\+\_\+muxer.\+h}!proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init}}
+\index{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init@{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init}!proc\+\_\+muxer.\+h@{proc\+\_\+muxer.\+h}}
+\subsubsection[{\texorpdfstring{proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init(proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t $\ast$proc\+\_\+muxer\+\_\+mux\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{proc_muxer_mux_ctx_init(proc_muxer_mux_ctx_t *proc_muxer_mux_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+muxer\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+muxer\+\_\+mux\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{proc__muxer_8h_ad76388b1572f0a69e3050fe5c531b5be}{}\label{proc__muxer_8h_ad76388b1572f0a69e3050fe5c531b5be}
+Initialize multiplexer common context structure. 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+muxer\+\_\+mux\+\_\+ctx} & Pointer to the multiplexer common context structure to be initialized. \\
+\hline
+{\em log\+\_\+ctx} & Externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 45 of file proc\+\_\+muxer.\+c.
+

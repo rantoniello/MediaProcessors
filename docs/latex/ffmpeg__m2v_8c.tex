@@ -1,0 +1,364 @@
+\hypertarget{ffmpeg__m2v_8c}{}\section{ffmpeg\+\_\+m2v.\+c File Reference}
+\label{ffmpeg__m2v_8c}\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+{\ttfamily \#include \char`\"{}ffmpeg\+\_\+m2v.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$libavcodec/avcodec.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/fifo.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc\+\_\+if.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}ffmpeg\+\_\+video.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}proc\+\_\+frame\+\_\+2\+\_\+ffmpeg.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}video\+\_\+settings.\+h\char`\"{}}\\*
+Include dependency graph for ffmpeg\+\_\+m2v.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{ffmpeg__m2v_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structffmpeg__m2v__enc__settings__ctx__s}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structffmpeg__m2v__enc__ctx__s}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structffmpeg__m2v__dec__settings__ctx__s}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structffmpeg__m2v__dec__ctx__s}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structffmpeg__m2v__enc__settings__ctx__s}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+s} \hyperlink{ffmpeg__m2v_8c_ab70a455310929f44033bea30f8e08f54}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t}
+\item 
+typedef struct \hyperlink{structffmpeg__m2v__enc__ctx__s}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+s} \hyperlink{ffmpeg__m2v_8c_a077161e6f3888c29207a5786f360e36a}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+t}
+\item 
+typedef struct \hyperlink{structffmpeg__m2v__dec__settings__ctx__s}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+s} \hyperlink{ffmpeg__m2v_8c_a36771ffeb3b7d36349ac226a71ab7b14}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t}
+\item 
+typedef struct \hyperlink{structffmpeg__m2v__dec__ctx__s}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+s} \hyperlink{ffmpeg__m2v_8c_a8e2d24f9782fdb4d25263e167992bd62}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{ffmpeg__m2v_8c_af46f6399a6bb346e72675ca6248796b6}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)
+\item 
+static void \hyperlink{ffmpeg__m2v_8c_a363291f5ee3e4e719822364e32f64e62}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
+\item 
+static int \hyperlink{ffmpeg__m2v_8c_aa88b6e20e0f2a4ebef3d3bca7114f8cf}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+\item 
+static int \hyperlink{ffmpeg__m2v_8c_a8698f484c2734b422e0d31883e808b0a}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
+\item 
+static int \hyperlink{ffmpeg__m2v_8c_ae59dc9b8b18b15374fa180248b81403c}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)
+\item 
+static int \hyperlink{ffmpeg__m2v_8c_a10f3447b10b028bfb6937445f61d9a0d}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{ffmpeg__m2v_8c_ab70a455310929f44033bea30f8e08f54}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+static void \hyperlink{ffmpeg__m2v_8c_ada33f6c1099d077a0dffb64295ad2a3a}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{ffmpeg__m2v_8c_ab70a455310929f44033bea30f8e08f54}{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{ffmpeg__m2v_8c_ac41429949b9d9187db63f78aa4a6be32}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)
+\item 
+static void \hyperlink{ffmpeg__m2v_8c_a4466e1e865b0f9dd31113dbf315ee709}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
+\item 
+static int \hyperlink{ffmpeg__m2v_8c_a4231a716edc84aa40e766be5dc1fdc77}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+\item 
+static int \hyperlink{ffmpeg__m2v_8c_aa76bfc90c9a6c0c0f289a6170261d467}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
+\item 
+static int \hyperlink{ffmpeg__m2v_8c_a3fa3ab031b0b2f490c91d9c4b9fea86e}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)
+\item 
+static int \hyperlink{ffmpeg__m2v_8c_af39aeab690641b749d64fafcb9b8c2c9}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{ffmpeg__m2v_8c_a36771ffeb3b7d36349ac226a71ab7b14}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+static void \hyperlink{ffmpeg__m2v_8c_affc33de80a6ae9dda2fb7707427e89eb}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{ffmpeg__m2v_8c_a36771ffeb3b7d36349ac226a71ab7b14}{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} \hyperlink{ffmpeg__m2v_8c_abe2ad66ced29874a8c169d0666d73a9b}{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+enc}
+\item 
+const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} \hyperlink{ffmpeg__m2v_8c_a7783fa7340b1c4ed27bad9a24825d761}{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+dec}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+t@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+t}}
+\index{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+t@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+t}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+t}{ffmpeg_m2v_dec_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+s}  {\bf ffmpeg\+\_\+m2v\+\_\+dec\+\_\+ctx\+\_\+t}}\hypertarget{ffmpeg__m2v_8c_a8e2d24f9782fdb4d25263e167992bd62}{}\label{ffmpeg__m2v_8c_a8e2d24f9782fdb4d25263e167992bd62}
+F\+Fmpeg\textquotesingle{}s M\+P\+E\+G-\/2 video decoder wrapper context structure. \index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t}}
+\index{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t}{ffmpeg_m2v_dec_settings_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+s}  {\bf ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t}}\hypertarget{ffmpeg__m2v_8c_a36771ffeb3b7d36349ac226a71ab7b14}{}\label{ffmpeg__m2v_8c_a36771ffeb3b7d36349ac226a71ab7b14}
+F\+Fmpeg\textquotesingle{}s M\+P\+E\+G-\/2 video decoder settings context structure. \index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+t@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+t}}
+\index{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+t@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+t}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+t}{ffmpeg_m2v_enc_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+s}  {\bf ffmpeg\+\_\+m2v\+\_\+enc\+\_\+ctx\+\_\+t}}\hypertarget{ffmpeg__m2v_8c_a077161e6f3888c29207a5786f360e36a}{}\label{ffmpeg__m2v_8c_a077161e6f3888c29207a5786f360e36a}
+F\+Fmpeg\textquotesingle{}s M\+P\+E\+G-\/2 video encoder wrapper context structure. \index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t}}
+\index{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t}{ffmpeg_m2v_enc_settings_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+s}  {\bf ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t}}\hypertarget{ffmpeg__m2v_8c_ab70a455310929f44033bea30f8e08f54}{}\label{ffmpeg__m2v_8c_ab70a455310929f44033bea30f8e08f54}
+F\+Fmpeg\textquotesingle{}s M\+P\+E\+G-\/2 video encoder settings context structure. 
+
+\subsection{Function Documentation}
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+dec\+\_\+close@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+close}}
+\index{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+close@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+close}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+close(proc\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)}{ffmpeg_m2v_dec_close(proc_ctx_t **ref_proc_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void ffmpeg\+\_\+m2v\+\_\+dec\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+proc\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_a4466e1e865b0f9dd31113dbf315ee709}{}\label{ffmpeg__m2v_8c_a4466e1e865b0f9dd31113dbf315ee709}
+Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 555 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+dec\+\_\+open@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+open}}
+\index{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+open@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+open}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+open(const proc\+\_\+if\+\_\+t $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx, va\+\_\+list arg)}{ffmpeg_m2v_dec_open(const proc_if_t *proc_if, const char *settings_str, log_ctx_t *log_ctx, va_list arg)}}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf proc\+\_\+ctx\+\_\+t} $\ast$ ffmpeg\+\_\+m2v\+\_\+dec\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{const {\bf proc\+\_\+if\+\_\+t} $\ast$}]{proc\+\_\+if, }
+\item[{const char $\ast$}]{settings\+\_\+str, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx, }
+\item[{va\+\_\+list}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_ac41429949b9d9187db63f78aa4a6be32}{}\label{ffmpeg__m2v_8c_ac41429949b9d9187db63f78aa4a6be32}
+Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 496 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+dec\+\_\+process\+\_\+frame@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+process\+\_\+frame}}
+\index{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+process\+\_\+frame@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+process\+\_\+frame}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+process\+\_\+frame(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$iput\+\_\+fifo\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$oput\+\_\+fifo\+\_\+ctx)}{ffmpeg_m2v_dec_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+m2v\+\_\+dec\+\_\+process\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{iput\+\_\+fifo\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{oput\+\_\+fifo\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_a4231a716edc84aa40e766be5dc1fdc77}{}\label{ffmpeg__m2v_8c_a4231a716edc84aa40e766be5dc1fdc77}
+Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 586 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+get@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+get}}
+\index{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+get@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+get}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)}{ffmpeg_m2v_dec_rest_get(proc_ctx_t *proc_ctx, char **rest_str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{char $\ast$$\ast$}]{rest\+\_\+str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_a3fa3ab031b0b2f490c91d9c4b9fea86e}{}\label{ffmpeg__m2v_8c_a3fa3ab031b0b2f490c91d9c4b9fea86e}
+Implements the \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 674 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+put@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+put}}
+\index{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+put@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+put}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+put(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const char $\ast$str)}{ffmpeg_m2v_dec_rest_put(proc_ctx_t *proc_ctx, const char *str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+m2v\+\_\+dec\+\_\+rest\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{const char $\ast$}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_aa76bfc90c9a6c0c0f289a6170261d467}{}\label{ffmpeg__m2v_8c_aa76bfc90c9a6c0c0f289a6170261d467}
+Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 632 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit}}
+\index{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit(volatile ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t $\ast$ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{ffmpeg_m2v_dec_settings_ctx_deinit(volatile ffmpeg_m2v_dec_settings_ctx_t *ffmpeg_m2v_dec_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_affc33de80a6ae9dda2fb7707427e89eb}{}\label{ffmpeg__m2v_8c_affc33de80a6ae9dda2fb7707427e89eb}
+Release specific M\+P\+E\+G-\/2 decoder settings (allocated in heap memory). 
+\begin{DoxyParams}{Parameters}
+{\em ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 790 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init}}
+\index{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init(volatile ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t $\ast$ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{ffmpeg_m2v_dec_settings_ctx_init(volatile ffmpeg_m2v_dec_settings_ctx_t *ffmpeg_m2v_dec_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_af39aeab690641b749d64fafcb9b8c2c9}{}\label{ffmpeg__m2v_8c_af39aeab690641b749d64fafcb9b8c2c9}
+Initialize specific M\+P\+E\+G-\/2 decoder settings to defaults. 
+\begin{DoxyParams}{Parameters}
+{\em ffmpeg\+\_\+m2v\+\_\+dec\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 760 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+enc\+\_\+close@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+close}}
+\index{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+close@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+close}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+close(proc\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)}{ffmpeg_m2v_enc_close(proc_ctx_t **ref_proc_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void ffmpeg\+\_\+m2v\+\_\+enc\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+proc\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_a363291f5ee3e4e719822364e32f64e62}{}\label{ffmpeg__m2v_8c_a363291f5ee3e4e719822364e32f64e62}
+Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 234 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+enc\+\_\+open@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+open}}
+\index{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+open@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+open}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+open(const proc\+\_\+if\+\_\+t $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx, va\+\_\+list arg)}{ffmpeg_m2v_enc_open(const proc_if_t *proc_if, const char *settings_str, log_ctx_t *log_ctx, va_list arg)}}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf proc\+\_\+ctx\+\_\+t} $\ast$ ffmpeg\+\_\+m2v\+\_\+enc\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{const {\bf proc\+\_\+if\+\_\+t} $\ast$}]{proc\+\_\+if, }
+\item[{const char $\ast$}]{settings\+\_\+str, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx, }
+\item[{va\+\_\+list}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_af46f6399a6bb346e72675ca6248796b6}{}\label{ffmpeg__m2v_8c_af46f6399a6bb346e72675ca6248796b6}
+Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 175 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+enc\+\_\+process\+\_\+frame@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+process\+\_\+frame}}
+\index{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+process\+\_\+frame@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+process\+\_\+frame}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+process\+\_\+frame(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$iput\+\_\+fifo\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$oput\+\_\+fifo\+\_\+ctx)}{ffmpeg_m2v_enc_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+m2v\+\_\+enc\+\_\+process\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{iput\+\_\+fifo\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{oput\+\_\+fifo\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_aa88b6e20e0f2a4ebef3d3bca7114f8cf}{}\label{ffmpeg__m2v_8c_aa88b6e20e0f2a4ebef3d3bca7114f8cf}
+Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 266 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+get@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+get}}
+\index{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+get@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+get}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)}{ffmpeg_m2v_enc_rest_get(proc_ctx_t *proc_ctx, char **rest_str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{char $\ast$$\ast$}]{rest\+\_\+str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_ae59dc9b8b18b15374fa180248b81403c}{}\label{ffmpeg__m2v_8c_ae59dc9b8b18b15374fa180248b81403c}
+Implements the \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 354 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+put@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+put}}
+\index{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+put@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+put}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+put(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const char $\ast$str)}{ffmpeg_m2v_enc_rest_put(proc_ctx_t *proc_ctx, const char *str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+m2v\+\_\+enc\+\_\+rest\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{const char $\ast$}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_a8698f484c2734b422e0d31883e808b0a}{}\label{ffmpeg__m2v_8c_a8698f484c2734b422e0d31883e808b0a}
+Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 312 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit}}
+\index{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit(volatile ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t $\ast$ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{ffmpeg_m2v_enc_settings_ctx_deinit(volatile ffmpeg_m2v_enc_settings_ctx_t *ffmpeg_m2v_enc_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_ada33f6c1099d077a0dffb64295ad2a3a}{}\label{ffmpeg__m2v_8c_ada33f6c1099d077a0dffb64295ad2a3a}
+Release specific M\+P\+E\+G-\/2 video encoder settings (allocated in heap memory). 
+\begin{DoxyParams}{Parameters}
+{\em ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 472 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init}}
+\index{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init(volatile ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t $\ast$ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{ffmpeg_m2v_enc_settings_ctx_init(volatile ffmpeg_m2v_enc_settings_ctx_t *ffmpeg_m2v_enc_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__m2v_8c_a10f3447b10b028bfb6937445f61d9a0d}{}\label{ffmpeg__m2v_8c_a10f3447b10b028bfb6937445f61d9a0d}
+Initialize specific M\+P\+E\+G-\/2 video encoder settings to defaults. 
+\begin{DoxyParams}{Parameters}
+{\em ffmpeg\+\_\+m2v\+\_\+enc\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 442 of file ffmpeg\+\_\+m2v.\+c.
+
+
+
+\subsection{Variable Documentation}
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+dec@{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+dec}}
+\index{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+dec@{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+dec}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+dec}{proc_if_ffmpeg_m2v_dec}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf proc\+\_\+if\+\_\+t} proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+dec}\hypertarget{ffmpeg__m2v_8c_a7783fa7340b1c4ed27bad9a24825d761}{}\label{ffmpeg__m2v_8c_a7783fa7340b1c4ed27bad9a24825d761}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+\{
+    \textcolor{stringliteral}{"ffmpeg\_m2v\_dec"},
+    \hyperlink{ffmpeg__m2v_8c_ac41429949b9d9187db63f78aa4a6be32}{ffmpeg\_m2v\_dec\_open},
+    \hyperlink{ffmpeg__m2v_8c_a4466e1e865b0f9dd31113dbf315ee709}{ffmpeg\_m2v\_dec\_close},
+    \hyperlink{ffmpeg__m2v_8c_aa76bfc90c9a6c0c0f289a6170261d467}{ffmpeg\_m2v\_dec\_rest\_put},
+    \hyperlink{ffmpeg__m2v_8c_a3fa3ab031b0b2f490c91d9c4b9fea86e}{ffmpeg\_m2v\_dec\_rest\_get},
+    \hyperlink{ffmpeg__m2v_8c_a4231a716edc84aa40e766be5dc1fdc77}{ffmpeg\_m2v\_dec\_process\_frame},
+    NULL, 
+    \hyperlink{proc__frame__2__ffmpeg_8c_acb3d4d9ac806277ea13a3defb9b713e6}{proc\_frame\_ctx\_2\_avpacket},
+    \hyperlink{proc__frame__2__ffmpeg_8c_ae5f9c15b2836c55b1700cfa46d93561a}{avpacket\_release},
+    \hyperlink{proc__frame__2__ffmpeg_8c_a5503874261922271f21d9f0367a488a9}{avframe\_2\_proc\_frame\_ctx}
+\}
+\end{DoxyCode}
+Processor interface implementing the F\+Fmpeg wrapper of the M\+P\+E\+G-\/2 video decoder. 
+
+Definition at line 157 of file ffmpeg\+\_\+m2v.\+c.
+
+\index{ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}!proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+enc@{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+enc}}
+\index{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+enc@{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+enc}!ffmpeg\+\_\+m2v.\+c@{ffmpeg\+\_\+m2v.\+c}}
+\subsubsection[{\texorpdfstring{proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+enc}{proc_if_ffmpeg_m2v_enc}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf proc\+\_\+if\+\_\+t} proc\+\_\+if\+\_\+ffmpeg\+\_\+m2v\+\_\+enc}\hypertarget{ffmpeg__m2v_8c_abe2ad66ced29874a8c169d0666d73a9b}{}\label{ffmpeg__m2v_8c_abe2ad66ced29874a8c169d0666d73a9b}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+\{
+    \textcolor{stringliteral}{"ffmpeg\_m2v\_enc"},
+    \hyperlink{ffmpeg__m2v_8c_af46f6399a6bb346e72675ca6248796b6}{ffmpeg\_m2v\_enc\_open},
+    \hyperlink{ffmpeg__m2v_8c_a363291f5ee3e4e719822364e32f64e62}{ffmpeg\_m2v\_enc\_close},
+    \hyperlink{ffmpeg__m2v_8c_a8698f484c2734b422e0d31883e808b0a}{ffmpeg\_m2v\_enc\_rest\_put},
+    \hyperlink{ffmpeg__m2v_8c_ae59dc9b8b18b15374fa180248b81403c}{ffmpeg\_m2v\_enc\_rest\_get},
+    \hyperlink{ffmpeg__m2v_8c_aa88b6e20e0f2a4ebef3d3bca7114f8cf}{ffmpeg\_m2v\_enc\_process\_frame},
+    NULL, 
+    \hyperlink{proc__frame__2__ffmpeg_8c_a74d29920bec0c25b8de6cb1cf45394a1}{proc\_frame\_ctx\_2\_avframe},
+    \hyperlink{proc__frame__2__ffmpeg_8c_a718a5032653c7ba0fdc8a8902280cf61}{avframe\_release},
+    \hyperlink{proc__frame__2__ffmpeg_8c_ab049c67853c60811be20a9feeaea9e6b}{avpacket\_2\_proc\_frame\_ctx}
+\}
+\end{DoxyCode}
+Processor interface implementing the F\+Fmpeg wrapper of the M\+P\+E\+G-\/2 video encoder. 
+
+Definition at line 143 of file ffmpeg\+\_\+m2v.\+c.
+

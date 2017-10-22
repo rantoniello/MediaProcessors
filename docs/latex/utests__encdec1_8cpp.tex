@@ -1,0 +1,182 @@
+\hypertarget{utests__encdec1_8cpp}{}\section{utests\+\_\+encdec1.\+cpp File Reference}
+\label{utests__encdec1_8cpp}\index{utests\+\_\+encdec1.\+cpp@{utests\+\_\+encdec1.\+cpp}}
+
+
+Encoding-\/decoding loop-\/back unit testing (test suite \#1). Simple video/audio encoding-\/decoding with P\+R\+O\+CS A\+PI example.  
+
+
+{\ttfamily \#include $<$Unit\+Test++/\+Unit\+Test++.\+h$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$mongoose.\+h$>$}\\*
+{\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$libavcodec/avcodec.\+h$>$}\\*
+{\ttfamily \#include $<$libavutil/opt.\+h$>$}\\*
+{\ttfamily \#include $<$libavutil/imgutils.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/fifo.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc\+\_\+if.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/procs.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/procs\+\_\+api\+\_\+http.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}../src/ffmpeg\+\_\+x264.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../src/ffmpeg\+\_\+m2v.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../src/ffmpeg\+\_\+mp3.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../src/ffmpeg\+\_\+lhe.\+h\char`\"{}}\\*
+Include dependency graph for utests\+\_\+encdec1.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{utests__encdec1_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structthr__ctx__s}{thr\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structev__user__data__s}{ev\+\_\+user\+\_\+data\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries S\+QR}(x)~((x)$\ast$(x))\hypertarget{utests__encdec1_8cpp_aa7866fa5e4e0ee9b034e9dab6599a9cc}{}\label{utests__encdec1_8cpp_aa7866fa5e4e0ee9b034e9dab6599a9cc}
+
+\item 
+\#define {\bfseries L\+I\+S\+T\+E\+N\+I\+N\+G\+\_\+\+P\+O\+RT}~\char`\"{}8088\char`\"{}\hypertarget{utests__encdec1_8cpp_a6add37a3a6b770ee16acc23503c4a915}{}\label{utests__encdec1_8cpp_a6add37a3a6b770ee16acc23503c4a915}
+
+\item 
+\#define {\bfseries L\+I\+S\+T\+E\+N\+I\+N\+G\+\_\+\+H\+O\+ST}~\char`\"{}127.\+0.\+0.\+1\char`\"{}\hypertarget{utests__encdec1_8cpp_a88607e6411305be1109c81fedd95e353}{}\label{utests__encdec1_8cpp_a88607e6411305be1109c81fedd95e353}
+
+\item 
+\#define {\bfseries T\+E\+S\+T\+\_\+\+D\+U\+R\+A\+T\+I\+O\+N\+\_\+\+S\+EC}~8\hypertarget{utests__encdec1_8cpp_a0216062c6ea709ac80402e383b882cdb}{}\label{utests__encdec1_8cpp_a0216062c6ea709ac80402e383b882cdb}
+
+\item 
+\#define {\bfseries M\+I\+N\+\_\+\+P\+S\+N\+R\+\_\+\+V\+AL}~40\hypertarget{utests__encdec1_8cpp_a9d9b590e0688901dd5ea3b97c4702efe}{}\label{utests__encdec1_8cpp_a9d9b590e0688901dd5ea3b97c4702efe}
+
+\item 
+\#define {\bfseries O\+U\+T\+P\+U\+T\+\_\+\+F\+I\+L\+E\+\_\+\+V\+I\+D\+EO}~\char`\"{}/tmp/out.\+yuv\char`\"{}\hypertarget{utests__encdec1_8cpp_a4cd039e1426c9aa09d61c78ee2f75723}{}\label{utests__encdec1_8cpp_a4cd039e1426c9aa09d61c78ee2f75723}
+
+\item 
+\#define {\bfseries O\+U\+T\+P\+U\+T\+\_\+\+F\+I\+L\+E\+\_\+\+A\+U\+D\+IO}~\char`\"{}/tmp/out.\+wav\char`\"{}\hypertarget{utests__encdec1_8cpp_ab73c39b5fd4cf5d3ff7e8f8035205c23}{}\label{utests__encdec1_8cpp_ab73c39b5fd4cf5d3ff7e8f8035205c23}
+
+\item 
+\#define {\bfseries M\+E\+D\+I\+A\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+I\+D\+EO}~0\hypertarget{utests__encdec1_8cpp_ab55a4b83c2b078bbccee0224302e6fbe}{}\label{utests__encdec1_8cpp_ab55a4b83c2b078bbccee0224302e6fbe}
+
+\item 
+\#define {\bfseries M\+E\+D\+I\+A\+\_\+\+T\+Y\+P\+E\+\_\+\+A\+U\+D\+IO}~1\hypertarget{utests__encdec1_8cpp_a5c3533e4320ef4564f3bcc92d1ea9a14}{}\label{utests__encdec1_8cpp_a5c3533e4320ef4564f3bcc92d1ea9a14}
+
+\item 
+\#define {\bfseries V\+I\+D\+E\+O\+\_\+\+W\+I\+D\+TH}~\char`\"{}352\char`\"{}\hypertarget{utests__encdec1_8cpp_aa4887fe2baec2a43eacbd4bdd58e0330}{}\label{utests__encdec1_8cpp_aa4887fe2baec2a43eacbd4bdd58e0330}
+
+\item 
+\#define {\bfseries V\+I\+D\+E\+O\+\_\+\+H\+E\+I\+G\+HT}~\char`\"{}288\char`\"{}\hypertarget{utests__encdec1_8cpp_a4ad30f5e21957a142524fdcaf9b4e298}{}\label{utests__encdec1_8cpp_a4ad30f5e21957a142524fdcaf9b4e298}
+
+\item 
+\#define {\bfseries S\+E\+T\+T\+I\+N\+G\+S\+\_\+\+S\+A\+M\+P\+L\+E\+\_\+\+R\+A\+TE}~\char`\"{}44100\char`\"{}\hypertarget{utests__encdec1_8cpp_a3c416a76bb656f1fd47660104a14af98}{}\label{utests__encdec1_8cpp_a3c416a76bb656f1fd47660104a14af98}
+
+\item 
+\#define {\bfseries S\+E\+T\+T\+I\+N\+G\+S\+\_\+\+A\+U\+D\+I\+O\+\_\+\+B\+I\+T\+R\+A\+TE}~\char`\"{}128000\char`\"{}\hypertarget{utests__encdec1_8cpp_a1d6c3410c2f985632876d0deb5cb0a3e}{}\label{utests__encdec1_8cpp_a1d6c3410c2f985632876d0deb5cb0a3e}
+
+\item 
+\#define {\bfseries R\+E\+S\+P\+O\+N\+S\+E\+\_\+\+B\+U\+F\+\_\+\+S\+I\+ZE}~512$\ast$1024\hypertarget{utests__encdec1_8cpp_a5a26082135a0be3ae12e69bf22ec4ba4}{}\label{utests__encdec1_8cpp_a5a26082135a0be3ae12e69bf22ec4ba4}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structthr__ctx__s}{thr\+\_\+ctx\+\_\+s} {\bfseries thr\+\_\+ctx\+\_\+t}\hypertarget{utests__encdec1_8cpp_ae8bc5627a784b63c3505e81e9f7b08ab}{}\label{utests__encdec1_8cpp_ae8bc5627a784b63c3505e81e9f7b08ab}
+
+\item 
+typedef struct \hyperlink{structev__user__data__s}{ev\+\_\+user\+\_\+data\+\_\+s} {\bfseries ev\+\_\+user\+\_\+data\+\_\+t}\hypertarget{utests__encdec1_8cpp_ab01d3dac52692e730c7c309059e34c5a}{}\label{utests__encdec1_8cpp_ab01d3dac52692e730c7c309059e34c5a}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void {\bfseries http\+\_\+client\+\_\+event\+\_\+handler} (struct mg\+\_\+connection $\ast$nc, int ev, void $\ast$ev\+\_\+data)\hypertarget{utests__encdec1_8cpp_a38b63972f0e477606247e839c2102424}{}\label{utests__encdec1_8cpp_a38b63972f0e477606247e839c2102424}
+
+\item 
+static char $\ast$ {\bfseries http\+\_\+client\+\_\+request} (const char $\ast$method, const char $\ast$url, const char $\ast$qstring, const char $\ast$content)\hypertarget{utests__encdec1_8cpp_a74f2645d065ddcb09fbc76cc6611cbc8}{}\label{utests__encdec1_8cpp_a74f2645d065ddcb09fbc76cc6611cbc8}
+
+\item 
+static void {\bfseries http\+\_\+event\+\_\+handler} (struct mg\+\_\+connection $\ast$c, int ev, void $\ast$p)\hypertarget{utests__encdec1_8cpp_a27d1e0fefe1a534667f424108019faa8}{}\label{utests__encdec1_8cpp_a27d1e0fefe1a534667f424108019faa8}
+
+\item 
+static void $\ast$ \hyperlink{utests__encdec1_8cpp_ac951c8a0976a758893de3bcfcf89b49e}{http\+\_\+server\+\_\+thr} (void $\ast$t)
+\item 
+static void $\ast$ \hyperlink{utests__encdec1_8cpp_a6659e3a5b0d05367035726c65c564b25}{enc\+\_\+dec\+\_\+thr} (void $\ast$t)
+\item 
+static void {\bfseries check\+\_\+psnr} (int width, int height, uint8\+\_\+t $\ast$frame\+\_\+original, uint8\+\_\+t $\ast$frame\+\_\+processed, int min\+\_\+psnr\+\_\+val)\hypertarget{utests__encdec1_8cpp_affc64640a04b2c43c07ef3bdfa01d532}{}\label{utests__encdec1_8cpp_affc64640a04b2c43c07ef3bdfa01d532}
+
+\item 
+static void {\bfseries treat\+\_\+output\+\_\+frame\+\_\+video} (\hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx, F\+I\+LE $\ast$$\ast$ref\+\_\+file, int min\+\_\+psnr\+\_\+val)\hypertarget{utests__encdec1_8cpp_adc0eb9c168e4667d2de3fa04bf0ef1c7}{}\label{utests__encdec1_8cpp_adc0eb9c168e4667d2de3fa04bf0ef1c7}
+
+\item 
+static void {\bfseries treat\+\_\+output\+\_\+frame\+\_\+audio} (\hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx, F\+I\+LE $\ast$$\ast$ref\+\_\+file, int min\+\_\+psnr\+\_\+val)\hypertarget{utests__encdec1_8cpp_ab1ef78cda12bc9a6b1f3389f4d0aeeab}{}\label{utests__encdec1_8cpp_ab1ef78cda12bc9a6b1f3389f4d0aeeab}
+
+\item 
+static void $\ast$ {\bfseries consumer\+\_\+thr} (void $\ast$t)\hypertarget{utests__encdec1_8cpp_aba28c335a197b17f45d9294ebb28cdf9}{}\label{utests__encdec1_8cpp_aba28c335a197b17f45d9294ebb28cdf9}
+
+\item 
+static void {\bfseries prepare\+\_\+and\+\_\+send\+\_\+raw\+\_\+video\+\_\+data} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, int enc\+\_\+proc\+\_\+id, volatile int $\ast$ref\+\_\+flag\+\_\+exit)\hypertarget{utests__encdec1_8cpp_a4ebb80e2ef7dd237d578a03bd861dca9}{}\label{utests__encdec1_8cpp_a4ebb80e2ef7dd237d578a03bd861dca9}
+
+\item 
+static void {\bfseries prepare\+\_\+and\+\_\+send\+\_\+raw\+\_\+audio\+\_\+data} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, int enc\+\_\+proc\+\_\+id, volatile int $\ast$ref\+\_\+flag\+\_\+exit)\hypertarget{utests__encdec1_8cpp_abc99f1dc07bd122bc0cc8487a01bfebf}{}\label{utests__encdec1_8cpp_abc99f1dc07bd122bc0cc8487a01bfebf}
+
+\item 
+static void $\ast$ {\bfseries producer\+\_\+thr} (void $\ast$t)\hypertarget{utests__encdec1_8cpp_ad871163a976c944f8c2e9ce4fb3fc9a8}{}\label{utests__encdec1_8cpp_ad871163a976c944f8c2e9ce4fb3fc9a8}
+
+\item 
+static void {\bfseries encdec\+\_\+loopback} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if\+\_\+enc, const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if\+\_\+dec, int media\+\_\+type, int min\+\_\+psnr\+\_\+val)\hypertarget{utests__encdec1_8cpp_a5f2a56bc665c19ca2d2256f67e2aa60e}{}\label{utests__encdec1_8cpp_a5f2a56bc665c19ca2d2256f67e2aa60e}
+
+\item 
+{\bfseries S\+U\+I\+TE} (U\+T\+E\+S\+T\+S\+\_\+\+E\+N\+C\+O\+D\+E\+\_\+\+D\+E\+C\+O\+D\+E\+\_\+1)\hypertarget{utests__encdec1_8cpp_a9070c168d11a06580a03b8de04ef676b}{}\label{utests__encdec1_8cpp_a9070c168d11a06580a03b8de04ef676b}
+
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const char $\ast$ {\bfseries test\+\_\+settings\+\_\+patterns} \mbox{[}$\,$\mbox{]}\mbox{[}2\mbox{]}\mbox{[}2\mbox{]}\hypertarget{utests__encdec1_8cpp_a2cf4f1c88adc1e4f777c0e61e43db598}{}\label{utests__encdec1_8cpp_a2cf4f1c88adc1e4f777c0e61e43db598}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Encoding-\/decoding loop-\/back unit testing (test suite \#1). Simple video/audio encoding-\/decoding with P\+R\+O\+CS A\+PI example. 
+
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{utests\+\_\+encdec1.\+cpp@{utests\+\_\+encdec1.\+cpp}!enc\+\_\+dec\+\_\+thr@{enc\+\_\+dec\+\_\+thr}}
+\index{enc\+\_\+dec\+\_\+thr@{enc\+\_\+dec\+\_\+thr}!utests\+\_\+encdec1.\+cpp@{utests\+\_\+encdec1.\+cpp}}
+\subsubsection[{\texorpdfstring{enc\+\_\+dec\+\_\+thr(void $\ast$t)}{enc_dec_thr(void *t)}}]{\setlength{\rightskip}{0pt plus 5cm}static void$\ast$ enc\+\_\+dec\+\_\+thr (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{utests__encdec1_8cpp_a6659e3a5b0d05367035726c65c564b25}{}\label{utests__encdec1_8cpp_a6659e3a5b0d05367035726c65c564b25}
+Encoding-\/decoding loop thread. 
+
+Definition at line 388 of file utests\+\_\+encdec1.\+cpp.
+
+\index{utests\+\_\+encdec1.\+cpp@{utests\+\_\+encdec1.\+cpp}!http\+\_\+server\+\_\+thr@{http\+\_\+server\+\_\+thr}}
+\index{http\+\_\+server\+\_\+thr@{http\+\_\+server\+\_\+thr}!utests\+\_\+encdec1.\+cpp@{utests\+\_\+encdec1.\+cpp}}
+\subsubsection[{\texorpdfstring{http\+\_\+server\+\_\+thr(void $\ast$t)}{http_server_thr(void *t)}}]{\setlength{\rightskip}{0pt plus 5cm}static void$\ast$ http\+\_\+server\+\_\+thr (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{utests__encdec1_8cpp_ac951c8a0976a758893de3bcfcf89b49e}{}\label{utests__encdec1_8cpp_ac951c8a0976a758893de3bcfcf89b49e}
+Runs H\+T\+TP server thread, listening to the given port. 
+
+Definition at line 341 of file utests\+\_\+encdec1.\+cpp.
+
