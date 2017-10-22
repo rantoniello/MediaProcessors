@@ -100,4 +100,4 @@ Change to the 'docs/html' folder
 and open the file 'index.html' (documentation index) with any browser. 
 
 Now please continue ahead with MediaProcessors 
-[documentation](md_DOCUMENTATION.html)
+[documentation](DOCUMENTATION.md)
