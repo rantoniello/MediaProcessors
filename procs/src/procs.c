@@ -647,6 +647,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 	 *     [
 	 *         {
 	 *             "proc_id":number,
+	 *             "type_name":string,
 	 *             "links":
 	 *             [
 	 *                 {"rel":"self", "href":string}
@@ -667,6 +668,8 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 	cJSON_AddItemToObject(cjson_rest, "procs", cjson_procs);
 
 	for(i= 0; i< PROCS_MAX_NUM_PROC_INSTANCES; i++) {
+		const char *proc_type_name;
+		const proc_if_t *proc_if;
 		register int proc_instance_index;
 		cJSON *cjson_proc, *cjson_links, *cjson_link;
 		proc_ctx_t *proc_ctx= NULL;
@@ -687,6 +690,15 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 		cjson_aux= cJSON_CreateNumber((double)proc_instance_index);
 		CHECK_DO(cjson_aux!= NULL, goto end);
 		cJSON_AddItemToObject(cjson_proc, "proc_id", cjson_aux);
+
+		/* 'type_name' */
+		proc_if= proc_ctx->proc_if;
+		CHECK_DO(proc_if!= NULL, continue);
+		proc_type_name= proc_if->proc_name;
+		CHECK_DO(proc_type_name!= NULL, continue);
+		cjson_aux= cJSON_CreateString(proc_type_name);
+		CHECK_DO(cjson_aux!= NULL, goto end);
+		cJSON_AddItemToObject(cjson_proc, "type_name", cjson_aux);
 
 		/* 'links' */
 		cjson_links= cJSON_CreateArray();
