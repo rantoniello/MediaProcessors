@@ -287,5 +287,98 @@ $curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/0
 }
 @endcode
 
+Changing RTSP multiplexer / de-multiplexer settings is also possible, but is <b>discouraged</b>. Nevertheless, to do it, you have to take into account:
+- Any change on the server or client side will break the RTSP session;
+- Changes on any side, server or client, imply applying proper changes on the other side to successfully restore the RTSP session;
+- Any change on the server side reset the RTSP connection. As there is a connection time-out of 60 seconds, is very feasible that you would not be able to re-use the port. In consequence, if you have to change the server settings, make sure you are also changing the server port.
+
+As an example of the above, you can test:
+
+@code
+$ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/2.json" && 
+curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/3.json"
+{
+   "code":200,
+   "status":"OK",
+   "message":null,
+   "data":{
+      "settings":{
+         "rtsp_port":8574,
+         "time_stamp_freq":9000,
+         "rtsp_streaming_session_name":"session"
+      },
+      "elementary_streams":[
+         {
+            "sdp_mimetype":"video/mp2v",
+            "rtp_timestamp_freq":9000,
+            "elementary_stream_id":0
+         }
+      ]
+   }
+}
+{
+   "code":200,
+   "status":"OK",
+   "message":null,
+   "data":{
+      "settings":{
+         "rtsp_url":"rtsp://127.0.0.1:8574/session"
+      },
+      "elementary_streams":[
+         {
+            "sdp_mimetype":"video/MP2V",
+            "port":40924,
+            "elementary_stream_id":40924
+         }
+      ]
+   }
+}
+@endcode
+
+We will change firstly the port and the session name on the client side:
+
+@code
+$ curl -X PUT "127.0.0.1:8088/procs/3.json?rtsp_url=rtsp://127.0.0.1:8575/session2"
+$ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/3.json"
+{
+   "code":200,
+   "status":"OK",
+   "message":null,
+   "data":{
+      "settings":{
+         "rtsp_url":"rtsp://127.0.0.1:8575/session2"
+      },
+      "elementary_streams":[
+
+      ]
+   }
+}
+@endcode
+
+As can be seen, the new client fail and closes the session.
+Now we will change accordingly the server, set again the client (to have the effect of restarting it), and check that new session was successfully established:
+
+@code
+$curl -X PUT "127.0.0.1:8088/procs/2.json?rtsp_port=8575&rtsp_streaming_session_name=session2"
+$curl -X PUT "127.0.0.1:8088/procs/3.json?rtsp_url=rtsp://127.0.0.1:8575/session2"
+$ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/3.json"
+{
+   "code":200,
+   "status":"OK",
+   "message":null,
+   "data":{
+      "settings":{
+         "rtsp_url":"rtsp://127.0.0.1:8575/session2"
+      },
+      "elementary_streams":[
+         {
+            "sdp_mimetype":"video/MP2V",
+            "port":32916,
+            "elementary_stream_id":32916
+         }
+      ]
+   }
+}
+@endcode
 
 
