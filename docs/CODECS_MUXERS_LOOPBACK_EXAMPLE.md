@@ -14,7 +14,7 @@ This example implements a full video coding and muxing loopback path:
        - decodes the video;
        - renders the video in a frame buffer.
 
-The flow scheme in the codecs_muxers_loopback example is similar to the one shown in [figure 2](md_DOCUMENTATION.html#How_to_use_a_Processor_the_API), but with the following modified thread scheme:
+The application flow in this example is analogue to the one shown in [figure 2](md_DOCUMENTATION.html#How_to_use_a_Processor_the_API), but with the following modified thread scheme:
 - Server side:
       - A 'producer thread' generates raw video and sends raw YUV frames to the video encoder;
       - A 'multiplexer thread' receives encoded frames from video encoder and sends to the multiplexer (that is, to the remote client using the RTSP session);
@@ -23,9 +23,9 @@ The flow scheme in the codecs_muxers_loopback example is similar to the one show
       - A 'de-multiplexer thread' receives the encoded frames from the RTSP connection, and sends to the video decoder;
       - A 'consumer thread' finally reads the raw video frame from the decoder and renders (using the 3rd party library SDL2).
 
-### Initializing application and video codecs
+### Initializing application
 
-Apply the same general considerations explained at [the API documentation](md_DOCUMENTATION.html#How_to_use_a_Processor_the_API), that is (application epilogue, see main function):
+Initialization consists in the same steps as the ones enumerated in the "typical application prologue" (see [the API documentation](md_DOCUMENTATION.html#How_to_use_a_Processor_the_API)):
 
 -# Initialize (open) the processors (PROCS) module (this is done by calling function 'procs_module_open()');
 -# Register the processor types we support in the application (performed using the operation 'PROCS_REGISTER_TYPE' provided through the function 'procs_module_opt()');
@@ -36,8 +36,7 @@ Apply the same general considerations explained at [the API documentation](md_DO
          - Create a RTSP multiplexor instance
          - Create a RTSP de-multiplexor instance
 
-But, there are important new considerations on initializing and handling the multiplexer and demultiplexer processors.<br>
-Let's have an insight on this in the next subsections.
+Nevertheless, there are some new considerations when initializing and handling the multiplexer and demultiplexer processors. We have an insight on this in the next subsections.
 
 #### Initializing and handling the multiplexer
 
@@ -50,9 +49,9 @@ If succeed, the <b>elementary stream identifier</b> will be returned in a JSON o
 @code
 {"elementary_stream_id":number}
 @endcode
-Knowing the elementary stream Id. is essential to multiplexing; is a unique number used to discriminate to which of the multiplexed streams an input frame is to be sent.<br>
+Knowing the elementary stream Id. is essential for multiplexing; is a unique number used to discriminate to which of the multiplexed streams an input frame is to be sent.<br>
 
-This is imeplemented in the code of the multiplexer thread (function 'mux_thr()').
+This is implemented in the code of the multiplexer thread (function 'mux_thr()').
 The important detail to remark is that <b>the elementary stream Id. must be specified in the input frame using the proc_frame_ctx_s::es_id field</b>.
 @code
 proc_frame_ctx->es_id= thr_ctx->elem_strem_id_video_server;
@@ -62,9 +61,9 @@ If more than one source is used (e.g. video and audio), you must use the corresp
 
 #### Initializing and handling the de-multiplexer
 
-Regarding to initialization, the RTSP client must be provided with the listening URL in the instantiation (e.g. "rtsp_url=rtsp://127.0.0.1:8574/session").
+Regarding to the de-multiplexer initialization, the RTSP client must be provided with the listening URL in the instantiation (e.g. "rtsp_url=rtsp://127.0.0.1:8574/session").
 
-When handling the de-mutiplexer, client application does not know at first instance how many sources are carried in a session. Thus, when established the session and the streaming started -that is, when receiving the first frame-, the de-multiplexer API should be used to know the elementary streams carried and the identifiers assigned to each one. It is important to remark that the elementary streams identifiers used at the multiplexer are decoupled of the ones used at the de-multiplexer (in fact, in the case of the RTSP implementation, the de-multiplexer uses the service port as the Id., and the multiplexer use an incrementing counter).<br>
+When handling the de-mutiplexer, client application does not know at first instance how many sources are carried in a session. Thus, once the session is established and the multimedia streaming started -that is, when receiving the first frame-, the de-multiplexer API should be used to know the elementary streams carried and the identifiers assigned to each one. It is important to remark that the elementary streams identifiers used at the multiplexer are decoupled of the ones used at the de-multiplexer (in fact, in the case of the RTSP implementation, the de-multiplexer uses the service port as the Id., and the multiplexer use an incrementing counter).<br>
 We ask then for the state of the demutiplexer when receiving the first frame (see de-multiplexer thread function 'dmux_thr()'):
 @code
 ret_code= procs_opt(thr_ctx->procs_ctx, "PROCS_ID_GET", thr_ctx->dmux_proc_id, &rest_str);
@@ -128,12 +127,12 @@ A window should appear rendering a colorful animation:
 
 ### Using the RESTful API
 
-In the following lines we will show some examples on how to perform RESTful requests in run-time.<br>
+In the following lines we attach some examples on how to perform RESTful requests in run-time.<br>
 For this purpose, we will use [CURL](https://curl.haxx.se/) HTTP client commands from a shell.<br>
 
 We assume the 'mediaprocs_codecs_muxers_loopback' application is running.
 
-To get general representation of the running processors type:
+To get the general representation of the running processors, type:
 @code
 $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs.json"
 {
@@ -187,9 +186,12 @@ $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs.
 }
 @endcode
 
-In the response above you will find the list of the instantiated processors, the API identifier corresponding to each one and the type.
+In the response above you will find the list of the instantiated processors specifying:
+- the API identifier corresponding to each processor;
+- the processor type;
+- the link to the processor representational state.
 
-To get the representational state of any of the processors, do as follows:
+To get the representational state of any of the processors:
 @code
 $curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/0.json"
 {
@@ -287,12 +289,12 @@ $curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/0
 }
 @endcode
 
-Changing RTSP multiplexer / de-multiplexer settings is also possible, but is <b>discouraged</b>. Nevertheless, to do it, you have to take into account:
+Changing RTSP multiplexer / de-multiplexer settings is also possible. We have to take into account:
 - Any change on the server or client side will break the RTSP session;
 - Changes on any side, server or client, imply applying proper changes on the other side to successfully restore the RTSP session;
 - Any change on the server side reset the RTSP connection. As there is a connection time-out of 60 seconds, is very feasible that you would not be able to re-use the port. In consequence, if you have to change the server settings, make sure you are also changing the server port.
 
-As an example of the above, you can test:
+Get the multiplexer and de-mutiplexer representational state:
 
 @code
 $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/2.json" && 
@@ -356,7 +358,7 @@ $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/
 @endcode
 
 As can be seen, the new client fail and closes the session.
-Now we will change accordingly the server, set again the client (to have the effect of restarting it), and check that new session was successfully established:
+Now we will change the server accordingly, set again the client (to have the effect of restarting it), and check that a new session was successfully established:
 
 @code
 $curl -X PUT "127.0.0.1:8088/procs/2.json?rtsp_port=8575&rtsp_streaming_session_name=session2"
@@ -380,5 +382,3 @@ $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/
    }
 }
 @endcode
-
-

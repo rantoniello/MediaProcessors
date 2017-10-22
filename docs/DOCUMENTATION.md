@@ -68,8 +68,8 @@ It is important to remark that the <b>processor instance deletion must be perfor
     -# Finally, close the PROCS module using the 'procs_module_close()' function.
 <br>
 
-How to use a Processor: the representational state {#How_to_use_a_Processor_the_REST}
-==================================================
+The representational state {#How_to_use_a_Processor_the_REST}
+==========================
 
 Considering that any external application can implement and register a private processor type, doing a formal documentation of all the available processor types representational states may be an impossible task.
 Despite the library defines some common data and settings for video and audio codecs, <b>the easiest -and recommendable- way to fetch any processor's REST is to actually "ask" this information to the processor</b> (request through the API).<br>
@@ -129,8 +129,8 @@ The video settings which are common to all video codec types ("generic" video co
 Any video codec is supposed to use this common settings and extend them as desired. As a concrete example, the H.264 encoder implemented at ffmpeg_x264.c (MediaProcessors's wrapper of the FFmpeg x.264 codec facility) extends the video common settings in the structure defined as ffmpeg_x264_enc_settings_ctx_s. Then, all the settings for this specific codec are documented at ffmpeg_x264_enc_settings_ctx_s and the extended common structure video_settings_enc_ctx_s.<br>
 The rest of the codecs implemented in the 'codecs' library use analogue structure extensions as the above mentioned, so you can generalize this rule to see the settings parameters of any codec type implementation.
 
-How to use a Processor: the RESTful HTTP/web-services adapter {#How_to_use_a_Processor_the_RESTful}
-=============================================================
+The RESTful HTTP/web-services adapter {#How_to_use_a_Processor_the_RESTful}
+=====================================
 
 REST philosophy of the API enables straightforward implementation of an HTTP web service exposing the CTRL API. Figure 3 depicts the basic scheme:
 
