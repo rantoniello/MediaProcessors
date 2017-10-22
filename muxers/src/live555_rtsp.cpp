@@ -38,6 +38,7 @@ extern "C" {
 #include <libmediaprocsutils/stat_codes.h>
 #include <libmediaprocsutils/check_utils.h>
 #include <libmediaprocsutils/schedule.h>
+#include <libmediaprocsutils/fair_lock.h>
 #include <libmediaprocsutils/fifo.h>
 #include <libmediaprocs/proc_if.h>
 #include <libmediaprocs/procs.h>
@@ -238,13 +239,21 @@ typedef struct live555_rtsp_dmux_ctx_s {
 
 static proc_ctx_t* live555_rtsp_mux_open(const proc_if_t *proc_if,
 		const char *settings_str, log_ctx_t *log_ctx, va_list arg);
+static int live555_rtsp_mux_init_given_settings(
+		live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx,
+		const muxers_settings_mux_ctx_t *muxers_settings_mux_ctx,
+		log_ctx_t *log_ctx);
 static void live555_rtsp_mux_close(proc_ctx_t **ref_proc_ctx);
+static void live555_rtsp_mux_deinit_except_settings(
+		live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx, log_ctx_t *log_ctx);
 static int live555_rtsp_mux_process_frame(proc_ctx_t *proc_ctx,
 		fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx);
 static int live555_rtsp_mux_rest_put(proc_ctx_t *proc_ctx, const char *str);
 static int live555_rtsp_mux_opt(proc_ctx_t *proc_ctx, const char *tag,
 		va_list arg);
 static int live555_rtsp_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str);
+static int live555_rtsp_mux_rest_get_es_array(procs_ctx_t *procs_ctx_es_muxers,
+		cJSON **ref_cjson_es_array, log_ctx_t *log_ctx);
 
 static int live555_rtsp_mux_settings_ctx_init(
 		volatile live555_rtsp_mux_settings_ctx_t *live555_rtsp_mux_settings_ctx,
@@ -348,7 +357,13 @@ private:
 
 static proc_ctx_t* live555_rtsp_dmux_open(const proc_if_t *proc_if,
 		const char *settings_str, log_ctx_t *log_ctx, va_list arg);
+static int live555_rtsp_dmux_init_given_settings(
+		live555_rtsp_dmux_ctx_t *live555_rtsp_dmux_ctx,
+		const muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx,
+		log_ctx_t *log_ctx);
 static void live555_rtsp_dmux_close(proc_ctx_t **ref_proc_ctx);
+static void live555_rtsp_dmux_deinit_except_settings(
+		live555_rtsp_dmux_ctx_t *live555_rtsp_dmux_ctx, log_ctx_t *log_ctx);
 static int live555_rtsp_dmux_rest_get(proc_ctx_t *proc_ctx, char **rest_str);
 static int live555_rtsp_dmux_process_frame(proc_ctx_t *proc_ctx,
 		fifo_ctx_t* iput_fifo_ctx, fifo_ctx_t* oput_fifo_ctx);
@@ -480,6 +495,15 @@ private:
 	std::mutex m_dummySink_io_mutex;
 };
 
+/* **** General **** */
+
+void live555_rtsp_reset_on_new_settings(proc_ctx_t *proc_ctx,
+		int flag_is_muxer, log_ctx_t *log_ctx);
+void live555_rtsp_reset_on_new_settings_es_mux(proc_ctx_t *proc_ctx,
+		log_ctx_t *log_ctx);
+void live555_rtsp_reset_on_new_settings_es_dmux(proc_ctx_t *proc_ctx,
+		log_ctx_t *log_ctx);
+
 /* **** Implementations **** */
 
 extern "C" {
@@ -488,7 +512,7 @@ const proc_if_t proc_if_live555_rtsp_mux=
 	"live555_rtsp_mux",
 	live555_rtsp_mux_open,
 	live555_rtsp_mux_close,
-	NULL, //live555_rtsp_mux_rest_put, // used internally only (not in API)
+	live555_rtsp_mux_rest_put,
 	live555_rtsp_mux_rest_get,
 	live555_rtsp_mux_process_frame,
 	live555_rtsp_mux_opt,
@@ -516,7 +540,7 @@ const proc_if_t proc_if_live555_rtsp_dmux=
 	"live555_rtsp_dmux",
 	live555_rtsp_dmux_open,
 	live555_rtsp_dmux_close,
-	NULL, //live555_rtsp_dmux_rest_put, // used internally only (not in API)
+	live555_rtsp_dmux_rest_put,
 	live555_rtsp_dmux_rest_get,
 	live555_rtsp_dmux_process_frame,
 	NULL, //live555_rtsp_dmux_opt,
@@ -533,14 +557,12 @@ const proc_if_t proc_if_live555_rtsp_dmux=
 static proc_ctx_t* live555_rtsp_mux_open(const proc_if_t *proc_if,
 		const char *settings_str, log_ctx_t *log_ctx, va_list arg)
 {
-	char *stream_session_name;
 	int ret_code, end_code= STAT_ERROR;
 	live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx= NULL;
 	volatile live555_rtsp_mux_settings_ctx_t *live555_rtsp_mux_settings_ctx=
 			NULL; // Do not release
 	volatile muxers_settings_mux_ctx_t *muxers_settings_mux_ctx=
 			NULL; // Do not release
-	int port= 8554;
 	LOG_CTX_INIT(log_ctx);
 
 	/* Check arguments */
@@ -572,6 +594,32 @@ static proc_ctx_t* live555_rtsp_mux_open(const proc_if_t *proc_if,
     /* **** Initialize the specific Live555 multiplexer resources ****
      * Now that all the parameters are set, we proceed with Live555 specific's.
      */
+	ret_code= live555_rtsp_mux_init_given_settings(live555_rtsp_mux_ctx,
+			(const muxers_settings_mux_ctx_t*)muxers_settings_mux_ctx,
+			LOG_CTX_GET());
+	CHECK_DO(ret_code== STAT_SUCCESS, goto end);
+
+	end_code= STAT_SUCCESS;
+end:
+    if(end_code!= STAT_SUCCESS)
+    	live555_rtsp_mux_close((proc_ctx_t**)&live555_rtsp_mux_ctx);
+	return (proc_ctx_t*)live555_rtsp_mux_ctx;
+}
+
+static int live555_rtsp_mux_init_given_settings(
+		live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx,
+		const muxers_settings_mux_ctx_t *muxers_settings_mux_ctx,
+		log_ctx_t *log_ctx)
+{
+	char *stream_session_name;
+	int ret_code, end_code= STAT_ERROR;
+	int port= 8554;
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(live555_rtsp_mux_ctx!= NULL, return STAT_ERROR);
+	CHECK_DO(muxers_settings_mux_ctx!= NULL, return STAT_ERROR);
+	// Note: 'log_ctx' is allowed to be NULL
 
 	/* Initialize generic multiplexing common context structure */
 	ret_code= proc_muxer_mux_ctx_init(
@@ -622,7 +670,7 @@ static proc_ctx_t* live555_rtsp_mux_open(const proc_if_t *proc_if,
 	/* Register ES-MUXER processor type */
 	ret_code= procs_module_opt("PROCS_REGISTER_TYPE",
 			&proc_if_live555_rtsp_es_mux);
-	CHECK_DO(ret_code== STAT_SUCCESS, goto end);
+	CHECK_DO(ret_code== STAT_SUCCESS || ret_code== STAT_ECONFLICT, goto end);
 
 	/* At last, launch scheduler thread */
 	ret_code= pthread_create(&live555_rtsp_mux_ctx->taskScheduler_thread, NULL,
@@ -630,10 +678,11 @@ static proc_ctx_t* live555_rtsp_mux_open(const proc_if_t *proc_if,
 	CHECK_DO(ret_code== 0, goto end);
 
 	end_code= STAT_SUCCESS;
-	end:
+end:
     if(end_code!= STAT_SUCCESS)
-    	live555_rtsp_mux_close((proc_ctx_t**)&live555_rtsp_mux_ctx);
-	return (proc_ctx_t*)live555_rtsp_mux_ctx;
+    	live555_rtsp_mux_deinit_except_settings(live555_rtsp_mux_ctx,
+    			LOG_CTX_GET());
+	return end_code;
 }
 
 /**
@@ -650,71 +699,98 @@ static void live555_rtsp_mux_close(proc_ctx_t **ref_proc_ctx)
 		return;
 
 	if((live555_rtsp_mux_ctx= (live555_rtsp_mux_ctx_t*)*ref_proc_ctx)!= NULL) {
-		void *thread_end_code= NULL;
-		proc_muxer_mux_ctx_t *proc_muxer_mux_ctx= NULL; // Do not release
 		LOG_CTX_SET(((proc_ctx_t*)live555_rtsp_mux_ctx)->log_ctx);
 
-		/* Get Multiplexer processing common context structure */
-		proc_muxer_mux_ctx= (proc_muxer_mux_ctx_t*)live555_rtsp_mux_ctx;
-
-		/* Join scheduling thread first
-		 * - set flag to notify we are exiting processing;
-		 * - unblock and close all running ES-processors;
-		 * - join thread.
-		 */
-		((proc_ctx_t*)live555_rtsp_mux_ctx)->flag_exit= 1;
-		if(proc_muxer_mux_ctx!= NULL &&
-				proc_muxer_mux_ctx->procs_ctx_es_muxers!= NULL)
-			procs_close(&proc_muxer_mux_ctx->procs_ctx_es_muxers);
-		LOGD("Waiting thread to join... "); // comment-me
-		pthread_join(live555_rtsp_mux_ctx->taskScheduler_thread,
-				&thread_end_code);
-		if(thread_end_code!= NULL) {
-			ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
-			free(thread_end_code);
-			thread_end_code= NULL;
-		}
-		LOGD("joined O.K.\n"); // comment-me
+		live555_rtsp_mux_deinit_except_settings(live555_rtsp_mux_ctx,
+				LOG_CTX_GET());
 
 		/* Release settings */
 		live555_rtsp_mux_settings_ctx_deinit(
 				&live555_rtsp_mux_ctx->live555_rtsp_mux_settings_ctx,
 				LOG_CTX_GET());
 
-		/* **** Release the specific Live555 multiplexer resources **** */
-
-		/* Note about 'live555_rtsp_mux_ctx::serverMediaSession': we do not
-		 * need to delete ServerMediaSession object before deleting a
-		 * RTSPServer, because the RTSPServer destructor will automatically
-		 * delete any ServerMediaSession (as ClientConnection and
-		 * ClientSession) objects that it manages. Instead, we can just call
-		 * 'Medium::close()' on your RTSPServer object.
-		 */
-	    if(live555_rtsp_mux_ctx->rtspServer!= NULL) {
-	        Medium::close(live555_rtsp_mux_ctx->rtspServer);
-	        live555_rtsp_mux_ctx->rtspServer= NULL;
-	    }
-
-		if(live555_rtsp_mux_ctx->usageEnvironment!= NULL) {
-			ASSERT(live555_rtsp_mux_ctx->usageEnvironment->reclaim()== True);
-		}
-
-		if(live555_rtsp_mux_ctx->taskScheduler!= NULL)
-			delete live555_rtsp_mux_ctx->taskScheduler;
-
-		/* De-initialize generic multiplexing common context structure.
-		 * Implementation note: Do this after releasing 'rtspServer', as
-		 * processors are referenced inside 'rtspServer' media sub-sessions
-		 * related resources.
-		 */
-		proc_muxer_mux_ctx_deinit(proc_muxer_mux_ctx, LOG_CTX_GET());
-
-		// Reserved for future use: release other new variables here...
-
 		/* Release context structure */
 		free(live555_rtsp_mux_ctx);
 		*ref_proc_ctx= NULL;
 	}
+	LOGD("<<%s\n", __FUNCTION__); //comment-me
+}
+
+/**
+ * Release RTSP multiplexer at the exception of its settings context
+ * structure.
+ */
+static void live555_rtsp_mux_deinit_except_settings(
+		live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx, log_ctx_t *log_ctx)
+{
+	void *thread_end_code= NULL;
+	proc_muxer_mux_ctx_t *proc_muxer_mux_ctx= NULL; // Do not release
+	LOG_CTX_INIT(log_ctx);
+	LOGD(">>%s\n", __FUNCTION__); //comment-me
+
+	/* Check arguments */
+	if(live555_rtsp_mux_ctx== NULL)
+		return;
+
+	/* Get Multiplexer processing common context structure */
+	proc_muxer_mux_ctx= (proc_muxer_mux_ctx_t*)live555_rtsp_mux_ctx;
+
+	/* Join Join ES-threads first
+	 * - set flag to notify we are exiting processing;
+	 * - unblock and close all running ES-processors;
+	 * - join thread.
+	 */
+	((proc_ctx_t*)live555_rtsp_mux_ctx)->flag_exit= 1;
+	if(proc_muxer_mux_ctx!= NULL &&
+			proc_muxer_mux_ctx->procs_ctx_es_muxers!= NULL)
+		procs_close(&proc_muxer_mux_ctx->procs_ctx_es_muxers);
+	LOGD("Waiting thread to join... "); // comment-me
+	pthread_join(live555_rtsp_mux_ctx->taskScheduler_thread,
+			&thread_end_code);
+	if(thread_end_code!= NULL) {
+		ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
+		free(thread_end_code);
+		thread_end_code= NULL;
+	}
+	LOGD("joined O.K.\n"); // comment-me
+
+	// '&live555_rtsp_mux_ctx->live555_rtsp_mux_settings_ctx' preserved
+
+	/* **** Release the specific Live555 multiplexer resources **** */
+
+	/* Note about 'live555_rtsp_mux_ctx::serverMediaSession': we do not
+	 * need to delete ServerMediaSession object before deleting a
+	 * RTSPServer, because the RTSPServer destructor will automatically
+	 * delete any ServerMediaSession (as ClientConnection and
+	 * ClientSession) objects that it manages. Instead, we can just call
+	 * 'Medium::close()' on your RTSPServer object.
+	 */
+	if(live555_rtsp_mux_ctx->rtspServer!= NULL) {
+		Medium::close(live555_rtsp_mux_ctx->rtspServer);
+		live555_rtsp_mux_ctx->rtspServer= NULL;
+	}
+
+	if(live555_rtsp_mux_ctx->usageEnvironment!= NULL) {
+		Boolean ret_boolean= live555_rtsp_mux_ctx->usageEnvironment->reclaim();
+		ASSERT(ret_boolean== True);
+		if(ret_boolean== True)
+			live555_rtsp_mux_ctx->usageEnvironment= NULL;
+	}
+
+	if(live555_rtsp_mux_ctx->taskScheduler!= NULL) {
+		delete live555_rtsp_mux_ctx->taskScheduler;
+		live555_rtsp_mux_ctx->taskScheduler= NULL;
+	}
+
+	/* De-initialize generic multiplexing common context structure.
+	 * Implementation note: Do this after releasing 'rtspServer', as
+	 * processors are referenced inside 'rtspServer' media sub-sessions
+	 * related resources.
+	 */
+	proc_muxer_mux_ctx_deinit(proc_muxer_mux_ctx, LOG_CTX_GET());
+
+	// Reserved for future use: release other new variables here...
+
 	LOGD("<<%s\n", __FUNCTION__); //comment-me
 }
 
@@ -873,6 +949,9 @@ static int live555_rtsp_mux_rest_put(proc_ctx_t *proc_ctx, const char *str)
 	/* PUT specific multiplexer settings */
 	// Reserved for future use
 
+	/* Finally that we have new settings parsed, reset processor */
+	live555_rtsp_reset_on_new_settings(proc_ctx, 1, LOG_CTX_GET());
+
 	return STAT_SUCCESS;
 }
 
@@ -882,16 +961,13 @@ static int live555_rtsp_mux_rest_put(proc_ctx_t *proc_ctx, const char *str)
  */
 static int live555_rtsp_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 {
-	int i, ret_code, procs_num= 0, end_code= STAT_ERROR;
+	int ret_code, end_code= STAT_ERROR;
 	live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx= NULL;
 	procs_ctx_t *procs_ctx_es_muxers= NULL; // Do not release
 	volatile live555_rtsp_mux_settings_ctx_t *
 		live555_rtsp_mux_settings_ctx= NULL;
 	volatile muxers_settings_mux_ctx_t *muxers_settings_mux_ctx= NULL;
-	cJSON *cjson_rest= NULL, *cjson_settings= NULL, *cjson_es_array= NULL,
-			*cjson_procs_rest= NULL, *cjson_procs_es_rest= NULL;
-	cJSON *cjson_procs= NULL, *cjson_aux= NULL; // Do not release
-	char *rest_str_aux= NULL, *es_rest_str_aux= NULL;
+	cJSON *cjson_rest= NULL, *cjson_settings= NULL, *cjson_es_array= NULL;
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
@@ -942,10 +1018,63 @@ static int live555_rtsp_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 
 	/* **** Attach data to REST response **** */
 
-	/* Elementary stream data */
+	/* Get ES-processors array REST and attach */
 	procs_ctx_es_muxers= ((proc_muxer_mux_ctx_t*)
 			live555_rtsp_mux_ctx)->procs_ctx_es_muxers;
 	CHECK_DO(procs_ctx_es_muxers!= NULL, goto end);
+	ret_code= live555_rtsp_mux_rest_get_es_array(procs_ctx_es_muxers,
+			&cjson_es_array, LOG_CTX_GET());
+	CHECK_DO(ret_code== STAT_SUCCESS && cjson_es_array!= NULL, goto end);
+	cJSON_AddItemToObject(cjson_rest, "elementary_streams", cjson_es_array);
+	cjson_es_array= NULL; // Attached; avoid double referencing
+
+	// Reserved for future use
+	/* Example:
+	 * cjson_aux= cJSON_CreateNumber((double)live555_rtsp_mux_ctx->var1);
+	 * CHECK_DO(cjson_aux!= NULL, goto end);
+	 * cJSON_AddItemToObject(cjson_rest, "var1_name", cjson_aux);
+	 */
+
+	/* Print cJSON structure data to char string */
+	*rest_str= cJSON_PrintUnformatted(cjson_rest);
+	CHECK_DO(*rest_str!= NULL && strlen(*rest_str)> 0, goto end);
+	end_code= STAT_SUCCESS;
+end:
+	if(cjson_rest!= NULL)
+		cJSON_Delete(cjson_rest);
+	if(cjson_settings!= NULL)
+		cJSON_Delete(cjson_settings);
+	if(cjson_es_array!= NULL)
+		cJSON_Delete(cjson_es_array);
+	return end_code;
+}
+
+static int live555_rtsp_mux_rest_get_es_array(procs_ctx_t *procs_ctx_es_muxers,
+		cJSON **ref_cjson_es_array, log_ctx_t *log_ctx)
+{
+	int i, ret_code, procs_num= 0, end_code= STAT_ERROR;
+	cJSON *cjson_es_array= NULL, *cjson_procs_rest= NULL,
+			*cjson_procs_es_rest= NULL;
+	cJSON *cjson_procs= NULL, *cjson_aux= NULL; // Do not release
+	char *rest_str_aux= NULL, *es_rest_str_aux= NULL;
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(procs_ctx_es_muxers!= NULL, return STAT_ERROR);
+	CHECK_DO(ref_cjson_es_array!= NULL, return STAT_ERROR);
+
+	*ref_cjson_es_array= NULL;
+
+	/* Create ES-processors array REST and attach*/
+	cjson_es_array= cJSON_CreateArray();
+	CHECK_DO(cjson_es_array!= NULL, goto end);
+
+	/* JSON string to be returned:
+	 * [
+	 *     {...}, // ES-object JSON
+	 *     ...
+	 * ]
+	 */
 
 	ret_code= procs_opt(procs_ctx_es_muxers, "PROCS_GET", &rest_str_aux);
 	CHECK_DO(ret_code== STAT_SUCCESS && rest_str_aux!= NULL, goto end);
@@ -953,10 +1082,6 @@ static int live555_rtsp_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 	/* Parse to cJSON structure */
 	cjson_procs_rest= cJSON_Parse(rest_str_aux);
 	CHECK_DO(cjson_procs_rest!= NULL, goto end);
-
-	/* Create ES-processors array REST and attach*/
-	cjson_es_array= cJSON_CreateArray();
-	CHECK_DO(cjson_es_array!= NULL, goto end);
 
 	/* Get ES-processors array */
 	cjson_procs= cJSON_GetObjectItem(cjson_procs_rest, "procs");
@@ -988,31 +1113,21 @@ static int live555_rtsp_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 		cjson_procs_es_rest= cJSON_Parse(es_rest_str_aux);
 		CHECK_DO(cjson_procs_es_rest!= NULL, continue);
 
+		/* Attach elementary stream Id. (== xxx) */
+		cjson_aux= cJSON_CreateNumber((double)elem_stream_id);
+		CHECK_DO(cjson_aux!= NULL, continue);
+		cJSON_AddItemToObject(cjson_procs_es_rest, "elementary_stream_id",
+				cjson_aux);
+
 		/* Attach elementary stream data to array */
 		cJSON_AddItemToArray(cjson_es_array, cjson_procs_es_rest);
 		cjson_procs_es_rest= NULL; // Attached; avoid double referencing
 	}
 
-	/* Attach elementary stream data array to REST response */
-	cJSON_AddItemToObject(cjson_rest, "elementary_streams", cjson_es_array);
-	cjson_es_array= NULL; // Attached; avoid double referencing
-
-	// Reserved for future use
-	/* Example:
-	 * cjson_aux= cJSON_CreateNumber((double)live555_rtsp_mux_ctx->var1);
-	 * CHECK_DO(cjson_aux!= NULL, goto end);
-	 * cJSON_AddItemToObject(cjson_rest, "var1_name", cjson_aux);
-	 */
-
-	/* Print cJSON structure data to char string */
-	*rest_str= cJSON_PrintUnformatted(cjson_rest);
-	CHECK_DO(*rest_str!= NULL && strlen(*rest_str)> 0, goto end);
+	*ref_cjson_es_array= cjson_es_array;
+	cjson_es_array= NULL; // Avoid double referencing
 	end_code= STAT_SUCCESS;
 end:
-	if(cjson_rest!= NULL)
-		cJSON_Delete(cjson_rest);
-	if(cjson_settings!= NULL)
-		cJSON_Delete(cjson_settings);
 	if(cjson_es_array!= NULL)
 		cJSON_Delete(cjson_es_array);
 	if(rest_str_aux!= NULL)
@@ -1380,7 +1495,7 @@ static int live555_rtsp_es_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 	live555_rtsp_es_mux_ctx_t *live555_rtsp_es_mux_ctx= NULL;
 	volatile live555_rtsp_es_mux_settings_ctx_t *
 			live555_rtsp_es_mux_settings_ctx= NULL;
-	cJSON *cjson_rest= NULL, *cjson_settings= NULL;
+	cJSON *cjson_rest= NULL/*, *cjson_settings= NULL // Not used*/;
 	cJSON *cjson_aux= NULL; // Do not release
 	LOG_CTX_INIT(NULL);
 
@@ -1398,11 +1513,9 @@ static int live555_rtsp_es_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 
 	/* JSON string to be returned:
 	 * {
-	 *     "settings":
-	 *     {
-	 *         "sdp_mimetype":string,
-	 *         "rtp_timestamp_freq":number
-	 *     },
+	 *     // "settings":{}, //RAL: Do not expose in current implementation!
+	 *     "sdp_mimetype":string,
+	 *     "rtp_timestamp_freq":number
 	 *     ... // Reserved for future use
 	 * }
 	 */
@@ -1414,27 +1527,27 @@ static int live555_rtsp_es_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 
 	/* **** GET specific ES-MUXER settings **** */
 
-	/* Create cJSON settings object */
-	cjson_settings= cJSON_CreateObject();
-	CHECK_DO(cjson_settings!= NULL, goto end);
+	/* Create cJSON settings object */ // Not used
+	//cjson_settings= cJSON_CreateObject();
+	//CHECK_DO(cjson_settings!= NULL, goto end);
+
+	/* Attach settings object to REST response */ // Not used
+	//cJSON_AddItemToObject(cjson_rest, "settings", cjson_settings);
+	//cjson_settings= NULL; // Attached; avoid double referencing
+
+	/* **** Attach data to REST response **** */
 
 	/* 'sdp_mimetype' */
 	cjson_aux= cJSON_CreateString(
 			live555_rtsp_es_mux_settings_ctx->sdp_mimetype);
 	CHECK_DO(cjson_aux!= NULL, goto end);
-	cJSON_AddItemToObject(cjson_settings, "sdp_mimetype", cjson_aux);
+	cJSON_AddItemToObject(cjson_rest, "sdp_mimetype", cjson_aux);
 
 	/* 'rtp_timestamp_freq' */
 	cjson_aux= cJSON_CreateNumber((double)
 			live555_rtsp_es_mux_settings_ctx->rtp_timestamp_freq);
 	CHECK_DO(cjson_aux!= NULL, goto end);
-	cJSON_AddItemToObject(cjson_settings, "rtp_timestamp_freq", cjson_aux);
-
-	/* Attach settings object to REST response */
-	cJSON_AddItemToObject(cjson_rest, "settings", cjson_settings);
-	cjson_settings= NULL; // Attached; avoid double referencing
-
-	/* **** Attach data to REST response **** */
+	cJSON_AddItemToObject(cjson_rest, "rtp_timestamp_freq", cjson_aux);
 
 	// Reserved for future use
 	/* Example:
@@ -1451,8 +1564,8 @@ static int live555_rtsp_es_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 
 	end_code= STAT_SUCCESS;
 end:
-	if(cjson_settings!= NULL)
-		cJSON_Delete(cjson_settings);
+	//if(cjson_settings!= NULL) // Not used
+	//	cJSON_Delete(cjson_settings);
 	if(cjson_rest!= NULL)
 		cJSON_Delete(cjson_rest);
 	return end_code;
@@ -1832,6 +1945,8 @@ static proc_ctx_t* live555_rtsp_dmux_open(const proc_if_t *proc_if,
 	live555_rtsp_dmux_ctx_t *live555_rtsp_dmux_ctx= NULL;
 	volatile live555_rtsp_dmux_settings_ctx_t *live555_rtsp_dmux_settings_ctx=
 			NULL; // Do not release (alias)
+	volatile muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx=
+			NULL; // Do not release (alias)
 	LOG_CTX_INIT(log_ctx);
 
 	/* Check arguments */
@@ -1847,6 +1962,8 @@ static proc_ctx_t* live555_rtsp_dmux_open(const proc_if_t *proc_if,
 	/* Get settings structures */
 	live555_rtsp_dmux_settings_ctx=
 			&live555_rtsp_dmux_ctx->live555_rtsp_dmux_settings_ctx;
+	muxers_settings_dmux_ctx=
+			&live555_rtsp_dmux_settings_ctx->muxers_settings_dmux_ctx;
 
 	/* Initialize settings to defaults */
 	ret_code= live555_rtsp_dmux_settings_ctx_init(
@@ -1861,6 +1978,30 @@ static proc_ctx_t* live555_rtsp_dmux_open(const proc_if_t *proc_if,
     /* **** Initialize the specific Live555 de-multiplexer resources ****
      * Now that all the parameters are set, we proceed with Live555 specific's.
      */
+	ret_code= live555_rtsp_dmux_init_given_settings(live555_rtsp_dmux_ctx,
+			(const muxers_settings_dmux_ctx_t*)muxers_settings_dmux_ctx,
+			LOG_CTX_GET());
+	CHECK_DO(ret_code== STAT_SUCCESS, goto end);
+
+	end_code= STAT_SUCCESS;
+end:
+    if(end_code!= STAT_SUCCESS)
+    	live555_rtsp_dmux_close((proc_ctx_t**)&live555_rtsp_dmux_ctx);
+	return (proc_ctx_t*)live555_rtsp_dmux_ctx;
+}
+
+static int live555_rtsp_dmux_init_given_settings(
+		live555_rtsp_dmux_ctx_t *live555_rtsp_dmux_ctx,
+		const muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx,
+		log_ctx_t *log_ctx)
+{
+	int end_code= STAT_ERROR;
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(live555_rtsp_dmux_ctx!= NULL, return STAT_ERROR);
+	CHECK_DO(muxers_settings_dmux_ctx!= NULL, return STAT_ERROR);
+	// Note: 'log_ctx' is allowed to be NULL
 
 	/* Open Live555 scheduler */
 	live555_rtsp_dmux_ctx->taskScheduler= BasicTaskScheduler::createNew();
@@ -1876,8 +2017,9 @@ static proc_ctx_t* live555_rtsp_dmux_open(const proc_if_t *proc_if,
 	end_code= STAT_SUCCESS;
 end:
     if(end_code!= STAT_SUCCESS)
-    	live555_rtsp_dmux_close((proc_ctx_t**)&live555_rtsp_dmux_ctx);
-	return (proc_ctx_t*)live555_rtsp_dmux_ctx;
+    	live555_rtsp_dmux_deinit_except_settings(live555_rtsp_dmux_ctx,
+    			LOG_CTX_GET());
+	return end_code;
 }
 
 /**
@@ -1910,13 +2052,8 @@ static void live555_rtsp_dmux_close(proc_ctx_t **ref_proc_ctx)
 
 		/* **** Release the specific Live555 de-multiplexer resources **** */
 
-		if(live555_rtsp_dmux_ctx->usageEnvironment!= NULL) {
-			ASSERT(live555_rtsp_dmux_ctx->usageEnvironment->reclaim()== True);
-			live555_rtsp_dmux_ctx->usageEnvironment= NULL;
-		}
-
-		if(live555_rtsp_dmux_ctx->taskScheduler!= NULL)
-			delete live555_rtsp_dmux_ctx->taskScheduler;
+		live555_rtsp_dmux_deinit_except_settings(live555_rtsp_dmux_ctx,
+				LOG_CTX_GET());
 
 		// Reserved for future use: release other new variables here...
 		/* Release context structure */
@@ -1924,6 +2061,27 @@ static void live555_rtsp_dmux_close(proc_ctx_t **ref_proc_ctx)
 		*ref_proc_ctx= NULL;
 	}
 	LOGD("<< %s\n", __FUNCTION__); //comment-me
+}
+
+static void live555_rtsp_dmux_deinit_except_settings(
+		live555_rtsp_dmux_ctx_t *live555_rtsp_dmux_ctx, log_ctx_t *log_ctx)
+{
+	LOG_CTX_INIT(log_ctx);
+
+	if(live555_rtsp_dmux_ctx== NULL)
+		return;
+
+	if(live555_rtsp_dmux_ctx->usageEnvironment!= NULL) {
+		Boolean ret_boolean= live555_rtsp_dmux_ctx->usageEnvironment->reclaim();
+		ASSERT(ret_boolean== True);
+		if(ret_boolean== True)
+			live555_rtsp_dmux_ctx->usageEnvironment= NULL;
+	}
+
+	if(live555_rtsp_dmux_ctx->taskScheduler!= NULL) {
+		delete live555_rtsp_dmux_ctx->taskScheduler;
+		live555_rtsp_dmux_ctx->taskScheduler= NULL;
+	}
 }
 
 /**
@@ -2202,6 +2360,9 @@ static int live555_rtsp_dmux_rest_put(proc_ctx_t *proc_ctx, const char *str)
 
 	/* PUT specific de-multiplexer settings */
 	// Reserved for future use
+
+	/* Finally that we have new settings parsed, reset processor */
+	live555_rtsp_reset_on_new_settings(proc_ctx, 0, LOG_CTX_GET());
 
 	return STAT_SUCCESS;
 }
@@ -2565,7 +2726,8 @@ static void shutdownStream(RTSPClient *rtspClient, int exitCode)
 	 * structure to get reclaimed.
 	 */
 	LOGW("[URL: '%s'] Closing the stream.\n", rtspClient->url());
-	Medium::close(rtspClient);
+	if(rtspClient->url()!= NULL)
+		Medium::close(rtspClient);
 }
 
 SimpleRTSPClient* SimpleRTSPClient::createNew(UsageEnvironment& env,
@@ -2794,4 +2956,190 @@ Boolean DummySink::continuePlaying()
 	fSource->getNextFrame(fReceiveBuffer, SINK_BUFFER_SIZE, afterGettingFrame,
 			this, onSourceClosure, this);
 	return True;
+}
+
+void live555_rtsp_reset_on_new_settings(proc_ctx_t *proc_ctx,
+		int flag_is_muxer, log_ctx_t *log_ctx)
+{
+    int ret_code, flag_io_locked= 0, flag_thr_joined= 0;
+    void *thread_end_code= NULL;
+    LOG_CTX_INIT(log_ctx);
+
+    /* Check arguments */
+    CHECK_DO(proc_ctx!= NULL, return);
+
+    /* If processor interface was not set yet, it means this function is being
+     * call in processor opening phase, so it must be skipped.
+     */
+    if(proc_ctx->proc_if== NULL)
+    	return;
+
+    /* Firstly, stop processing thread:
+     * - Signal processing to end;
+     * - Unlock i/o FIFOs;
+     * - Lock i/o critical section (to make FIFOs unreachable);
+     * - Join the thread.
+     * IMPORTANT: *do not* set a jump here (return or goto)
+     */
+	proc_ctx->flag_exit= 1;
+	fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_IPUT], 0);
+	fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 0);
+	fair_lock(proc_ctx->fair_lock_io_array[PROC_IPUT]);
+	fair_lock(proc_ctx->fair_lock_io_array[PROC_OPUT]);
+	flag_io_locked= 1;
+	//LOGV("Waiting thread to join... "); // comment-me
+	pthread_join(proc_ctx->proc_thread, &thread_end_code);
+	if(thread_end_code!= NULL) {
+		ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
+		free(thread_end_code);
+		thread_end_code= NULL;
+	}
+	//LOGV("joined O.K.\n"); // comment-me
+	flag_thr_joined= 1;
+
+	/* Empty i/o FIFOs */
+	fifo_empty(proc_ctx->fifo_ctx_array[PROC_IPUT]);
+	fifo_empty(proc_ctx->fifo_ctx_array[PROC_OPUT]);
+
+	/* Reset processor resources */
+	if(flag_is_muxer!= 0) {
+		live555_rtsp_reset_on_new_settings_es_mux(proc_ctx, LOG_CTX_GET());
+	} else {
+		live555_rtsp_reset_on_new_settings_es_dmux(proc_ctx, LOG_CTX_GET());
+	}
+
+end:
+	/* Restore FIFOs blocking mode if applicable */
+	fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_IPUT], 1);
+	fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 1);
+
+	/* Re-launch PROC thread if applicable */
+	if(flag_thr_joined!= 0) {
+		proc_ctx->flag_exit= 0;
+		ret_code= pthread_create(&proc_ctx->proc_thread, NULL,
+				(void*(*)(void*))proc_ctx->start_routine, proc_ctx);
+		CHECK_DO(ret_code== 0, goto end);
+	}
+
+	/* Unlock i/o critical sections if applicable */
+	if(flag_io_locked!= 0) {
+		fair_unlock(proc_ctx->fair_lock_io_array[PROC_IPUT]);
+		fair_unlock(proc_ctx->fair_lock_io_array[PROC_OPUT]);
+	}
+	return;
+}
+
+void live555_rtsp_reset_on_new_settings_es_mux(proc_ctx_t *proc_ctx,
+		log_ctx_t *log_ctx)
+{
+	char *sdp_mimetype;
+    int i, ret_code, procs_num= 0;
+    live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx= NULL; // Do not release
+	volatile live555_rtsp_mux_settings_ctx_t *live555_rtsp_mux_settings_ctx=
+			NULL; // Do not release
+	volatile muxers_settings_mux_ctx_t *muxers_settings_mux_ctx=
+			NULL; // Do not release
+    cJSON *cjson_es_array= NULL, *cjson_aux= NULL;
+    char *rest_str= NULL;
+    LOG_CTX_INIT(log_ctx);
+
+    /* Check arguments */
+    CHECK_DO(proc_ctx!= NULL, return);
+
+    live555_rtsp_mux_ctx= (live555_rtsp_mux_ctx_t*)proc_ctx;
+
+	/* Get settings structures */
+	live555_rtsp_mux_settings_ctx=
+			&live555_rtsp_mux_ctx->live555_rtsp_mux_settings_ctx;
+	muxers_settings_mux_ctx=
+			&live555_rtsp_mux_settings_ctx->muxers_settings_mux_ctx;
+
+	/* Get ES-processors array REST (will need to register ES's again) */
+	ret_code= live555_rtsp_mux_rest_get_es_array(
+			((proc_muxer_mux_ctx_t*)live555_rtsp_mux_ctx)->procs_ctx_es_muxers,
+			&cjson_es_array, LOG_CTX_GET());
+	CHECK_DO(ret_code== STAT_SUCCESS && cjson_es_array!= NULL, goto end);
+
+	/* Release RTSP multiplexer at the exception of its settings context
+	 * structure.
+	 */
+	live555_rtsp_mux_deinit_except_settings(live555_rtsp_mux_ctx,
+			LOG_CTX_GET());
+
+    /* Re-initialize the specific Live555 multiplexer resources */
+	ret_code= live555_rtsp_mux_init_given_settings(live555_rtsp_mux_ctx,
+			(const muxers_settings_mux_ctx_t*)muxers_settings_mux_ctx,
+			LOG_CTX_GET());
+	CHECK_DO(ret_code== STAT_SUCCESS, goto end);
+
+	/* Register ES's again */
+	procs_num= cJSON_GetArraySize(cjson_es_array);
+	for(i= 0; i< procs_num; i++) {
+		char settings_str[128]= {0};
+		cJSON *cjson_proc= cJSON_GetArrayItem(cjson_es_array, i);
+		CHECK_DO(cjson_proc!= NULL, continue);
+
+		cjson_aux= cJSON_GetObjectItem(cjson_proc, "sdp_mimetype");
+		CHECK_DO(cjson_aux!= NULL, continue);
+		sdp_mimetype= cjson_aux->valuestring;
+
+		/* Register ES */
+		if(rest_str!= NULL) {
+			free(rest_str);
+			rest_str= NULL;
+		}
+		snprintf(settings_str, sizeof(settings_str), "sdp_mimetype=%s",
+				sdp_mimetype);
+		ret_code= procs_opt(
+				((proc_muxer_mux_ctx_t*)live555_rtsp_mux_ctx)->
+				procs_ctx_es_muxers, "PROCS_POST",
+				"live555_rtsp_es_mux", settings_str, &rest_str,
+				live555_rtsp_mux_ctx->usageEnvironment,
+				live555_rtsp_mux_ctx->serverMediaSession);
+		CHECK_DO(ret_code== STAT_SUCCESS && rest_str!= NULL, continue);
+	}
+
+end:
+	if(cjson_es_array!= NULL)
+		cJSON_Delete(cjson_es_array);
+	if(rest_str!= NULL)
+		free(rest_str);
+	return;
+}
+
+void live555_rtsp_reset_on_new_settings_es_dmux(proc_ctx_t *proc_ctx,
+		log_ctx_t *log_ctx)
+{
+    int ret_code;
+    live555_rtsp_dmux_ctx_t *live555_rtsp_dmux_ctx= NULL; // Do not release
+	volatile live555_rtsp_dmux_settings_ctx_t *live555_rtsp_dmux_settings_ctx=
+			NULL; // Do not release
+	volatile muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx=
+			NULL; // Do not release
+    LOG_CTX_INIT(log_ctx);
+
+    /* Check arguments */
+    CHECK_DO(proc_ctx!= NULL, return);
+
+    live555_rtsp_dmux_ctx= (live555_rtsp_dmux_ctx_t*)proc_ctx;
+
+	/* Get settings structures */
+	live555_rtsp_dmux_settings_ctx=
+			&live555_rtsp_dmux_ctx->live555_rtsp_dmux_settings_ctx;
+	muxers_settings_dmux_ctx=
+			&live555_rtsp_dmux_settings_ctx->muxers_settings_dmux_ctx;
+
+	/* Release RTSP de-multiplexer at the exception of its settings context
+	 * structure.
+	 */
+	live555_rtsp_dmux_deinit_except_settings(live555_rtsp_dmux_ctx,
+			LOG_CTX_GET());
+
+    /* Re-initialize the specific Live555 multiplexer resources */
+	ret_code= live555_rtsp_dmux_init_given_settings(live555_rtsp_dmux_ctx,
+			(const muxers_settings_dmux_ctx_t*)muxers_settings_dmux_ctx,
+			LOG_CTX_GET());
+	ASSERT(ret_code== STAT_SUCCESS);
+
+	return;
 }

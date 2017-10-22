@@ -229,7 +229,7 @@ SUITE(UTESTS_LIVE555_RTSP)
 				elem_strem_id_step= -1, elem_strem_id_alt= -1;
 		procs_ctx_t *procs_ctx= NULL;
 		char *rest_str= NULL;
-		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
+		cJSON *cjson_rest= NULL, *cjson_aux= NULL, *cjson_aux2= NULL;
 		proc_frame_ctx_t proc_frame_ctx_template1= {0};
 		proc_frame_ctx_t proc_frame_ctx_template2= {0};
 		uint8_t data_buf_template1[FRAME_SIZE];
@@ -394,6 +394,44 @@ SUITE(UTESTS_LIVE555_RTSP)
 			usleep(1000*10);
 		}
 
+		/* Before deleting multiplexer, try to change settings... */
+		ret_code= procs_opt(procs_ctx, "PROCS_ID_PUT", mux_proc_id,
+				"rtsp_streaming_session_name=session2&rtsp_port=1999");
+		if(ret_code!= STAT_SUCCESS) {
+			CHECK(false);
+			goto end;
+		}
+
+		/* Check new settings */
+		ret_code= procs_opt(procs_ctx, "PROCS_ID_GET", mux_proc_id, &rest_str);
+		if(ret_code!= STAT_SUCCESS || rest_str== NULL) {
+			fprintf(stderr, "Error at line: %d\n", __LINE__);
+			exit(-1);
+		}
+		if((cjson_rest= cJSON_Parse(rest_str))== NULL) {
+			fprintf(stderr, "Error at line: %d\n", __LINE__);
+			exit(-1);
+		}
+		if((cjson_aux= cJSON_GetObjectItem(cjson_rest, "settings"))== NULL) {
+			fprintf(stderr, "Error at line: %d\n", __LINE__);
+			exit(-1);
+		}
+		if((cjson_aux2= cJSON_GetObjectItem(cjson_aux,
+				"rtsp_streaming_session_name"))== NULL) {
+			fprintf(stderr, "Error at line: %d\n", __LINE__);
+			exit(-1);
+		}
+		CHECK(strcmp(cjson_aux2->valuestring, "session2")== 0);
+		if((cjson_aux2= cJSON_GetObjectItem(cjson_aux,
+				"rtsp_port"))== NULL) {
+			fprintf(stderr, "Error at line: %d\n", __LINE__);
+			exit(-1);
+		}
+		CHECK(cjson_aux2->valueint== 1999);
+		free(rest_str); rest_str= NULL;
+		cJSON_Delete(cjson_rest); cjson_rest= NULL;
+
+		/* Delete multiplexer */
 		ret_code= procs_opt(procs_ctx, "PROCS_ID_DELETE", mux_proc_id);
 		CHECK(ret_code== STAT_SUCCESS);
 		pthread_join(consumer_thread, NULL);
