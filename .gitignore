@@ -55,3 +55,6 @@ dkms.conf
 docs/html/
 docs/latex/
 
+# My private files/drafts
+private
+
