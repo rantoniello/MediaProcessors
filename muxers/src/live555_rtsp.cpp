@@ -49,7 +49,9 @@ extern "C" {
 
 #include <liveMedia/liveMedia.hh>
 #include <BasicUsageEnvironment/BasicUsageEnvironment.hh>
-#include <SimpleRTPSink.hh>
+#ifndef _MULTI_FRAMED_RTP_SINK_HH
+#include "MultiFramedRTPSink.hh"
+#endif
 
 using namespace std;
 
@@ -277,6 +279,42 @@ static int live555_rtsp_es_mux_settings_ctx_init(
 static void live555_rtsp_es_mux_settings_ctx_deinit(
 		volatile live555_rtsp_es_mux_settings_ctx_t *
 		live555_rtsp_es_mux_settings_ctx, log_ctx_t *log_ctx);
+
+/**
+ * So-called "framed-sink" class prototype.
+ */
+class SimpleRTPSink2: public MultiFramedRTPSink {
+public:
+	static SimpleRTPSink2* createNew(UsageEnvironment& env, Groupsock* RTPgs,
+			unsigned char rtpPayloadFormat, unsigned rtpTimestampFrequency,
+			char const* sdpMediaTypeString, char const* rtpPayloadFormatName,
+			unsigned numChannels= 1,
+			Boolean allowMultipleFramesPerPacket= True,
+			Boolean doNormalMBitRule= True);
+
+protected:
+	SimpleRTPSink2(UsageEnvironment& env, Groupsock* RTPgs,
+			unsigned char rtpPayloadFormat, unsigned rtpTimestampFrequency,
+			char const* sdpMediaTypeString, char const* rtpPayloadFormatName,
+			unsigned numChannels, Boolean allowMultipleFramesPerPacket,
+			Boolean doNormalMBitRule);
+	virtual ~SimpleRTPSink2();
+
+protected: // redefined virtual functions
+	virtual void doSpecialFrameHandling(unsigned fragmentationOffset,
+			unsigned char* frameStart,
+			unsigned numBytesInFrame,
+			struct timeval framePresentationTime,
+			unsigned numRemainingBytes);
+	virtual Boolean frameCanAppearAfterPacketStart(
+			unsigned char const* frameStart, unsigned numBytesInFrame) const;
+	virtual char const* sdpMediaType() const;
+
+private:
+	char const* fSDPMediaTypeString;
+	Boolean fAllowMultipleFramesPerPacket;
+	Boolean fSetMBitOnLastFrames, fSetMBitOnNextPacket;
+};
 
 /**
  * So-called "framed-source" class prototype.
@@ -1604,6 +1642,78 @@ static void live555_rtsp_es_mux_settings_ctx_deinit(
 	}
 }
 
+/* **** So-called "framed-sink class implementation **** */
+
+SimpleRTPSink2::SimpleRTPSink2(UsageEnvironment& env, Groupsock* RTPgs,
+		unsigned char rtpPayloadFormat, unsigned rtpTimestampFrequency,
+		char const* sdpMediaTypeString, char const* rtpPayloadFormatName,
+		unsigned numChannels, Boolean allowMultipleFramesPerPacket,
+		Boolean doNormalMBitRule):
+				MultiFramedRTPSink(env, RTPgs, rtpPayloadFormat,
+						rtpTimestampFrequency, rtpPayloadFormatName,
+						numChannels),
+				fAllowMultipleFramesPerPacket(allowMultipleFramesPerPacket),
+				fSetMBitOnNextPacket(False)
+{
+  fSDPMediaTypeString= strDup(
+		  sdpMediaTypeString== NULL? "unknown": sdpMediaTypeString);
+  fSetMBitOnLastFrames= doNormalMBitRule
+		  /*&& strcmp(fSDPMediaTypeString, "audio")!= 0*/;
+}
+
+SimpleRTPSink2::~SimpleRTPSink2()
+{
+  delete[] (char*)fSDPMediaTypeString;
+}
+
+SimpleRTPSink2* SimpleRTPSink2::createNew(
+		UsageEnvironment& env, Groupsock* RTPgs,
+		unsigned char rtpPayloadFormat, unsigned rtpTimestampFrequency,
+		char const* sdpMediaTypeString, char const* rtpPayloadFormatName,
+		unsigned numChannels, Boolean allowMultipleFramesPerPacket,
+		Boolean doNormalMBitRule)
+{
+	return new SimpleRTPSink2(env, RTPgs, rtpPayloadFormat,
+			rtpTimestampFrequency, sdpMediaTypeString, rtpPayloadFormatName,
+			numChannels, allowMultipleFramesPerPacket, doNormalMBitRule);
+}
+
+void SimpleRTPSink2::doSpecialFrameHandling(unsigned fragmentationOffset,
+					   unsigned char* frameStart,
+					   unsigned numBytesInFrame,
+					   struct timeval framePresentationTime,
+					   unsigned numRemainingBytes) {
+  if(numRemainingBytes== 0) {
+    // This packet contains the last (or only) fragment of the frame.
+    // Set the RTP 'M' ('marker') bit, if appropriate:
+    if(fSetMBitOnLastFrames)
+    	setMarkerBit();
+  }
+  if(fSetMBitOnNextPacket) {
+    //An external object asked for the 'M' bit to be set on the next packet:
+    setMarkerBit();
+    fSetMBitOnNextPacket = False;
+  }
+
+  // Important: Also call our base class's doSpecialFrameHandling(),
+  // to set the packet's timestamp:
+  MultiFramedRTPSink::doSpecialFrameHandling(fragmentationOffset,
+		  frameStart, numBytesInFrame, framePresentationTime,
+		  numRemainingBytes);
+}
+
+Boolean SimpleRTPSink2::frameCanAppearAfterPacketStart(
+		unsigned char const* /*frameStart*/, unsigned /*numBytesInFrame*/)
+const
+{
+  return fAllowMultipleFramesPerPacket;
+}
+
+char const* SimpleRTPSink2::sdpMediaType() const
+{
+  return fSDPMediaTypeString;
+}
+
 /* **** So-called "framed-source" class implementation **** */
 
 SimpleFramedSource *SimpleFramedSource::createNew(UsageEnvironment& env,
@@ -1918,7 +2028,7 @@ RTPSink* SimpleMediaSubsession::createNewRTPSink(Groupsock* rtpGroupsock,
 	//}
 
 	/* Create Sink */
-	rtpSink= SimpleRTPSink::createNew(envir(), rtpGroupsock,
+	rtpSink= SimpleRTPSink2::createNew(envir(), rtpGroupsock,
 			rtpPayloadTypeIfDynamic, 90000, type_str, subtype_str,
 			1,
 			False/*allowMultipleFramesPerPacket*/, True /*doNormalMBitRule*/);
