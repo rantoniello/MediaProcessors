@@ -309,6 +309,14 @@ int ffmpeg_video_enc_frame(ffmpeg_video_enc_ctx_t *ffmpeg_video_enc_ctx,
     			src_time_base);*/
         //LOGV("Write frame: pts: %"PRId64" dts: %"PRId64" (size=%d)\n",
         //		pkt_oput.pts, pkt_oput.dts, pkt_oput.size); //comment-me
+
+        /* Set sampling rate at output frame.
+         * HACK- implementation note:
+         * We use AVPacket::pos field to pass 'sampling rate' as
+         * no specific field exist for this parameter.
+         */
+        pkt_oput.pos= avcodecctx->framerate.num;
+
         fifo_put_dup(oput_fifo_ctx, &pkt_oput, sizeof(void*));
     }
 
@@ -438,6 +446,14 @@ int ffmpeg_video_dec_frame(ffmpeg_video_dec_ctx_t *ffmpeg_video_dec_ctx,
         //		avcodecctx->time_base, src_time_base);
         //LOGV("Output frame: %dx%d pts: %"PRId64"\n", avframe_oput->width,
         //		avframe_oput->height, avframe_oput->pts); //comment-me
+
+        /* Set sampling rate at output frame.
+         * HACK- implementation note:
+         * We use AVFrame::sample_rate field to pass 'sampling rate' as
+         * no specific video field exist for this parameter.
+         */
+        avframe_oput->sample_rate= avcodecctx->framerate.num;
+
     	fifo_put_dup(oput_fifo_ctx, avframe_oput, sizeof(void*));
     }
 

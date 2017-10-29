@@ -245,7 +245,7 @@ static void* dmux_thr(void *t)
 		exit(1);
 	}
 
-	/* Receive first frame from de-multiplexer -PRELUDE-.
+	/* Receive first frame from de-multiplexer -EPILOGUE-.
 	 * The first time we receive data we have to check the elementary stream
 	 * Id's. The idea is to use the elementary stream Id's to send each
 	 * de-multiplexed frame to the correct decoding sink.

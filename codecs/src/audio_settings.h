@@ -56,7 +56,10 @@ typedef struct audio_settings_enc_ctx_s {
  * audio decoder.
  */
 typedef struct audio_settings_dec_ctx_s {
-	// Reserved for future use
+	/**
+	 * Audio decoder output samples format.
+	 */
+	char *samples_format_output;
 } audio_settings_dec_ctx_t;
 
 /* **** Prototypes **** */

@@ -106,6 +106,7 @@ void* proc_frame_ctx_2_avframe(const proc_frame_ctx_t *proc_frame_ctx)
 		avframe->format= ffmpeg_fmt;
 		avframe->pts= proc_frame_ctx->pts;
 		break;
+	case AV_SAMPLE_FMT_S16:
 	case AV_SAMPLE_FMT_S16P:
 
 		/* Check width and height */
@@ -125,12 +126,13 @@ void* proc_frame_ctx_2_avframe(const proc_frame_ctx_t *proc_frame_ctx)
 		 * different planes with different sizes.
 		 * We will work with fixed stereo layout (considering only 2 planes).
 		 */
-		avframe->nb_samples= proc_frame_ctx->linesize[0]>>
-				1; // divide by 2 (signed 16 bits planar samples)
-		avframe->format= ffmpeg_fmt;
+		avframe->nb_samples= proc_frame_ctx->width[0]>> (
+				(ffmpeg_fmt== AV_SAMPLE_FMT_S16) // width may include 2 planes
+				+ 1); // divide by 2 (signed 16 bits planar samples)
+		avframe->format= AV_SAMPLE_FMT_S16P; // the only supported CODEC format
 		avframe->channel_layout= AV_CH_LAYOUT_STEREO;
-		avframe->linesize[0]= proc_frame_ctx->linesize[0];
-		avframe->linesize[1]= proc_frame_ctx->linesize[1];
+		avframe->linesize[0]= avframe->linesize[1]=
+				proc_frame_ctx->linesize[0]>> (ffmpeg_fmt== AV_SAMPLE_FMT_S16);
 		avframe->pts= proc_frame_ctx->pts;
 
 	    /* Allocate the data buffers.
@@ -140,16 +142,30 @@ void* proc_frame_ctx_2_avframe(const proc_frame_ctx_t *proc_frame_ctx)
 		CHECK_DO(av_frame_get_buffer(avframe, 32)>= 0, goto end);
 
 		/* Copy data planes */
-		for(i= 0; i< 2 /*stereo 2 channels*/; i++) {
-			register int plane_size;
-			const uint8_t *data_src= proc_frame_ctx->p_data[i];
-			uint8_t *data_dst= avframe->data[i];
-			if(data_src== NULL)
-				continue; // No data for this plane
-			CHECK_DO(data_dst!= NULL, goto end);
-			if((plane_size= proc_frame_ctx->linesize[i])<= 0)
-				continue;
-			memcpy(data_dst, data_src, plane_size);
+		if(ffmpeg_fmt== AV_SAMPLE_FMT_S16) {
+			/* We have to convert */
+			const int16_t *data_src= (int16_t*)(proc_frame_ctx->p_data[0]);
+			int16_t *data_dst_lef= (int16_t*)(avframe->data[0]);
+			int16_t *data_dst_rig= (int16_t*)(avframe->data[1]);
+
+			for(i= 0; i< avframe->nb_samples<< 1; i+= 2) {
+				int16_t sample_lef= *data_src++;
+				int16_t sample_rig= *data_src++;
+				*data_dst_lef++= sample_lef;
+				*data_dst_rig++= sample_rig;
+			}
+		} else {
+			for(i= 0; i< 2 /*stereo 2 channels*/; i++) {
+				register int plane_size;
+				const uint8_t *data_src= proc_frame_ctx->p_data[i];
+				uint8_t *data_dst= avframe->data[i];
+				if(data_src== NULL)
+					continue; // No data for this plane
+				CHECK_DO(data_dst!= NULL, goto end);
+				if((plane_size= proc_frame_ctx->linesize[i])<= 0)
+					continue;
+				memcpy(data_dst, data_src, plane_size);
+			}
 		}
 		break;
 	default:
@@ -245,6 +261,7 @@ proc_frame_ctx_t* avpacket_2_proc_frame_ctx(const void *avpacket_arg)
 	proc_frame_ctx->pts= avpacket->pts;
 	proc_frame_ctx->dts= avpacket->dts;
 	proc_frame_ctx->es_id= avpacket->stream_index;
+	proc_frame_ctx->proc_sampling_rate= (int)avpacket->pos; // Hack
 
 end:
 	if(data!= NULL)
@@ -388,6 +405,7 @@ proc_frame_ctx_t* avframe_2_proc_frame_ctx(const void *avframe_arg)
 			}
 		}
 		break;
+	case PROC_IF_FMT_S16:
 	case PROC_IF_FMT_S16P:
 
 		/* Allocate data buffer.
@@ -412,25 +430,50 @@ proc_frame_ctx_t* avframe_2_proc_frame_ctx(const void *avframe_arg)
 		data= (uint8_t*)aligned_alloc(CTX_S_BASE_ALIGN, lsize_ch_aligned<< 1);
 		CHECK_DO(data!= NULL, goto end);
 		proc_frame_ctx->data= data;
-
-		/* Initialize planes properties */
-		proc_frame_ctx->p_data[0]= data;
-		proc_frame_ctx->p_data[1]= data+ lsize_ch_aligned;
 		data= NULL; // Avoid double referencing
-		proc_frame_ctx->linesize[0]= lsize_ch_aligned;
-		proc_frame_ctx->width[0]= lsize_ch;
-		proc_frame_ctx->height[0]= 1;
-		proc_frame_ctx->linesize[1]= lsize_ch_aligned;
-		proc_frame_ctx->width[1]= lsize_ch;
-		proc_frame_ctx->height[1]= 1;
 
 		/* Copy data planes */
-		for(i= 0; i< 2; i++) {
-			uint8_t *data_src= avframe->data[i];
-			uint8_t *data_dst= (uint8_t*)proc_frame_ctx->p_data[i];
-			CHECK_DO(data_src!= NULL && data_dst!= NULL, goto end);
-			memcpy(data_dst, data_src, lsize_ch);
+		if(proc_sample_fmt== PROC_IF_FMT_S16) {
+			int16_t *data_src_lef;
+			int16_t *data_src_rig;
+			int16_t *data_dst;
+
+			/* Initialize planes properties */
+			proc_frame_ctx->p_data[0]= proc_frame_ctx->data;
+			proc_frame_ctx->linesize[0]= lsize_ch_aligned<< 1;
+			proc_frame_ctx->width[0]= lsize_ch<< 1;
+			proc_frame_ctx->height[0]= 1;
+
+			/* We have to convert */
+			data_src_lef= (int16_t*)(avframe->data[0]);
+			data_src_rig= (int16_t*)(avframe->data[1]);
+			data_dst= (int16_t*)(proc_frame_ctx->p_data[0]);
+			for(i= 0; i< avframe->nb_samples<< 1; i+= 2) {
+				int16_t sample_lef= *data_src_lef++;
+				int16_t sample_rig= *data_src_rig++;
+				*data_dst++= sample_lef;
+				*data_dst++= sample_rig;
+			}
+		} else {
+			/* Initialize planes properties */
+			proc_frame_ctx->p_data[0]= proc_frame_ctx->data;
+			proc_frame_ctx->p_data[1]= proc_frame_ctx->data+ lsize_ch_aligned;
+			proc_frame_ctx->linesize[0]= lsize_ch_aligned;
+			proc_frame_ctx->width[0]= lsize_ch;
+			proc_frame_ctx->height[0]= 1;
+			proc_frame_ctx->linesize[1]= lsize_ch_aligned;
+			proc_frame_ctx->width[1]= lsize_ch;
+			proc_frame_ctx->height[1]= 1;
+
+			/* Copy data planes */
+			for(i= 0; i< 2; i++) {
+				uint8_t *data_src= avframe->data[i];
+				uint8_t *data_dst= (uint8_t*)proc_frame_ctx->p_data[i];
+				CHECK_DO(data_src!= NULL && data_dst!= NULL, goto end);
+				memcpy(data_dst, data_src, lsize_ch);
+			}
 		}
+
 		break;
 	default:
 		LOGE("Unsupported frame samples format at decoder output\n");
@@ -439,6 +482,7 @@ proc_frame_ctx_t* avframe_2_proc_frame_ctx(const void *avframe_arg)
 
 	/* Initialize rest of fields */
 	proc_frame_ctx->proc_sample_fmt= proc_sample_fmt;
+	proc_frame_ctx->proc_sampling_rate= avframe->sample_rate;
 	proc_frame_ctx->pts= avframe->pts;
 	proc_frame_ctx->dts= -1; // Undefined (not used)
 
@@ -462,6 +506,9 @@ static int proc_sample_fmt_2_ffmpegfmt(proc_sample_fmt_t proc_sample_fmt)
 	//case PROC_IF_FMT_RGB24: // Reserved for future use
 	//	ffmpegfmt= AV_PIX_FMT_RGB24;
 	//	break;
+	case PROC_IF_FMT_S16:
+		ffmpegfmt= AV_SAMPLE_FMT_S16;
+		break;
 	case PROC_IF_FMT_S16P:
 		ffmpegfmt= AV_SAMPLE_FMT_S16P;
 		break;
@@ -483,6 +530,9 @@ static proc_sample_fmt_t ffmpegfmt_2_proc_sample_fmt(int ffmpegfmt)
 	//case AV_PIX_FMT_RGB24: // Reserved for future use
 	//	proc_sample_fmt= PROC_IF_FMT_RGB24;
 	//	break;
+	case AV_SAMPLE_FMT_S16:
+		proc_sample_fmt= PROC_IF_FMT_S16;
+		break;
 	case AV_SAMPLE_FMT_S16P:
 		proc_sample_fmt= PROC_IF_FMT_S16P;
 		break;

@@ -35,6 +35,16 @@
 #include <libmediaprocsutils/check_utils.h>
 #include <libmediaprocs/proc_if.h>
 
+/**
+ * Array of character string specifying the supported sample-formats for
+ * the audio decoder output.
+ */
+static const char *supported_samples_format_oput_array_dec[]= {
+		"planar_signed_16b",
+		"interleaved_signed_16b",
+		NULL
+};
+
 audio_settings_enc_ctx_t* audio_settings_enc_ctx_allocate()
 {
 	return (audio_settings_enc_ctx_t*)calloc(1, sizeof(
@@ -221,6 +231,9 @@ void audio_settings_dec_ctx_release(
 
 	if((audio_settings_dec_ctx= *ref_audio_settings_dec_ctx)!= NULL) {
 
+		audio_settings_dec_ctx_deinit((volatile audio_settings_dec_ctx_t*)
+				audio_settings_dec_ctx);
+
 		free(audio_settings_dec_ctx);
 		*ref_audio_settings_dec_ctx= NULL;
 	}
@@ -234,9 +247,8 @@ int audio_settings_dec_ctx_init(
 	/* Check arguments */
 	CHECK_DO(audio_settings_dec_ctx!= NULL, return STAT_ERROR);
 
-	// Reserved for future use
-	// Initialize here structure members, for example:
-	// audio_settings_dec_ctx->varX= valueX;
+	audio_settings_dec_ctx->samples_format_output= strdup(
+			"interleaved_signed_16b");
 
 	return STAT_SUCCESS;
 }
@@ -244,8 +256,20 @@ int audio_settings_dec_ctx_init(
 void audio_settings_dec_ctx_deinit(
 		volatile audio_settings_dec_ctx_t *audio_settings_dec_ctx)
 {
+	LOG_CTX_INIT(NULL);
+
+	/* Check arguments */
+	CHECK_DO(audio_settings_dec_ctx!= NULL, return);
+
+	if(audio_settings_dec_ctx->samples_format_output!= NULL) {
+		free(audio_settings_dec_ctx->samples_format_output);
+		audio_settings_dec_ctx->samples_format_output= NULL;
+	}
+
 	// Reserved for future use
-	// Release here heap-allocated members of the structure.
+	// Release here future heap-allocated members of the structure...
+
+	return;
 }
 
 int audio_settings_dec_ctx_cpy(
@@ -257,6 +281,13 @@ int audio_settings_dec_ctx_cpy(
 	/* Check arguments */
 	CHECK_DO(audio_settings_dec_ctx_src!= NULL, return STAT_ERROR);
 	CHECK_DO(audio_settings_dec_ctx_dst!= NULL, return STAT_ERROR);
+
+	if(audio_settings_dec_ctx_src->samples_format_output!= NULL &&
+			strlen(audio_settings_dec_ctx_src->samples_format_output)> 0) {
+		audio_settings_dec_ctx_dst->samples_format_output= strdup(
+				audio_settings_dec_ctx_src->samples_format_output);
+		ASSERT(audio_settings_dec_ctx_dst->samples_format_output!= NULL);
+	}
 
 	// Reserved for future use
 	// Copy values of simple variables, duplicate heap-allocated variables.
@@ -270,7 +301,8 @@ int audio_settings_dec_ctx_restful_put(
 {
 	int end_code= STAT_ERROR;
 	int flag_is_query= 0; // 0-> JSON / 1->query string
-	cJSON *cjson_rest= NULL;
+	cJSON *cjson_rest= NULL, *cjson_aux= NULL;
+	char *samples_format_output_str= NULL;
 	LOG_CTX_INIT(log_ctx);
 
 	/* Check arguments */
@@ -285,20 +317,36 @@ int audio_settings_dec_ctx_restful_put(
 
 	if(flag_is_query== 1) {
 
-		/* Reserved for future use
-		 *
-		 * Example: If 'var1' is a number value passed as query-string
-		 * '...var1_name=number&...':
-		 *
-		 * char *var1_str= NULL;
-		 * ...
-		 * var1_str= uri_parser_query_str_get_value("var1_name", str);
-		 * if(var1_str!= NULL)
-		 *     audio_settings_dec_ctx->var1= atoll(var1_str);
-		 * ...
-		 * if(var1_str!= NULL)
-		 *     free(var1_str);
-		 */
+		/* 'samples_format_output' */
+		samples_format_output_str= uri_parser_query_str_get_value(
+				"samples_format_output", str);
+		if(samples_format_output_str!= NULL) {
+			const char *fmt;
+			int i, flag_supported;
+
+			/* Sanity check */
+			CHECK_DO(strlen(samples_format_output_str)> 0,
+					end_code= STAT_EINVAL; goto end);
+
+			/* Check if format is supported */
+			for(i= 0, flag_supported= 0;
+					(fmt= supported_samples_format_oput_array_dec[i])!= NULL;
+					i++) {
+				if(strncmp(samples_format_output_str, fmt, strlen(fmt))== 0) {
+					flag_supported= 1;
+					break;
+				}
+			}
+			if(flag_supported== 0) { // Format specified not supported
+				end_code= STAT_EINVAL;
+				goto end;
+			}
+
+			if(audio_settings_dec_ctx->samples_format_output!= NULL)
+				free(audio_settings_dec_ctx->samples_format_output);
+			audio_settings_dec_ctx->samples_format_output= strdup(
+					samples_format_output_str);
+		}
 
 	} else {
 
@@ -306,23 +354,45 @@ int audio_settings_dec_ctx_restful_put(
 		cjson_rest= cJSON_Parse(str);
 		CHECK_DO(cjson_rest!= NULL, goto end);
 
-		/* Reserved for future use
-		 *
-		 * Example: If 'var1' is a number value passed as JSON-string
-		 * '{..., "var1_name":number, ...}':
-		 *
-		 * *cjson_aux= NULL;
-		 * ...
-		 * cjson_aux= cJSON_GetObjectItem(cjson_rest, "var1_name");
-		 * if(cjson_aux!= NULL)
-		 *     audio_settings_dec_ctx->var1= cjson_aux->valuedouble;
-		 */
+		/* 'samples_format_output' */
+		cjson_aux= cJSON_GetObjectItem(cjson_rest, "samples_format_output");
+		if(cjson_aux!= NULL) {
+			const char *fmt;
+			int i, flag_supported;
+
+			/* Sanity check */
+			CHECK_DO(cjson_aux->valuestring!= NULL &&
+					strlen(cjson_aux->valuestring)> 0,
+					end_code= STAT_EINVAL; goto end);
+
+			/* Check if format is supported */
+			for(i= 0, flag_supported= 0;
+					(fmt= supported_samples_format_oput_array_dec[i])!= NULL;
+					i++) {
+				if(strncmp(cjson_aux->valuestring, fmt, strlen(fmt))== 0) {
+					flag_supported= 1;
+					break;
+				}
+			}
+			if(flag_supported== 0) { // Format specified not supported
+				end_code= STAT_EINVAL;
+				goto end;
+			}
+
+			if(audio_settings_dec_ctx->samples_format_output!= NULL)
+				free(audio_settings_dec_ctx->samples_format_output);
+			audio_settings_dec_ctx->samples_format_output= strdup(
+					cjson_aux->valuestring);
+		}
+
 	}
 
 	end_code= STAT_SUCCESS;
 end:
 	if(cjson_rest!= NULL)
 		cJSON_Delete(cjson_rest);
+	if(samples_format_output_str!= NULL)
+		free(samples_format_output_str);
 	return end_code;
 }
 

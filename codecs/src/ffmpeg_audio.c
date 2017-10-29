@@ -196,6 +196,14 @@ int ffmpeg_audio_enc_frame(ffmpeg_audio_enc_ctx_t *ffmpeg_audio_enc_ctx,
     	//		src_time_base); // Not necessary
         //LOGV("Output frame: pts: %"PRId64" (size=%d)\n", pkt_oput.pts,
         //		pkt_oput.size); //comment-me
+
+        /* Set sampling rate at output frame.
+         * HACK- implementation note:
+         * We use AVPacket::pos field to pass 'sampling rate' as
+         * no specific field exist for this parameter.
+         */
+        pkt_oput.pos= avcodecctx->sample_rate;
+
         fifo_put_dup(oput_fifo_ctx, &pkt_oput, sizeof(void*));
     }
 
@@ -209,6 +217,7 @@ int ffmpeg_audio_dec_ctx_init(ffmpeg_audio_dec_ctx_t *ffmpeg_audio_dec_ctx,
 		int avcodecid, const audio_settings_dec_ctx_t *audio_settings_dec_ctx,
 		log_ctx_t *log_ctx)
 {
+	char *fmt_output;
     int ret_code, end_code= STAT_ERROR;
     const AVCodec *avcodec= NULL; // Do not release
     AVCodecContext *avcodecctx= NULL; // Do not release
@@ -236,6 +245,22 @@ int ffmpeg_audio_dec_ctx_init(ffmpeg_audio_dec_ctx_t *ffmpeg_audio_dec_ctx,
     avcodecctx= avcodec_alloc_context3(avcodec);
     CHECK_DO(avcodecctx!= NULL, goto end);
     ffmpeg_audio_dec_ctx->avcodecctx= avcodecctx;
+
+    /* Initialize user specified samples output format
+     * (may differ from native-decoder format).
+     */
+    fmt_output= audio_settings_dec_ctx->samples_format_output;
+    CHECK_DO(fmt_output!= NULL, goto end);
+    ffmpeg_audio_dec_ctx->sample_fmt_output= AV_SAMPLE_FMT_NONE;
+    if(strncmp(fmt_output, "planar_signed_16b",
+    		strlen("planar_signed_16b"))== 0) {
+    	ffmpeg_audio_dec_ctx->sample_fmt_output= AV_SAMPLE_FMT_S16P;
+    } else if(strncmp(fmt_output, "interleaved_signed_16b",
+    		strlen("interleaved_signed_16b"))== 0) {
+    	ffmpeg_audio_dec_ctx->sample_fmt_output= AV_SAMPLE_FMT_S16;
+    }
+    CHECK_DO(ffmpeg_audio_dec_ctx->sample_fmt_output!= AV_SAMPLE_FMT_NONE,
+    		goto end);
 
     /* Put settings */
 	/* Note: It is not necessary to set AVCodecContext::time_base as we do not
@@ -320,6 +345,13 @@ int ffmpeg_audio_dec_frame(ffmpeg_audio_dec_ctx_t *ffmpeg_audio_dec_ctx,
         //		avcodecctx->time_base, src_time_base); // Not necessary
         //LOGV("Output frame: pts: %"PRId64"\n",
         //		avframe_oput->pts); //comment-me
+
+        /* Set format to use in 'fifo_put_dup()' */
+        avframe_oput->format= ffmpeg_audio_dec_ctx->sample_fmt_output;
+
+        /* Set sampling rate at output frame */
+        avframe_oput->sample_rate= avcodecctx->sample_rate;
+
     	fifo_put_dup(oput_fifo_ctx, avframe_oput, sizeof(void*));
     }
 

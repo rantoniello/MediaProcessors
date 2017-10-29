@@ -54,6 +54,7 @@ typedef enum proc_sample_fmt_enum {
 	PROC_IF_FMT_UNDEF= 0,   ///< Undefined format
 	PROC_IF_FMT_YUV420P, 	///< Planar YUV 4:2:0 with 12bpp (video)
 	//PROC_IF_FMT_RGB24, 		///< Packed RGB 8:8:8 with 24bpp (video) //Reserved for future use
+	PROC_IF_FMT_S16, 		///< Interleaved signed 16 bits (typically audio)
 	PROC_IF_FMT_S16P, 		///< Planar signed 16 bits (typically audio)
 } proc_sample_fmt_t;
 
@@ -124,6 +125,13 @@ typedef struct proc_frame_ctx_s {
 	 * Typically not used in the case of compressed/encoded data.
 	 */
 	int proc_sample_fmt;
+	/**
+	 * Processor data sampling rate.
+	 * For example, for video, this value approximately represent the
+	 * frames-per-second (FPS). For audio, the sampling-rate value in units
+	 * of Hz. (e.g. 44100, ...)
+	 */
+	int proc_sampling_rate;
 	/**
 	 * Presentation time-stamp, in microseconds.
 	 */

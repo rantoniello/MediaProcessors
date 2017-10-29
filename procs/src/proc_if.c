@@ -40,6 +40,7 @@ const proc_sample_fmt_lut_t proc_sample_fmt_lut[]=
 	{PROC_IF_FMT_UNDEF, "Undefined format"},
 	{PROC_IF_FMT_YUV420P, "Planar YUV 4:2:0 with 12bpp"},
 	//{PROC_IF_FMT_RGB24, "Packed RGB 8:8:8 with 24bpp"}, // Reserved for future use
+	{PROC_IF_FMT_S16, "Interleaved signed 16 bits"},
 	{PROC_IF_FMT_S16P, "Planar signed 16 bits"}
 };
 
@@ -109,6 +110,7 @@ proc_frame_ctx_t* proc_frame_ctx_dup(
 
 	/* Copy rest of parameters */
 	proc_frame_ctx->proc_sample_fmt= proc_frame_ctx_arg->proc_sample_fmt;
+	proc_frame_ctx->proc_sampling_rate= proc_frame_ctx_arg->proc_sampling_rate;
 	proc_frame_ctx->pts= proc_frame_ctx_arg->pts;
 	proc_frame_ctx->dts= proc_frame_ctx_arg->dts;
 	proc_frame_ctx->es_id= proc_frame_ctx_arg->es_id;

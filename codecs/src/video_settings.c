@@ -51,6 +51,9 @@ void video_settings_enc_ctx_release(
 
 	if((video_settings_enc_ctx= *ref_video_settings_enc_ctx)!= NULL) {
 
+		video_settings_enc_ctx_deinit((volatile video_settings_enc_ctx_t*)
+				video_settings_enc_ctx);
+
 		free(video_settings_enc_ctx);
 		*ref_video_settings_enc_ctx= NULL;
 	}

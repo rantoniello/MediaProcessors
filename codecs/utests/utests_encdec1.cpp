@@ -545,36 +545,9 @@ end:
 static void treat_output_frame_audio(proc_frame_ctx_t *proc_frame_ctx,
 		FILE **ref_file, int min_psnr_val)
 {
-	const int16_t *p_samples_left, *p_samples_rigth;
-	int i, j, frame_size_bytes, frame_size_samples;
-	int16_t *sample_buf= NULL;
-
 	/* Check arguments */
 	if(proc_frame_ctx== NULL || ref_file== NULL)
 		return;
-
-	/* Get frame buffer size */
-	frame_size_bytes= proc_frame_ctx->width[0]; // left channel
-	CHECK(frame_size_bytes== (int)proc_frame_ctx->width[1]); // right channel
-	frame_size_samples= frame_size_bytes>> 1; // 16-bit samples
-
-	/* Allocate buffer */
-	sample_buf= (int16_t*)malloc(frame_size_bytes<< 1); // stereo: two channels
-	if(sample_buf== NULL) {
-		CHECK(false);
-		goto end;
-	}
-
-	p_samples_left= (const int16_t*)proc_frame_ctx->p_data[0];
-	p_samples_rigth= (const int16_t*)proc_frame_ctx->p_data[1];
-	if(p_samples_left== NULL || p_samples_rigth== NULL) {
-		CHECK(false);
-		goto end;
-	}
-	for(i= 0, j= 0; i< frame_size_samples; i++, j+= 2) {
-		sample_buf[j+ 0]= p_samples_left[i];
-		sample_buf[j+ 1]= p_samples_rigth[i];
-	}
 
 #ifdef WRITE_2_OFILE
 	/* Open the output file if applicable */
@@ -585,12 +558,8 @@ static void treat_output_frame_audio(proc_frame_ctx_t *proc_frame_ctx,
 		}
 	}
 	// Write interlaced not planar
-	fwrite(sample_buf, 1, frame_size_bytes<< 1, *ref_file);
+	fwrite(proc_frame_ctx->p_data[0], 1, proc_frame_ctx->width[0], *ref_file);
 #endif
-
-end:
-	if(sample_buf!= NULL)
-		free(sample_buf);
 }
 
 static void* consumer_thr(void *t)

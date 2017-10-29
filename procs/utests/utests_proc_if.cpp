@@ -156,6 +156,7 @@ SUITE(UTESTS_PROC_IF)
 		proc_frame_ctx_yuv.height[0]= 4;
 		proc_frame_ctx_yuv.height[1]= proc_frame_ctx_yuv.height[2]= 2;
 		proc_frame_ctx_yuv.proc_sample_fmt= PROC_IF_FMT_UNDEF;
+		proc_frame_ctx_yuv.proc_sampling_rate= -1;
 		proc_frame_ctx_yuv.pts= -1;
 		proc_frame_ctx_yuv.dts= -1;
 		proc_frame_ctx_yuv.es_id= -1;
@@ -170,6 +171,7 @@ SUITE(UTESTS_PROC_IF)
 			return;
 
 		CHECK(proc_frame_ctx->proc_sample_fmt== PROC_IF_FMT_UNDEF);
+		CHECK(proc_frame_ctx->proc_sampling_rate== -1);
 		CHECK(proc_frame_ctx->pts== -1);
 		CHECK(proc_frame_ctx->dts== -1);
 		CHECK(proc_frame_ctx->es_id== -1);

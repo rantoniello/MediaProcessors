@@ -76,6 +76,11 @@ typedef struct ffmpeg_audio_dec_ctx_s {
 	 * FFmpeg's decoder instance context structure.
 	 */
 	AVCodecContext *avcodecctx;
+	/**
+	 * User specified samples output format (may differ from native-decoder
+	 * format)
+	 */
+	int sample_fmt_output;
 } ffmpeg_audio_dec_ctx_t;
 
 /* **** Prototypes **** */
