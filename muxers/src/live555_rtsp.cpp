@@ -59,7 +59,7 @@ using namespace std;
 
 #define SERVER_TOUT 10
 
-#define FRAMED_SOURCE_FIFO_SLOTS 256
+#define FRAMED_SOURCE_FIFO_SLOTS 16
 
 #define SINK_BUFFER_SIZE 200000
 

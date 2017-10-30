@@ -470,6 +470,7 @@ void ffmpeg_video_reset_on_new_settings(proc_ctx_t *proc_ctx,
 {
     int ret_code, flag_io_locked= 0, flag_thr_joined= 0;
     void *thread_end_code= NULL;
+    AVDictionary *avdictionary= NULL;
     LOG_CTX_INIT(log_ctx);
 
     /* Check arguments */
@@ -522,7 +523,19 @@ void ffmpeg_video_reset_on_new_settings(proc_ctx_t *proc_ctx,
 	    CHECK_DO(avcodecctx!= NULL, goto end);
 	    avcodecid= avcodecctx->codec_id;
 
+	    /* Back-up dictionary */
+	    ret_code= av_dict_copy(&avdictionary,
+	    		ffmpeg_video_enc_ctx->avdictionary, 0);
+	    CHECK_DO(ret_code== 0, goto end);
+
+	    /* De-initialize FFmpeg's video encoder */
 		ffmpeg_video_enc_ctx_deinit(ffmpeg_video_enc_ctx, LOG_CTX_GET());
+
+	    /* Restore dictionary */
+	    ret_code= av_dict_copy(&ffmpeg_video_enc_ctx->avdictionary,
+	    		avdictionary, 0);
+	    CHECK_DO(ret_code== 0, goto end);
+
 		ret_code= ffmpeg_video_enc_ctx_init(ffmpeg_video_enc_ctx,
 				(int)avcodecid, video_settings_enc_ctx, LOG_CTX_GET());
 		CHECK_DO(ret_code== STAT_SUCCESS, goto end);
@@ -563,5 +576,8 @@ end:
 		fair_unlock(proc_ctx->fair_lock_io_array[PROC_IPUT]);
 		fair_unlock(proc_ctx->fair_lock_io_array[PROC_OPUT]);
 	}
+
+	if(avdictionary!= NULL)
+		av_dict_free(&avdictionary);
 	return;
 }
