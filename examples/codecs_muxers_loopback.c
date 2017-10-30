@@ -160,7 +160,7 @@ static void* producer_thr_video(void *t)
 
 	/* Check argument */
 	if(thr_ctx== NULL) {
-		fprintf(stderr, "Bad argument 'consumer_thr()'\n");
+		fprintf(stderr, "Bad argument '%s'\n", __FUNCTION__);
 		exit(1);
 	}
 
@@ -183,7 +183,7 @@ static void* mux_thr(void *t)
 
 	/* Check argument */
 	if(thr_ctx== NULL) {
-		fprintf(stderr, "Bad argument 'consumer_thr()'\n");
+		fprintf(stderr, "Bad argument '%s'\n", __FUNCTION__);
 		exit(1);
 	}
 
@@ -241,7 +241,7 @@ static void* dmux_thr(void *t)
 
 	/* Check argument */
 	if(thr_ctx== NULL) {
-		fprintf(stderr, "Bad argument 'consumer_thr()'\n");
+		fprintf(stderr, "Bad argument '%s'\n", __FUNCTION__);
 		exit(1);
 	}
 
@@ -370,7 +370,7 @@ static void* consumer_thr_video(void *t)
 
 	/* Check argument */
 	if(thr_ctx== NULL) {
-		fprintf(stderr, "Bad argument 'consumer_thr()'\n");
+		fprintf(stderr, "Bad argument '%s'\n", __FUNCTION__);
 		exit(-1);
 	}
 
@@ -574,7 +574,7 @@ static void* http_server_thr(void *t)
 
 	/* Check argument */
 	if(thr_ctx== NULL) {
-		fprintf(stderr, "Bad argument 'enc_dec_thr()'\n");
+		fprintf(stderr, "Bad argument '%s'\n", __FUNCTION__);
 		exit(1);
 	}
 
