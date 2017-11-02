@@ -51,7 +51,9 @@ static const stat_codes_lu_ctx_t stat_codes_lutable[STAT_CODES_MAX]=
 		{"Conflict with the current state of the target "
 				"resource"}, //STAT_ECONFLICT
 		{"Bad or not supported audio/video format"}, //STAT_EBAVFORMAT
-		{"Bad or not supported multiplex format"} //STAT_EBMUXFORMAT
+		{"Bad or not supported multiplex format"}, //STAT_EBMUXFORMAT
+		{"Operation timed out"}, //STAT_ETIMEDOUT
+		{"Operation interrupted"} //STAT_EINTR
 };
 
 const char* stat_codes_get_description(stat_codes_ctx_t code)

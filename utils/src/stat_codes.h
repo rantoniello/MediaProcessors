@@ -48,6 +48,8 @@ typedef enum stat_codes_ctx_s {
 	STAT_ECONFLICT, //< Conflict with the current state of the target resource
 	STAT_EBAVFORMAT, //< Bad or not supported audio/video format
 	STAT_EBMUXFORMAT, //< Bad or not supported multiplex format
+	STAT_ETIMEDOUT, //< Operation timed out
+	STAT_EINTR, //< Operation interrupted
 	STAT_CODES_MAX
 } stat_codes_ctx_t;
 
