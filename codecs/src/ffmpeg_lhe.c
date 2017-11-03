@@ -142,7 +142,7 @@ static void ffmpeg_mlhe_dec_settings_ctx_deinit(
 
 const proc_if_t proc_if_ffmpeg_mlhe_enc=
 {
-	"ffmpeg_mlhe_enc",
+	"ffmpeg_mlhe_enc", "encoder", "video/mlhe",
 	ffmpeg_mlhe_enc_open,
 	ffmpeg_mlhe_enc_close,
 	ffmpeg_mlhe_enc_rest_put,
@@ -156,7 +156,7 @@ const proc_if_t proc_if_ffmpeg_mlhe_enc=
 
 const proc_if_t proc_if_ffmpeg_mlhe_dec=
 {
-	"ffmpeg_mlhe_dec",
+	"ffmpeg_mlhe_dec", "decoder", "video/mlhe",
 	ffmpeg_mlhe_dec_open,
 	ffmpeg_mlhe_dec_close,
 	ffmpeg_mlhe_dec_rest_put,

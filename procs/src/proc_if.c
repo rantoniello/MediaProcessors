@@ -165,10 +165,19 @@ proc_if_t* proc_if_dup(const proc_if_t *proc_if_arg)
 	 */
 	memcpy(proc_if, proc_if_arg, sizeof(proc_if_t));
 
-	/* Duplicate members that use dynamic memory allocations */
+	/* **** Duplicate members that use dynamic memory allocations **** */
+
 	CHECK_DO(proc_if_arg->proc_name!= NULL, goto end);
 	proc_if->proc_name= strdup(proc_if_arg->proc_name);
 	CHECK_DO(proc_if->proc_name!= NULL, goto end);
+
+	CHECK_DO(proc_if_arg->proc_type!= NULL, goto end);
+	proc_if->proc_type= strdup(proc_if_arg->proc_type);
+	CHECK_DO(proc_if->proc_type!= NULL, goto end);
+
+	CHECK_DO(proc_if_arg->proc_mime!= NULL, goto end);
+	proc_if->proc_mime= strdup(proc_if_arg->proc_mime);
+	CHECK_DO(proc_if->proc_mime!= NULL, goto end);
 
 	end_code= STAT_SUCCESS;
 end:
@@ -189,6 +198,16 @@ void proc_if_release(proc_if_t **ref_proc_if)
 		if(proc_if->proc_name!= NULL) {
 			free((void*)proc_if->proc_name);
 			proc_if->proc_name= NULL;
+		}
+
+		if(proc_if->proc_type!= NULL) {
+			free((void*)proc_if->proc_type);
+			proc_if->proc_type= NULL;
+		}
+
+		if(proc_if->proc_mime!= NULL) {
+			free((void*)proc_if->proc_mime);
+			proc_if->proc_mime= NULL;
 		}
 
 		free(proc_if);

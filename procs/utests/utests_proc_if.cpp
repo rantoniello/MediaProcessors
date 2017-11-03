@@ -90,7 +90,7 @@ SUITE(UTESTS_PROC_IF)
 	{
 		proc_if_t *proc_if= NULL;
 		const proc_if_t proc_if_dummy_proc= {
-			"dummy_processor",
+			"dummy_processor", "encoder", "application/octet-stream",
 			dummy_proc_open,
 			dummy_proc_close,
 			dummy_proc_rest_put,
@@ -112,6 +112,8 @@ SUITE(UTESTS_PROC_IF)
 			return;
 
 		CHECK(strcmp(proc_if->proc_name, proc_if_dummy_proc.proc_name)== 0);
+		CHECK(strcmp(proc_if->proc_type, proc_if_dummy_proc.proc_type)== 0);
+		CHECK(strcmp(proc_if->proc_mime, proc_if_dummy_proc.proc_mime)== 0);
 		CHECK(proc_if->open== dummy_proc_open);
 		CHECK(proc_if->close== dummy_proc_close);
 		CHECK(proc_if->rest_put== dummy_proc_rest_put);

@@ -142,7 +142,7 @@ static void ffmpeg_mp3_dec_settings_ctx_deinit(
 
 const proc_if_t proc_if_ffmpeg_mp3_enc=
 {
-	"ffmpeg_mp3_enc",
+	"ffmpeg_mp3_enc", "encoder", "audio/MPA",
 	ffmpeg_mp3_enc_open,
 	ffmpeg_mp3_enc_close,
 	ffmpeg_mp3_enc_rest_put,
@@ -156,7 +156,7 @@ const proc_if_t proc_if_ffmpeg_mp3_enc=
 
 const proc_if_t proc_if_ffmpeg_mp3_dec=
 {
-	"ffmpeg_mp3_dec",
+	"ffmpeg_mp3_dec", "decoder", "audio/MPA",
 	ffmpeg_mp3_dec_open,
 	ffmpeg_mp3_dec_close,
 	ffmpeg_mp3_dec_rest_put,

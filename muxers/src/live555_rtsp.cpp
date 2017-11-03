@@ -547,7 +547,7 @@ void live555_rtsp_reset_on_new_settings_es_dmux(proc_ctx_t *proc_ctx,
 extern "C" {
 const proc_if_t proc_if_live555_rtsp_mux=
 {
-	"live555_rtsp_mux",
+	"live555_rtsp_mux", "multiplexer", "application/octet-stream",
 	live555_rtsp_mux_open,
 	live555_rtsp_mux_close,
 	live555_rtsp_mux_rest_put,
@@ -561,7 +561,7 @@ const proc_if_t proc_if_live555_rtsp_mux=
 
 static const proc_if_t proc_if_live555_rtsp_es_mux=
 {
-	"live555_rtsp_es_mux",
+	"live555_rtsp_es_mux", "multiplexer", "application/octet-stream",
 	live555_rtsp_es_mux_open,
 	live555_rtsp_es_mux_close,
 	NULL, //live555_rtsp_es_mux_rest_put // used internally only (not in API)
@@ -575,7 +575,7 @@ static const proc_if_t proc_if_live555_rtsp_es_mux=
 
 const proc_if_t proc_if_live555_rtsp_dmux=
 {
-	"live555_rtsp_dmux",
+	"live555_rtsp_dmux", "demultiplexer", "application/octet-stream",
 	live555_rtsp_dmux_open,
 	live555_rtsp_dmux_close,
 	live555_rtsp_dmux_rest_put,

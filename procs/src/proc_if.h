@@ -160,6 +160,16 @@ typedef struct proc_if_s {
 	 */
 	const char *proc_name;
 	/**
+	 * Processor type: encoder, decoder, multiplexer, demultiplexer.
+	 */
+	const char *proc_type;
+	/**
+	 * Media type and sub-type (formerly known as MIME types and sub-type).
+	 * See http://www.iana.org/assignments/media-types/media-types.xhtml.
+	 * For muxers we use by default: "application/octet-stream"
+	 */
+	const char *proc_mime;
+	/**
 	 * Allocates specific processor (PROC) context structure, initializes,
 	 * and launches processing thread.
 	 * This callback is mandatory (cannot be NULL).

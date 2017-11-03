@@ -156,7 +156,7 @@ SUITE(UTESTS_PROCS)
 	{
 		int ret_code;
 		const proc_if_t proc_if_bypass_proc= {
-			"bypass_processor",
+			"bypass_processor", "encoder", "application/octet-stream",
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
@@ -184,7 +184,7 @@ SUITE(UTESTS_PROCS)
 		char *rest_str= NULL;
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
-			"bypass_processor",
+			"bypass_processor", "encoder", "application/octet-stream",
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
@@ -244,7 +244,7 @@ end:
 		char *rest_str= NULL;
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
-			"bypass_processor",
+			"bypass_processor", "encoder", "application/octet-stream",
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
@@ -326,7 +326,7 @@ end:
 		char *rest_str= NULL;
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
-			"bypass_processor",
+			"bypass_processor", "encoder", "application/octet-stream",
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
