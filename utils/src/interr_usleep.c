@@ -32,11 +32,12 @@
  * @author Rafael Antoniello
  */
 
+#include "interr_usleep.h"
+
 #include <stdlib.h>
 #include <pthread.h>
 #include <errno.h>
 
-#include "interr_usleep.h"
 #include "log.h"
 #include "stat_codes.h"
 #include "check_utils.h"
@@ -95,7 +96,7 @@ interr_usleep_ctx_t* interr_usleep_open()
 end:
 	if(end_code!= STAT_SUCCESS)
 		interr_usleep_close(&interr_usleep_ctx);
-	return end_code;
+	return interr_usleep_ctx;
 }
 
 void interr_usleep_close(interr_usleep_ctx_t **ref_interr_usleep_ctx)
