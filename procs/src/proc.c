@@ -35,6 +35,7 @@
 #include <libmediaprocsutils/schedule.h>
 #include <libmediaprocsutils/fifo.h>
 #include <libmediaprocsutils/fair_lock.h>
+#include <libmediaprocsutils/interr_usleep.h>
 
 #include "proc_if.h"
 
@@ -59,8 +60,22 @@
  */
 #define TAG_IS(TAG) (strncmp(tag, TAG, strlen(TAG))== 0)
 
+/**
+ * Processor's statistic thread period (1 second).
+ */
+#define PROC_STATS_THR_MEASURE_PERIOD_USECS (1000000)
+
+/**
+ * Processor's statistic thread argument.
+ */
+typedef struct proc_stats_thr_arg_s {
+	proc_ctx_t *proc_ctx;
+	interr_usleep_ctx_t *interr_usleep_ctx;
+} proc_stats_thr_arg_t;
+
 /* **** Prototypes **** */
 
+static void* proc_stats_thr(void *t);
 static void* proc_thr(void *t);
 
 /* **** Implementations **** */
@@ -135,6 +150,12 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 		proc_ctx->fair_lock_io_array[i]= fair_lock;
 	}
 
+	/* Initialize input/output MUTEX for bitrate statistics related */
+	ret_code= pthread_mutex_init(&proc_ctx->acc_io_bits_mutex[PROC_IPUT], NULL);
+	CHECK_DO(ret_code== 0, goto end);
+	ret_code= pthread_mutex_init(&proc_ctx->acc_io_bits_mutex[PROC_OPUT], NULL);
+	CHECK_DO(ret_code== 0, goto end);
+
 	/* At last, launch PROC thread */
 	proc_ctx->flag_exit= 0;
 	proc_ctx->start_routine= (const void*(*)(void*))proc_thr;
@@ -190,6 +211,12 @@ void proc_close(proc_ctx_t **ref_proc_ctx)
 		fair_lock_close(&proc_ctx->fair_lock_io_array[PROC_IPUT]);
 		fair_lock_close(&proc_ctx->fair_lock_io_array[PROC_OPUT]);
 
+		/* Release input/output MUTEX for bitrate statistics related */
+		ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_IPUT])
+				== 0);
+		ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_OPUT])
+				== 0);
+
 		/* Close the specific PROC instance */
 		CHECK_DO((proc_if= proc_ctx->proc_if)!= NULL, return); // sanity check
 		CHECK_DO(proc_if->close!= NULL, return); // sanity check
@@ -216,6 +243,38 @@ int proc_send_frame(proc_ctx_t *proc_ctx,
 	end_code= fifo_put_dup(proc_ctx->fifo_ctx_array[PROC_IPUT],
 			proc_frame_ctx, sizeof(void*));
 
+	/* Update processor's input bitrate statistics
+	 * (note we are "sending frame *into* the processor").
+	 * For most processors implementation (specially for encoders and
+	 * decoders), measuring traffic at this point would be precise.
+	 * Nevertheless, for certain processors, as is the case of demultiplexers,
+	 * this function ('proc_send_frame()') is not used thus input bitrate
+	 * should be measured at some other point of the specific implementation
+	 * (e.g. when receiving data from an INET socket).
+	 */
+	if(end_code== STAT_SUCCESS && proc_frame_ctx!= NULL) {
+		register int i;
+		register uint32_t byte_cnt_iput, bit_cnt_iput;
+		register size_t width;
+		pthread_mutex_t *acc_io_bits_mutex_p=
+				&proc_ctx->acc_io_bits_mutex[PROC_IPUT];
+
+		/* Get frame size (we "unroll" for the most common cases) */
+		byte_cnt_iput= (proc_frame_ctx->width[0]* proc_frame_ctx->height[0])+
+				(proc_frame_ctx->width[1]* proc_frame_ctx->height[1])+
+				(proc_frame_ctx->width[2]* proc_frame_ctx->height[2]);
+		// We do the rest in a loop...
+		for(i= 3; (width= proc_frame_ctx->width[i])> 0 &&
+				i< PROC_FRAME_NUM_DATA_POINTERS; i++)
+			byte_cnt_iput+= width* proc_frame_ctx->height[i];
+
+		/* Update currently accumulated bit value */
+		bit_cnt_iput= (byte_cnt_iput<< 3);
+		ASSERT(pthread_mutex_lock(acc_io_bits_mutex_p)== 0);
+		proc_ctx->acc_io_bits[PROC_IPUT]+= bit_cnt_iput;
+		ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_p)== 0);
+	}
+
 	fair_unlock(proc_ctx->fair_lock_io_array[PROC_IPUT]);
 	return end_code;
 }
@@ -225,6 +284,7 @@ int proc_recv_frame(proc_ctx_t *proc_ctx,
 {
 	int ret_code, end_code= STAT_ERROR;
 	size_t fifo_elem_size= 0;
+	proc_frame_ctx_t *proc_frame_ctx= NULL; // Do not release
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
@@ -243,6 +303,38 @@ int proc_recv_frame(proc_ctx_t *proc_ctx,
 	if(ret_code!= STAT_SUCCESS) {
 		end_code= ret_code;
 		goto end;
+	}
+
+	/* Update processor's output bitrate statistics
+	 * (note we are "receiving frame *from* the processor").
+	 * For most processors implementation (specially for encoders and
+	 * decoders), measuring traffic at this point would be precise.
+	 * Nevertheless, for certain processors, as is the case of multiplexers,
+	 * this function ('proc_recv_frame()') is not used thus input bitrate
+	 * should be measured at some other point of the specific implementation
+	 * (e.g. when sending data to an INET socket).
+	 */
+	if((proc_frame_ctx= *ref_proc_frame_ctx)!= NULL) {
+		register int i;
+		register uint32_t byte_cnt_oput, bit_cnt_oput;
+		register size_t width;
+		pthread_mutex_t *acc_io_bits_mutex_p=
+				&proc_ctx->acc_io_bits_mutex[PROC_OPUT];
+
+		/* Get frame size (we "unroll" for the most common cases) */
+		byte_cnt_oput= (proc_frame_ctx->width[0]* proc_frame_ctx->height[0])+
+				(proc_frame_ctx->width[1]* proc_frame_ctx->height[1])+
+				(proc_frame_ctx->width[2]* proc_frame_ctx->height[2]);
+		// We do the rest in a loop...
+		for(i= 3; (width= proc_frame_ctx->width[i])> 0 &&
+				i< PROC_FRAME_NUM_DATA_POINTERS; i++)
+			byte_cnt_oput+= width* proc_frame_ctx->height[i];
+
+		/* Update currently accumulated bit value */
+		bit_cnt_oput= (byte_cnt_oput<< 3);
+		ASSERT(pthread_mutex_lock(acc_io_bits_mutex_p)== 0);
+		proc_ctx->acc_io_bits[PROC_OPUT]+= bit_cnt_oput;
+		ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_p)== 0);
 	}
 
 	end_code= STAT_SUCCESS;
@@ -311,13 +403,75 @@ int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)
 	return end_code;
 }
 
+static void* proc_stats_thr(void *t)
+{
+	proc_stats_thr_arg_t* proc_stats_thr_arg= (proc_stats_thr_arg_t*)t;
+	int *ref_end_code= NULL;
+	proc_ctx_t *proc_ctx= NULL; // Do not release
+	interr_usleep_ctx_t *interr_usleep_ctx= NULL; // Do not release
+	LOG_CTX_INIT(NULL);
+
+	/* Allocate return context; initialize to a default 'ERROR' value */
+	ref_end_code= (int*)malloc(sizeof(int));
+	CHECK_DO(ref_end_code!= NULL, return NULL);
+	*ref_end_code= STAT_ERROR;
+
+	/* Check arguments */
+	CHECK_DO(proc_stats_thr_arg!= NULL, goto end);
+
+	proc_ctx= proc_stats_thr_arg->proc_ctx;
+	CHECK_DO(proc_ctx!= NULL, goto end);
+
+	interr_usleep_ctx= proc_stats_thr_arg->interr_usleep_ctx;
+	CHECK_DO(interr_usleep_ctx!= NULL, goto end);
+
+	LOG_CTX_SET(proc_ctx->log_ctx);
+
+	while(proc_ctx->flag_exit== 0) {
+		register uint32_t bit_counter_iput, bit_counter_oput;
+		register int ret_code;
+		pthread_mutex_t *acc_io_bits_mutex_iput_p=
+				&proc_ctx->acc_io_bits_mutex[PROC_IPUT];
+		pthread_mutex_t *acc_io_bits_mutex_oput_p=
+				&proc_ctx->acc_io_bits_mutex[PROC_OPUT];
+
+		/* Note that this is a periodic loop executed once per second
+		 * (Thus, 'bitrate' is given in bits per second)
+		 */
+		ASSERT(pthread_mutex_lock(acc_io_bits_mutex_iput_p)== 0);
+		bit_counter_iput= proc_ctx->acc_io_bits[PROC_IPUT];
+		proc_ctx->acc_io_bits[PROC_IPUT]= 0;
+		ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_iput_p)== 0);
+		proc_ctx->bitrate[PROC_IPUT]= bit_counter_iput;
+
+		ASSERT(pthread_mutex_lock(acc_io_bits_mutex_oput_p)== 0);
+		bit_counter_oput= proc_ctx->acc_io_bits[PROC_OPUT];
+		proc_ctx->acc_io_bits[PROC_OPUT]= 0;
+		ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_oput_p)== 0);
+		proc_ctx->bitrate[PROC_OPUT]= bit_counter_oput;
+
+		/* Sleep given time (interruptible by external thread) */
+		ret_code= interr_usleep(interr_usleep_ctx,
+				PROC_STATS_THR_MEASURE_PERIOD_USECS);
+		ASSERT(ret_code== STAT_SUCCESS || ret_code== STAT_EINTR);
+	}
+
+	*ref_end_code= STAT_SUCCESS;
+end:
+	return (void*)ref_end_code;
+}
+
 static void* proc_thr(void *t)
 {
 	const proc_if_t *proc_if;
+	pthread_t stats_thread;
 	proc_ctx_t* proc_ctx= (proc_ctx_t*)t;
 	int ret_code, *ref_end_code= NULL;
 	int (*process_frame)(proc_ctx_t*, fifo_ctx_t*, fifo_ctx_t*)= NULL;
 	fifo_ctx_t *iput_fifo_ctx= NULL, *oput_fifo_ctx= NULL;
+	void *thread_end_code= NULL;
+	interr_usleep_ctx_t *interr_usleep_ctx= NULL;
+	proc_stats_thr_arg_t proc_stats_thr_arg= {0};
 	LOG_CTX_INIT(NULL);
 
 	/* Allocate return context; initialize to a default 'ERROR' value */
@@ -341,6 +495,19 @@ static void* proc_thr(void *t)
 	oput_fifo_ctx= proc_ctx->fifo_ctx_array[PROC_OPUT];
 	CHECK_DO(iput_fifo_ctx!= NULL && oput_fifo_ctx!= NULL, goto end);
 
+	/* Launch periodical statistics computing thread
+	 * (e.g. for computing processor's input/output bitrate statistics):
+	 * - Instantiate (open) an interruptible usleep module instance;
+	 * - Launch statistic thread passing corresponding argument structure.
+	 */
+	interr_usleep_ctx= interr_usleep_open();
+	CHECK_DO(interr_usleep_ctx!= NULL, goto end);
+	proc_stats_thr_arg.proc_ctx= proc_ctx;
+	proc_stats_thr_arg.interr_usleep_ctx= interr_usleep_ctx;
+	ret_code= pthread_create(&stats_thread, NULL, proc_stats_thr,
+			(void*)&proc_stats_thr_arg);
+	CHECK_DO(ret_code== 0, goto end);
+
 	/* Run processing thread */
 	while(proc_ctx->flag_exit== 0) {
 		ret_code= process_frame(proc_ctx, iput_fifo_ctx, oput_fifo_ctx);
@@ -352,5 +519,18 @@ static void* proc_thr(void *t)
 
 	*ref_end_code= STAT_SUCCESS;
 end:
+	/* Join periodical statistics thread:
+	 * - Unlock interruptible usleep module instance;
+	 * - Join the statistics thread;
+	 * - Release (close) the interruptible usleep module instance.
+	 */
+	interr_usleep_unblock(interr_usleep_ctx);
+	pthread_join(stats_thread, &thread_end_code);
+	if(thread_end_code!= NULL) {
+		ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
+		free(thread_end_code);
+		thread_end_code= NULL;
+	}
+	interr_usleep_close(&interr_usleep_ctx);
 	return (void*)ref_end_code;
 }

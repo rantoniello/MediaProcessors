@@ -49,6 +49,7 @@
 #define MEDIAPROCESSORS_SRC_PROC_H_
 
 #include <stdarg.h>
+#include <pthread.h>
 #include <libmediaprocsutils/mem_utils.h>
 
 /* **** Definitions **** */
@@ -99,6 +100,20 @@ typedef struct proc_ctx_s {
 	 * Input/output mutual exclusion locks.
 	 */
 	fair_lock_t *fair_lock_io_array[PROC_IO_NUM];
+	/**
+	 * Input/output bitrate statistics [bits per second]
+	 */
+	volatile uint32_t bitrate[PROC_IO_NUM];
+	/**
+	 * Accumulated bits at input/output interface. These variables are used
+	 * internally to compute the input and output bitrate statistics
+	 * periodically.
+	 */
+	volatile uint32_t acc_io_bits[PROC_IO_NUM];
+	/**
+	 * Critical region to acquire or modify 'acc_io_bits[]' variable field.
+	 */
+	pthread_mutex_t acc_io_bits_mutex[PROC_IO_NUM];
 	/**
 	 * Processing thread exit indicator.
 	 * Set to non-zero to signal processing to abort immediately.
