@@ -343,6 +343,17 @@ proc_if_t* proc_if_allocate();
 proc_if_t* proc_if_dup(const proc_if_t *proc_if_arg);
 
 /**
+ * Compares if given processor interfaces are the equal.
+ * @param proc_if1 Pointer to the first processor interface context structure
+ * to be compared.
+ * @param proc_if2 Pointer to the second processor interface context structure
+ * to be compared.
+ * @return Value 0 if given contexts are equal, otherwise non-zero value is
+ * returned.
+ */
+int proc_if_cmp(const proc_if_t* proc_if1, const proc_if_t* proc_if2);
+
+/**
  * Release a processor interface context structure.
  * @param Reference to the pointer to the processor interface context structure
  * to be released. Pointer is set to NULL on return.

@@ -111,21 +111,8 @@ SUITE(UTESTS_PROC_IF)
 		if(proc_if== NULL)
 			return;
 
-		CHECK(strcmp(proc_if->proc_name, proc_if_dummy_proc.proc_name)== 0);
-		CHECK(strcmp(proc_if->proc_type, proc_if_dummy_proc.proc_type)== 0);
-		CHECK(strcmp(proc_if->proc_mime, proc_if_dummy_proc.proc_mime)== 0);
-		CHECK(proc_if->open== dummy_proc_open);
-		CHECK(proc_if->close== dummy_proc_close);
-		CHECK(proc_if->rest_put== dummy_proc_rest_put);
-		CHECK(proc_if->rest_get== dummy_proc_rest_get);
-		CHECK(proc_if->process_frame== dummy_proc_process_frame);
-		CHECK(proc_if->opt== dummy_proc_opt);
-		CHECK(proc_if->iput_fifo_elem_opaque_dup==
-				dummy_proc_iput_fifo_elem_dup);
-		CHECK(proc_if->iput_fifo_elem_opaque_release==
-				dummy_proc_iput_fifo_elem_release);
-		CHECK(proc_if->oput_fifo_elem_opaque_dup==
-				dummy_proc_oput_fifo_elem_dup);
+		/* Check duplication */
+		CHECK(proc_if_cmp(&proc_if_dummy_proc, proc_if)== 0);
 
 		/* Release processor interface */
 		proc_if_release(&proc_if);

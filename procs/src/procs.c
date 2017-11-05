@@ -264,6 +264,16 @@ int procs_module_opt(const char *tag, ...)
 		end_code= register_proc_if(va_arg(arg, proc_if_t*), LOG_CTX_GET());
 	} else if (TAG_IS("PROCS_UNREGISTER_TYPE")) {
 		end_code= unregister_proc_if(va_arg(arg, const char*), LOG_CTX_GET());
+	} else if (TAG_IS("PROCS_GET_TYPE")) {
+		const proc_if_t *proc_if_register= NULL; // Do not release
+		const char *proc_name= va_arg(arg, const char*);
+		proc_if_t **ref_proc_if_cpy= va_arg(arg, proc_if_t**);
+		proc_if_register= get_proc_if_by_name(proc_name, LOG_CTX_GET());
+		if(proc_if_register!= NULL)
+			*ref_proc_if_cpy= proc_if_dup(proc_if_register);
+		else
+			*ref_proc_if_cpy= NULL;
+		end_code= (*ref_proc_if_cpy!= NULL)? STAT_SUCCESS: STAT_ENOTFOUND;
 	} else {
 		LOGE("Unknown option\n");
 		end_code= STAT_ENOTFOUND;
@@ -561,7 +571,7 @@ static const proc_if_t* get_proc_if_by_name(const char *proc_name,
 
 	/* Check arguments */
 	CHECK_DO(procs_module_ctx!= NULL, return NULL);
-	CHECK_DO(proc_name!= NULL, return NULL);
+	CHECK_DO(proc_name!= NULL && strlen(proc_name)> 0, return NULL);
 
 	/*  Check that module instance critical section is locked */
 	ret_code= pthread_mutex_trylock(&procs_module_ctx->module_api_mutex);
@@ -571,7 +581,7 @@ static const proc_if_t* get_proc_if_by_name(const char *proc_name,
 	for(n= procs_module_ctx->proc_if_llist; n!= NULL; n= n->next) {
 		proc_if_t *proc_if_nth= (proc_if_t*)n->data;
 		CHECK_DO(proc_if_nth!= NULL, continue);
-		if(strcmp(proc_if_nth->proc_name, proc_name)== 0)
+		if(strncmp(proc_if_nth->proc_name, proc_name, strlen(proc_name))== 0)
 			return proc_if_nth;
 	}
 	return NULL;

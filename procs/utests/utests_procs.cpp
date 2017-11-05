@@ -177,6 +177,41 @@ SUITE(UTESTS_PROCS)
 		procs_module_close();
 	}
 
+	TEST(REGISTER_GET_COPY_PROC_IF)
+	{
+		int ret_code;
+		const proc_if_t proc_if_bypass_proc= {
+			"bypass_processor", "encoder", "application/octet-stream",
+			bypass_proc_open,
+			bypass_proc_close,
+			bypass_proc_rest_put,
+			bypass_proc_rest_get,
+			bypass_proc_process_frame,
+			NULL, NULL, NULL, NULL
+		};
+		proc_if_t *proc_if_cpy= NULL;
+
+		ret_code= procs_module_open(NULL);
+		CHECK(ret_code== STAT_SUCCESS);
+
+		ret_code= procs_module_opt("PROCS_REGISTER_TYPE", &proc_if_bypass_proc);
+		CHECK(ret_code== STAT_SUCCESS);
+
+		ret_code= procs_module_opt("PROCS_GET_TYPE", "bypass_processor",
+				&proc_if_cpy);
+		CHECK(ret_code== STAT_SUCCESS);
+
+		/* Check duplication */
+		CHECK(proc_if_cmp(&proc_if_bypass_proc, proc_if_cpy)== 0);
+
+		ret_code= procs_module_opt("PROCS_UNREGISTER_TYPE", "bypass_processor");
+		CHECK(ret_code== STAT_SUCCESS);
+
+		if(proc_if_cpy!= NULL)
+			proc_if_release(&proc_if_cpy);
+		procs_module_close();
+	}
+
 	TEST(POST_DELETE_PROCS)
 	{
 		int ret_code, proc_id= -1;

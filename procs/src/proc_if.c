@@ -186,6 +186,51 @@ end:
 	return proc_if;
 }
 
+int proc_if_cmp(const proc_if_t* proc_if1, const proc_if_t* proc_if2)
+{
+	int ret_value= 1; // means "non-equal"
+	LOG_CTX_INIT(NULL);
+
+	/* Check arguments */
+	CHECK_DO(proc_if1!= NULL, return 1);
+	CHECK_DO(proc_if2!= NULL, return 1);
+
+	/* Compare contexts fields */
+	if(strcmp(proc_if1->proc_name, proc_if2->proc_name)!= 0)
+		goto end;
+	if(strcmp(proc_if1->proc_type, proc_if2->proc_type)!= 0)
+		goto end;
+	if(strcmp(proc_if1->proc_mime, proc_if2->proc_mime)!= 0)
+		goto end;
+	if(proc_if1->open!= proc_if2->open)
+		goto end;
+	if(proc_if1->close!= proc_if2->close)
+		goto end;
+	if(proc_if1->rest_put!= proc_if2->rest_put)
+		goto end;
+	if(proc_if1->rest_get!= proc_if2->rest_get)
+		goto end;
+	if(proc_if1->process_frame!= proc_if2->process_frame)
+		goto end;
+	if(proc_if1->opt!= proc_if2->opt)
+		goto end;
+	if(proc_if1->iput_fifo_elem_opaque_dup!=
+			proc_if2->iput_fifo_elem_opaque_dup)
+		goto end;
+	if(proc_if1->iput_fifo_elem_opaque_release!=
+			proc_if2->iput_fifo_elem_opaque_release)
+		goto end;
+	if(proc_if1->oput_fifo_elem_opaque_dup!=
+			proc_if2->oput_fifo_elem_opaque_dup)
+		goto end;
+
+	// Reserved for future use: compare new fields here...
+
+	ret_value= 0; // contexts are equal
+end:
+	return ret_value;
+}
+
 void proc_if_release(proc_if_t **ref_proc_if)
 {
 	proc_if_t *proc_if= NULL;

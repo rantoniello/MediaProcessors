@@ -102,6 +102,24 @@ void procs_module_close();
  * ret_code= procs_module_opt("PROCS_UNREGISTER_TYPE", "bypass_processor");
  * @endcode
  * </ul>
+ *
+ * <li> <b>Tag "PROCS_GET_TYPE":</b><br>
+ * Get a copy of the interface of an specific processor type.<br>
+ * Additional variable arguments for function procs_module_opt() are:<br>
+ * @param proc_name Pointer to a character string with the unambiguous
+ * processor type name.
+ * @param ref_proc_if_cpy Reference to the pointer to the copy of the
+ * requested processor interface context structure. If the requested processor
+ * exist, a copy of the context structure will be returned by this argument;
+ * otherwise, reference content will be set to NULL.
+ * Code example:
+ * @code
+ * proc_if_t *proc_if_cpy= NULL;
+ * ...
+ * ret_code= procs_module_opt("PROCS_GET_TYPE", "bypass_processor",
+ * 		&proc_if_cpy);
+ * @endcode
+ * </ul>
  */
 int procs_module_opt(const char *tag, ...);
 
