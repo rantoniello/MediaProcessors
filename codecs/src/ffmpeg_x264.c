@@ -116,7 +116,8 @@ static int ffmpeg_x264_enc_process_frame(proc_ctx_t *proc_ctx,
 		fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx);
 
 static int ffmpeg_x264_enc_rest_put(proc_ctx_t *proc_ctx, const char *str);
-static int ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx, char **rest_str);
+static int ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx,
+		const proc_if_rest_fmt_t rest_fmt, void **ref_reponse);
 
 static int ffmpeg_x264_enc_settings_ctx_init(
 		volatile ffmpeg_x264_enc_settings_ctx_t *ffmpeg_x264_enc_settings_ctx,
@@ -134,7 +135,8 @@ static int ffmpeg_x264_dec_process_frame(proc_ctx_t *proc_ctx,
 		fifo_ctx_t* iput_fifo_ctx, fifo_ctx_t* oput_fifo_ctx);
 
 static int ffmpeg_x264_dec_rest_put(proc_ctx_t *proc_ctx, const char *str);
-static int ffmpeg_x264_dec_rest_get(proc_ctx_t *proc_ctx, char **rest_str);
+static int ffmpeg_x264_dec_rest_get(proc_ctx_t *proc_ctx,
+		const proc_if_rest_fmt_t rest_fmt, void **ref_reponse);
 
 static int ffmpeg_x264_dec_settings_ctx_init(
 		volatile ffmpeg_x264_dec_settings_ctx_t *ffmpeg_x264_dec_settings_ctx,
@@ -406,7 +408,8 @@ end:
  * Implements the proc_if_s::rest_get callback.
  * See .proc_if.h for further details.
  */
-static int ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
+static int ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx,
+		const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)
 {
 	int ret_code, end_code= STAT_ERROR;
 	ffmpeg_x264_enc_ctx_t *ffmpeg_x264_enc_ctx= NULL;
@@ -420,11 +423,12 @@ static int ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 
 	/* Check arguments */
 	CHECK_DO(proc_ctx!= NULL, return STAT_ERROR);
-	CHECK_DO(rest_str!= NULL, return STAT_ERROR);
+	CHECK_DO(rest_fmt< PROC_IF_REST_FMT_ENUM_MAX, return STAT_ERROR);
+	CHECK_DO(ref_reponse!= NULL, return STAT_ERROR);
 
 	LOG_CTX_SET(proc_ctx->log_ctx);
 
-	*rest_str= NULL;
+	*ref_reponse= NULL;
 
 	/* Create cJSON tree root object */
 	cjson_rest= cJSON_CreateObject();
@@ -481,9 +485,21 @@ static int ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 
 	// Reserved for future use: set other data values here...
 
-	/* Print cJSON structure data to char string */
-	*rest_str= cJSON_PrintUnformatted(cjson_rest);
-	CHECK_DO(*rest_str!= NULL && strlen(*rest_str)> 0, goto end);
+	/* Format response to be returned */
+	switch(rest_fmt) {
+	case PROC_IF_REST_FMT_CHAR:
+		/* Print cJSON structure data to char string */
+		*ref_reponse= (void*)cJSON_PrintUnformatted(cjson_rest);
+		CHECK_DO(*ref_reponse!= NULL && strlen((char*)*ref_reponse)> 0,
+				goto end);
+		break;
+	case PROC_IF_REST_FMT_CJSON:
+		*ref_reponse= (void*)cjson_rest;
+		cjson_rest= NULL; // Avoid double referencing
+		break;
+	default:
+		goto end;
+	}
 
 	end_code= STAT_SUCCESS;
 end:
@@ -737,7 +753,8 @@ static int ffmpeg_x264_dec_rest_put(proc_ctx_t *proc_ctx, const char *str)
  * Implements the proc_if_s::rest_get callback.
  * See .proc_if.h for further details.
  */
-static int ffmpeg_x264_dec_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
+static int ffmpeg_x264_dec_rest_get(proc_ctx_t *proc_ctx,
+		const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)
 {
 	int ret_code, end_code= STAT_ERROR;
 	ffmpeg_x264_dec_ctx_t *ffmpeg_x264_dec_ctx= NULL;
@@ -751,11 +768,12 @@ static int ffmpeg_x264_dec_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 
 	/* Check arguments */
 	CHECK_DO(proc_ctx!= NULL, return STAT_ERROR);
-	CHECK_DO(rest_str!= NULL, return STAT_ERROR);
+	CHECK_DO(rest_fmt< PROC_IF_REST_FMT_ENUM_MAX, return STAT_ERROR);
+	CHECK_DO(ref_reponse!= NULL, return STAT_ERROR);
 
 	LOG_CTX_SET(proc_ctx->log_ctx);
 
-	*rest_str= NULL;
+	*ref_reponse= NULL;
 
 	/* Create cJSON tree root object */
 	cjson_rest= cJSON_CreateObject();
@@ -803,9 +821,21 @@ static int ffmpeg_x264_dec_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
 	 * cJSON_AddItemToObject(cjson_rest, "var1_name", cjson_aux);
 	 */
 
-	/* Print cJSON structure data to char string */
-	*rest_str= cJSON_PrintUnformatted(cjson_rest);
-	CHECK_DO(*rest_str!= NULL && strlen(*rest_str)> 0, goto end);
+	/* Format response to be returned */
+	switch(rest_fmt) {
+	case PROC_IF_REST_FMT_CHAR:
+		/* Print cJSON structure data to char string */
+		*ref_reponse= (void*)cJSON_PrintUnformatted(cjson_rest);
+		CHECK_DO(*ref_reponse!= NULL && strlen((char*)*ref_reponse)> 0,
+				goto end);
+		break;
+	case PROC_IF_REST_FMT_CJSON:
+		*ref_reponse= (void*)cjson_rest;
+		cjson_rest= NULL; // Avoid double referencing
+		break;
+	default:
+		goto end;
+	}
 
 	end_code= STAT_SUCCESS;
 end:

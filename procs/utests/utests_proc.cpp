@@ -66,7 +66,8 @@ static int bypass_proc_rest_put(proc_ctx_t*, const char *str)
 	return STAT_SUCCESS;
 }
 
-static int bypass_proc_rest_get(proc_ctx_t*, char **rest_str)
+static int bypass_proc_rest_get(proc_ctx_t*, const proc_if_rest_fmt_t rest_fmt,
+		void **ref_reponse)
 {
 	return STAT_SUCCESS;
 }

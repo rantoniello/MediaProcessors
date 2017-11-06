@@ -363,7 +363,8 @@ int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)
 {
 	int end_code= STAT_ERROR;
 	const proc_if_t *proc_if= NULL;
-	int (*rest_get)(proc_ctx_t *proc_ctx, char **ref_str)= NULL;
+	int (*rest_get)(proc_ctx_t *proc_ctx, proc_if_rest_fmt_t rest_fmt,
+			void **ref_reponse)= NULL;
 	int (*rest_put)(proc_ctx_t *proc_ctx, const char *str)= NULL;
 	int (*opt)(proc_ctx_t *proc_ctx, const char *tag, va_list arg)= NULL;
 	LOG_CTX_INIT(NULL);
@@ -384,8 +385,11 @@ int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)
 		end_code= STAT_SUCCESS;
 	} else if(TAG_IS("PROC_GET")) {
 		end_code= STAT_ENOTFOUND;
-		if(proc_if!= NULL && (rest_get= proc_if->rest_get)!= NULL)
-			end_code= rest_get(proc_ctx, va_arg(arg, char**));
+		if(proc_if!= NULL && (rest_get= proc_if->rest_get)!= NULL) {
+			proc_if_rest_fmt_t rest_fmt= va_arg(arg, proc_if_rest_fmt_t);
+			void **ref_reponse= va_arg(arg, void**);
+			end_code= rest_get(proc_ctx, rest_fmt, ref_reponse);
+		}
 	} else if(TAG_IS("PROC_PUT")) {
 		end_code= STAT_ENOTFOUND;
 		if(proc_if!= NULL && (rest_put= proc_if->rest_put)!= NULL)

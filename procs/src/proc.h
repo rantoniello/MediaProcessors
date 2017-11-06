@@ -223,8 +223,12 @@ int proc_recv_frame(proc_ctx_t *proc_ctx,
  * Tag "PROC_GET":</b> <br>
  * Get processor representational state (including current settings).<br>
  * Additional variable arguments for function proc_opt() are:<br>
- * @param ref_str Reference to the pointer to a character string
+ * @param rest_fmt Indicates the format in which the response data is to
+ * be returned. Available formats are enumerated at 'proc_if_rest_fmt_t'.
+ * @param ref_reponse Reference to the pointer to a data structure
  * returning the processor's representational state.
+ * The returned data structure is formatted according to what is
+ * indicated in the parameter 'rest_fmt'.
  *
  * Tag "PROC_PUT":</b> <br>
  * Put (pass) new settings to processor.<br>

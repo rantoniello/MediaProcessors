@@ -110,15 +110,17 @@ static int bypass_proc_rest_put(proc_ctx_t *proc_ctx, const char *str)
 	return STAT_SUCCESS;
 }
 
-static int bypass_proc_rest_get(proc_ctx_t *proc_ctx, char **rest_str)
+static int bypass_proc_rest_get(proc_ctx_t *proc_ctx,
+		const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)
 {
 	/* CHeck arguments */
-	if(proc_ctx== NULL || rest_str== NULL)
+	if(proc_ctx== NULL || ref_reponse== NULL ||
+			rest_fmt!= PROC_IF_REST_FMT_CHAR)
 		return STAT_ERROR;
 
-	*rest_str= NULL;
+	*ref_reponse= NULL;
 	if(strlen(((bypass_proc_ctx_t*)proc_ctx)->setting1)> 0)
-		*rest_str= strdup(((bypass_proc_ctx_t*)proc_ctx)->setting1);
+		*ref_reponse= (char*)strdup(((bypass_proc_ctx_t*)proc_ctx)->setting1);
 
 	return STAT_SUCCESS;
 }

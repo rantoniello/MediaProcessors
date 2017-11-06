@@ -111,7 +111,7 @@ typedef struct procs_reg_elem_s {
 	 * This lock is used to provide a critical section for external
 	 * applications to be able to use the processor's API concurrently and
 	 * asynchronously on any of the registered processor instances.
-	 * Processor's API options are available through the function proc_opt()
+	 * Processor's API options are available through the function 'proc_opt()'
 	 * (see .proc.h).
 	 * This lock is initialized when opening this module, and is kept
 	 * through the whole life of the module.
@@ -912,7 +912,9 @@ static int procs_id_opt(procs_ctx_t *procs_ctx, const char *tag,
 	ASSERT(proc_ctx->proc_instance_index== proc_id);
 
 	if(TAG_IS("PROCS_ID_GET")) {
-		end_code= proc_opt(proc_ctx, "PROC_GET", va_arg(arg, char**));
+		void **ref_reponse= (void**)va_arg(arg, char**);
+		end_code= proc_opt(proc_ctx, "PROC_GET", PROC_IF_REST_FMT_CHAR,
+				ref_reponse);
 	} else if(TAG_IS("PROCS_ID_PUT")) {
 		end_code= proc_opt(proc_ctx, "PROC_PUT", va_arg(arg, const char*));
 	} else if(TAG_IS("PROCS_ID_UNBLOCK")) {

@@ -150,6 +150,17 @@ typedef struct proc_frame_ctx_s {
 } proc_frame_ctx_t;
 
 /**
+ * Processor REST-response (in GET operation) format enumerator.
+ * This definitions are used in the function callback 'proc_if_s::rest_get()'
+ * to indicate the format desired of the response.
+ */
+typedef enum proc_if_rest_fmt_enum {
+	PROC_IF_REST_FMT_CHAR,   ///< Character string response
+	PROC_IF_REST_FMT_CJSON, ///< cJSON structure response
+	PROC_IF_REST_FMT_ENUM_MAX
+} proc_if_rest_fmt_t;
+
+/**
  * PROC interface structure prototype.
  * Each PROC type will define a static and unambiguous interface of this
  * type.
@@ -213,13 +224,17 @@ typedef struct proc_if_s {
 	 * This callback is optional (can be set to NULL).
 	 * @param proc_ctx Pointer to the processor (PROC) context structure
 	 * obtained in a previous call to the 'open()' callback method.
-	 * @param ref_str Reference to the pointer to a character string
+	 * @param rest_fmt Indicates the format in which the response data is to
+	 * be returned. Available formats are enumerated at 'proc_if_rest_fmt_t'.
+	 * @param ref_reponse Reference to the pointer to a data structure
 	 * returning the processor's representational state (including current
-	 * settings).
+	 * settings). The returned data structure is formatted according to what is
+	 * indicated in the parameter 'rest_fmt'.
 	 * @return Status code (STAT_SUCCESS code in case of success, for other
 	 * code values please refer to .stat_codes.h).
 	 */
-	int (*rest_get)(proc_ctx_t *proc_ctx, char **ref_str);
+	int (*rest_get)(proc_ctx_t *proc_ctx, const proc_if_rest_fmt_t rest_fmt,
+			void **ref_reponse);
 	/**
 	 * Process one frame of data. The frame is read from the input FIFO buffer
 	 * and is completely processed. If an output frame is produced, is written
