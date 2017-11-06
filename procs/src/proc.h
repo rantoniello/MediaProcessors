@@ -237,7 +237,7 @@ int proc_opt(proc_ctx_t *proc_ctx, const char *tag, ...);
 /**
  * The function 'proc_vopt()' is the same as proc_opt() except that it is
  * called with a va_list instead of a variable number of arguments.
- * This function does not call the va_end macro. Because they invoke the
+ * This function does not call the va_end macro. Because it invoke the
  * va_arg macro, the value of the argument pointer is undefined after the call.
  */
 int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg);
