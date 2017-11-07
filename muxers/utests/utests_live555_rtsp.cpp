@@ -82,6 +82,10 @@ SUITE(UTESTS_LIVE555_RTSP)
 			ret_code= procs_recv_frame(thr_ctx->procs_ctx,
 					thr_ctx->dmux_proc_id, &proc_frame_ctx);
 		}
+		if(thr_ctx->flag_exit!= 0) {
+			proc_frame_ctx_release(&proc_frame_ctx);
+			return NULL;
+		}
 		if(ret_code!= STAT_SUCCESS || proc_frame_ctx== NULL) {
 			CHECK(false);
 			exit(-1);
