@@ -188,7 +188,7 @@ $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs.
 
 In the response above you will find the list of the instantiated processors specifying:
 - the API identifier corresponding to each processor;
-- the processor type;
+- the processor name;
 - the link to the processor representational state.
 
 To get the representational state of any of the processors:
