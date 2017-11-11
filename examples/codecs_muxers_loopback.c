@@ -689,14 +689,36 @@ int main(int argc, char* argv[])
 		exit(-1);
 	}
 
-	/* Register encoder, decoder, RTSP multiplexer and RTSP de-multiplexer
+	/* Register encoders, decoders, RTSP multiplexer and RTSP de-multiplexer
 	 * processor types.
 	 */
-	if(procs_module_opt("PROCS_REGISTER_TYPE", proc_if_enc)!= STAT_SUCCESS) {
+	if(procs_module_opt("PROCS_REGISTER_TYPE", &proc_if_ffmpeg_m2v_enc)!=
+			STAT_SUCCESS) {
 		fprintf(stderr, "Error at line: %d\n", __LINE__);
 		exit(-1);
 	}
-	if(procs_module_opt("PROCS_REGISTER_TYPE", proc_if_dec)!= STAT_SUCCESS) {
+	if(procs_module_opt("PROCS_REGISTER_TYPE", &proc_if_ffmpeg_m2v_dec)!=
+			STAT_SUCCESS) {
+		fprintf(stderr, "Error at line: %d\n", __LINE__);
+		exit(-1);
+	}
+	if(procs_module_opt("PROCS_REGISTER_TYPE", &proc_if_ffmpeg_mlhe_enc)!=
+			STAT_SUCCESS) {
+		fprintf(stderr, "Error at line: %d\n", __LINE__);
+		exit(-1);
+	}
+	if(procs_module_opt("PROCS_REGISTER_TYPE", &proc_if_ffmpeg_mlhe_dec)!=
+			STAT_SUCCESS) {
+		fprintf(stderr, "Error at line: %d\n", __LINE__);
+		exit(-1);
+	}
+	if(procs_module_opt("PROCS_REGISTER_TYPE", &proc_if_ffmpeg_x264_enc)!=
+			STAT_SUCCESS) {
+		fprintf(stderr, "Error at line: %d\n", __LINE__);
+		exit(-1);
+	}
+	if(procs_module_opt("PROCS_REGISTER_TYPE", &proc_if_ffmpeg_x264_dec)!=
+			STAT_SUCCESS) {
 		fprintf(stderr, "Error at line: %d\n", __LINE__);
 		exit(-1);
 	}
