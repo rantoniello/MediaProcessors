@@ -200,9 +200,8 @@ int video_settings_enc_ctx_restful_put(
 
 		/* 'conf_preset' */
 		cjson_aux= cJSON_GetObjectItem(cjson_rest, "conf_preset");
-		if(cjson_aux!= NULL) {
-			CHECK_DO(cjson_aux->valuestring!= NULL &&
-					strlen(cjson_aux->valuestring)<
+		if(cjson_aux!= NULL && cjson_aux->valuestring!= NULL) {
+			CHECK_DO(strlen(cjson_aux->valuestring)<
 					(sizeof(video_settings_enc_ctx->conf_preset)- 1),
 					end_code= STAT_EINVAL; goto end);
 			memcpy((void*)video_settings_enc_ctx->conf_preset,
