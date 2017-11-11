@@ -94,25 +94,27 @@ static const char *test_settings_patterns[][2/*V/A*/][2]=
 {
 		{
 				{
+					// [0]-> query string to PUT
 					"bit_rate_output=500000"
 					"&frame_rate_output=25"
 					"&width_output="VIDEO_WIDTH"&height_output="VIDEO_HEIGHT
 					"&gop_size=20"
 					"&conf_preset=medium"
 					,
-					"{\"bit_rate_output\":500000,"
+					// [1]-> JSON extract string to compare when checking GET
+					"\"bit_rate_output\":500000,"
 					"\"frame_rate_output\":25,"
 					"\"width_output\":"VIDEO_WIDTH","
 					"\"height_output\":"VIDEO_HEIGHT","
 					"\"gop_size\":20,"
-					"\"conf_preset\":\"medium\"}"
+					"\"conf_preset\":\"medium\""
 				},
 				{
 					"bit_rate_output=64000"
 					"&sample_rate_output=44100"
 					,
-					"{\"bit_rate_output\":64000,"
-					"\"sample_rate_output\":44100}"
+					"\"bit_rate_output\":64000,"
+					"\"sample_rate_output\":44100"
 				}
 		},
 		{
@@ -123,19 +125,19 @@ static const char *test_settings_patterns[][2/*V/A*/][2]=
 					"&gop_size=10"
 					"&conf_preset=fast"
 					,
-					"{\"bit_rate_output\":300000,"
+					"\"bit_rate_output\":300000,"
 					"\"frame_rate_output\":25,"
 					"\"width_output\":"VIDEO_WIDTH","
 					"\"height_output\":"VIDEO_HEIGHT","
 					"\"gop_size\":10,"
-					"\"conf_preset\":\"fast\"}"
+					"\"conf_preset\":\"fast\""
 				},
 				{
 					"bit_rate_output=80000"
 					"&sample_rate_output=44100"
 					,
-					"{\"bit_rate_output\":80000,"
-					"\"sample_rate_output\":44100}"
+					"\"bit_rate_output\":80000,"
+					"\"sample_rate_output\":44100"
 				}
 		},
 		{
@@ -146,19 +148,19 @@ static const char *test_settings_patterns[][2/*V/A*/][2]=
 					"&gop_size=36"
 					"&conf_preset=medium"
 					,
-					"{\"bit_rate_output\":700000,"
+					"\"bit_rate_output\":700000,"
 					"\"frame_rate_output\":25,"
 					"\"width_output\":"VIDEO_WIDTH","
 					"\"height_output\":"VIDEO_HEIGHT","
 					"\"gop_size\":36,"
-					"\"conf_preset\":\"medium\"}"
+					"\"conf_preset\":\"medium\""
 				},
 				{
 					"bit_rate_output=64000"
 					"&sample_rate_output=48000"
 					,
-					"{\"bit_rate_output\":64000,"
-					"\"sample_rate_output\":48000}"
+					"\"bit_rate_output\":64000,"
+					"\"sample_rate_output\":48000"
 				}
 		},
 		{
@@ -931,6 +933,7 @@ static void encdec_loopback(const proc_if_t *proc_if_enc,
 
 	/* Change settings using API Rest through HTTP */
 	for(int i= 0; test_settings_patterns[i][media_type][0]!= NULL; i++) {
+		char *settings_str_p;
 		const char *query_str= test_settings_patterns[i][media_type][0];
 		const char *json_str= test_settings_patterns[i][media_type][1];
 
@@ -982,7 +985,8 @@ static void encdec_loopback(const proc_if_t *proc_if_enc,
 		 * extended settings version- and the closing '}' character
 		 * (thus the '-1').
 		 */
-		CHECK(strncmp(settings_str, json_str, strlen(json_str)- 1)== 0);
+		settings_str_p= strstr(settings_str, "\"bit_rate_output\"");
+		CHECK(strncmp(settings_str_p, json_str, strlen(json_str))== 0);
 		free(rest_str); rest_str= NULL;
 		cJSON_Delete(cjson_rest); cjson_rest= NULL;
 

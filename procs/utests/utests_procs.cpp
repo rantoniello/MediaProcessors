@@ -34,6 +34,7 @@ extern "C" {
 #include <string.h>
 
 #include <libcjson/cJSON.h>
+#include <libmediaprocsutils/uri_parser.h>
 
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/check_utils.h>
@@ -47,6 +48,7 @@ extern "C" {
 /* **** Define a very simple bypass processor **** */
 
 static void bypass_proc_close(proc_ctx_t **ref_proc_ctx);
+static int bypass_proc_rest_put(proc_ctx_t *proc_ctx, const char *str);
 
 typedef struct bypass_proc_ctx_s {
 	/* Generic processor context structure, defined always as the first member
@@ -56,14 +58,15 @@ typedef struct bypass_proc_ctx_s {
 	/**
 	 * Just a variable extending proc_ctx_s
 	 */
-	char setting1[128];
+	int setting1;
 } bypass_proc_ctx_t;
 
 static proc_ctx_t* bypass_proc_open(const proc_if_t *proc_if,
 		const char *settings_str, log_ctx_t *log_ctx, va_list arg)
 {
-	int end_code= STAT_ERROR;
+	int ret_code, end_code= STAT_ERROR;
 	bypass_proc_ctx_t *bypass_proc_ctx= NULL;
+	LOG_CTX_INIT(log_ctx);
 
 	/* CHeck arguments */
 	if(proc_if== NULL || settings_str== NULL)
@@ -75,8 +78,8 @@ static proc_ctx_t* bypass_proc_open(const proc_if_t *proc_if,
 		goto end;
 
 	/* Copy initial settings */
-	memcpy(bypass_proc_ctx->setting1, settings_str,
-			sizeof(bypass_proc_ctx->setting1));
+	ret_code= bypass_proc_rest_put((proc_ctx_t*)bypass_proc_ctx, settings_str);
+	CHECK_DO(ret_code== STAT_SUCCESS, goto end);
 
 	end_code= STAT_SUCCESS;
 end:
@@ -100,29 +103,108 @@ static void bypass_proc_close(proc_ctx_t **ref_proc_ctx)
 
 static int bypass_proc_rest_put(proc_ctx_t *proc_ctx, const char *str)
 {
-	/* CHeck arguments */
-	if(proc_ctx== NULL || str== NULL)
-		return STAT_ERROR;
+	int end_code= STAT_ERROR;
+	int flag_is_query= 0; // 0-> JSON / 1->query string
+	cJSON *cjson_rest= NULL, *cjson_aux= NULL;
+	char *setting1_str= NULL;
+	LOG_CTX_INIT(NULL);
 
-	memcpy(((bypass_proc_ctx_t*)proc_ctx)->setting1, str,
-			sizeof(((bypass_proc_ctx_t*)proc_ctx)->setting1));
+	/* Check arguments */
+	CHECK_DO(proc_ctx!= NULL, return STAT_ERROR);
+	CHECK_DO(str!= NULL, return STAT_EINVAL);
 
-	return STAT_SUCCESS;
+	/* Guess string representation format (JSON-REST or Query) */
+	//LOGV("'%s'\n", str); //comment-me
+	flag_is_query= (str[0]=='{' && str[strlen(str)-1]=='}')? 0: 1;
+
+	/* **** Parse RESTful string to get settings parameters **** */
+
+	if(flag_is_query== 1) {
+
+		/* 'setting1' */
+		setting1_str= uri_parser_query_str_get_value("setting1", str);
+		if(setting1_str!= NULL)
+			((bypass_proc_ctx_t*)proc_ctx)->setting1= atoll(setting1_str);
+
+	} else {
+
+		/* In the case string format is JSON-REST, parse to cJSON structure */
+		cjson_rest= cJSON_Parse(str);
+		CHECK_DO(cjson_rest!= NULL, goto end);
+
+		/* 'setting1' */
+		cjson_aux= cJSON_GetObjectItem(cjson_rest, "setting1");
+		if(cjson_aux!= NULL)
+			((bypass_proc_ctx_t*)proc_ctx)->setting1= cjson_aux->valuedouble;
+	}
+
+	end_code= STAT_SUCCESS;
+end:
+	if(cjson_rest!= NULL)
+		cJSON_Delete(cjson_rest);
+	if(setting1_str!= NULL)
+		free(setting1_str);
+	return end_code;
 }
 
 static int bypass_proc_rest_get(proc_ctx_t *proc_ctx,
 		const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)
 {
-	/* CHeck arguments */
-	if(proc_ctx== NULL || ref_reponse== NULL ||
-			rest_fmt!= PROC_IF_REST_FMT_CHAR)
+	int end_code= STAT_ERROR;
+	cJSON *cjson_rest= NULL, *cjson_settings= NULL, *cjson_aux= NULL;
+	LOG_CTX_INIT(NULL);
+
+	/* Check arguments */
+	if(proc_ctx== NULL || ref_reponse== NULL)
 		return STAT_ERROR;
 
 	*ref_reponse= NULL;
-	if(strlen(((bypass_proc_ctx_t*)proc_ctx)->setting1)> 0)
-		*ref_reponse= (char*)strdup(((bypass_proc_ctx_t*)proc_ctx)->setting1);
 
-	return STAT_SUCCESS;
+	/* JSON string to be returned:
+	 * {
+	 *     "settings":
+	 *     {
+	 *         "setting1":string
+	 *     }
+	 * }
+	 */
+
+	/* Create cJSON tree-root object */
+	cjson_rest= cJSON_CreateObject();
+	CHECK_DO(cjson_rest!= NULL, goto end);
+
+	/* 'settings' */
+	cjson_settings= cJSON_CreateObject();
+	CHECK_DO(cjson_settings!= NULL, goto end);
+	cJSON_AddItemToObject(cjson_rest, "settings", cjson_settings);
+
+	/* 'setting1' */
+	cjson_aux= cJSON_CreateNumber((double)
+			((bypass_proc_ctx_t*)proc_ctx)->setting1);
+	CHECK_DO(cjson_aux!= NULL, goto end);
+	cJSON_AddItemToObject(cjson_settings, "setting1", cjson_aux);
+
+	/* Format response to be returned */
+	switch(rest_fmt) {
+	case PROC_IF_REST_FMT_CHAR:
+		/* Print cJSON structure data to char string */
+		*ref_reponse= (void*)CJSON_PRINT(cjson_rest);
+		CHECK_DO(*ref_reponse!= NULL && strlen((char*)*ref_reponse)> 0,
+				goto end);
+		break;
+	case PROC_IF_REST_FMT_CJSON:
+		*ref_reponse= (void*)cjson_rest;
+		cjson_rest= NULL; // Avoid double referencing
+		break;
+	default:
+		goto end;
+	}
+
+	end_code= STAT_SUCCESS;
+end:
+	if(cjson_rest!= NULL)
+		cJSON_Delete(cjson_rest);
+	return end_code;
 }
 
 static int bypass_proc_process_frame(proc_ctx_t *proc_ctx,
@@ -281,7 +363,16 @@ end:
 		char *rest_str= NULL;
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
-			"bypass_processor", "encoder", "application/octet-stream",
+			"bypass_processor", "encoder", "application/encoder",
+			bypass_proc_open,
+			bypass_proc_close,
+			bypass_proc_rest_put,
+			bypass_proc_rest_get,
+			bypass_proc_process_frame,
+			NULL, NULL, NULL, NULL
+		};
+		const proc_if_t proc_if_bypass_proc2= {
+			"bypass_processor2", "encoder2", "application/encoder2",
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
@@ -296,7 +387,11 @@ end:
 		ret_code= procs_module_open(NULL);
 		CHECK(ret_code== STAT_SUCCESS);
 
-		ret_code= procs_module_opt("PROCS_REGISTER_TYPE", &proc_if_bypass_proc);
+		ret_code= procs_module_opt("PROCS_REGISTER_TYPE",
+				&proc_if_bypass_proc);
+		CHECK(ret_code== STAT_SUCCESS);
+		ret_code= procs_module_opt("PROCS_REGISTER_TYPE",
+				&proc_if_bypass_proc2);
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
@@ -315,15 +410,23 @@ end:
 		CHECK((proc_id= cjson_aux->valuedouble)>= 0);
 		free(rest_str);
 		rest_str= NULL;
+		cJSON_Delete(cjson_rest);
+		cjson_rest= NULL;
 
 		/* Get setting */
 		ret_code= procs_opt(procs_ctx, "PROCS_ID_GET", proc_id, &rest_str);
 		CHECK_DO(ret_code== STAT_SUCCESS && rest_str!= NULL,
 				CHECK(false); goto end);
-		//printf("GET returns: '%s'\n", rest_str); //comment-me
-		CHECK(strcmp(rest_str, "setting1=100")== 0);
-		free(rest_str);
-		rest_str= NULL;
+		//LOGV("GET returns: '%s'\n", rest_str); fflush(stdout); //comment-me
+		cjson_rest= cJSON_Parse(rest_str);
+		CHECK_DO(cjson_rest!= NULL, CHECK(false); goto end);
+		cjson_aux= cJSON_GetObjectItem(cjson_rest, "settings");
+		CHECK_DO(cjson_aux!= NULL, CHECK(false); goto end);
+		cjson_aux= cJSON_GetObjectItem(cjson_aux, "setting1");
+		CHECK_DO(cjson_aux!= NULL, CHECK(false); goto end);
+		CHECK(cjson_aux->valuedouble== 100);
+		free(rest_str); rest_str= NULL;
+		cJSON_Delete(cjson_rest); cjson_rest= NULL;
 
 		/* Put new setting */
 		ret_code= procs_opt(procs_ctx, "PROCS_ID_PUT", proc_id, "setting1=200");
@@ -333,10 +436,41 @@ end:
 		ret_code= procs_opt(procs_ctx, "PROCS_ID_GET", proc_id, &rest_str);
 		CHECK_DO(ret_code== STAT_SUCCESS && rest_str!= NULL,
 				CHECK(false); goto end);
+		//printf("GET returns: '%s'\n", rest_str); fflush(stdout); //comment-me
+		cjson_rest= cJSON_Parse(rest_str);
+		CHECK_DO(cjson_rest!= NULL, CHECK(false); goto end);
+		cjson_aux= cJSON_GetObjectItem(cjson_rest, "settings");
+		CHECK_DO(cjson_aux!= NULL, CHECK(false); goto end);
+		cjson_aux= cJSON_GetObjectItem(cjson_aux, "setting1");
+		CHECK_DO(cjson_aux!= NULL, CHECK(false); goto end);
+		CHECK(cjson_aux->valuedouble== 200);
+		free(rest_str); rest_str= NULL;
+		cJSON_Delete(cjson_rest); cjson_rest= NULL;
+
+		/* Test putting same processor name setting! */
+		ret_code= procs_opt(procs_ctx, "PROCS_ID_PUT", proc_id,
+				"proc_name=bypass_processor");
+		CHECK(ret_code== STAT_SUCCESS);
+
+		/* Test putting new processor name setting! */
+		ret_code= procs_opt(procs_ctx, "PROCS_ID_PUT", proc_id,
+				"proc_name=bypass_processor2");
+		CHECK(ret_code== STAT_SUCCESS);
+
+		/* Get setting again and check that 'setting1' is preserved */
+		ret_code= procs_opt(procs_ctx, "PROCS_ID_GET", proc_id, &rest_str);
+		CHECK_DO(ret_code== STAT_SUCCESS && rest_str!= NULL,
+				CHECK(false); goto end);
 		//printf("GET returns: '%s'\n", rest_str); //comment-me
-		CHECK(strcmp(rest_str, "setting1=200")== 0);
-		free(rest_str);
-		rest_str= NULL;
+		cjson_rest= cJSON_Parse(rest_str);
+		CHECK_DO(cjson_rest!= NULL, CHECK(false); goto end);
+		cjson_aux= cJSON_GetObjectItem(cjson_rest, "settings");
+		CHECK_DO(cjson_aux!= NULL, CHECK(false); goto end);
+		cjson_aux= cJSON_GetObjectItem(cjson_aux, "setting1");
+		CHECK_DO(cjson_aux!= NULL, CHECK(false); goto end);
+		CHECK(cjson_aux->valuedouble== 200);
+		free(rest_str); rest_str= NULL;
+		cJSON_Delete(cjson_rest); cjson_rest= NULL;
 
 		ret_code= procs_opt(procs_ctx, "PROCS_ID_DELETE", proc_id);
 		CHECK(ret_code== STAT_SUCCESS);

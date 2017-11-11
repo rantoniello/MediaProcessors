@@ -27,11 +27,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdarg.h>
 #include <string.h>
 #include <pthread.h>
 #include <errno.h>
+#include <ctype.h>
 
 #include <libcjson/cJSON.h>
+#include <libmediaprocsutils/uri_parser.h>
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
 #include <libmediaprocsutils/check_utils.h>
@@ -61,6 +64,35 @@
  * Returns non-zero if 'tag' string is equal to given TAG string.
  */
 #define TAG_IS(TAG) (strncmp(tag, TAG, strlen(TAG))== 0)
+
+/**
+ * Macro: lock PROCS module *instance* API critical section.
+ */
+#define LOCK_PROCS_CTX_API(PROCS_CTX) \
+	ASSERT(pthread_mutex_lock(&PROCS_CTX->api_mutex)== 0);
+
+/**
+ * Macro: unlock PROCS module *instance* API critical section.
+ */
+#define UNLOCK_PROCS_CTX_API(PROCS_CTX) \
+	ASSERT(pthread_mutex_unlock(&PROCS_CTX->api_mutex)== 0);
+
+/**
+ * Macro: lock PROCS instance *register element* API critical section.
+ * It is important to remark that this macro is thought to make sure the
+ * developer lock *instance* API critical section first.
+ */
+#define LOCK_PROCS_REG_ELEM_API(PROCS_CTX, REG_ELEM, EXIT_CODE_ON_FAILURE) \
+	if(pthread_mutex_trylock(&PROCS_CTX->api_mutex)!= EBUSY) {\
+		EXIT_CODE_ON_FAILURE;\
+	}\
+	ASSERT(pthread_mutex_lock(&REG_ELEM->api_mutex)== 0);
+
+/**
+ * Macro: unlock PROCS instance *register element* API critical section.
+ */
+#define UNLOCK_PROCS_REG_ELEM_API(REG_ELEM) \
+	ASSERT(pthread_mutex_unlock(&REG_ELEM->api_mutex)== 0);
 
 /**
  * Limit value for the maximum number of processors that can be instantiated
@@ -184,6 +216,11 @@ static int proc_unregister(procs_ctx_t *procs_ctx, int id, log_ctx_t *log_ctx);
 
 static int procs_id_opt(procs_ctx_t *procs_ctx, const char *tag,
 		log_ctx_t *log_ctx, va_list arg);
+
+static int procs_id_get(procs_reg_elem_t *procs_reg_elem, proc_ctx_t *proc_ctx,
+		log_ctx_t *log_ctx, void **ref_reponse);
+static proc_ctx_t* procs_id_opt_fetch_proc_ctx(procs_ctx_t *procs_ctx,
+		int proc_id, const char *tag, va_list arg, log_ctx_t *log_ctx);
 
 /* **** Implementations **** */
 
@@ -345,12 +382,12 @@ void procs_close(procs_ctx_t **ref_procs_ctx)
 		/* First of all release all the processors (note that for deleting
 		 * the processors we need the processor IF type to be still available).
 		 */
-		ASSERT(pthread_mutex_lock(&procs_ctx->api_mutex)== 0);
+		LOCK_PROCS_CTX_API(procs_ctx);
 		for(proc_id= 0; proc_id< PROCS_MAX_NUM_PROC_INSTANCES; proc_id++) {
 			LOGD("unregistering proc with Id.: %d\n", proc_id); //comment-me
 			proc_unregister(procs_ctx, proc_id, LOG_CTX_GET());
 		}
-		ASSERT(pthread_mutex_unlock(&procs_ctx->api_mutex)== 0);
+		UNLOCK_PROCS_CTX_API(procs_ctx);
 
 		/* Module's instance API mutual exclusion lock */
 		ASSERT(pthread_mutex_destroy(&procs_ctx->api_mutex)== 0);
@@ -512,6 +549,8 @@ static int register_proc_if(const proc_if_t *proc_if, log_ctx_t *log_ctx)
 
 	/* Allocate a copy of the processor type in the list */
 	proc_if_cpy= proc_if_dup(proc_if);
+	//LOGV("Registering processor with name: '%s'\n",
+	//		proc_if_cpy->proc_name); //comment-me
 	CHECK_DO(proc_if_cpy!= NULL, goto end);
 	ret_code= llist_push(&procs_module_ctx->proc_if_llist, proc_if_cpy);
 	CHECK_DO(ret_code== STAT_SUCCESS, goto end);
@@ -581,7 +620,7 @@ static const proc_if_t* get_proc_if_by_name(const char *proc_name,
 	for(n= procs_module_ctx->proc_if_llist; n!= NULL; n= n->next) {
 		proc_if_t *proc_if_nth= (proc_if_t*)n->data;
 		CHECK_DO(proc_if_nth!= NULL, continue);
-		if(strncmp(proc_if_nth->proc_name, proc_name, strlen(proc_name))== 0)
+		if(strcmp(proc_if_nth->proc_name, proc_name)== 0)
 			return proc_if_nth;
 	}
 	return NULL;
@@ -601,7 +640,7 @@ static int procs_instance_opt(procs_ctx_t *procs_ctx, const char *tag,
 	CHECK_DO(tag!= NULL, return STAT_ERROR);
 
 	/* Lock module instance API critical section */
-	ASSERT(pthread_mutex_lock(&procs_ctx->api_mutex)== 0);
+	LOCK_PROCS_CTX_API(procs_ctx);
 
 	if(TAG_IS("PROCS_POST")) {
 		int id;
@@ -626,7 +665,7 @@ static int procs_instance_opt(procs_ctx_t *procs_ctx, const char *tag,
 		end_code= STAT_ENOTFOUND;
 	}
 
-	ASSERT(pthread_mutex_unlock(&procs_ctx->api_mutex)== 0);
+	UNLOCK_PROCS_CTX_API(procs_ctx);
 	return end_code;
 #undef PROC_ID_STR_FMT
 }
@@ -657,7 +696,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 	 *     [
 	 *         {
 	 *             "proc_id":number,
-	 *             "type_name":string,
+	 *             "proc_name":string,
 	 *             "links":
 	 *             [
 	 *                 {"rel":"self", "href":string}
@@ -678,7 +717,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 	cJSON_AddItemToObject(cjson_rest, "procs", cjson_procs);
 
 	for(i= 0; i< PROCS_MAX_NUM_PROC_INSTANCES; i++) {
-		const char *proc_type_name;
+		const char *proc_name;
 		const proc_if_t *proc_if;
 		register int proc_instance_index;
 		cJSON *cjson_proc, *cjson_links, *cjson_link;
@@ -701,14 +740,14 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 		CHECK_DO(cjson_aux!= NULL, goto end);
 		cJSON_AddItemToObject(cjson_proc, "proc_id", cjson_aux);
 
-		/* 'type_name' */
+		/* 'proc_name' */
 		proc_if= proc_ctx->proc_if;
 		CHECK_DO(proc_if!= NULL, continue);
-		proc_type_name= proc_if->proc_name;
-		CHECK_DO(proc_type_name!= NULL, continue);
-		cjson_aux= cJSON_CreateString(proc_type_name);
+		proc_name= proc_if->proc_name;
+		CHECK_DO(proc_name!= NULL, continue);
+		cjson_aux= cJSON_CreateString(proc_name);
 		CHECK_DO(cjson_aux!= NULL, goto end);
-		cJSON_AddItemToObject(cjson_proc, "type_name", cjson_aux);
+		cJSON_AddItemToObject(cjson_proc, "proc_name", cjson_aux);
 
 		/* 'links' */
 		cjson_links= cJSON_CreateArray();
@@ -731,7 +770,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 	}
 
 	/* Print cJSON structure data to char string */
-	*ref_rest_str= cJSON_PrintUnformatted(cjson_rest);
+	*ref_rest_str= CJSON_PRINT(cjson_rest);
 	CHECK_DO(*ref_rest_str!= NULL && strlen(*ref_rest_str)> 0, goto end);
 
 	end_code= STAT_SUCCESS;
@@ -797,22 +836,22 @@ static int proc_register(procs_ctx_t *procs_ctx, const char *proc_name,
 	proc_ctx= proc_open(proc_if, settings_str, proc_id, fifo_ctx_maxsize,
 			LOG_CTX_GET(), arg);
 	CHECK_DO(proc_ctx!= NULL, goto end);
-	*ref_id= proc_id;
 
 	/* Register processor context structure.
 	 * At this point we lock corresponding i/o critical section ("fair" lock),
 	 * as this register slot is still accessible concurrently by processor
 	 * API and i/o operations.
 	 */
-	ASSERT(pthread_mutex_lock(&procs_reg_elem->api_mutex)== 0);
+	LOCK_PROCS_REG_ELEM_API(procs_ctx, procs_reg_elem, goto end);
 	fair_lock(procs_reg_elem->fair_lock_io_array[PROC_IPUT]);
 	fair_lock(procs_reg_elem->fair_lock_io_array[PROC_OPUT]);
 	procs_reg_elem->proc_ctx= proc_ctx;
 	fair_unlock(procs_reg_elem->fair_lock_io_array[PROC_IPUT]);
 	fair_unlock(procs_reg_elem->fair_lock_io_array[PROC_OPUT]);
-	ASSERT(pthread_mutex_unlock(&procs_reg_elem->api_mutex)== 0);
+	UNLOCK_PROCS_REG_ELEM_API(procs_reg_elem);
 	proc_ctx= NULL; // Avoid double referencing
 
+	*ref_id= proc_id;
 	end_code= STAT_SUCCESS;
 end:
 	if(proc_ctx!= NULL) {
@@ -860,13 +899,13 @@ static int proc_unregister(procs_ctx_t *procs_ctx, int proc_id,
 	/* Lock processor API and i/o critical sections.
 	 * Delete processor reference from array register.
 	 */
-	ASSERT(pthread_mutex_lock(&procs_reg_elem->api_mutex)== 0);
+	LOCK_PROCS_REG_ELEM_API(procs_ctx, procs_reg_elem, return STAT_ERROR);
 	fair_lock(procs_reg_elem->fair_lock_io_array[PROC_IPUT]);
 	fair_lock(procs_reg_elem->fair_lock_io_array[PROC_OPUT]);
 	procs_reg_elem->proc_ctx= NULL;
 	fair_unlock(procs_reg_elem->fair_lock_io_array[PROC_IPUT]);
 	fair_unlock(procs_reg_elem->fair_lock_io_array[PROC_OPUT]);
-	ASSERT(pthread_mutex_unlock(&procs_reg_elem->api_mutex)== 0);
+	UNLOCK_PROCS_REG_ELEM_API(procs_reg_elem);
 
 	/* Once processor register was deleted (and thus not accessible
 	 * by any concurrent thread performing i/o), release corresponding context
@@ -882,7 +921,8 @@ static int procs_id_opt(procs_ctx_t *procs_ctx, const char *tag,
 		log_ctx_t *log_ctx, va_list arg)
 {
 	procs_reg_elem_t *procs_reg_elem;
-	int proc_id, end_code= STAT_ERROR;
+	int end_code= STAT_ERROR, proc_id= -1;
+	int flag_procs_api_locked= 0, flag_proc_ctx_api_locked= 0;
 	proc_ctx_t *proc_ctx= NULL;
 	LOG_CTX_INIT(log_ctx);
 
@@ -891,30 +931,46 @@ static int procs_id_opt(procs_ctx_t *procs_ctx, const char *tag,
 	CHECK_DO(procs_ctx!= NULL, return STAT_ERROR);
 	CHECK_DO(tag!= NULL, return STAT_ERROR);
 
-	/* Double lock technique to access processor instance:
-	 * - lock module instance API critical section;
+	/* Implementation note:
+	 * We use a double lock technique to access processor instance:
+	 * - Lock PROCS module instance API critical section (while we are
+	 * accessing processors register);
+	 * - Lock processor (PROC) API critical section;
 	 * - Fetch processor using Id. argument;
-	 * - If fetching succeed, lock processor API level critical section;
-	 * - release module instance API level critical section.
+	 * - If fetching succeed, unlock PROCS module instance API critical
+	 * section (we are able to leave processors register critical section);
+	 * - ... use processor instance to treat options ...
+	 * - Unlock processor (PROC) API critical section.
 	 */
-	ASSERT(pthread_mutex_lock(&procs_ctx->api_mutex)== 0);
+
+	/* Lock PROCS module instance API critical section */
+	LOCK_PROCS_CTX_API(procs_ctx);
+	flag_procs_api_locked= 1;
+
+	/* Lock processor (PROC) API critical section */
 	proc_id= va_arg(arg, int);
 	CHECK_DO(proc_id>= 0 && proc_id< PROCS_MAX_NUM_PROC_INSTANCES, goto end);
 	procs_reg_elem= &procs_ctx->procs_reg_elem_array[proc_id];
-	proc_ctx= procs_reg_elem->proc_ctx;
-	if(proc_ctx!= NULL)
-		ASSERT(pthread_mutex_lock(&procs_reg_elem->api_mutex)== 0);
-	ASSERT(pthread_mutex_unlock(&procs_ctx->api_mutex)== 0);
+	LOCK_PROCS_REG_ELEM_API(procs_ctx, procs_reg_elem, goto end);
+	flag_proc_ctx_api_locked= 1;
+
+	/* Fetch processor */
+	proc_ctx= procs_id_opt_fetch_proc_ctx(procs_ctx, proc_id, tag, arg,
+			LOG_CTX_GET());
 	if(proc_ctx== NULL) {
 		end_code= STAT_ENOTFOUND;
 		goto end;
 	}
-	ASSERT(proc_ctx->proc_instance_index== proc_id);
+	ASSERT(proc_ctx->proc_instance_index== proc_id); // sanity check
 
+	/* Unlock PROCS module instance API critical section */
+	UNLOCK_PROCS_CTX_API(procs_ctx);
+	flag_procs_api_locked= 0;
+
+	/* Process options */
 	if(TAG_IS("PROCS_ID_GET")) {
-		void **ref_reponse= (void**)va_arg(arg, char**);
-		end_code= proc_opt(proc_ctx, "PROC_GET", PROC_IF_REST_FMT_CHAR,
-				ref_reponse);
+		end_code= procs_id_get(procs_reg_elem, proc_ctx, LOG_CTX_GET(),
+				(void**)va_arg(arg, char**));
 	} else if(TAG_IS("PROCS_ID_PUT")) {
 		end_code= proc_opt(proc_ctx, "PROC_PUT", va_arg(arg, const char*));
 	} else if(TAG_IS("PROCS_ID_UNBLOCK")) {
@@ -925,8 +981,263 @@ static int procs_id_opt(procs_ctx_t *procs_ctx, const char *tag,
 	}
 
 end:
-	/* Do not forget to unlock processor API critical section if applicable */
-	if(proc_ctx!= NULL)
-		pthread_mutex_unlock(&procs_reg_elem->api_mutex);
+	/* Check critical sections and unlock if applicable */
+	if(flag_procs_api_locked!= 0)
+		UNLOCK_PROCS_CTX_API(procs_ctx);
+	if(flag_proc_ctx_api_locked!= 0)
+		UNLOCK_PROCS_REG_ELEM_API(procs_reg_elem);
 	return end_code;
+}
+
+static int procs_id_get(procs_reg_elem_t *procs_reg_elem, proc_ctx_t *proc_ctx,
+		log_ctx_t *log_ctx, void **ref_reponse)
+{
+	int ret_code, end_code= STAT_ERROR;
+	cJSON *cjson_rest= NULL, *cjson_settings= NULL, *cjson_aux= NULL;
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(procs_reg_elem!= NULL, return STAT_ERROR);
+	CHECK_DO(proc_ctx!= NULL, return STAT_ERROR);
+	//log_ctx allowed to be NULL
+	CHECK_DO(ref_reponse!= NULL, return STAT_ERROR);
+
+	*ref_reponse= NULL;
+
+	/* Check that processor API level critical section is locked */
+	ret_code= pthread_mutex_trylock(&procs_reg_elem->api_mutex);
+	CHECK_DO(ret_code== EBUSY, goto end);
+
+	/* GET processor's REST response */
+	ret_code= proc_opt(proc_ctx, "PROC_GET", PROC_IF_REST_FMT_CJSON,
+			&cjson_rest);
+	CHECK_DO(ret_code== STAT_SUCCESS && cjson_rest!= NULL, goto end);
+
+	/* Get settings */
+	cjson_settings= cJSON_GetObjectItem(cjson_rest, "settings");
+	if(cjson_settings== NULL) {
+		cjson_settings= cJSON_CreateObject();
+		CHECK_DO(cjson_settings!= NULL, goto end);
+		cJSON_AddItemToObject(cjson_rest, "settings", cjson_settings);
+	}
+
+	/* **** Add some REST elements at settings top ****
+	 * We do a little HACK to insert elements at top as cJSON library does not
+	 * support it natively -it always insert at the bottom-
+	 * We do this at the risk of braking in a future library version, as we
+	 * base current solution on the internal implementation of function
+	 * 'cJSON_AddItemToObject()' -may change in future-.
+	 */
+
+	/* 'proc_name' */
+	cjson_aux= cJSON_CreateString(proc_ctx->proc_if->proc_name);
+	CHECK_DO(cjson_aux!= NULL, goto end);
+	// Hack of 'cJSON_AddItemToObject(cjson_rest, "proc_name", cjson_aux);':
+	cjson_aux->string= (char*)strdup("proc_name");
+	cjson_aux->type|= cJSON_StringIsConst;
+    //cJSON_AddItemToArray(cjson_rest, cjson_aux);
+    cJSON_InsertItemInArray(cjson_settings, 0, cjson_aux); // Insert at top
+    cjson_aux->type&= ~cJSON_StringIsConst;
+
+	*ref_reponse= (void*)CJSON_PRINT(cjson_rest);
+	CHECK_DO(*ref_reponse!= NULL && strlen((char*)*ref_reponse)> 0, goto end);
+
+	end_code= STAT_SUCCESS;
+end:
+	if(cjson_rest!= NULL)
+		cJSON_Delete(cjson_rest);
+	return end_code;
+}
+
+/**
+ * This function fetches the processor context structure to be used for
+ * API options requests.
+ * As a special case to take into account, this function checks if a new
+ * processor name is specified on an eventual PUT settings (namely, it checks
+ * if 'proc_name' setting is present on a PUT operation, and if it is the
+ * case, checks if 'proc_name' actually changes).
+ * If a new processor name is requested, the current processor should be
+ * released and substituted by a new processor of the new type given
+ * (recycling the same processors register slot).
+ * Substituted processor settings are backup, and set to the new one. This way,
+ * if some setting on the old processor apply, will be set on the new
+ * processor. Otherwise, not applicable settings will be just ignored.
+ */
+static proc_ctx_t* procs_id_opt_fetch_proc_ctx(procs_ctx_t *procs_ctx,
+		int proc_id, const char *tag, va_list arg, log_ctx_t *log_ctx)
+{
+	va_list arg_cpy, va_list_empty;
+	procs_reg_elem_t *procs_reg_elem;
+	int ret_code;
+	int flag_is_query= 0; // 0-> JSON / 1->query string
+	proc_ctx_t *proc_ctx_ret= NULL, *proc_ctx_curr= NULL, *proc_ctx_new= NULL;
+	const char *settings_str_arg= NULL; // Do not release
+	const proc_if_t *proc_if_curr= NULL, *proc_if_new= NULL; // Do not release
+	const char *proc_name_curr= NULL; // Do not release
+	char *proc_name_str= NULL;
+	cJSON *cjson_rest_arg= NULL, *cjson_rest_curr= NULL;
+	cJSON *cjson_aux= NULL; // Do not release
+	char *settings_str_curr= NULL;
+	uint32_t fifo_ctx_maxsize[PROC_IO_NUM]= {PROCS_FIFO_SIZE, PROCS_FIFO_SIZE};
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(procs_ctx!= NULL, return NULL);
+	CHECK_DO(proc_id>= 0 && proc_id< PROCS_MAX_NUM_PROC_INSTANCES, return NULL);
+	CHECK_DO(tag!= NULL, return NULL);
+	//arg nothing to check
+	//log_ctx allowed to be NULL
+
+	/* Get register element and current processor references */
+	procs_reg_elem= &procs_ctx->procs_reg_elem_array[proc_id];
+	proc_ctx_curr= procs_reg_elem->proc_ctx;
+	CHECK_DO(proc_ctx_curr!= NULL, goto end);
+
+	/* Check that module instance critical section is locked and processor API
+	 * level critical section is also locked ("double locked").
+	 */
+	ret_code= pthread_mutex_trylock(&procs_ctx->api_mutex);
+	CHECK_DO(ret_code== EBUSY, goto end);
+	ret_code= pthread_mutex_trylock(&procs_reg_elem->api_mutex);
+	CHECK_DO(ret_code== EBUSY, goto end);
+
+	/* In the case we have a PUT operation request we may have to treat a
+	 * special case (code below). Otherwise, we're done.
+	 */
+	if(!TAG_IS("PROCS_ID_PUT")) {
+		proc_ctx_ret= proc_ctx_curr;
+		goto end;
+	}
+
+	/* **** Treat possible special case in PUT operation ****
+	 * Check if a new processor type is requested (namely, check for a PUT
+	 * operation with a new processor name specified).
+	 */
+
+	/* Copy variable list of arguments to avoid interfering with original.
+	 * Get settings string argument corresponding to the PUT operation.
+	 */
+	va_copy(arg_cpy, arg);
+	settings_str_arg= va_arg(arg_cpy, const char*);
+	if(settings_str_arg== NULL || strlen(settings_str_arg)== 0) {
+		// No new processor name requested, we're done.
+		proc_ctx_ret= proc_ctx_curr;
+		goto end;
+	}
+
+	/* Get current processor name */
+	proc_if_curr= proc_ctx_curr->proc_if;
+	CHECK_DO(proc_if_curr!= NULL, goto end);
+	proc_name_curr= proc_if_curr->proc_name;
+	CHECK_DO(proc_name_curr!= NULL && strlen(proc_name_curr)> 0, goto end);
+
+	/* Guess string representation format (JSON-REST or Query) */
+	//LOGV("'%s'\n", str); //comment-me
+	flag_is_query= (settings_str_arg[0]=='{' &&
+			settings_str_arg[strlen(settings_str_arg)-1]=='}')? 0: 1;
+
+	/* Parse JSON or query string and check for 'proc_name' field */
+	if(flag_is_query== 1) {
+		proc_name_str= uri_parser_query_str_get_value("proc_name",
+				settings_str_arg);
+	} else {
+		/* In the case string format is JSON-REST, parse to cJSON structure */
+		cjson_rest_arg= cJSON_Parse(settings_str_arg);
+		CHECK_DO(cjson_rest_arg!= NULL, goto end);
+		cjson_aux= cJSON_GetObjectItem(cjson_rest_arg, "proc_name");
+		if(cjson_aux!= NULL)
+			proc_name_str= strdup(cjson_aux->valuestring);
+	}
+	if(proc_name_str== NULL) {
+		// No new processor name requested, we're done.
+		proc_ctx_ret= proc_ctx_curr;
+		goto end;
+	}
+	//LOGV("'proc_name'= '%s' in PUT request\n", proc_name_str); //comment-me
+
+	/* Check if processor name actually change or is the same as current */
+	if(strcmp(proc_name_str, proc_name_curr)== 0) {
+		// No new processor name requested, we're done.
+		proc_ctx_ret= proc_ctx_curr;
+		goto end;
+	}
+
+	/* Check and get processor interface (lock PROCS module API!) */
+	ASSERT(pthread_mutex_lock(&procs_module_ctx->module_api_mutex)== 0);
+	proc_if_new= get_proc_if_by_name(proc_name_str, LOG_CTX_GET());
+	ASSERT(pthread_mutex_unlock(&procs_module_ctx->module_api_mutex)== 0);
+	if(proc_if_new== NULL) {
+		LOGE("New processor name specified '%s' is not registered.\n",
+				proc_name_str);
+		goto end;
+	}
+
+	/* **** At this point we have a valid new processor request **** */
+	LOGW("Changing processor type from '%s' to '%s'\n",
+			proc_if_curr->proc_mime? proc_if_curr->proc_mime: proc_name_curr,
+			proc_if_new->proc_mime? proc_if_new->proc_mime: proc_name_str);
+
+	/* Get processor's current settings */
+	ret_code= proc_opt(proc_ctx_curr, "PROC_GET", PROC_IF_REST_FMT_CJSON,
+			&cjson_rest_curr);
+	CHECK_DO(ret_code== STAT_SUCCESS && cjson_rest_curr!= NULL, goto end);
+	cjson_aux= cJSON_GetObjectItem(cjson_rest_curr, "settings");
+	if(cjson_aux!= NULL) { // May have settings object or not...
+		settings_str_curr= cJSON_PrintUnformatted(cjson_aux);
+	} else {
+		settings_str_curr= strdup("");
+	}
+	CHECK_DO(settings_str_curr!= NULL, goto end);
+	//LOGV("Current processor setting: '%s'\n", settings_str_curr); //comment-me
+
+	/* Open (instantiate) new processor passing current settings and Id.
+	 * Note that all the settings fields that do not apply to the new
+	 * processor type will be just ignored.
+	 */
+	proc_ctx_new= proc_open(proc_if_new, settings_str_curr,
+			proc_ctx_curr->proc_instance_index, fifo_ctx_maxsize,
+			LOG_CTX_GET(), va_list_empty);
+	CHECK_DO(proc_ctx_new!= NULL, goto end);
+
+	/* Unblock current processor input/output FIFOs to be able to acquire
+	 * i/o locks next.
+	 */
+	ret_code= proc_opt(proc_ctx_curr, "PROC_UNBLOCK");
+	CHECK_DO(ret_code== STAT_SUCCESS, goto end);
+
+	/* Register new processor context structure.
+	 * At this point we lock corresponding i/o critical section ("fair" lock),
+	 * as this register slot is still accessible concurrently by processor
+	 * API and i/o operations.
+	 */
+	//LOCK_PROCS_REG_ELEM_API(...); //already
+	fair_lock(procs_reg_elem->fair_lock_io_array[PROC_IPUT]);
+	fair_lock(procs_reg_elem->fair_lock_io_array[PROC_OPUT]);
+	procs_reg_elem->proc_ctx= proc_ctx_new;
+	fair_unlock(procs_reg_elem->fair_lock_io_array[PROC_IPUT]);
+	fair_unlock(procs_reg_elem->fair_lock_io_array[PROC_OPUT]);
+	//UNLOCK_PROCS_REG_ELEM_API(...); //already
+	proc_ctx_new= NULL; // Avoid double referencing
+
+	/* Finally, we release the old and successfully substituted processor */
+	proc_close(&proc_ctx_curr);
+	ASSERT(proc_ctx_curr== NULL);
+
+	/* Success! */
+	proc_ctx_ret= procs_reg_elem->proc_ctx;
+end:
+	va_end(arg_cpy);
+	if(proc_name_str!= NULL)
+		free(proc_name_str);
+	if(cjson_rest_arg!= NULL)
+		cJSON_Delete(cjson_rest_arg);
+	if(cjson_rest_curr!= NULL)
+		cJSON_Delete(cjson_rest_curr);
+	if(settings_str_curr!= NULL)
+		free(settings_str_curr);
+	if(proc_ctx_new!= NULL) {
+		proc_close(&proc_ctx_new);
+		ASSERT(proc_ctx_new== NULL);
+	}
+	return proc_ctx_ret;
 }
