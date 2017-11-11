@@ -425,7 +425,7 @@ static int ffmpeg_mp3_enc_rest_get(proc_ctx_t *proc_ctx,
 	switch(rest_fmt) {
 	case PROC_IF_REST_FMT_CHAR:
 		/* Print cJSON structure data to char string */
-		*ref_reponse= (void*)cJSON_PrintUnformatted(cjson_rest);
+		*ref_reponse= (void*)CJSON_PRINT(cjson_rest);
 		CHECK_DO(*ref_reponse!= NULL && strlen((char*)*ref_reponse)> 0,
 				goto end);
 		break;
@@ -757,7 +757,7 @@ static int ffmpeg_mp3_dec_rest_get(proc_ctx_t *proc_ctx,
 	switch(rest_fmt) {
 	case PROC_IF_REST_FMT_CHAR:
 		/* Print cJSON structure data to char string */
-		*ref_reponse= (void*)cJSON_PrintUnformatted(cjson_rest);
+		*ref_reponse= (void*)CJSON_PRINT(cjson_rest);
 		CHECK_DO(*ref_reponse!= NULL && strlen((char*)*ref_reponse)> 0,
 				goto end);
 		break;
