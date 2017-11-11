@@ -62,6 +62,14 @@ typedef struct fair_lock_s fair_lock_t;
 typedef struct proc_frame_ctx_s proc_frame_ctx_t;
 
 /**
+ * cJSON to character string conversion function definition.
+ * String can be formated or minimized (removing whitespace,
+ * carriage return, ...).
+ */
+#define CJSON_PRINT(CJSON_PTR) 	cJSON_Print(CJSON_PTR)
+//#define CJSON_PRINT(CJSON_PTR) 	cJSON_PrintUnformatted(CJSON_PTR)
+
+/**
  * Processor input-output type enumerator.
  */
 typedef enum {
