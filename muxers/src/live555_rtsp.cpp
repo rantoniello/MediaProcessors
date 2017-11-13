@@ -1113,7 +1113,7 @@ static int live555_rtsp_mux_rest_get_es_array(procs_ctx_t *procs_ctx_es_muxers,
 {
 	int i, ret_code, procs_num= 0, end_code= STAT_ERROR;
 	cJSON *cjson_es_array= NULL, *cjson_procs_rest= NULL,
-			*cjson_procs_es_rest= NULL;
+			*cjson_procs_es_rest= NULL, *cjson_procs_es_rest_settings= NULL;
 	cJSON *cjson_procs= NULL, *cjson_aux= NULL; // Do not release
 	char *rest_str_aux= NULL, *es_rest_str_aux= NULL;
 	LOG_CTX_INIT(log_ctx);
@@ -1178,6 +1178,14 @@ static int live555_rtsp_mux_rest_get_es_array(procs_ctx_t *procs_ctx_es_muxers,
 		cJSON_AddItemToObject(cjson_procs_es_rest, "elementary_stream_id",
 				cjson_aux);
 
+		/* Detach settings from elementary stream REST */
+		if(cjson_procs_es_rest_settings!= NULL) {
+			cJSON_Delete(cjson_procs_es_rest_settings);
+			cjson_procs_es_rest_settings= NULL;
+		}
+		cjson_procs_es_rest_settings= cJSON_DetachItemFromObject(
+				cjson_procs_es_rest, "settings");
+
 		/* Attach elementary stream data to array */
 		cJSON_AddItemToArray(cjson_es_array, cjson_procs_es_rest);
 		cjson_procs_es_rest= NULL; // Attached; avoid double referencing
@@ -1197,6 +1205,8 @@ end:
 		free(es_rest_str_aux);
 	if(cjson_procs_es_rest!= NULL)
 		cJSON_Delete(cjson_procs_es_rest);
+	if(cjson_procs_es_rest_settings!= NULL)
+		cJSON_Delete(cjson_procs_es_rest_settings);
 	return end_code;
 }
 
