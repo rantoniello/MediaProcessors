@@ -199,7 +199,9 @@ $curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/0
    "status":"OK",
    "message":null,
    "data":{
+      "latency_avg_usec":35502,
       "settings":{
+         "proc_name":"ffmpeg_m2v_enc",
          "bit_rate_output":307200,
          "frame_rate_output":15,
          "width_output":352,
@@ -217,7 +219,9 @@ $curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/1
    "status":"OK",
    "message":null,
    "data":{
+      "latency_avg_usec":0,
       "settings":{
+         "proc_name":"ffmpeg_m2v_dec"
       }
    }
 }
@@ -230,6 +234,7 @@ $curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/2
    "message":null,
    "data":{
       "settings":{
+         "proc_name":"live555_rtsp_mux",
          "rtsp_port":8574,
          "time_stamp_freq":9000,
          "rtsp_streaming_session_name":"session"
@@ -252,20 +257,19 @@ $curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/3
    "message":null,
    "data":{
       "settings":{
+         "proc_name":"live555_rtsp_dmux",
          "rtsp_url":"rtsp://127.0.0.1:8574/session"
       },
       "elementary_streams":[
          {
             "sdp_mimetype":"video/MP2V",
-            "port":58794,
-            "elementary_stream_id":58794
+            "port":40014,
+            "elementary_stream_id":40014
          }
       ]
    }
 }
 @endcode
-
-Note that the video decoder (processor Id. 2) has the simplest representational state (no data nor settings).<br>
 
 If you want to change some of the video encoder parameters, let's say the ouput width and height, do:
 @code
@@ -284,6 +288,43 @@ $curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/0
          "height_output":480,
          "gop_size":15,
          "conf_preset":null
+      }
+   }
+}
+@endcode
+
+You can even change the processor type on tun time. You have to be very careful of changing both, encoder and decoder sides.<br>
+In the following code we switch from MPEG2-video to H.264 video coding:
+@code
+$ curl -X PUT "127.0.0.1:8088/procs/0.json?proc_name=ffmpeg_x264_enc"; curl -X PUT "127.0.0.1:8088/procs/1.json?proc_name=ffmpeg_x264_dec";
+
+$ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/0.json"; curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/1.json"
+{
+   "code":200,
+   "status":"OK",
+   "message":null,
+   "data":{
+      "latency_avg_usec":941490,
+      "settings":{
+         "proc_name":"ffmpeg_x264_enc",
+         "bit_rate_output":307200,
+         "frame_rate_output":15,
+         "width_output":352,
+         "height_output":288,
+         "gop_size":15,
+         "conf_preset":null,
+         "flag_zerolatency":false
+      }
+   }
+}
+{
+   "code":200,
+   "status":"OK",
+   "message":null,
+   "data":{
+      "latency_avg_usec":0,
+      "settings":{
+         "proc_name":"ffmpeg_x264_dec"
       }
    }
 }

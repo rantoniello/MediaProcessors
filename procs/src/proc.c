@@ -451,6 +451,7 @@ static int procs_id_get(proc_ctx_t *proc_ctx, log_ctx_t *log_ctx,
 		proc_if_rest_fmt_t rest_fmt, void **ref_reponse)
 {
 	const proc_if_t *proc_if;
+	uint64_t flag_proc_features;
 	int ret_code, end_code= STAT_ERROR;
 	cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 	int (*rest_get)(proc_ctx_t *proc_ctx, proc_if_rest_fmt_t rest_fmt,
@@ -474,6 +475,7 @@ static int procs_id_get(proc_ctx_t *proc_ctx, log_ctx_t *log_ctx,
 	proc_if= proc_ctx->proc_if;
 	CHECK_DO(proc_if!= NULL, goto end);
 	rest_get= proc_if->rest_get;
+	flag_proc_features= proc_if->flag_proc_features;
 
 	/* Check if GET function callback is implemented by specific processor */
 	if(rest_get== NULL) {
@@ -498,16 +500,18 @@ static int procs_id_get(proc_ctx_t *proc_ctx, log_ctx_t *log_ctx,
 	 * 'cJSON_AddItemToObject()' -may change in future-.
 	 */
 
-	/* 'latency_avg_usec' */
-	cjson_aux= cJSON_CreateNumber((double)proc_ctx->latency_avg_usec);
-	CHECK_DO(cjson_aux!= NULL, goto end);
-	// Hack of 'cJSON_AddItemToObject(cjson_rest, "latency_avg_usec",
-	// 		cjson_aux);':
-	cjson_aux->string= (char*)strdup("latency_avg_usec");
-	cjson_aux->type|= cJSON_StringIsConst;
-    //cJSON_AddItemToArray(cjson_rest, cjson_aux);
-    cJSON_InsertItemInArray(cjson_rest, 0, cjson_aux); // Insert at top
-    cjson_aux->type&= ~cJSON_StringIsConst;
+	if(flag_proc_features&PROC_FEATURE_LATSTATS) {
+		/* 'latency_avg_usec' */
+		cjson_aux= cJSON_CreateNumber((double)proc_ctx->latency_avg_usec);
+		CHECK_DO(cjson_aux!= NULL, goto end);
+		// Hack of 'cJSON_AddItemToObject(cjson_rest, "latency_avg_usec",
+		// 		cjson_aux);':
+		cjson_aux->string= (char*)strdup("latency_avg_usec");
+		cjson_aux->type|= cJSON_StringIsConst;
+		//cJSON_AddItemToArray(cjson_rest, cjson_aux);
+		cJSON_InsertItemInArray(cjson_rest, 0, cjson_aux); // Insert at top
+		cjson_aux->type&= ~cJSON_StringIsConst;
+	}
 
 	/* Format response to be returned */
 	switch(rest_fmt) {
