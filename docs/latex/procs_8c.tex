@@ -4,10 +4,13 @@
 {\ttfamily \#include $<$stdio.\+h$>$}\\*
 {\ttfamily \#include $<$stdlib.\+h$>$}\\*
 {\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$stdarg.\+h$>$}\\*
 {\ttfamily \#include $<$string.\+h$>$}\\*
 {\ttfamily \#include $<$pthread.\+h$>$}\\*
 {\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include $<$ctype.\+h$>$}\\*
 {\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/uri\+\_\+parser.\+h$>$}\\*
 {\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
 {\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
 {\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
@@ -43,6 +46,14 @@ struct \hyperlink{structprocs__ctx__s}{procs\+\_\+ctx\+\_\+s}
 \#define \hyperlink{procs_8c_a8995a191e541088a47aec1798a8cec4b}{T\+A\+G\+\_\+\+H\+AS}(N\+E\+E\+D\+LE)~(strstr(tag, N\+E\+E\+D\+LE)!= N\+U\+LL)
 \item 
 \#define \hyperlink{procs_8c_a914faae84f39085695352bd45c0fca62}{T\+A\+G\+\_\+\+IS}(T\+AG)~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)
+\item 
+\#define \hyperlink{procs_8c_abdd647e5ff1dd03cfe69fa57635e9537}{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI}(P\+R\+O\+C\+S\+\_\+\+C\+TX)~\hyperlink{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{A\+S\+S\+E\+RT}(pthread\+\_\+mutex\+\_\+lock(\&P\+R\+O\+C\+S\+\_\+\+C\+TX-\/$>$api\+\_\+mutex)== 0);
+\item 
+\#define \hyperlink{procs_8c_a3b0b901e6ac0fdd66da8f50f84a9d58a}{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI}(P\+R\+O\+C\+S\+\_\+\+C\+TX)~\hyperlink{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{A\+S\+S\+E\+RT}(pthread\+\_\+mutex\+\_\+unlock(\&P\+R\+O\+C\+S\+\_\+\+C\+TX-\/$>$api\+\_\+mutex)== 0);
+\item 
+\#define \hyperlink{procs_8c_a008ef319327fe7b221f460a34ace3c4d}{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI}(P\+R\+O\+C\+S\+\_\+\+C\+TX,  R\+E\+G\+\_\+\+E\+L\+EM,  E\+X\+I\+T\+\_\+\+C\+O\+D\+E\+\_\+\+O\+N\+\_\+\+F\+A\+I\+L\+U\+RE)
+\item 
+\#define \hyperlink{procs_8c_aa7da6bd2b61be2ae1325d7eb349bc6f0}{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI}(R\+E\+G\+\_\+\+E\+L\+EM)~\hyperlink{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{A\+S\+S\+E\+RT}(pthread\+\_\+mutex\+\_\+unlock(\&R\+E\+G\+\_\+\+E\+L\+EM-\/$>$api\+\_\+mutex)== 0);
 \item 
 \#define \hyperlink{procs_8c_a3ed23854256df248c5c1352b3999275e}{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}~16
 \item 
@@ -90,6 +101,11 @@ static int {\bfseries proc\+\_\+unregister} (\hyperlink{procs_8c_a9dcafd40720bff
 static int {\bfseries procs\+\_\+id\+\_\+opt} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, const char $\ast$tag, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)\hypertarget{procs_8c_a1ee8f0ae39dd325c1df3b3ae05b1deeb}{}\label{procs_8c_a1ee8f0ae39dd325c1df3b3ae05b1deeb}
 
 \item 
+static int {\bfseries procs\+\_\+id\+\_\+get} (\hyperlink{procs_8c_a63a78f7c86536e71715f3fcef28e11c5}{procs\+\_\+reg\+\_\+elem\+\_\+t} $\ast$procs\+\_\+reg\+\_\+elem, \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, void $\ast$$\ast$ref\+\_\+reponse)\hypertarget{procs_8c_a45c91e47e9ccbb3eee39f70d2e76d5dc}{}\label{procs_8c_a45c91e47e9ccbb3eee39f70d2e76d5dc}
+
+\item 
+static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{procs_8c_a6c006d44b4e414ce9cfb73cedf5e74b5}{procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, int proc\+\_\+id, const char $\ast$tag, va\+\_\+list arg, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
 int \hyperlink{procs_8c_af5f91a46882b5706b25327384ba347d8}{procs\+\_\+module\+\_\+open} (\hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
 void \hyperlink{procs_8c_a0947527d95117e432f21354103c390a6}{procs\+\_\+module\+\_\+close} ()
@@ -120,19 +136,50 @@ Rafael Antoniello
 
 
 \subsection{Macro Definition Documentation}
+\index{procs.\+c@{procs.\+c}!L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI@{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI}}
+\index{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI@{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI}!procs.\+c@{procs.\+c}}
+\subsubsection[{\texorpdfstring{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI}{LOCK_PROCS_CTX_API}}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI(
+\begin{DoxyParamCaption}
+\item[{}]{P\+R\+O\+C\+S\+\_\+\+C\+TX}
+\end{DoxyParamCaption}
+)~{\bf A\+S\+S\+E\+RT}(pthread\+\_\+mutex\+\_\+lock(\&P\+R\+O\+C\+S\+\_\+\+C\+TX-\/$>$api\+\_\+mutex)== 0);}\hypertarget{procs_8c_abdd647e5ff1dd03cfe69fa57635e9537}{}\label{procs_8c_abdd647e5ff1dd03cfe69fa57635e9537}
+Macro\+: lock P\+R\+O\+CS module {\itshape instance} A\+PI critical section. 
+
+Definition at line 71 of file procs.\+c.
+
+\index{procs.\+c@{procs.\+c}!L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI@{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI}}
+\index{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI@{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI}!procs.\+c@{procs.\+c}}
+\subsubsection[{\texorpdfstring{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI}{LOCK_PROCS_REG_ELEM_API}}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI(
+\begin{DoxyParamCaption}
+\item[{}]{P\+R\+O\+C\+S\+\_\+\+C\+TX, }
+\item[{}]{R\+E\+G\+\_\+\+E\+L\+EM, }
+\item[{}]{E\+X\+I\+T\+\_\+\+C\+O\+D\+E\+\_\+\+O\+N\+\_\+\+F\+A\+I\+L\+U\+RE}
+\end{DoxyParamCaption}
+)}\hypertarget{procs_8c_a008ef319327fe7b221f460a34ace3c4d}{}\label{procs_8c_a008ef319327fe7b221f460a34ace3c4d}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if}(pthread\_mutex\_trylock(&PROCS\_CTX->api\_mutex)!= EBUSY) \{\(\backslash\)
+        EXIT\_CODE\_ON\_FAILURE;\(\backslash\)
+    \}\hyperlink{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{\(\backslash\)}
+\hyperlink{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{    ASSERT}(pthread\_mutex\_lock(&REG\_ELEM->api\_mutex)== 0);
+\end{DoxyCode}
+Macro\+: lock P\+R\+O\+CS instance {\itshape register element} A\+PI critical section. It is important to remark that this macro is thought to make sure the developer lock {\itshape instance} A\+PI critical section first. 
+
+Definition at line 85 of file procs.\+c.
+
 \index{procs.\+c@{procs.\+c}!P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES@{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}}
 \index{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES@{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}!procs.\+c@{procs.\+c}}
 \subsubsection[{\texorpdfstring{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}{PROCS_MAX_NUM_PROC_INSTANCES}}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES~16}\hypertarget{procs_8c_a3ed23854256df248c5c1352b3999275e}{}\label{procs_8c_a3ed23854256df248c5c1352b3999275e}
 Limit value for the maximum number of processors that can be instantiated in the system. This value may be just modified, in compilation, if needed. 
 
-Definition at line 70 of file procs.\+c.
+Definition at line 102 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH@{P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH}}
 \index{P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH@{P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH}!procs.\+c@{procs.\+c}}
 \subsubsection[{\texorpdfstring{P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH}{PROCS_URL_BASE_PATH}}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH~\char`\"{}/procs/\char`\"{}}\hypertarget{procs_8c_a23010124f664c002283d937ea522c509}{}\label{procs_8c_a23010124f664c002283d937ea522c509}
 P\+R\+O\+CS module U\+RL base-\/path. 
 
-Definition at line 81 of file procs.\+c.
+Definition at line 113 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!T\+A\+G\+\_\+\+H\+AS@{T\+A\+G\+\_\+\+H\+AS}}
 \index{T\+A\+G\+\_\+\+H\+AS@{T\+A\+G\+\_\+\+H\+AS}!procs.\+c@{procs.\+c}}
@@ -143,7 +190,7 @@ Definition at line 81 of file procs.\+c.
 )~(strstr(tag, N\+E\+E\+D\+LE)!= N\+U\+LL)}\hypertarget{procs_8c_a8995a191e541088a47aec1798a8cec4b}{}\label{procs_8c_a8995a191e541088a47aec1798a8cec4b}
 Returns non-\/zero if given \textquotesingle{}tag\textquotesingle{} string contains \textquotesingle{}needle\textquotesingle{} sub-\/string. 
 
-Definition at line 58 of file procs.\+c.
+Definition at line 61 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!T\+A\+G\+\_\+\+IS@{T\+A\+G\+\_\+\+IS}}
 \index{T\+A\+G\+\_\+\+IS@{T\+A\+G\+\_\+\+IS}!procs.\+c@{procs.\+c}}
@@ -154,7 +201,29 @@ Definition at line 58 of file procs.\+c.
 )~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)}\hypertarget{procs_8c_a914faae84f39085695352bd45c0fca62}{}\label{procs_8c_a914faae84f39085695352bd45c0fca62}
 Returns non-\/zero if \textquotesingle{}tag\textquotesingle{} string is equal to given T\+AG string. 
 
-Definition at line 63 of file procs.\+c.
+Definition at line 66 of file procs.\+c.
+
+\index{procs.\+c@{procs.\+c}!U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI@{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI}}
+\index{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI@{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI}!procs.\+c@{procs.\+c}}
+\subsubsection[{\texorpdfstring{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI}{UNLOCK_PROCS_CTX_API}}]{\setlength{\rightskip}{0pt plus 5cm}\#define U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI(
+\begin{DoxyParamCaption}
+\item[{}]{P\+R\+O\+C\+S\+\_\+\+C\+TX}
+\end{DoxyParamCaption}
+)~{\bf A\+S\+S\+E\+RT}(pthread\+\_\+mutex\+\_\+unlock(\&P\+R\+O\+C\+S\+\_\+\+C\+TX-\/$>$api\+\_\+mutex)== 0);}\hypertarget{procs_8c_a3b0b901e6ac0fdd66da8f50f84a9d58a}{}\label{procs_8c_a3b0b901e6ac0fdd66da8f50f84a9d58a}
+Macro\+: unlock P\+R\+O\+CS module {\itshape instance} A\+PI critical section. 
+
+Definition at line 77 of file procs.\+c.
+
+\index{procs.\+c@{procs.\+c}!U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI@{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI}}
+\index{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI@{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI}!procs.\+c@{procs.\+c}}
+\subsubsection[{\texorpdfstring{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI}{UNLOCK_PROCS_REG_ELEM_API}}]{\setlength{\rightskip}{0pt plus 5cm}\#define U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI(
+\begin{DoxyParamCaption}
+\item[{}]{R\+E\+G\+\_\+\+E\+L\+EM}
+\end{DoxyParamCaption}
+)~{\bf A\+S\+S\+E\+RT}(pthread\+\_\+mutex\+\_\+unlock(\&R\+E\+G\+\_\+\+E\+L\+EM-\/$>$api\+\_\+mutex)== 0);}\hypertarget{procs_8c_aa7da6bd2b61be2ae1325d7eb349bc6f0}{}\label{procs_8c_aa7da6bd2b61be2ae1325d7eb349bc6f0}
+Macro\+: unlock P\+R\+O\+CS instance {\itshape register element} A\+PI critical section. 
+
+Definition at line 94 of file procs.\+c.
 
 
 
@@ -185,7 +254,22 @@ De-\/initialize and release the processors (P\+R\+O\+CS) module instance context
 \end{DoxyParams}
 
 
-Definition at line 322 of file procs.\+c.
+Definition at line 369 of file procs.\+c.
+
+\index{procs.\+c@{procs.\+c}!procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx@{procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx}}
+\index{procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx@{procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx}!procs.\+c@{procs.\+c}}
+\subsubsection[{\texorpdfstring{procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx(procs\+\_\+ctx\+\_\+t $\ast$procs\+\_\+ctx, int proc\+\_\+id, const char $\ast$tag, va\+\_\+list arg, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{procs_id_opt_fetch_proc_ctx(procs_ctx_t *procs_ctx, int proc_id, const char *tag, va_list arg, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf proc\+\_\+ctx\+\_\+t} $\ast$ procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx (
+\begin{DoxyParamCaption}
+\item[{{\bf procs\+\_\+ctx\+\_\+t} $\ast$}]{procs\+\_\+ctx, }
+\item[{int}]{proc\+\_\+id, }
+\item[{const char $\ast$}]{tag, }
+\item[{va\+\_\+list}]{arg, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{procs_8c_a6c006d44b4e414ce9cfb73cedf5e74b5}{}\label{procs_8c_a6c006d44b4e414ce9cfb73cedf5e74b5}
+This function fetches the processor context structure to be used for A\+PI options requests. As a special case to take into account, this function checks if a new processor name is specified on an eventual P\+UT settings (namely, it checks if \textquotesingle{}proc\+\_\+name\textquotesingle{} setting is present on a P\+UT operation, and if it is the case, checks if \textquotesingle{}proc\+\_\+name\textquotesingle{} actually changes). If a new processor name is requested, the current processor should be released and substituted by a new processor of the new type given (recycling the same processors register slot). Substituted processor settings are backup, and set to the new one. This way, if some setting on the old processor apply, will be set on the new processor. Otherwise, not applicable settings will be just ignored. 
+
+Definition at line 1066 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+module\+\_\+close@{procs\+\_\+module\+\_\+close}}
 \index{procs\+\_\+module\+\_\+close@{procs\+\_\+module\+\_\+close}!procs.\+c@{procs.\+c}}
@@ -196,7 +280,7 @@ Definition at line 322 of file procs.\+c.
 )}\hypertarget{procs_8c_a0947527d95117e432f21354103c390a6}{}\label{procs_8c_a0947527d95117e432f21354103c390a6}
 Close P\+R\+O\+CS module. This is a global function and should be called only once at the end of the life of the application. 
 
-Definition at line 224 of file procs.\+c.
+Definition at line 261 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+module\+\_\+open@{procs\+\_\+module\+\_\+open}}
 \index{procs\+\_\+module\+\_\+open@{procs\+\_\+module\+\_\+open}!procs.\+c@{procs.\+c}}
@@ -215,7 +299,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 195 of file procs.\+c.
+Definition at line 232 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+module\+\_\+opt@{procs\+\_\+module\+\_\+opt}}
 \index{procs\+\_\+module\+\_\+opt@{procs\+\_\+module\+\_\+opt}!procs.\+c@{procs.\+c}}
@@ -285,7 +369,26 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 
 \end{DoxyItemize}
 
-Definition at line 245 of file procs.\+c.
+{\bfseries Tag \char`\"{}\+P\+R\+O\+C\+S\+\_\+\+G\+E\+T\+\_\+\+T\+Y\+P\+E\char`\"{}\+:}~\newline
+ Get a copy of the interface of an specific processor type.~\newline
+ Additional variable arguments for function \hyperlink{procs_8h_a226ac6dfd7598a59b9ceab3a92239a80}{procs\+\_\+module\+\_\+opt()} are\+:~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+name} & Pointer to a character string with the unambiguous processor type name. \\
+\hline
+{\em ref\+\_\+proc\+\_\+if\+\_\+cpy} & Reference to the pointer to the copy of the requested processor interface context structure. If the requested processor exist, a copy of the context structure will be returned by this argument; otherwise, reference content will be set to N\+U\+LL. Code example\+: 
+\begin{DoxyCode}
+1 proc\_if\_t *proc\_if\_cpy= NULL;
+2 ...
+3 ret\_code= procs\_module\_opt("PROCS\_GET\_TYPE", "bypass\_processor",
+4         &proc\_if\_cpy);
+\end{DoxyCode}
+  \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 282 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+open@{procs\+\_\+open}}
 \index{procs\+\_\+open@{procs\+\_\+open}!procs.\+c@{procs.\+c}}
@@ -304,7 +407,7 @@ Pointer to the processors context structure on success, N\+U\+LL if fails.
 \end{DoxyReturn}
 
 
-Definition at line 277 of file procs.\+c.
+Definition at line 324 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+opt@{procs\+\_\+opt}}
 \index{procs\+\_\+opt@{procs\+\_\+opt}!procs.\+c@{procs.\+c}}
@@ -422,7 +525,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 
 \end{DoxyItemize}
 
-Definition at line 366 of file procs.\+c.
+Definition at line 413 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+recv\+\_\+frame@{procs\+\_\+recv\+\_\+frame}}
 \index{procs\+\_\+recv\+\_\+frame@{procs\+\_\+recv\+\_\+frame}!procs.\+c@{procs.\+c}}
@@ -447,7 +550,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 436 of file procs.\+c.
+Definition at line 483 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+send\+\_\+frame@{procs\+\_\+send\+\_\+frame}}
 \index{procs\+\_\+send\+\_\+frame@{procs\+\_\+send\+\_\+frame}!procs.\+c@{procs.\+c}}
@@ -472,7 +575,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 396 of file procs.\+c.
+Definition at line 443 of file procs.\+c.
 
 
 
@@ -482,5 +585,5 @@ Definition at line 396 of file procs.\+c.
 \subsubsection[{\texorpdfstring{procs\+\_\+module\+\_\+ctx}{procs_module_ctx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+module\+\_\+ctx\+\_\+t}$\ast$ procs\+\_\+module\+\_\+ctx = N\+U\+LL\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{procs_8c_a5e1a3210584f8735da101ba984f5e4aa}{}\label{procs_8c_a5e1a3210584f8735da101ba984f5e4aa}
 P\+R\+O\+CS module static instance. 
 
-Definition at line 193 of file procs.\+c.
+Definition at line 230 of file procs.\+c.
 

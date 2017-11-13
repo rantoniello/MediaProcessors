@@ -78,7 +78,7 @@ De-\/initialize and release the processors (P\+R\+O\+CS) module instance context
 \end{DoxyParams}
 
 
-Definition at line 322 of file procs.\+c.
+Definition at line 369 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+module\+\_\+close@{procs\+\_\+module\+\_\+close}}
 \index{procs\+\_\+module\+\_\+close@{procs\+\_\+module\+\_\+close}!procs.\+h@{procs.\+h}}
@@ -89,7 +89,7 @@ Definition at line 322 of file procs.\+c.
 )}\hypertarget{procs_8h_a0947527d95117e432f21354103c390a6}{}\label{procs_8h_a0947527d95117e432f21354103c390a6}
 Close P\+R\+O\+CS module. This is a global function and should be called only once at the end of the life of the application. 
 
-Definition at line 224 of file procs.\+c.
+Definition at line 261 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+module\+\_\+open@{procs\+\_\+module\+\_\+open}}
 \index{procs\+\_\+module\+\_\+open@{procs\+\_\+module\+\_\+open}!procs.\+h@{procs.\+h}}
@@ -108,7 +108,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 195 of file procs.\+c.
+Definition at line 232 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+module\+\_\+opt@{procs\+\_\+module\+\_\+opt}}
 \index{procs\+\_\+module\+\_\+opt@{procs\+\_\+module\+\_\+opt}!procs.\+h@{procs.\+h}}
@@ -178,7 +178,26 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 
 \end{DoxyItemize}
 
-Definition at line 245 of file procs.\+c.
+{\bfseries Tag \char`\"{}\+P\+R\+O\+C\+S\+\_\+\+G\+E\+T\+\_\+\+T\+Y\+P\+E\char`\"{}\+:}~\newline
+ Get a copy of the interface of an specific processor type.~\newline
+ Additional variable arguments for function \hyperlink{procs_8h_a226ac6dfd7598a59b9ceab3a92239a80}{procs\+\_\+module\+\_\+opt()} are\+:~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+name} & Pointer to a character string with the unambiguous processor type name. \\
+\hline
+{\em ref\+\_\+proc\+\_\+if\+\_\+cpy} & Reference to the pointer to the copy of the requested processor interface context structure. If the requested processor exist, a copy of the context structure will be returned by this argument; otherwise, reference content will be set to N\+U\+LL. Code example\+: 
+\begin{DoxyCode}
+1 proc\_if\_t *proc\_if\_cpy= NULL;
+2 ...
+3 ret\_code= procs\_module\_opt("PROCS\_GET\_TYPE", "bypass\_processor",
+4         &proc\_if\_cpy);
+\end{DoxyCode}
+  \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 282 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+open@{procs\+\_\+open}}
 \index{procs\+\_\+open@{procs\+\_\+open}!procs.\+h@{procs.\+h}}
@@ -197,7 +216,7 @@ Pointer to the processors context structure on success, N\+U\+LL if fails.
 \end{DoxyReturn}
 
 
-Definition at line 277 of file procs.\+c.
+Definition at line 324 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+opt@{procs\+\_\+opt}}
 \index{procs\+\_\+opt@{procs\+\_\+opt}!procs.\+h@{procs.\+h}}
@@ -315,7 +334,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 
 \end{DoxyItemize}
 
-Definition at line 366 of file procs.\+c.
+Definition at line 413 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+recv\+\_\+frame@{procs\+\_\+recv\+\_\+frame}}
 \index{procs\+\_\+recv\+\_\+frame@{procs\+\_\+recv\+\_\+frame}!procs.\+h@{procs.\+h}}
@@ -340,7 +359,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 436 of file procs.\+c.
+Definition at line 483 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+send\+\_\+frame@{procs\+\_\+send\+\_\+frame}}
 \index{procs\+\_\+send\+\_\+frame@{procs\+\_\+send\+\_\+frame}!procs.\+h@{procs.\+h}}
@@ -365,5 +384,5 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 396 of file procs.\+c.
+Definition at line 443 of file procs.\+c.
 

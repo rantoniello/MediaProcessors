@@ -172,7 +172,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00322">322</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00369">369</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Close PROCS module. This is a global function and should be called only once at the end of the life of the application. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00224">224</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00261">261</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -215,7 +215,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00195">195</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00232">232</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -280,8 +280,18 @@ Functions</h2></td></tr>
 </dl>
 </li>
 </ul>
+<p><b>Tag "PROCS_GET_TYPE":</b><br />
+ Get a copy of the interface of an specific processor type.<br />
+ Additional variable arguments for function <a class="el" href="procs_8h.html#a226ac6dfd7598a59b9ceab3a92239a80">procs_module_opt()</a> are:<br />
+ </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proc_name</td><td>Pointer to a character string with the unambiguous processor type name. </td></tr>
+    <tr><td class="paramname">ref_proc_if_cpy</td><td>Reference to the pointer to the copy of the requested processor interface context structure. If the requested processor exist, a copy of the context structure will be returned by this argument; otherwise, reference content will be set to NULL. Code example: <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;proc_if_t *proc_if_cpy= NULL;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;...</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ret_code= procs_module_opt(&quot;PROCS_GET_TYPE&quot;, &quot;bypass_processor&quot;,</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;        &amp;proc_if_cpy);</div></div><!-- fragment -->  </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00245">245</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00282">282</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -306,7 +316,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the processors context structure on success, NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00277">277</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00324">324</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -419,7 +429,7 @@ Functions</h2></td></tr>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00366">366</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00413">413</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -462,7 +472,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00436">436</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00483">483</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -505,7 +515,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00396">396</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00443">443</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>

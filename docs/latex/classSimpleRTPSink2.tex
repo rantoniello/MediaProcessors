@@ -1,0 +1,53 @@
+\hypertarget{classSimpleRTPSink2}{}\section{Simple\+R\+T\+P\+Sink2 Class Reference}
+\label{classSimpleRTPSink2}\index{Simple\+R\+T\+P\+Sink2@{Simple\+R\+T\+P\+Sink2}}
+
+
+Inheritance diagram for Simple\+R\+T\+P\+Sink2\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{classSimpleRTPSink2__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Simple\+R\+T\+P\+Sink2\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{classSimpleRTPSink2__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classSimpleRTPSink2}{Simple\+R\+T\+P\+Sink2} $\ast$ {\bfseries create\+New} (Usage\+Environment \&env, Groupsock $\ast$R\+T\+Pgs, unsigned char rtp\+Payload\+Format, unsigned rtp\+Timestamp\+Frequency, char const $\ast$sdp\+Media\+Type\+String, char const $\ast$rtp\+Payload\+Format\+Name, unsigned num\+Channels=1, Boolean allow\+Multiple\+Frames\+Per\+Packet=True, Boolean do\+Normal\+M\+Bit\+Rule=True)\hypertarget{classSimpleRTPSink2_a773baeb496c50b41d16f92af789e6462}{}\label{classSimpleRTPSink2_a773baeb496c50b41d16f92af789e6462}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Simple\+R\+T\+P\+Sink2} (Usage\+Environment \&env, Groupsock $\ast$R\+T\+Pgs, unsigned char rtp\+Payload\+Format, unsigned rtp\+Timestamp\+Frequency, char const $\ast$sdp\+Media\+Type\+String, char const $\ast$rtp\+Payload\+Format\+Name, unsigned num\+Channels, Boolean allow\+Multiple\+Frames\+Per\+Packet, Boolean do\+Normal\+M\+Bit\+Rule)\hypertarget{classSimpleRTPSink2_a5c5c15ff735a1eb853d1e12d1234de45}{}\label{classSimpleRTPSink2_a5c5c15ff735a1eb853d1e12d1234de45}
+
+\item 
+virtual void {\bfseries do\+Special\+Frame\+Handling} (unsigned fragmentation\+Offset, unsigned char $\ast$frame\+Start, unsigned num\+Bytes\+In\+Frame, struct timeval frame\+Presentation\+Time, unsigned num\+Remaining\+Bytes)\hypertarget{classSimpleRTPSink2_ac881249a2455ec652d3048bd2fa99210}{}\label{classSimpleRTPSink2_ac881249a2455ec652d3048bd2fa99210}
+
+\item 
+virtual Boolean {\bfseries frame\+Can\+Appear\+After\+Packet\+Start} (unsigned char const $\ast$frame\+Start, unsigned num\+Bytes\+In\+Frame) const \hypertarget{classSimpleRTPSink2_a44857fb012b6482acd8ee79ec5e3e122}{}\label{classSimpleRTPSink2_a44857fb012b6482acd8ee79ec5e3e122}
+
+\item 
+virtual char const $\ast$ {\bfseries sdp\+Media\+Type} () const \hypertarget{classSimpleRTPSink2_ab60aabf51210a2491193c791031d2642}{}\label{classSimpleRTPSink2_ab60aabf51210a2491193c791031d2642}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+So-\/called \char`\"{}framed-\/sink\char`\"{} class prototype. 
+
+Definition at line 288 of file live555\+\_\+rtsp.\+cpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{live555__rtsp_8cpp}{live555\+\_\+rtsp.\+cpp}\end{DoxyCompactItemize}

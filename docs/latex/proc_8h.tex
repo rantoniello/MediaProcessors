@@ -6,12 +6,13 @@ Generic processor (P\+R\+OC) module.
 
 
 {\ttfamily \#include $<$stdarg.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
 {\ttfamily \#include $<$libmediaprocsutils/mem\+\_\+utils.\+h$>$}\\*
 Include dependency graph for proc.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=246pt]{proc_8h__incl}
+\includegraphics[width=321pt]{proc_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:\nopagebreak
@@ -26,6 +27,23 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \item 
 struct \hyperlink{structproc__ctx__s}{proc\+\_\+ctx\+\_\+s}
 \end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{proc_8h_a123c203ae476d5abf664207895880d98}{C\+J\+S\+O\+N\+\_\+\+P\+R\+I\+NT}(C\+J\+S\+O\+N\+\_\+\+P\+TR)~c\+J\+S\+O\+N\+\_\+\+Print(C\+J\+S\+O\+N\+\_\+\+P\+TR)
+\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{proc_8h_af53db00bc88282285037381807cc5c1d}{I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE}~128
+\item 
+\#define {\bfseries I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+V\+AL}~0\hypertarget{proc_8h_afa86ee7ab4ee6007957c849be8f775d1}{}\label{proc_8h_afa86ee7ab4ee6007957c849be8f775d1}
+
+\item 
+\#define {\bfseries I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+S\+T\+C\+\_\+\+V\+AL}~1\hypertarget{proc_8h_af5c3c106c2bf1fb0ced5d4b6a1de4938}{}\label{proc_8h_af5c3c106c2bf1fb0ced5d4b6a1de4938}
+
+\end{DoxyCompactItemize}
+
 \subsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
@@ -67,6 +85,9 @@ int \hyperlink{proc_8h_a9cfe4d96cd6581d309e3bf2b1821bbb6}{proc\+\_\+recv\+\_\+fr
 int \hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$tag,...)
 \item 
 int \hyperlink{proc_8h_a720ee51d86625b42b09f508a13977f37}{proc\+\_\+vopt} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$tag, va\+\_\+list arg)
+\item 
+void {\bfseries proc\+\_\+acc\+\_\+latency\+\_\+measure} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const int64\+\_\+t oput\+\_\+frame\+\_\+pts)\hypertarget{proc_8h_a0b8d892a67c4ba670cedc9a569f8387b}{}\label{proc_8h_a0b8d892a67c4ba670cedc9a569f8387b}
+
 \end{DoxyCompactItemize}
 
 
@@ -83,6 +104,27 @@ A typical application would use a generic processor as follows\+:~\newline
  ~\newline
  Concurrency\+: The processor (P\+R\+OC) module is thread-\/safe, thus run-\/time functions can be executed concurrently (at the exception of \textquotesingle{}\hyperlink{proc_8h_a903e30d67b3e65f0711a87945be97cc4}{proc\+\_\+open()}\textquotesingle{} and \textquotesingle{}\hyperlink{proc_8h_a3817e994b6b2153430cdde4eab23dcd2}{proc\+\_\+close()}\textquotesingle{} functions). 
 
+\subsection{Macro Definition Documentation}
+\index{proc.\+h@{proc.\+h}!C\+J\+S\+O\+N\+\_\+\+P\+R\+I\+NT@{C\+J\+S\+O\+N\+\_\+\+P\+R\+I\+NT}}
+\index{C\+J\+S\+O\+N\+\_\+\+P\+R\+I\+NT@{C\+J\+S\+O\+N\+\_\+\+P\+R\+I\+NT}!proc.\+h@{proc.\+h}}
+\subsubsection[{\texorpdfstring{C\+J\+S\+O\+N\+\_\+\+P\+R\+I\+NT}{CJSON_PRINT}}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\+J\+S\+O\+N\+\_\+\+P\+R\+I\+NT(
+\begin{DoxyParamCaption}
+\item[{}]{C\+J\+S\+O\+N\+\_\+\+P\+TR}
+\end{DoxyParamCaption}
+)~c\+J\+S\+O\+N\+\_\+\+Print(C\+J\+S\+O\+N\+\_\+\+P\+TR)}\hypertarget{proc_8h_a123c203ae476d5abf664207895880d98}{}\label{proc_8h_a123c203ae476d5abf664207895880d98}
+c\+J\+S\+ON to character string conversion function definition. String can be formated or minimized (removing whitespace, carriage return, ...). 
+
+Definition at line 69 of file proc.\+h.
+
+\index{proc.\+h@{proc.\+h}!I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE@{I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE}}
+\index{I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE@{I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE}!proc.\+h@{proc.\+h}}
+\subsubsection[{\texorpdfstring{I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE}{IPUT_PTS_ARRAY_SIZE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE~128}\hypertarget{proc_8h_af53db00bc88282285037381807cc5c1d}{}\label{proc_8h_af53db00bc88282285037381807cc5c1d}
+Array registering the last input presentation time-\/stamps (P\+TS\textquotesingle{}s). Each P\+TS is registered together with the system-\/time clock (S\+TC) corresponding to the registration instant. 
+
+Definition at line 130 of file proc.\+h.
+
+
+
 \subsection{Typedef Documentation}
 \index{proc.\+h@{proc.\+h}!proc\+\_\+ctx\+\_\+t@{proc\+\_\+ctx\+\_\+t}}
 \index{proc\+\_\+ctx\+\_\+t@{proc\+\_\+ctx\+\_\+t}!proc.\+h@{proc.\+h}}
@@ -92,7 +134,7 @@ Generic processor (P\+R\+OC) context structure. \index{proc.\+h@{proc.\+h}!proc\
 \subsubsection[{\texorpdfstring{proc\+\_\+if\+\_\+t}{proc_if_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf proc\+\_\+if\+\_\+s} {\bf proc\+\_\+if\+\_\+t}}\hypertarget{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{}\label{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}
 P\+R\+OC interface structure prototype. Each P\+R\+OC type will define a static and unambiguous interface of this type. 
 
-Definition at line 57 of file proc.\+h.
+Definition at line 58 of file proc.\+h.
 
 
 
@@ -102,7 +144,7 @@ Definition at line 57 of file proc.\+h.
 \subsubsection[{\texorpdfstring{proc\+\_\+io\+\_\+t}{proc_io_t}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf proc\+\_\+io\+\_\+t}}\hypertarget{proc_8h_ad9d50caaae50c1832dd22f487331657a}{}\label{proc_8h_ad9d50caaae50c1832dd22f487331657a}
 Processor input-\/output type enumerator. 
 
-Definition at line 66 of file proc.\+h.
+Definition at line 75 of file proc.\+h.
 
 
 
@@ -121,7 +163,7 @@ Ends processing thread, de-\/initialize and release the generic processor (P\+R\
 \end{DoxyParams}
 
 
-Definition at line 151 of file proc.\+c.
+Definition at line 194 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+open@{proc\+\_\+open}}
 \index{proc\+\_\+open@{proc\+\_\+open}!proc.\+h@{proc.\+h}}
@@ -155,7 +197,7 @@ Pointer to the generic processor context structure on success, N\+U\+LL if fails
 \end{DoxyReturn}
 
 
-Definition at line 68 of file proc.\+c.
+Definition at line 95 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+opt@{proc\+\_\+opt}}
 \index{proc\+\_\+opt@{proc\+\_\+opt}!proc.\+h@{proc.\+h}}
@@ -198,7 +240,9 @@ Tag \char`\"{}\+P\+R\+O\+C\+\_\+\+G\+E\+T\char`\"{}\+: ~\newline
  Additional variable arguments for function \hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt()} are\+:~\newline
  
 \begin{DoxyParams}{Parameters}
-{\em ref\+\_\+str} & Reference to the pointer to a character string returning the processor\textquotesingle{}s representational state.\\
+{\em rest\+\_\+fmt} & Indicates the format in which the response data is to be returned. Available formats are enumerated at \textquotesingle{}proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t\textquotesingle{}. \\
+\hline
+{\em ref\+\_\+reponse} & Reference to the pointer to a data structure returning the processor\textquotesingle{}s representational state. The returned data structure is formatted according to what is indicated in the parameter \textquotesingle{}rest\+\_\+fmt\textquotesingle{}.\\
 \hline
 \end{DoxyParams}
 Tag \char`\"{}\+P\+R\+O\+C\+\_\+\+P\+U\+T\char`\"{}\+: ~\newline
@@ -212,7 +256,7 @@ Tag \char`\"{}\+P\+R\+O\+C\+\_\+\+P\+U\+T\char`\"{}\+: ~\newline
 
 \end{DoxyItemize}
 
-Definition at line 256 of file proc.\+c.
+Definition at line 345 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+recv\+\_\+frame@{proc\+\_\+recv\+\_\+frame}}
 \index{proc\+\_\+recv\+\_\+frame@{proc\+\_\+recv\+\_\+frame}!proc.\+h@{proc.\+h}}
@@ -234,7 +278,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 223 of file proc.\+c.
+Definition at line 279 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+send\+\_\+frame@{proc\+\_\+send\+\_\+frame}}
 \index{proc\+\_\+send\+\_\+frame@{proc\+\_\+send\+\_\+frame}!proc.\+h@{proc.\+h}}
@@ -256,7 +300,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 201 of file proc.\+c.
+Definition at line 253 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+vopt@{proc\+\_\+vopt}}
 \index{proc\+\_\+vopt@{proc\+\_\+vopt}!proc.\+h@{proc.\+h}}
@@ -267,7 +311,7 @@ Definition at line 201 of file proc.\+c.
 \item[{va\+\_\+list}]{arg}
 \end{DoxyParamCaption}
 )}\hypertarget{proc_8h_a720ee51d86625b42b09f508a13977f37}{}\label{proc_8h_a720ee51d86625b42b09f508a13977f37}
-The function \textquotesingle{}\hyperlink{proc_8h_a720ee51d86625b42b09f508a13977f37}{proc\+\_\+vopt()}\textquotesingle{} is the same as \hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt()} except that it is called with a va\+\_\+list instead of a variable number of arguments. This function does not call the va\+\_\+end macro. Because they invoke the va\+\_\+arg macro, the value of the argument pointer is undefined after the call. 
+The function \textquotesingle{}\hyperlink{proc_8h_a720ee51d86625b42b09f508a13977f37}{proc\+\_\+vopt()}\textquotesingle{} is the same as \hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt()} except that it is called with a va\+\_\+list instead of a variable number of arguments. This function does not call the va\+\_\+end macro. Because it invoke the va\+\_\+arg macro, the value of the argument pointer is undefined after the call. 
 
-Definition at line 270 of file proc.\+c.
+Definition at line 359 of file proc.\+c.
 

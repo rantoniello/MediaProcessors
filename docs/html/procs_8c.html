@@ -99,10 +99,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;unistd.h&gt;</code><br />
+<code>#include &lt;stdarg.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;pthread.h&gt;</code><br />
 <code>#include &lt;errno.h&gt;</code><br />
+<code>#include &lt;ctype.h&gt;</code><br />
 <code>#include &lt;libcjson/cJSON.h&gt;</code><br />
+<code>#include &lt;libmediaprocsutils/uri_parser.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/log.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/stat_codes.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/check_utils.h&gt;</code><br />
@@ -115,9 +118,9 @@ Include dependency graph for procs.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="procs_8c__incl.png" border="0" usemap="#procs_8c" alt=""/></div>
 <map name="procs_8c" id="procs_8c">
-<area shape="rect" id="node2" href="procs_8h.html" title="Generic processors (PROC) module. " alt="" coords="179,87,245,114"/>
-<area shape="rect" id="node18" href="proc_8h.html" title="Generic processor (PROC) module. " alt="" coords="269,87,328,114"/>
-<area shape="rect" id="node20" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. " alt="" coords="83,87,155,114"/>
+<area shape="rect" id="node2" href="procs_8h.html" title="Generic processors (PROC) module. " alt="" coords="115,87,180,114"/>
+<area shape="rect" id="node20" href="proc_8h.html" title="Generic processor (PROC) module. " alt="" coords="351,87,410,114"/>
+<area shape="rect" id="node22" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. " alt="" coords="205,87,277,114"/>
 </map>
 </div>
 </div>
@@ -144,6 +147,14 @@ Macros</h2></td></tr>
 <tr class="separator:a8995a191e541088a47aec1798a8cec4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a914faae84f39085695352bd45c0fca62"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8c.html#a914faae84f39085695352bd45c0fca62">TAG_IS</a>(TAG)&#160;&#160;&#160;(strncmp(tag, TAG, strlen(TAG))== 0)</td></tr>
 <tr class="separator:a914faae84f39085695352bd45c0fca62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd647e5ff1dd03cfe69fa57635e9537"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8c.html#abdd647e5ff1dd03cfe69fa57635e9537">LOCK_PROCS_CTX_API</a>(PROCS_CTX)&#160;&#160;&#160;<a class="el" href="check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99">ASSERT</a>(pthread_mutex_lock(&amp;PROCS_CTX-&gt;api_mutex)== 0);</td></tr>
+<tr class="separator:abdd647e5ff1dd03cfe69fa57635e9537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b0b901e6ac0fdd66da8f50f84a9d58a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8c.html#a3b0b901e6ac0fdd66da8f50f84a9d58a">UNLOCK_PROCS_CTX_API</a>(PROCS_CTX)&#160;&#160;&#160;<a class="el" href="check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99">ASSERT</a>(pthread_mutex_unlock(&amp;PROCS_CTX-&gt;api_mutex)== 0);</td></tr>
+<tr class="separator:a3b0b901e6ac0fdd66da8f50f84a9d58a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a008ef319327fe7b221f460a34ace3c4d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8c.html#a008ef319327fe7b221f460a34ace3c4d">LOCK_PROCS_REG_ELEM_API</a>(PROCS_CTX,  REG_ELEM,  EXIT_CODE_ON_FAILURE)</td></tr>
+<tr class="separator:a008ef319327fe7b221f460a34ace3c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7da6bd2b61be2ae1325d7eb349bc6f0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8c.html#aa7da6bd2b61be2ae1325d7eb349bc6f0">UNLOCK_PROCS_REG_ELEM_API</a>(REG_ELEM)&#160;&#160;&#160;<a class="el" href="check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99">ASSERT</a>(pthread_mutex_unlock(&amp;REG_ELEM-&gt;api_mutex)== 0);</td></tr>
+<tr class="separator:aa7da6bd2b61be2ae1325d7eb349bc6f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ed23854256df248c5c1352b3999275e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8c.html#a3ed23854256df248c5c1352b3999275e">PROCS_MAX_NUM_PROC_INSTANCES</a>&#160;&#160;&#160;16</td></tr>
 <tr class="separator:a3ed23854256df248c5c1352b3999275e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a979ef9763a231c76f8155bbac05ea794"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a979ef9763a231c76f8155bbac05ea794"></a>
@@ -190,6 +201,11 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>proc_unregister
 <tr class="memitem:a1ee8f0ae39dd325c1df3b3ae05b1deeb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ee8f0ae39dd325c1df3b3ae05b1deeb"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>procs_id_opt</b> (<a class="el" href="procs_8c.html#a9dcafd40720bff127bdc596e9c6dd6cd">procs_ctx_t</a> *procs_ctx, const char *tag, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx, va_list arg)</td></tr>
 <tr class="separator:a1ee8f0ae39dd325c1df3b3ae05b1deeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45c91e47e9ccbb3eee39f70d2e76d5dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45c91e47e9ccbb3eee39f70d2e76d5dc"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>procs_id_get</b> (<a class="el" href="procs_8c.html#a63a78f7c86536e71715f3fcef28e11c5">procs_reg_elem_t</a> *procs_reg_elem, <a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx, void **ref_reponse)</td></tr>
+<tr class="separator:a45c91e47e9ccbb3eee39f70d2e76d5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c006d44b4e414ce9cfb73cedf5e74b5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8c.html#a6c006d44b4e414ce9cfb73cedf5e74b5">procs_id_opt_fetch_proc_ctx</a> (<a class="el" href="procs_8c.html#a9dcafd40720bff127bdc596e9c6dd6cd">procs_ctx_t</a> *procs_ctx, int proc_id, const char *tag, va_list arg, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx)</td></tr>
+<tr class="separator:a6c006d44b4e414ce9cfb73cedf5e74b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5f91a46882b5706b25327384ba347d8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8c.html#af5f91a46882b5706b25327384ba347d8">procs_module_open</a> (<a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx)</td></tr>
 <tr class="separator:af5f91a46882b5706b25327384ba347d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0947527d95117e432f21354103c390a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8c.html#a0947527d95117e432f21354103c390a6">procs_module_close</a> ()</td></tr>
@@ -217,6 +233,61 @@ Variables</h2></td></tr>
 
 <p>Definition in file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="abdd647e5ff1dd03cfe69fa57635e9537"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LOCK_PROCS_CTX_API</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">PROCS_CTX</td><td>)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99">ASSERT</a>(pthread_mutex_lock(&amp;PROCS_CTX-&gt;api_mutex)== 0);</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Macro: lock PROCS module <em>instance</em> API critical section. </p>
+
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00071">71</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a008ef319327fe7b221f460a34ace3c4d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LOCK_PROCS_REG_ELEM_API</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">PROCS_CTX, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">REG_ELEM, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">EXIT_CODE_ON_FAILURE&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span>(pthread_mutex_trylock(&amp;PROCS_CTX-&gt;api_mutex)!= EBUSY) {\</div><div class="line">        EXIT_CODE_ON_FAILURE;\</div><div class="line">    }<a class="code" href="check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99">\</a></div><div class="line"><a class="code" href="check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99">	ASSERT</a>(pthread_mutex_lock(&amp;REG_ELEM-&gt;api_mutex)== 0);</div><div class="ttc" id="check__utils_8h_html_a903f9b298be75defd8a3043ebf62bd99"><div class="ttname"><a href="check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99">ASSERT</a></div><div class="ttdeci">#define ASSERT(COND)</div><div class="ttdef"><b>Definition:</b> <a href="check__utils_8h_source.html#l00051">check_utils.h:51</a></div></div>
+</div><!-- fragment --><p>Macro: lock PROCS instance <em>register element</em> API critical section. It is important to remark that this macro is thought to make sure the developer lock <em>instance</em> API critical section first. </p>
+
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00085">85</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a3ed23854256df248c5c1352b3999275e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +299,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Limit value for the maximum number of processors that can be instantiated in the system. This value may be just modified, in compilation, if needed. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00070">70</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00102">102</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -243,7 +314,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>PROCS module URL base-path. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00081">81</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00113">113</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -262,7 +333,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns non-zero if given 'tag' string contains 'needle' sub-string. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00058">58</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00061">61</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -281,7 +352,45 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns non-zero if 'tag' string is equal to given TAG string. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00063">63</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00066">66</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3b0b901e6ac0fdd66da8f50f84a9d58a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UNLOCK_PROCS_CTX_API</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">PROCS_CTX</td><td>)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99">ASSERT</a>(pthread_mutex_unlock(&amp;PROCS_CTX-&gt;api_mutex)== 0);</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Macro: unlock PROCS module <em>instance</em> API critical section. </p>
+
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00077">77</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa7da6bd2b61be2ae1325d7eb349bc6f0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UNLOCK_PROCS_REG_ELEM_API</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">REG_ELEM</td><td>)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99">ASSERT</a>(pthread_mutex_unlock(&amp;REG_ELEM-&gt;api_mutex)== 0);</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Macro: unlock PROCS instance <em>register element</em> API critical section. </p>
+
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00094">94</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -346,7 +455,62 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00322">322</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00369">369</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6c006d44b4e414ce9cfb73cedf5e74b5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> * procs_id_opt_fetch_proc_ctx </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="procs_8c.html#a9dcafd40720bff127bdc596e9c6dd6cd">procs_ctx_t</a> *&#160;</td>
+          <td class="paramname"><em>procs_ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>proc_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *&#160;</td>
+          <td class="paramname"><em>log_ctx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function fetches the processor context structure to be used for API options requests. As a special case to take into account, this function checks if a new processor name is specified on an eventual PUT settings (namely, it checks if 'proc_name' setting is present on a PUT operation, and if it is the case, checks if 'proc_name' actually changes). If a new processor name is requested, the current processor should be released and substituted by a new processor of the new type given (recycling the same processors register slot). Substituted processor settings are backup, and set to the new one. This way, if some setting on the old processor apply, will be set on the new processor. Otherwise, not applicable settings will be just ignored. </p>
+
+<p>Definition at line <a class="el" href="procs_8c_source.html#l01066">1066</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -364,7 +528,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Close PROCS module. This is a global function and should be called only once at the end of the life of the application. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00224">224</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00261">261</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -389,7 +553,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00195">195</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00232">232</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -454,8 +618,18 @@ Variables</h2></td></tr>
 </dl>
 </li>
 </ul>
+<p><b>Tag "PROCS_GET_TYPE":</b><br />
+ Get a copy of the interface of an specific processor type.<br />
+ Additional variable arguments for function <a class="el" href="procs_8h.html#a226ac6dfd7598a59b9ceab3a92239a80">procs_module_opt()</a> are:<br />
+ </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proc_name</td><td>Pointer to a character string with the unambiguous processor type name. </td></tr>
+    <tr><td class="paramname">ref_proc_if_cpy</td><td>Reference to the pointer to the copy of the requested processor interface context structure. If the requested processor exist, a copy of the context structure will be returned by this argument; otherwise, reference content will be set to NULL. Code example: <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;proc_if_t *proc_if_cpy= NULL;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;...</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ret_code= procs_module_opt(&quot;PROCS_GET_TYPE&quot;, &quot;bypass_processor&quot;,</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;        &amp;proc_if_cpy);</div></div><!-- fragment -->  </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00245">245</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00282">282</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -480,7 +654,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the processors context structure on success, NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00277">277</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00324">324</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -593,7 +767,7 @@ Variables</h2></td></tr>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00366">366</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00413">413</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -636,7 +810,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00436">436</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00483">483</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -679,7 +853,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00396">396</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00443">443</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -703,7 +877,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>PROCS module static instance. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00193">193</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00230">230</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>

@@ -13,6 +13,7 @@ Processors (P\+R\+O\+CS) module unit testing.
 {\ttfamily \#include $<$sys/stat.\+h$>$}\\*
 {\ttfamily \#include $<$string.\+h$>$}\\*
 {\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/uri\+\_\+parser.\+h$>$}\\*
 {\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
 {\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
 {\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
@@ -50,13 +51,13 @@ typedef struct \hyperlink{structbypass__proc__ctx__s}{bypass\+\_\+proc\+\_\+ctx\
 static void {\bfseries bypass\+\_\+proc\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)\hypertarget{utests__procs_8cpp_a17be20cb4e8a2fa02144b8f742aca981}{}\label{utests__procs_8cpp_a17be20cb4e8a2fa02144b8f742aca981}
 
 \item 
-static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ {\bfseries bypass\+\_\+proc\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)\hypertarget{utests__procs_8cpp_a406f2d8924de1249959e928e24f80598}{}\label{utests__procs_8cpp_a406f2d8924de1249959e928e24f80598}
-
-\item 
 static int {\bfseries bypass\+\_\+proc\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)\hypertarget{utests__procs_8cpp_a1f31d662a9148baeaa27cc8805d5b8b8}{}\label{utests__procs_8cpp_a1f31d662a9148baeaa27cc8805d5b8b8}
 
 \item 
-static int {\bfseries bypass\+\_\+proc\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)\hypertarget{utests__procs_8cpp_a1750ae1df8ad86e2ad3c01a02c19da07}{}\label{utests__procs_8cpp_a1750ae1df8ad86e2ad3c01a02c19da07}
+static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ {\bfseries bypass\+\_\+proc\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)\hypertarget{utests__procs_8cpp_a406f2d8924de1249959e928e24f80598}{}\label{utests__procs_8cpp_a406f2d8924de1249959e928e24f80598}
+
+\item 
+static int {\bfseries bypass\+\_\+proc\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{proc__if_8h_a9bea3dae53a91f2a3e3a459d1d3e22b3}{proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t} rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)\hypertarget{utests__procs_8cpp_a7fa6a10d71a1c042f30bc0e2e8e652f2}{}\label{utests__procs_8cpp_a7fa6a10d71a1c042f30bc0e2e8e652f2}
 
 \item 
 static int {\bfseries bypass\+\_\+proc\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+iput, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+oput)\hypertarget{utests__procs_8cpp_af1246833956ca6b60121bba4e9476757}{}\label{utests__procs_8cpp_af1246833956ca6b60121bba4e9476757}

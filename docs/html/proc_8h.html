@@ -87,6 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -98,6 +99,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Generic processor (PROC) module.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdarg.h&gt;</code><br />
+<code>#include &lt;pthread.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/mem_utils.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for proc.h:</div>
@@ -120,6 +122,20 @@ This graph shows which files directly or indirectly include this file:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__ctx__s.html">proc_ctx_s</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a123c203ae476d5abf664207895880d98"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8h.html#a123c203ae476d5abf664207895880d98">CJSON_PRINT</a>(CJSON_PTR)&#160;&#160;&#160;cJSON_Print(CJSON_PTR)</td></tr>
+<tr class="separator:a123c203ae476d5abf664207895880d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:af53db00bc88282285037381807cc5c1d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8h.html#af53db00bc88282285037381807cc5c1d">IPUT_PTS_ARRAY_SIZE</a>&#160;&#160;&#160;128</td></tr>
+<tr class="separator:af53db00bc88282285037381807cc5c1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa86ee7ab4ee6007957c849be8f775d1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa86ee7ab4ee6007957c849be8f775d1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>IPUT_PTS_VAL</b>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:afa86ee7ab4ee6007957c849be8f775d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5c3c106c2bf1fb0ced5d4b6a1de4938"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5c3c106c2bf1fb0ced5d4b6a1de4938"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>IPUT_PTS_STC_VAL</b>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:af5c3c106c2bf1fb0ced5d4b6a1de4938"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -162,6 +178,9 @@ Functions</h2></td></tr>
 <tr class="separator:a0367a65712bcd2e762ec1e9e3035cb3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a720ee51d86625b42b09f508a13977f37"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8h.html#a720ee51d86625b42b09f508a13977f37">proc_vopt</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const char *tag, va_list arg)</td></tr>
 <tr class="separator:a720ee51d86625b42b09f508a13977f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b8d892a67c4ba670cedc9a569f8387b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b8d892a67c4ba670cedc9a569f8387b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>proc_acc_latency_measure</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const int64_t oput_frame_pts)</td></tr>
+<tr class="separator:a0b8d892a67c4ba670cedc9a569f8387b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Generic processor (PROC) module. </p>
@@ -174,7 +193,42 @@ Functions</h2></td></tr>
  Concurrency: The processor (PROC) module is thread-safe, thus run-time functions can be executed concurrently (at the exception of '<a class="el" href="proc_8h.html#a903e30d67b3e65f0711a87945be97cc4">proc_open()</a>' and '<a class="el" href="proc_8h.html#a3817e994b6b2153430cdde4eab23dcd2">proc_close()</a>' functions). </p>
 
 <p>Definition in file <a class="el" href="proc_8h_source.html">proc.h</a>.</p>
-</div><h2 class="groupheader">Typedef Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a123c203ae476d5abf664207895880d98"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CJSON_PRINT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">CJSON_PTR</td><td>)</td>
+          <td>&#160;&#160;&#160;cJSON_Print(CJSON_PTR)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>cJSON to character string conversion function definition. String can be formated or minimized (removing whitespace, carriage return, ...). </p>
+
+<p>Definition at line <a class="el" href="proc_8h_source.html#l00069">69</a> of file <a class="el" href="proc_8h_source.html">proc.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af53db00bc88282285037381807cc5c1d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IPUT_PTS_ARRAY_SIZE&#160;&#160;&#160;128</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Array registering the last input presentation time-stamps (PTS's). Each PTS is registered together with the system-time clock (STC) corresponding to the registration instant. </p>
+
+<p>Definition at line <a class="el" href="proc_8h_source.html#l00130">130</a> of file <a class="el" href="proc_8h_source.html">proc.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="ae264f89be30fc03f5053bc16d58cba05"></a>
 <div class="memitem">
 <div class="memproto">
@@ -199,7 +253,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>PROC interface structure prototype. Each PROC type will define a static and unambiguous interface of this type. </p>
 
-<p>Definition at line <a class="el" href="proc_8h_source.html#l00057">57</a> of file <a class="el" href="proc_8h_source.html">proc.h</a>.</p>
+<p>Definition at line <a class="el" href="proc_8h_source.html#l00058">58</a> of file <a class="el" href="proc_8h_source.html">proc.h</a>.</p>
 
 </div>
 </div>
@@ -215,7 +269,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Processor input-output type enumerator. </p>
 
-<p>Definition at line <a class="el" href="proc_8h_source.html#l00066">66</a> of file <a class="el" href="proc_8h_source.html">proc.h</a>.</p>
+<p>Definition at line <a class="el" href="proc_8h_source.html#l00075">75</a> of file <a class="el" href="proc_8h_source.html">proc.h</a>.</p>
 
 </div>
 </div>
@@ -240,7 +294,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00151">151</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00194">194</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -304,7 +358,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the generic processor context structure on success, NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00068">68</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00095">95</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -363,7 +417,8 @@ Functions</h2></td></tr>
  Additional variable arguments for function <a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a> are:<br />
  </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ref_str</td><td>Reference to the pointer to a character string returning the processor's representational state.</td></tr>
+    <tr><td class="paramname">rest_fmt</td><td>Indicates the format in which the response data is to be returned. Available formats are enumerated at 'proc_if_rest_fmt_t'. </td></tr>
+    <tr><td class="paramname">ref_reponse</td><td>Reference to the pointer to a data structure returning the processor's representational state. The returned data structure is formatted according to what is indicated in the parameter 'rest_fmt'.</td></tr>
   </table>
   </dd>
 </dl>
@@ -379,7 +434,7 @@ Functions</h2></td></tr>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00256">256</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00345">345</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -415,7 +470,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00223">223</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00279">279</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -451,7 +506,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00201">201</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00253">253</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -484,9 +539,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The function '<a class="el" href="proc_8h.html#a720ee51d86625b42b09f508a13977f37">proc_vopt()</a>' is the same as <a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a> except that it is called with a va_list instead of a variable number of arguments. This function does not call the va_end macro. Because they invoke the va_arg macro, the value of the argument pointer is undefined after the call. </p>
+<p>The function '<a class="el" href="proc_8h.html#a720ee51d86625b42b09f508a13977f37">proc_vopt()</a>' is the same as <a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a> except that it is called with a va_list instead of a variable number of arguments. This function does not call the va_end macro. Because it invoke the va_arg macro, the value of the argument pointer is undefined after the call. </p>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00270">270</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00359">359</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>

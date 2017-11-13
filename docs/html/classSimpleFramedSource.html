@@ -135,7 +135,7 @@ Protected Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>So-called "framed-source" class prototype. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00284">284</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00324">324</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="aeadfcbc8eeb78ada43c9c247e6a707af"></a>
 <div class="memitem">
@@ -152,7 +152,7 @@ Protected Member Functions</h2></td></tr>
 <p>This function is called when new frame data is available from the device.</p>
 <p>This function is called when new frame data is available from the device. We deliver this data by copying it to the 'downstream' object, using the following parameters (class members): **** 'in' parameters (these should <em>not</em> be modified by this function): ** fTo: The frame data is copied to this address. (Note that the variable "fTo" is <em>not</em> modified. Instead, the frame data is copied to the address pointed to by "fTo".) ** fMaxSize: This is the maximum number of bytes that can be copied (If the actual frame is larger than this, then it should be truncated, and "fNumTruncatedBytes" set accordingly.) ***** 'out' parameters (these are modified by this function): ** fFrameSize: Should be set to the delivered frame size (&lt;= fMaxSize). ** fNumTruncatedBytes: Should be set iff the delivered frame would have been bigger than "fMaxSize", in which case it's set to the number of bytes that have been omitted. ** fPresentationTime: Should be set to the frame's presentation time (seconds, microseconds). This time must be aligned with 'wall-clock time' -i.e., the time that you would get by calling "gettimeofday()". ** fDurationInMicroseconds: Should be set to the frame's duration, if known. If, however, the device is a 'live source' (e.g., encoded from a camera or microphone), then we probably don't need to set this variable, because -in this case- data will never arrive 'early'. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01710">1710</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01865">1865</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -168,7 +168,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Unambiguous frame consuming method event trigger identifier. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00301">301</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00341">341</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -183,7 +183,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Input frames FIFO buffer. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00297">297</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00337">337</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>

@@ -28,6 +28,8 @@ void \hyperlink{proc__if_8c_afad6906a6da22ba369b736863c1e204e}{proc\+\_\+frame\+
 \item 
 \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$ \hyperlink{proc__if_8c_a63c55c9b2cec24b252402b3a7f6e66b3}{proc\+\_\+if\+\_\+dup} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if\+\_\+arg)
 \item 
+int \hyperlink{proc__if_8c_a366394612f85367d742901ccaecc4921}{proc\+\_\+if\+\_\+cmp} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if1, const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if2)
+\item 
 void \hyperlink{proc__if_8c_a8ada48e5d6583a44f295821f2e5c5b05}{proc\+\_\+if\+\_\+release} (\hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+if)
 \end{DoxyCompactItemize}
 \subsection*{Variables}
@@ -56,7 +58,7 @@ Pointer to the newly allocated input/output processor frame structure; N\+U\+LL 
 \end{DoxyReturn}
 
 
-Definition at line 46 of file proc\+\_\+if.\+c.
+Definition at line 47 of file proc\+\_\+if.\+c.
 
 \index{proc\+\_\+if.\+c@{proc\+\_\+if.\+c}!proc\+\_\+frame\+\_\+ctx\+\_\+dup@{proc\+\_\+frame\+\_\+ctx\+\_\+dup}}
 \index{proc\+\_\+frame\+\_\+ctx\+\_\+dup@{proc\+\_\+frame\+\_\+ctx\+\_\+dup}!proc\+\_\+if.\+c@{proc\+\_\+if.\+c}}
@@ -75,7 +77,7 @@ Pointer to the new allocated replica of the given input structure; N\+U\+LL if f
 \end{DoxyReturn}
 
 
-Definition at line 51 of file proc\+\_\+if.\+c.
+Definition at line 52 of file proc\+\_\+if.\+c.
 
 \index{proc\+\_\+if.\+c@{proc\+\_\+if.\+c}!proc\+\_\+frame\+\_\+ctx\+\_\+release@{proc\+\_\+frame\+\_\+ctx\+\_\+release}}
 \index{proc\+\_\+frame\+\_\+ctx\+\_\+release@{proc\+\_\+frame\+\_\+ctx\+\_\+release}!proc\+\_\+if.\+c@{proc\+\_\+if.\+c}}
@@ -91,7 +93,7 @@ Release an input/output processor frame structure.
 \end{DoxyParams}
 
 
-Definition at line 123 of file proc\+\_\+if.\+c.
+Definition at line 125 of file proc\+\_\+if.\+c.
 
 \index{proc\+\_\+if.\+c@{proc\+\_\+if.\+c}!proc\+\_\+if\+\_\+allocate@{proc\+\_\+if\+\_\+allocate}}
 \index{proc\+\_\+if\+\_\+allocate@{proc\+\_\+if\+\_\+allocate}!proc\+\_\+if.\+c@{proc\+\_\+if.\+c}}
@@ -105,7 +107,29 @@ Pointer to the newly allocated processor interface context structure; N\+U\+LL i
 \end{DoxyReturn}
 
 
-Definition at line 142 of file proc\+\_\+if.\+c.
+Definition at line 144 of file proc\+\_\+if.\+c.
+
+\index{proc\+\_\+if.\+c@{proc\+\_\+if.\+c}!proc\+\_\+if\+\_\+cmp@{proc\+\_\+if\+\_\+cmp}}
+\index{proc\+\_\+if\+\_\+cmp@{proc\+\_\+if\+\_\+cmp}!proc\+\_\+if.\+c@{proc\+\_\+if.\+c}}
+\subsubsection[{\texorpdfstring{proc\+\_\+if\+\_\+cmp(const proc\+\_\+if\+\_\+t $\ast$proc\+\_\+if1, const proc\+\_\+if\+\_\+t $\ast$proc\+\_\+if2)}{proc_if_cmp(const proc_if_t *proc_if1, const proc_if_t *proc_if2)}}]{\setlength{\rightskip}{0pt plus 5cm}int proc\+\_\+if\+\_\+cmp (
+\begin{DoxyParamCaption}
+\item[{const {\bf proc\+\_\+if\+\_\+t} $\ast$}]{proc\+\_\+if1, }
+\item[{const {\bf proc\+\_\+if\+\_\+t} $\ast$}]{proc\+\_\+if2}
+\end{DoxyParamCaption}
+)}\hypertarget{proc__if_8c_a366394612f85367d742901ccaecc4921}{}\label{proc__if_8c_a366394612f85367d742901ccaecc4921}
+Compares if given processor interfaces are the equal. 
+\begin{DoxyParams}{Parameters}
+{\em proc\+\_\+if1} & Pointer to the first processor interface context structure to be compared. \\
+\hline
+{\em proc\+\_\+if2} & Pointer to the second processor interface context structure to be compared. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Value 0 if given contexts are equal, otherwise non-\/zero value is returned. 
+\end{DoxyReturn}
+
+
+Definition at line 189 of file proc\+\_\+if.\+c.
 
 \index{proc\+\_\+if.\+c@{proc\+\_\+if.\+c}!proc\+\_\+if\+\_\+dup@{proc\+\_\+if\+\_\+dup}}
 \index{proc\+\_\+if\+\_\+dup@{proc\+\_\+if\+\_\+dup}!proc\+\_\+if.\+c@{proc\+\_\+if.\+c}}
@@ -124,7 +148,7 @@ Pointer to a new allocated replica of the given input structure; N\+U\+LL if fai
 \end{DoxyReturn}
 
 
-Definition at line 147 of file proc\+\_\+if.\+c.
+Definition at line 149 of file proc\+\_\+if.\+c.
 
 \index{proc\+\_\+if.\+c@{proc\+\_\+if.\+c}!proc\+\_\+if\+\_\+release@{proc\+\_\+if\+\_\+release}}
 \index{proc\+\_\+if\+\_\+release@{proc\+\_\+if\+\_\+release}!proc\+\_\+if.\+c@{proc\+\_\+if.\+c}}
@@ -140,7 +164,7 @@ Release a processor interface context structure.
 \end{DoxyParams}
 
 
-Definition at line 178 of file proc\+\_\+if.\+c.
+Definition at line 234 of file proc\+\_\+if.\+c.
 
 
 
@@ -155,6 +179,7 @@ Definition at line 178 of file proc\+\_\+if.\+c.
     \{\hyperlink{proc__if_8h_ac4cd7cdccf4a238d4816b30a0c60c7d9a994f41f061f7c0e8fc91e0851a62f574}{PROC\_IF\_FMT\_UNDEF}, \textcolor{stringliteral}{"Undefined format"}\},
     \{\hyperlink{proc__if_8h_ac4cd7cdccf4a238d4816b30a0c60c7d9a777f2e9fab3b405cc9dd46062d3eab33}{PROC\_IF\_FMT\_YUV420P}, \textcolor{stringliteral}{"Planar YUV 4:2:0 with 12bpp"}\},
     
+    \{\hyperlink{proc__if_8h_ac4cd7cdccf4a238d4816b30a0c60c7d9a808f9357cebd8802ec48e80b5a2f28e8}{PROC\_IF\_FMT\_S16}, \textcolor{stringliteral}{"Interleaved signed 16 bits"}\},
     \{\hyperlink{proc__if_8h_ac4cd7cdccf4a238d4816b30a0c60c7d9ad70b5725d66f06b07ec6e9927c39eaa8}{PROC\_IF\_FMT\_S16P}, \textcolor{stringliteral}{"Planar signed 16 bits"}\}
 \}
 \end{DoxyCode}

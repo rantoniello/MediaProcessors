@@ -56,7 +56,7 @@ static int \hyperlink{ffmpeg__mp3_8c_aa7acad013192c12385170d968fc1d383}{ffmpeg\+
 \item 
 static int \hyperlink{ffmpeg__mp3_8c_a91464d10b66b4d462d114de1b161616f}{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
-static int \hyperlink{ffmpeg__mp3_8c_a9356a0312ab8d56a97a99594e4c96202}{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)
+static int \hyperlink{ffmpeg__mp3_8c_aa083b4a33e63834da56bc6795d3776b3}{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{proc__if_8h_a9bea3dae53a91f2a3e3a459d1d3e22b3}{proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t} rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)
 \item 
 static int \hyperlink{ffmpeg__mp3_8c_a412dc8f8e08ab44dd471c019aa00e090}{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{ffmpeg__mp3_8c_ad92d42e141f2b48061489f64e20482c1}{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
@@ -70,7 +70,7 @@ static int \hyperlink{ffmpeg__mp3_8c_abbd7f0e6b07579f8a0270f732a4b4914}{ffmpeg\+
 \item 
 static int \hyperlink{ffmpeg__mp3_8c_a8e14a2ea8afec78386690451991b073a}{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
-static int \hyperlink{ffmpeg__mp3_8c_ac0c6b3bd9e394adde6e63f440ba09d91}{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)
+static int \hyperlink{ffmpeg__mp3_8c_a9d97ca83f8f5eaa0579de244fc963a93}{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{proc__if_8h_a9bea3dae53a91f2a3e3a459d1d3e22b3}{proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t} rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)
 \item 
 static int \hyperlink{ffmpeg__mp3_8c_a7294177fc0b707da14fc98dfda6df5ce}{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{ffmpeg__mp3_8c_ab1404684894961c95bce4b2c7d9a3de1}{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
@@ -116,7 +116,7 @@ F\+Fmpeg\textquotesingle{}s M\+P3 audio encoder settings context structure.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_ac2da6bc2c7c7ba87a4d63053df3cebe0}{}\label{ffmpeg__mp3_8c_ac2da6bc2c7c7ba87a4d63053df3cebe0}
 Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 553 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 573 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+dec\+\_\+open@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+open}}
 \index{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+open@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+open}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -130,7 +130,7 @@ Definition at line 553 of file ffmpeg\+\_\+mp3.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_a51410148edf2d39f42b15f3163886758}{}\label{ffmpeg__mp3_8c_a51410148edf2d39f42b15f3163886758}
 Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 494 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 514 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+dec\+\_\+process\+\_\+frame@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+process\+\_\+frame}}
 \index{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+process\+\_\+frame@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+process\+\_\+frame}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -143,19 +143,20 @@ Definition at line 494 of file ffmpeg\+\_\+mp3.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_abbd7f0e6b07579f8a0270f732a4b4914}{}\label{ffmpeg__mp3_8c_abbd7f0e6b07579f8a0270f732a4b4914}
 Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 584 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 604 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get}}
 \index{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
-\subsubsection[{\texorpdfstring{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)}{ffmpeg_mp3_dec_rest_get(proc_ctx_t *proc_ctx, char **rest_str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get (
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)}{ffmpeg_mp3_dec_rest_get(proc_ctx_t *proc_ctx, const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+get (
 \begin{DoxyParamCaption}
 \item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
-\item[{char $\ast$$\ast$}]{rest\+\_\+str}
+\item[{const {\bf proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t}}]{rest\+\_\+fmt, }
+\item[{void $\ast$$\ast$}]{ref\+\_\+reponse}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_ac0c6b3bd9e394adde6e63f440ba09d91}{}\label{ffmpeg__mp3_8c_ac0c6b3bd9e394adde6e63f440ba09d91}
-Implements the \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_a9d97ca83f8f5eaa0579de244fc963a93}{}\label{ffmpeg__mp3_8c_a9d97ca83f8f5eaa0579de244fc963a93}
+Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 672 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 692 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+put@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+put}}
 \index{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+put@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+rest\+\_\+put}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -167,7 +168,7 @@ Definition at line 672 of file ffmpeg\+\_\+mp3.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_a8e14a2ea8afec78386690451991b073a}{}\label{ffmpeg__mp3_8c_a8e14a2ea8afec78386690451991b073a}
 Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 630 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 650 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit}}
 \index{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -186,7 +187,7 @@ Release specific M\+P3 decoder settings (allocated in heap memory).
 \end{DoxyParams}
 
 
-Definition at line 788 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 822 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init}}
 \index{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+mp3\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -208,7 +209,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 758 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 792 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+enc\+\_\+close@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+close}}
 \index{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+close@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+close}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -219,7 +220,7 @@ Definition at line 758 of file ffmpeg\+\_\+mp3.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_a273c46fc24b6e7879ea1d80f52289660}{}\label{ffmpeg__mp3_8c_a273c46fc24b6e7879ea1d80f52289660}
 Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 234 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 240 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+enc\+\_\+open@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+open}}
 \index{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+open@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+open}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -233,7 +234,7 @@ Definition at line 234 of file ffmpeg\+\_\+mp3.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_a247b1f3ac3f11df65bc3d38d3003f170}{}\label{ffmpeg__mp3_8c_a247b1f3ac3f11df65bc3d38d3003f170}
 Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 175 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 181 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+enc\+\_\+process\+\_\+frame@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+process\+\_\+frame}}
 \index{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+process\+\_\+frame@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+process\+\_\+frame}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -246,19 +247,20 @@ Definition at line 175 of file ffmpeg\+\_\+mp3.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_aa7acad013192c12385170d968fc1d383}{}\label{ffmpeg__mp3_8c_aa7acad013192c12385170d968fc1d383}
 Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 266 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 272 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get}}
 \index{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
-\subsubsection[{\texorpdfstring{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)}{ffmpeg_mp3_enc_rest_get(proc_ctx_t *proc_ctx, char **rest_str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get (
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)}{ffmpeg_mp3_enc_rest_get(proc_ctx_t *proc_ctx, const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+get (
 \begin{DoxyParamCaption}
 \item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
-\item[{char $\ast$$\ast$}]{rest\+\_\+str}
+\item[{const {\bf proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t}}]{rest\+\_\+fmt, }
+\item[{void $\ast$$\ast$}]{ref\+\_\+reponse}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_a9356a0312ab8d56a97a99594e4c96202}{}\label{ffmpeg__mp3_8c_a9356a0312ab8d56a97a99594e4c96202}
-Implements the \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_aa083b4a33e63834da56bc6795d3776b3}{}\label{ffmpeg__mp3_8c_aa083b4a33e63834da56bc6795d3776b3}
+Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 354 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 360 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+put@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+put}}
 \index{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+put@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+rest\+\_\+put}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -270,7 +272,7 @@ Definition at line 354 of file ffmpeg\+\_\+mp3.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__mp3_8c_a91464d10b66b4d462d114de1b161616f}{}\label{ffmpeg__mp3_8c_a91464d10b66b4d462d114de1b161616f}
 Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 312 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 318 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit}}
 \index{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -289,7 +291,7 @@ Release specific M\+P3 audio encoder settings (allocated in heap memory).
 \end{DoxyParams}
 
 
-Definition at line 470 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 490 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init}}
 \index{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+mp3\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -311,7 +313,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 440 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 460 of file ffmpeg\+\_\+mp3.\+c.
 
 
 
@@ -323,11 +325,13 @@ Definition at line 440 of file ffmpeg\+\_\+mp3.\+c.
 \begin{DoxyCode}
 =
 \{
-    \textcolor{stringliteral}{"ffmpeg\_mp3\_dec"},
+    \textcolor{stringliteral}{"ffmpeg\_mp3\_dec"}, \textcolor{stringliteral}{"decoder"}, \textcolor{stringliteral}{"audio/MPA"},
+    (uint64\_t)(PROC\_FEATURE\_RD|PROC\_FEATURE\_WR|PROC\_FEATURE\_IOSTATS|
+            PROC\_FEATURE\_IPUT\_PTS|PROC\_FEATURE\_LATSTATS),
     \hyperlink{ffmpeg__mp3_8c_a51410148edf2d39f42b15f3163886758}{ffmpeg\_mp3\_dec\_open},
     \hyperlink{ffmpeg__mp3_8c_ac2da6bc2c7c7ba87a4d63053df3cebe0}{ffmpeg\_mp3\_dec\_close},
     \hyperlink{ffmpeg__mp3_8c_a8e14a2ea8afec78386690451991b073a}{ffmpeg\_mp3\_dec\_rest\_put},
-    \hyperlink{ffmpeg__mp3_8c_ac0c6b3bd9e394adde6e63f440ba09d91}{ffmpeg\_mp3\_dec\_rest\_get},
+    \hyperlink{ffmpeg__mp3_8c_a9d97ca83f8f5eaa0579de244fc963a93}{ffmpeg\_mp3\_dec\_rest\_get},
     \hyperlink{ffmpeg__mp3_8c_abbd7f0e6b07579f8a0270f732a4b4914}{ffmpeg\_mp3\_dec\_process\_frame},
     NULL, 
     \hyperlink{proc__frame__2__ffmpeg_8c_acb3d4d9ac806277ea13a3defb9b713e6}{proc\_frame\_ctx\_2\_avpacket},
@@ -337,7 +341,7 @@ Definition at line 440 of file ffmpeg\+\_\+mp3.\+c.
 \end{DoxyCode}
 Processor interface implementing the F\+Fmpeg wrapper of the M\+P3 decoder. 
 
-Definition at line 157 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 161 of file ffmpeg\+\_\+mp3.\+c.
 
 \index{ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}!proc\+\_\+if\+\_\+ffmpeg\+\_\+mp3\+\_\+enc@{proc\+\_\+if\+\_\+ffmpeg\+\_\+mp3\+\_\+enc}}
 \index{proc\+\_\+if\+\_\+ffmpeg\+\_\+mp3\+\_\+enc@{proc\+\_\+if\+\_\+ffmpeg\+\_\+mp3\+\_\+enc}!ffmpeg\+\_\+mp3.\+c@{ffmpeg\+\_\+mp3.\+c}}
@@ -346,11 +350,13 @@ Definition at line 157 of file ffmpeg\+\_\+mp3.\+c.
 \begin{DoxyCode}
 =
 \{
-    \textcolor{stringliteral}{"ffmpeg\_mp3\_enc"},
+    \textcolor{stringliteral}{"ffmpeg\_mp3\_enc"}, \textcolor{stringliteral}{"encoder"}, \textcolor{stringliteral}{"audio/MPA"},
+    (uint64\_t)(PROC\_FEATURE\_RD|PROC\_FEATURE\_WR|PROC\_FEATURE\_IOSTATS|
+            PROC\_FEATURE\_IPUT\_PTS|PROC\_FEATURE\_LATSTATS),
     \hyperlink{ffmpeg__mp3_8c_a247b1f3ac3f11df65bc3d38d3003f170}{ffmpeg\_mp3\_enc\_open},
     \hyperlink{ffmpeg__mp3_8c_a273c46fc24b6e7879ea1d80f52289660}{ffmpeg\_mp3\_enc\_close},
     \hyperlink{ffmpeg__mp3_8c_a91464d10b66b4d462d114de1b161616f}{ffmpeg\_mp3\_enc\_rest\_put},
-    \hyperlink{ffmpeg__mp3_8c_a9356a0312ab8d56a97a99594e4c96202}{ffmpeg\_mp3\_enc\_rest\_get},
+    \hyperlink{ffmpeg__mp3_8c_aa083b4a33e63834da56bc6795d3776b3}{ffmpeg\_mp3\_enc\_rest\_get},
     \hyperlink{ffmpeg__mp3_8c_aa7acad013192c12385170d968fc1d383}{ffmpeg\_mp3\_enc\_process\_frame},
     NULL, 
     \hyperlink{proc__frame__2__ffmpeg_8c_a74d29920bec0c25b8de6cb1cf45394a1}{proc\_frame\_ctx\_2\_avframe},
@@ -360,5 +366,5 @@ Definition at line 157 of file ffmpeg\+\_\+mp3.\+c.
 \end{DoxyCode}
 Processor interface implementing the F\+Fmpeg wrapper of the M\+P3 encoder. 
 
-Definition at line 143 of file ffmpeg\+\_\+mp3.\+c.
+Definition at line 145 of file ffmpeg\+\_\+mp3.\+c.
 

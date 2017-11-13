@@ -86,7 +86,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">proc.c File Reference</div>  </div>
@@ -97,25 +99,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;unistd.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;pthread.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;errno.h&gt;</code><br />
+<code>#include &lt;libcjson/cJSON.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/log.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/stat_codes.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/check_utils.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/schedule.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/fifo.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/fair_lock.h&gt;</code><br />
+<code>#include &lt;libmediaprocsutils/interr_usleep.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="proc__if_8h_source.html">proc_if.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for proc.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="proc_8c__incl.png" border="0" usemap="#proc_8c" alt=""/></div>
 <map name="proc_8c" id="proc_8c">
-<area shape="rect" id="node2" href="proc_8h.html" title="Generic processor (PROC) module. " alt="" coords="39,87,98,114"/>
-<area shape="rect" id="node15" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. " alt="" coords="1397,87,1469,114"/>
+<area shape="rect" id="node2" href="proc_8h.html" title="Generic processor (PROC) module. " alt="" coords="81,87,139,114"/>
+<area shape="rect" id="node19" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. " alt="" coords="1807,87,1879,114"/>
 </map>
 </div>
 </div>
 <p><a href="proc_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__stats__thr__arg__s.html">proc_stats_thr_arg_s</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a78f3ba7226e65b5f2d9efd92036d689e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78f3ba7226e65b5f2d9efd92036d689e"></a>
@@ -128,12 +139,29 @@ Macros</h2></td></tr>
 <tr class="separator:a8995a191e541088a47aec1798a8cec4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a914faae84f39085695352bd45c0fca62"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8c.html#a914faae84f39085695352bd45c0fca62">TAG_IS</a>(TAG)&#160;&#160;&#160;(strncmp(tag, TAG, strlen(TAG))== 0)</td></tr>
 <tr class="separator:a914faae84f39085695352bd45c0fca62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae748d1145794ec3eee8d693b690021d2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8c.html#ae748d1145794ec3eee8d693b690021d2">PROC_STATS_THR_MEASURE_PERIOD_USECS</a>&#160;&#160;&#160;(1000000)</td></tr>
+<tr class="separator:ae748d1145794ec3eee8d693b690021d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a41124cec72c232a7271177ddb72a8726"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structproc__stats__thr__arg__s.html">proc_stats_thr_arg_s</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8c.html#a41124cec72c232a7271177ddb72a8726">proc_stats_thr_arg_t</a></td></tr>
+<tr class="separator:a41124cec72c232a7271177ddb72a8726"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a58d3290619c003f2fc28545975ba2d8f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58d3290619c003f2fc28545975ba2d8f"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>procs_id_get</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx, <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a> rest_fmt, void **ref_reponse)</td></tr>
+<tr class="separator:a58d3290619c003f2fc28545975ba2d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acec99e6b86fa60e18aed876636794619"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acec99e6b86fa60e18aed876636794619"></a>
+static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_stats_thr</b> (void *t)</td></tr>
+<tr class="separator:acec99e6b86fa60e18aed876636794619"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a3220a6637bf2eac3bc01c7c2a6e778"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a3220a6637bf2eac3bc01c7c2a6e778"></a>
 static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b> (void *t)</td></tr>
 <tr class="separator:a6a3220a6637bf2eac3bc01c7c2a6e778"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72d4a3ad103f601e7481fbdc5ce2c860"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8c.html#a72d4a3ad103f601e7481fbdc5ce2c860">proc_send_frame_stats_iput_pts</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const <a class="el" href="structproc__frame__ctx__s.html">proc_frame_ctx_t</a> *proc_frame_ctx)</td></tr>
+<tr class="separator:a72d4a3ad103f601e7481fbdc5ce2c860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8bc9232d072fffff067c17cf4c2cf81"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8c.html#ae8bc9232d072fffff067c17cf4c2cf81">proc_send_frame_stats_io</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const <a class="el" href="structproc__frame__ctx__s.html">proc_frame_ctx_t</a> *proc_frame_ctx)</td></tr>
+<tr class="separator:ae8bc9232d072fffff067c17cf4c2cf81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a903e30d67b3e65f0711a87945be97cc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8c.html#a903e30d67b3e65f0711a87945be97cc4">proc_open</a> (const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if, const char *settings_str, int proc_instance_index, uint32_t fifo_ctx_maxsize[PROC_IO_NUM], <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx, va_list arg)</td></tr>
 <tr class="separator:a903e30d67b3e65f0711a87945be97cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3817e994b6b2153430cdde4eab23dcd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8c.html#a3817e994b6b2153430cdde4eab23dcd2">proc_close</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> **ref_proc_ctx)</td></tr>
@@ -146,12 +174,30 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
 <tr class="separator:a0367a65712bcd2e762ec1e9e3035cb3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a720ee51d86625b42b09f508a13977f37"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8c.html#a720ee51d86625b42b09f508a13977f37">proc_vopt</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const char *tag, va_list arg)</td></tr>
 <tr class="separator:a720ee51d86625b42b09f508a13977f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b8d892a67c4ba670cedc9a569f8387b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b8d892a67c4ba670cedc9a569f8387b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>proc_acc_latency_measure</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const int64_t oput_frame_pts)</td></tr>
+<tr class="separator:a0b8d892a67c4ba670cedc9a569f8387b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Rafael Antoniello </dd></dl>
 
 <p>Definition in file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="ae748d1145794ec3eee8d693b690021d2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PROC_STATS_THR_MEASURE_PERIOD_USECS&#160;&#160;&#160;(1000000)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Processor's statistic thread period (1 second). </p>
+
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00070">70</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a8995a191e541088a47aec1798a8cec4b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -167,7 +213,7 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
 </div><div class="memdoc">
 <p>Returns non-zero if given 'tag' string contains 'needle' sub-string. </p>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00055">55</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00060">60</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -186,7 +232,21 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
 </div><div class="memdoc">
 <p>Returns non-zero if 'tag' string is equal to given TAG string. </p>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00060">60</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00065">65</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="a41124cec72c232a7271177ddb72a8726"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structproc__stats__thr__arg__s.html">proc_stats_thr_arg_s</a>  <a class="el" href="proc_8c.html#a41124cec72c232a7271177ddb72a8726">proc_stats_thr_arg_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Processor's statistic thread argument. </p>
 
 </div>
 </div>
@@ -211,7 +271,7 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00151">151</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00194">194</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -275,7 +335,7 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the generic processor context structure on success, NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00068">68</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00095">95</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -334,7 +394,8 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
  Additional variable arguments for function <a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a> are:<br />
  </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ref_str</td><td>Reference to the pointer to a character string returning the processor's representational state.</td></tr>
+    <tr><td class="paramname">rest_fmt</td><td>Indicates the format in which the response data is to be returned. Available formats are enumerated at 'proc_if_rest_fmt_t'. </td></tr>
+    <tr><td class="paramname">ref_reponse</td><td>Reference to the pointer to a data structure returning the processor's representational state. The returned data structure is formatted according to what is indicated in the parameter 'rest_fmt'.</td></tr>
   </table>
   </dd>
 </dl>
@@ -350,7 +411,7 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00256">256</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00345">345</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -386,7 +447,7 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00223">223</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00279">279</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -422,7 +483,83 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00201">201</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00253">253</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae8bc9232d072fffff067c17cf4c2cf81"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void proc_send_frame_stats_io </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *&#160;</td>
+          <td class="paramname"><em>proc_ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structproc__frame__ctx__s.html">proc_frame_ctx_t</a> *&#160;</td>
+          <td class="paramname"><em>proc_frame_ctx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Generic input statistics treatment performed at function '<a class="el" href="proc_8c.html#a4aa53aea57e2193cedf38b7e2003fac1">proc_send_frame()</a>'. Statistics include:</p><ul>
+<li>input bitrate measurement; </li>
+</ul>
+
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00759">759</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a72d4a3ad103f601e7481fbdc5ce2c860"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void proc_send_frame_stats_iput_pts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *&#160;</td>
+          <td class="paramname"><em>proc_ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structproc__frame__ctx__s.html">proc_frame_ctx_t</a> *&#160;</td>
+          <td class="paramname"><em>proc_frame_ctx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Input presentation time stamps (PTS's) statistics treatment performed at function '<a class="el" href="proc_8c.html#a4aa53aea57e2193cedf38b7e2003fac1">proc_send_frame()</a>'. </p>
+
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00710">710</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -455,9 +592,9 @@ static void *&#160;</td><td class="memItemRight" valign="bottom"><b>proc_thr</b>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The function '<a class="el" href="proc_8h.html#a720ee51d86625b42b09f508a13977f37">proc_vopt()</a>' is the same as <a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a> except that it is called with a va_list instead of a variable number of arguments. This function does not call the va_end macro. Because they invoke the va_arg macro, the value of the argument pointer is undefined after the call. </p>
+<p>The function '<a class="el" href="proc_8h.html#a720ee51d86625b42b09f508a13977f37">proc_vopt()</a>' is the same as <a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a> except that it is called with a va_list instead of a variable number of arguments. This function does not call the va_end macro. Because it invoke the va_arg macro, the value of the argument pointer is undefined after the call. </p>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00270">270</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00359">359</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>

@@ -1,0 +1,152 @@
+\hypertarget{interr__usleep_8c}{}\section{interr\+\_\+usleep.\+c File Reference}
+\label{interr__usleep_8c}\index{interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}}
+{\ttfamily \#include \char`\"{}interr\+\_\+usleep.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}log.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}stat\+\_\+codes.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}check\+\_\+utils.\+h\char`\"{}}\\*
+Include dependency graph for interr\+\_\+usleep.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{interr__usleep_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structinterr__usleep__ctx__s}{interr\+\_\+usleep\+\_\+ctx\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{interr__usleep_8c_a19b1665d85404627bdc076a60e21d926}{U\+N\+L\+O\+CK}()
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structinterr__usleep__ctx__s}{interr\+\_\+usleep\+\_\+ctx\+\_\+s} \hyperlink{interr__usleep_8c_a952a138df6a0c053aa91d931c6c7de57}{interr\+\_\+usleep\+\_\+ctx\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{interr__usleep_8c_a952a138df6a0c053aa91d931c6c7de57}{interr\+\_\+usleep\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{interr__usleep_8c_a00d69cc5585ae853d435bd85aa8e0e8d}{interr\+\_\+usleep\+\_\+open} ()
+\item 
+void \hyperlink{interr__usleep_8c_a939d9b2dff6009bca1eb000f6680c144}{interr\+\_\+usleep\+\_\+close} (\hyperlink{interr__usleep_8c_a952a138df6a0c053aa91d931c6c7de57}{interr\+\_\+usleep\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+interr\+\_\+usleep\+\_\+ctx)
+\item 
+void \hyperlink{interr__usleep_8c_a62706fc3062c3dcff67455da059f342f}{interr\+\_\+usleep\+\_\+unblock} (\hyperlink{interr__usleep_8c_a952a138df6a0c053aa91d931c6c7de57}{interr\+\_\+usleep\+\_\+ctx\+\_\+t} $\ast$interr\+\_\+usleep\+\_\+ctx)
+\item 
+int \hyperlink{interr__usleep_8c_a5a4691f946f5b933a6086a66d831483b}{interr\+\_\+usleep} (\hyperlink{interr__usleep_8c_a952a138df6a0c053aa91d931c6c7de57}{interr\+\_\+usleep\+\_\+ctx\+\_\+t} $\ast$interr\+\_\+usleep\+\_\+ctx, uint32\+\_\+t usec)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}!U\+N\+L\+O\+CK@{U\+N\+L\+O\+CK}}
+\index{U\+N\+L\+O\+CK@{U\+N\+L\+O\+CK}!interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}}
+\subsubsection[{\texorpdfstring{U\+N\+L\+O\+CK}{UNLOCK}}]{\setlength{\rightskip}{0pt plus 5cm}\#define U\+N\+L\+O\+CK(
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{interr__usleep_8c_a19b1665d85404627bdc076a60e21d926}{}\label{interr__usleep_8c_a19b1665d85404627bdc076a60e21d926}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+interr\_usleep\_ctx->flag\_exit= 1; \(\backslash\)
+    pthread\_mutex\_lock(&interr\_usleep\_ctx->interr\_mutex); \(\backslash\)
+    pthread\_cond\_broadcast(&interr\_usleep\_ctx->interr\_signal); \(\backslash\)
+    pthread\_mutex\_unlock(&interr\_usleep\_ctx->interr\_mutex);
+\end{DoxyCode}
+M\+A\+C\+RO used to unlock internal M\+U\+T\+EX\+: sets exit flag and send signal to eventually unlock M\+U\+T\+EX 
+
+Definition at line 60 of file interr\+\_\+usleep.\+c.
+
+
+
+\subsection{Typedef Documentation}
+\index{interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}!interr\+\_\+usleep\+\_\+ctx\+\_\+t@{interr\+\_\+usleep\+\_\+ctx\+\_\+t}}
+\index{interr\+\_\+usleep\+\_\+ctx\+\_\+t@{interr\+\_\+usleep\+\_\+ctx\+\_\+t}!interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}}
+\subsubsection[{\texorpdfstring{interr\+\_\+usleep\+\_\+ctx\+\_\+t}{interr_usleep_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf interr\+\_\+usleep\+\_\+ctx\+\_\+s}  {\bf interr\+\_\+usleep\+\_\+ctx\+\_\+t}}\hypertarget{interr__usleep_8c_a952a138df6a0c053aa91d931c6c7de57}{}\label{interr__usleep_8c_a952a138df6a0c053aa91d931c6c7de57}
+Interruptible usleep context structure. 
+
+\subsection{Function Documentation}
+\index{interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}!interr\+\_\+usleep@{interr\+\_\+usleep}}
+\index{interr\+\_\+usleep@{interr\+\_\+usleep}!interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}}
+\subsubsection[{\texorpdfstring{interr\+\_\+usleep(interr\+\_\+usleep\+\_\+ctx\+\_\+t $\ast$interr\+\_\+usleep\+\_\+ctx, uint32\+\_\+t usec)}{interr_usleep(interr_usleep_ctx_t *interr_usleep_ctx, uint32_t usec)}}]{\setlength{\rightskip}{0pt plus 5cm}int interr\+\_\+usleep (
+\begin{DoxyParamCaption}
+\item[{{\bf interr\+\_\+usleep\+\_\+ctx\+\_\+t} $\ast$}]{interr\+\_\+usleep\+\_\+ctx, }
+\item[{uint32\+\_\+t}]{usec}
+\end{DoxyParamCaption}
+)}\hypertarget{interr__usleep_8c_a5a4691f946f5b933a6086a66d831483b}{}\label{interr__usleep_8c_a5a4691f946f5b933a6086a66d831483b}
+Perform the interruptible \textquotesingle{}usleep\textquotesingle{} operation; that is\+: suspends execution of the calling thread for (at least) usec microseconds. The sleep may be lengthened slightly by any system activity or by the time spent processing the call or by the granularity of system timers. 
+\begin{DoxyParams}{Parameters}
+{\em Pointer} & to the interruptible module instance context structure, that was obtained in a previous call to the \textquotesingle{}\hyperlink{interr__usleep_8h_a00d69cc5585ae853d435bd85aa8e0e8d}{interr\+\_\+usleep\+\_\+open()}\textquotesingle{} function. \\
+\hline
+{\em usec} & Unsigned 32-\/bit integer specifying the amount of microseconds to sleep. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code\+: ~\newline
+
+\begin{DoxyItemize}
+\item S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success;
+\item S\+T\+A\+T\+\_\+\+E\+I\+N\+TR in the case of interruption caused by a parallel call to \textquotesingle{}\hyperlink{interr__usleep_8h_a62706fc3062c3dcff67455da059f342f}{interr\+\_\+usleep\+\_\+unblock()}\textquotesingle{} function;
+\item S\+T\+A\+T\+\_\+\+E\+R\+R\+OR or other status code in the case of an internal error (refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyItemize}
+\end{DoxyReturn}
+
+
+Definition at line 133 of file interr\+\_\+usleep.\+c.
+
+\index{interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}!interr\+\_\+usleep\+\_\+close@{interr\+\_\+usleep\+\_\+close}}
+\index{interr\+\_\+usleep\+\_\+close@{interr\+\_\+usleep\+\_\+close}!interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}}
+\subsubsection[{\texorpdfstring{interr\+\_\+usleep\+\_\+close(interr\+\_\+usleep\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+interr\+\_\+usleep\+\_\+ctx)}{interr_usleep_close(interr_usleep_ctx_t **ref_interr_usleep_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void interr\+\_\+usleep\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf interr\+\_\+usleep\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+interr\+\_\+usleep\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{interr__usleep_8c_a939d9b2dff6009bca1eb000f6680c144}{}\label{interr__usleep_8c_a939d9b2dff6009bca1eb000f6680c144}
+Unlock \textquotesingle{}usleep\textquotesingle{} operation -\/if applicable-\/ and release interruptible module instance context structure. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+interr\+\_\+usleep\+\_\+ctx} & Reference to the pointer to the interruptible module instance context structure to be release, that was obtained in a previous call to the \textquotesingle{}\hyperlink{interr__usleep_8h_a00d69cc5585ae853d435bd85aa8e0e8d}{interr\+\_\+usleep\+\_\+open()}\textquotesingle{} function. Pointer is set to N\+U\+LL on return. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 102 of file interr\+\_\+usleep.\+c.
+
+\index{interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}!interr\+\_\+usleep\+\_\+open@{interr\+\_\+usleep\+\_\+open}}
+\index{interr\+\_\+usleep\+\_\+open@{interr\+\_\+usleep\+\_\+open}!interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}}
+\subsubsection[{\texorpdfstring{interr\+\_\+usleep\+\_\+open()}{interr_usleep_open()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf interr\+\_\+usleep\+\_\+ctx\+\_\+t}$\ast$ interr\+\_\+usleep\+\_\+open (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{interr__usleep_8c_a00d69cc5585ae853d435bd85aa8e0e8d}{}\label{interr__usleep_8c_a00d69cc5585ae853d435bd85aa8e0e8d}
+Initializes (open) interruptible module instance. \begin{DoxyReturn}{Returns}
+Pointer to the interruptible module instance context structure (\char`\"{}handler\char`\"{}) on success, N\+U\+LL if fails. 
+\end{DoxyReturn}
+
+
+Definition at line 70 of file interr\+\_\+usleep.\+c.
+
+\index{interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}!interr\+\_\+usleep\+\_\+unblock@{interr\+\_\+usleep\+\_\+unblock}}
+\index{interr\+\_\+usleep\+\_\+unblock@{interr\+\_\+usleep\+\_\+unblock}!interr\+\_\+usleep.\+c@{interr\+\_\+usleep.\+c}}
+\subsubsection[{\texorpdfstring{interr\+\_\+usleep\+\_\+unblock(interr\+\_\+usleep\+\_\+ctx\+\_\+t $\ast$interr\+\_\+usleep\+\_\+ctx)}{interr_usleep_unblock(interr_usleep_ctx_t *interr_usleep_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void interr\+\_\+usleep\+\_\+unblock (
+\begin{DoxyParamCaption}
+\item[{{\bf interr\+\_\+usleep\+\_\+ctx\+\_\+t} $\ast$}]{interr\+\_\+usleep\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{interr__usleep_8c_a62706fc3062c3dcff67455da059f342f}{}\label{interr__usleep_8c_a62706fc3062c3dcff67455da059f342f}
+Unlock \textquotesingle{}usleep\textquotesingle{} operation. 
+\begin{DoxyParams}{Parameters}
+{\em Pointer} & to the interruptible module instance context structure, that was obtained in a previous call to the \textquotesingle{}\hyperlink{interr__usleep_8h_a00d69cc5585ae853d435bd85aa8e0e8d}{interr\+\_\+usleep\+\_\+open()}\textquotesingle{} function. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 122 of file interr\+\_\+usleep.\+c.
+

@@ -105,6 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;sys/stat.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;libcjson/cJSON.h&gt;</code><br />
+<code>#include &lt;libmediaprocsutils/uri_parser.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/log.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/check_utils.h&gt;</code><br />
 <code>#include &lt;libmediaprocsutils/stat_codes.h&gt;</code><br />
@@ -142,15 +143,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a17be20cb4e8a2fa02144b8f742aca981"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17be20cb4e8a2fa02144b8f742aca981"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>bypass_proc_close</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> **ref_proc_ctx)</td></tr>
 <tr class="separator:a17be20cb4e8a2fa02144b8f742aca981"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a406f2d8924de1249959e928e24f80598"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a406f2d8924de1249959e928e24f80598"></a>
-static <a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>bypass_proc_open</b> (const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if, const char *settings_str, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx, va_list arg)</td></tr>
-<tr class="separator:a406f2d8924de1249959e928e24f80598"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f31d662a9148baeaa27cc8805d5b8b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f31d662a9148baeaa27cc8805d5b8b8"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>bypass_proc_rest_put</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const char *str)</td></tr>
 <tr class="separator:a1f31d662a9148baeaa27cc8805d5b8b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1750ae1df8ad86e2ad3c01a02c19da07"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1750ae1df8ad86e2ad3c01a02c19da07"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>bypass_proc_rest_get</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, char **rest_str)</td></tr>
-<tr class="separator:a1750ae1df8ad86e2ad3c01a02c19da07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a406f2d8924de1249959e928e24f80598"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a406f2d8924de1249959e928e24f80598"></a>
+static <a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>bypass_proc_open</b> (const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if, const char *settings_str, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx, va_list arg)</td></tr>
+<tr class="separator:a406f2d8924de1249959e928e24f80598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fa6a10d71a1c042f30bc0e2e8e652f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7fa6a10d71a1c042f30bc0e2e8e652f2"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>bypass_proc_rest_get</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a> rest_fmt, void **ref_reponse)</td></tr>
+<tr class="separator:a7fa6a10d71a1c042f30bc0e2e8e652f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1246833956ca6b60121bba4e9476757"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1246833956ca6b60121bba4e9476757"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>bypass_proc_process_frame</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, <a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx_iput, <a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx_oput)</td></tr>
 <tr class="separator:af1246833956ca6b60121bba4e9476757"><td class="memSeparator" colspan="2">&#160;</td></tr>

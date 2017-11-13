@@ -138,6 +138,21 @@ Macros</h2></td></tr>
 <tr class="memitem:a4c63c7b6107f1568e9fbbddfd79db229"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c63c7b6107f1568e9fbbddfd79db229"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PROC_FRAME_NUM_DATA_POINTERS</b>&#160;&#160;&#160;8</td></tr>
 <tr class="separator:a4c63c7b6107f1568e9fbbddfd79db229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6730c7b1e614accf193065dd932f99b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6730c7b1e614accf193065dd932f99b7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PROC_FEATURE_RD</b>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a6730c7b1e614accf193065dd932f99b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a706d901f6f6ce258f57c52a3e6eb39c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a706d901f6f6ce258f57c52a3e6eb39c9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PROC_FEATURE_WR</b>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:a706d901f6f6ce258f57c52a3e6eb39c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73d3ecacb06b3b614b2ff58059b9fa99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73d3ecacb06b3b614b2ff58059b9fa99"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PROC_FEATURE_IOSTATS</b>&#160;&#160;&#160;4</td></tr>
+<tr class="separator:a73d3ecacb06b3b614b2ff58059b9fa99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cc27ef72f36e04adbd61ac041951699"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2cc27ef72f36e04adbd61ac041951699"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PROC_FEATURE_IPUT_PTS</b>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:a2cc27ef72f36e04adbd61ac041951699"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33f9baf3ca25b198ae62fcc662c9d94c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33f9baf3ca25b198ae62fcc662c9d94c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PROC_FEATURE_LATSTATS</b>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:a33f9baf3ca25b198ae62fcc662c9d94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -158,14 +173,22 @@ typedef struct <a class="el" href="structfifo__ctx__s.html">fifo_ctx_s</a>&#160;
 <tr class="separator:aff5a8e827326b4f7f3c0e5820dc85a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cd412b47ab54436d20eb3699fa40bda"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structproc__frame__ctx__s.html">proc_frame_ctx_s</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8h.html#a7cd412b47ab54436d20eb3699fa40bda">proc_frame_ctx_t</a></td></tr>
 <tr class="separator:a7cd412b47ab54436d20eb3699fa40bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bea3dae53a91f2a3e3a459d1d3e22b3"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="proc__if_8h.html#a465f5c8fc7f5a406367f3d00be33bda1">proc_if_rest_fmt_enum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a></td></tr>
+<tr class="separator:a9bea3dae53a91f2a3e3a459d1d3e22b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:ac4cd7cdccf4a238d4816b30a0c60c7d9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9">proc_sample_fmt_enum</a> { <a class="el" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a994f41f061f7c0e8fc91e0851a62f574">PROC_IF_FMT_UNDEF</a> = 0, 
 <a class="el" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a777f2e9fab3b405cc9dd46062d3eab33">PROC_IF_FMT_YUV420P</a>, 
+<a class="el" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a808f9357cebd8802ec48e80b5a2f28e8">PROC_IF_FMT_S16</a>, 
 <a class="el" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9ad70b5725d66f06b07ec6e9927c39eaa8">PROC_IF_FMT_S16P</a>
  }</td></tr>
 <tr class="separator:ac4cd7cdccf4a238d4816b30a0c60c7d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a465f5c8fc7f5a406367f3d00be33bda1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8h.html#a465f5c8fc7f5a406367f3d00be33bda1">proc_if_rest_fmt_enum</a> { <a class="el" href="proc__if_8h.html#a465f5c8fc7f5a406367f3d00be33bda1ab52df72f6bd64173c8b9af8732500d53">PROC_IF_REST_FMT_CHAR</a>, 
+<a class="el" href="proc__if_8h.html#a465f5c8fc7f5a406367f3d00be33bda1a517ba20869367e5f56890dbe1c090931">PROC_IF_REST_FMT_CJSON</a>, 
+<b>PROC_IF_REST_FMT_ENUM_MAX</b>
+ }</td></tr>
+<tr class="separator:a465f5c8fc7f5a406367f3d00be33bda1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -179,6 +202,8 @@ Functions</h2></td></tr>
 <tr class="separator:adb9a1ff0b9cb3a06aa512f4728d412a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63c55c9b2cec24b252402b3a7f6e66b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8h.html#a63c55c9b2cec24b252402b3a7f6e66b3">proc_if_dup</a> (const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if_arg)</td></tr>
 <tr class="separator:a63c55c9b2cec24b252402b3a7f6e66b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a366394612f85367d742901ccaecc4921"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8h.html#a366394612f85367d742901ccaecc4921">proc_if_cmp</a> (const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if1, const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if2)</td></tr>
+<tr class="separator:a366394612f85367d742901ccaecc4921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ada48e5d6583a44f295821f2e5c5b05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8h.html#a8ada48e5d6583a44f295821f2e5c5b05">proc_if_release</a> (<a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> **ref_proc_if)</td></tr>
 <tr class="separator:a8ada48e5d6583a44f295821f2e5c5b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -237,6 +262,19 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9bea3dae53a91f2a3e3a459d1d3e22b3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="proc__if_8h.html#a465f5c8fc7f5a406367f3d00be33bda1">proc_if_rest_fmt_enum</a>  <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Processor REST-response (in GET operation) format enumerator. This definitions are used in the function callback '<a class="el" href="structproc__if__s.html#a1e45b33c52b931954f7a0d8a14f0db53">proc_if_s::rest_get()</a>' to indicate the format desired of the response. </p>
+
+</div>
+</div>
 <a class="anchor" id="a2b6dbff97f4d62e7a7c7674284620929"></a>
 <div class="memitem">
 <div class="memproto">
@@ -279,6 +317,29 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a class="anchor" id="a465f5c8fc7f5a406367f3d00be33bda1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="proc__if_8h.html#a465f5c8fc7f5a406367f3d00be33bda1">proc_if_rest_fmt_enum</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Processor REST-response (in GET operation) format enumerator. This definitions are used in the function callback '<a class="el" href="structproc__if__s.html#a1e45b33c52b931954f7a0d8a14f0db53">proc_if_s::rest_get()</a>' to indicate the format desired of the response. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a465f5c8fc7f5a406367f3d00be33bda1ab52df72f6bd64173c8b9af8732500d53"></a>PROC_IF_REST_FMT_CHAR&#160;</td><td class="fielddoc">
+<p>Character string response. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a465f5c8fc7f5a406367f3d00be33bda1a517ba20869367e5f56890dbe1c090931"></a>PROC_IF_REST_FMT_CJSON&#160;</td><td class="fielddoc">
+<p>cJSON structure response </p>
+</td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00157">157</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ac4cd7cdccf4a238d4816b30a0c60c7d9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -295,6 +356,9 @@ Variables</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="ac4cd7cdccf4a238d4816b30a0c60c7d9a777f2e9fab3b405cc9dd46062d3eab33"></a>PROC_IF_FMT_YUV420P&#160;</td><td class="fielddoc">
 <p>Planar YUV 4:2:0 with 12bpp (video) </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ac4cd7cdccf4a238d4816b30a0c60c7d9a808f9357cebd8802ec48e80b5a2f28e8"></a>PROC_IF_FMT_S16&#160;</td><td class="fielddoc">
+<p>Interleaved signed 16 bits (typically audio) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="ac4cd7cdccf4a238d4816b30a0c60c7d9ad70b5725d66f06b07ec6e9927c39eaa8"></a>PROC_IF_FMT_S16P&#160;</td><td class="fielddoc">
 <p>Planar signed 16 bits (typically audio) </p>
@@ -320,7 +384,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Allocate an uninitialized input/ouput processor frame structure. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the newly allocated input/output processor frame structure; NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00046">46</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00047">47</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -345,7 +409,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the new allocated replica of the given input structure; NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00051">51</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00052">52</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -369,7 +433,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00123">123</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00125">125</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -387,7 +451,43 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Allocate an uninitialized processor interface context structure. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the newly allocated processor interface context structure; NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00142">142</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00144">144</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a366394612f85367d742901ccaecc4921"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int proc_if_cmp </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *&#160;</td>
+          <td class="paramname"><em>proc_if1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *&#160;</td>
+          <td class="paramname"><em>proc_if2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Compares if given processor interfaces are the equal. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proc_if1</td><td>Pointer to the first processor interface context structure to be compared. </td></tr>
+    <tr><td class="paramname">proc_if2</td><td>Pointer to the second processor interface context structure to be compared. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Value 0 if given contexts are equal, otherwise non-zero value is returned. </dd></dl>
+
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00189">189</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -412,7 +512,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to a new allocated replica of the given input structure; NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00147">147</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00149">149</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -436,7 +536,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00178">178</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00234">234</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>

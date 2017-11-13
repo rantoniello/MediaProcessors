@@ -23,7 +23,7 @@ pthread\+\_\+mutex\+\_\+t \hyperlink{structprocs__ctx__s_a27330c986436226abfa1b5
 \subsection{Detailed Description}
 Module\textquotesingle{}s instance context structure. P\+R\+O\+CS module context structure is statically defined in the program. 
 
-Definition at line 145 of file procs.\+c.
+Definition at line 177 of file procs.\+c.
 
 
 
@@ -36,21 +36,21 @@ Module\textquotesingle{}s instance A\+PI mutual exclusion lock. This lock is use
 \end{DoxySeeAlso}
 
 
-Definition at line 153 of file procs.\+c.
+Definition at line 185 of file procs.\+c.
 
 \index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!log\+\_\+ctx@{log\+\_\+ctx}}
 \index{log\+\_\+ctx@{log\+\_\+ctx}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{log\+\_\+ctx}{log_ctx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf log\+\_\+ctx\+\_\+t}$\ast$ procs\+\_\+ctx\+\_\+s\+::log\+\_\+ctx}\hypertarget{structprocs__ctx__s_ab5d529e82924052baf26478afca901fa}{}\label{structprocs__ctx__s_ab5d529e82924052baf26478afca901fa}
 Externally defined L\+OG module instance context structure. 
 
-Definition at line 166 of file procs.\+c.
+Definition at line 198 of file procs.\+c.
 
 \index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!procs\+\_\+reg\+\_\+elem\+\_\+array@{procs\+\_\+reg\+\_\+elem\+\_\+array}}
 \index{procs\+\_\+reg\+\_\+elem\+\_\+array@{procs\+\_\+reg\+\_\+elem\+\_\+array}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{procs\+\_\+reg\+\_\+elem\+\_\+array}{procs_reg_elem_array}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+reg\+\_\+elem\+\_\+t} procs\+\_\+ctx\+\_\+s\+::procs\+\_\+reg\+\_\+elem\+\_\+array\mbox{[}{\bf P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}\mbox{]}}\hypertarget{structprocs__ctx__s_a08985565adf1f547b44b58addd85cbbe}{}\label{structprocs__ctx__s_a08985565adf1f547b44b58addd85cbbe}
 Array listing the registered processor instances. The idea behind using an array is to have a mean to fast fetch a processor for input (receive) or output (send) operations. This array is defined with a fixed maximum size of P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES; each element of the array has a set of locks already initialized to enable concurrency. 
 
-Definition at line 162 of file procs.\+c.
+Definition at line 194 of file procs.\+c.
 
 
 

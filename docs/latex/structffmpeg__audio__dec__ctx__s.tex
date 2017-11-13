@@ -21,6 +21,8 @@ struct \hyperlink{structproc__ctx__s}{proc\+\_\+ctx\+\_\+s} \hyperlink{structffm
 const A\+V\+Codec $\ast$ \hyperlink{structffmpeg__audio__dec__ctx__s_a8a73d6d4be6d11d6b1748cd5de5809b1}{avcodec}
 \item 
 A\+V\+Codec\+Context $\ast$ \hyperlink{structffmpeg__audio__dec__ctx__s_a0eacb15c64cb86d241a420b859d12e78}{avcodecctx}
+\item 
+int \hyperlink{structffmpeg__audio__dec__ctx__s_a02c7c9203da4242a4e088ac6cc4c304d}{sample\+\_\+fmt\+\_\+output}
 \end{DoxyCompactItemize}
 
 
@@ -52,6 +54,13 @@ Definition at line 78 of file ffmpeg\+\_\+audio.\+h.
 Generic processor context structure. {\itshape M\+U\+ST} be the first field in order to be able to cast to proc\+\_\+ctx\+\_\+t. 
 
 Definition at line 70 of file ffmpeg\+\_\+audio.\+h.
+
+\index{ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+s@{ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+s}!sample\+\_\+fmt\+\_\+output@{sample\+\_\+fmt\+\_\+output}}
+\index{sample\+\_\+fmt\+\_\+output@{sample\+\_\+fmt\+\_\+output}!ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+s@{ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{sample\+\_\+fmt\+\_\+output}{sample_fmt_output}}]{\setlength{\rightskip}{0pt plus 5cm}int ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+s\+::sample\+\_\+fmt\+\_\+output}\hypertarget{structffmpeg__audio__dec__ctx__s_a02c7c9203da4242a4e088ac6cc4c304d}{}\label{structffmpeg__audio__dec__ctx__s_a02c7c9203da4242a4e088ac6cc4c304d}
+User specified samples output format (may differ from native-\/decoder format) 
+
+Definition at line 83 of file ffmpeg\+\_\+audio.\+h.
 
 
 

@@ -163,7 +163,7 @@ To get the general representation of the running processors, type\+:
 7       "procs":[
 8          \{
 9             "proc\_id":0,
-10             "type\_name":"ffmpeg\_m2v\_enc",
+10             "proc\_name":"ffmpeg\_m2v\_enc",
 11             "links":[
 12                \{
 13                   "rel":"self",
@@ -173,7 +173,7 @@ To get the general representation of the running processors, type\+:
 17          \},
 18          \{
 19             "proc\_id":1,
-20             "type\_name":"ffmpeg\_m2v\_dec",
+20             "proc\_name":"ffmpeg\_m2v\_dec",
 21             "links":[
 22                \{
 23                   "rel":"self",
@@ -183,7 +183,7 @@ To get the general representation of the running processors, type\+:
 27          \},
 28          \{
 29             "proc\_id":2,
-30             "type\_name":"live555\_rtsp\_mux",
+30             "proc\_name":"live555\_rtsp\_mux",
 31             "links":[
 32                \{
 33                   "rel":"self",
@@ -193,7 +193,7 @@ To get the general representation of the running processors, type\+:
 37          \},
 38          \{
 39             "proc\_id":3,
-40             "type\_name":"live555\_rtsp\_dmux",
+40             "proc\_name":"live555\_rtsp\_dmux",
 41             "links":[
 42                \{
 43                   "rel":"self",
@@ -210,7 +210,7 @@ To get the general representation of the running processors, type\+:
 In the response above you will find the list of the instantiated processors specifying\+:
 \begin{DoxyItemize}
 \item the A\+PI identifier corresponding to each processor;
-\item the processor type;
+\item the processor name;
 \item the link to the processor representational state.
 \end{DoxyItemize}
 
@@ -222,16 +222,18 @@ To get the representational state of any of the processors\+:
 4    "status":"OK",
 5    "message":null,
 6    "data":\{
-7       "settings":\{
-8          "bit\_rate\_output":307200,
-9          "frame\_rate\_output":15,
-10          "width\_output":352,
-11          "height\_output":288,
-12          "gop\_size":15,
-13          "conf\_preset":null
-14       \}
-15    \}
-16 \}
+7       "latency\_avg\_usec":35502,
+8       "settings":\{
+9          "proc\_name":"ffmpeg\_m2v\_enc",
+10          "bit\_rate\_output":307200,
+11          "frame\_rate\_output":15,
+12          "width\_output":352,
+13          "height\_output":288,
+14          "gop\_size":15,
+15          "conf\_preset":null
+16       \}
+17    \}
+18 \}
 \end{DoxyCode}
  
 \begin{DoxyCode}
@@ -241,10 +243,12 @@ To get the representational state of any of the processors\+:
 4    "status":"OK",
 5    "message":null,
 6    "data":\{
-7       "settings":\{
-8       \}
-9    \}
-10 \}
+7       "latency\_avg\_usec":0,
+8       "settings":\{
+9          "proc\_name":"ffmpeg\_m2v\_dec"
+10       \}
+11    \}
+12 \}
 \end{DoxyCode}
  
 \begin{DoxyCode}
@@ -255,19 +259,20 @@ To get the representational state of any of the processors\+:
 5    "message":null,
 6    "data":\{
 7       "settings":\{
-8          "rtsp\_port":8574,
-9          "time\_stamp\_freq":9000,
-10          "rtsp\_streaming\_session\_name":"session"
-11       \},
-12       "elementary\_streams":[
-13          \{
-14             "sdp\_mimetype":"video/mp2v",
-15             "rtp\_timestamp\_freq":9000,
-16             "elementary\_stream\_id":0
-17          \}
-18       ]
-19    \}
-20 \}
+8          "proc\_name":"live555\_rtsp\_mux",
+9          "rtsp\_port":8574,
+10          "time\_stamp\_freq":9000,
+11          "rtsp\_streaming\_session\_name":"session"
+12       \},
+13       "elementary\_streams":[
+14          \{
+15             "sdp\_mimetype":"video/mp2v",
+16             "rtp\_timestamp\_freq":9000,
+17             "elementary\_stream\_id":0
+18          \}
+19       ]
+20    \}
+21 \}
 \end{DoxyCode}
  
 \begin{DoxyCode}
@@ -278,21 +283,19 @@ To get the representational state of any of the processors\+:
 5    "message":null,
 6    "data":\{
 7       "settings":\{
-8          "rtsp\_url":"rtsp://127.0.0.1:8574/session"
-9       \},
-10       "elementary\_streams":[
-11          \{
-12             "sdp\_mimetype":"video/MP2V",
-13             "port":58794,
-14             "elementary\_stream\_id":58794
-15          \}
-16       ]
-17    \}
-18 \}
+8          "proc\_name":"live555\_rtsp\_dmux",
+9          "rtsp\_url":"rtsp://127.0.0.1:8574/session"
+10       \},
+11       "elementary\_streams":[
+12          \{
+13             "sdp\_mimetype":"video/MP2V",
+14             "port":40014,
+15             "elementary\_stream\_id":40014
+16          \}
+17       ]
+18    \}
+19 \}
 \end{DoxyCode}
-
-
-Note that the video decoder (processor Id. 2) has the simplest representational state (no data nor settings).~\newline
 
 
 If you want to change some of the video encoder parameters, let\textquotesingle{}s say the ouput width and height, do\+: 
@@ -305,16 +308,58 @@ If you want to change some of the video encoder parameters, let\textquotesingle{
 6    "status":"OK",
 7    "message":null,
 8    "data":\{
-9       "settings":\{
-10          "bit\_rate\_output":307200,
-11          "frame\_rate\_output":15,
-12          "width\_output":720,
-13          "height\_output":480,
-14          "gop\_size":15,
-15          "conf\_preset":null
-16       \}
-17    \}
-18 \}
+9       "latency\_avg\_usec":40751,
+10       "settings":\{
+11          "proc\_name":"ffmpeg\_m2v\_enc",
+12          "bit\_rate\_output":307200,
+13          "frame\_rate\_output":15,
+14          "width\_output":720,
+15          "height\_output":480,
+16          "gop\_size":15,
+17          "conf\_preset":null
+18       \}
+19    \}
+20 \}
+\end{DoxyCode}
+
+
+You can even change the processor type on tun time. You have to be very careful of changing both, encoder and decoder sides.~\newline
+ In the following code we switch from M\+P\+E\+G2-\/video to H.\+264 video coding\+: 
+\begin{DoxyCode}
+1 $ curl -X PUT "127.0.0.1:8088/procs/0.json?proc\_name=ffmpeg\_x264\_enc"; curl -X PUT
+       "127.0.0.1:8088/procs/1.json?proc\_name=ffmpeg\_x264\_dec";
+2 
+3 $ curl -H "Content-Type: application/json" -X GET -d '\{\}' "127.0.0.1:8088/procs/0.json"; curl -H
+       "Content-Type: application/json" -X GET -d '\{\}' "127.0.0.1:8088/procs/1.json"
+4 \{
+5    "code":200,
+6    "status":"OK",
+7    "message":null,
+8    "data":\{
+9       "latency\_avg\_usec":941490,
+10       "settings":\{
+11          "proc\_name":"ffmpeg\_x264\_enc",
+12          "bit\_rate\_output":307200,
+13          "frame\_rate\_output":15,
+14          "width\_output":352,
+15          "height\_output":288,
+16          "gop\_size":15,
+17          "conf\_preset":null,
+18          "flag\_zerolatency":false
+19       \}
+20    \}
+21 \}
+22 \{
+23    "code":200,
+24    "status":"OK",
+25    "message":null,
+26    "data":\{
+27       "latency\_avg\_usec":0,
+28       "settings":\{
+29          "proc\_name":"ffmpeg\_x264\_dec"
+30       \}
+31    \}
+32 \}
 \end{DoxyCode}
 
 

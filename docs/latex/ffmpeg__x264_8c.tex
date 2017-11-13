@@ -57,7 +57,7 @@ static int \hyperlink{ffmpeg__x264_8c_a261d9af751369524a2c233baf10ef154}{ffmpeg\
 \item 
 static int \hyperlink{ffmpeg__x264_8c_a3a8cedbbedb206d21e9e4eea447fc02a}{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
-static int \hyperlink{ffmpeg__x264_8c_aa4cd37f5cff03198fc13caf88b3207ca}{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)
+static int \hyperlink{ffmpeg__x264_8c_a93ade72563d866e4354905e6250787dd}{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{proc__if_8h_a9bea3dae53a91f2a3e3a459d1d3e22b3}{proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t} rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)
 \item 
 static int \hyperlink{ffmpeg__x264_8c_a971be3a151d53bb6f715429458df2f94}{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{ffmpeg__x264_8c_abeeec8a26d11549a0a10cd39057ddace}{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
@@ -71,7 +71,7 @@ static int \hyperlink{ffmpeg__x264_8c_adfd2aa30ac6f4edefd59ff99d3ab58e1}{ffmpeg\
 \item 
 static int \hyperlink{ffmpeg__x264_8c_a4e985585f97641e8362201b9c339b7ba}{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
-static int \hyperlink{ffmpeg__x264_8c_a4c67f3938d5302582a194fc641f4fc43}{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)
+static int \hyperlink{ffmpeg__x264_8c_a58aed65fb9afb7a7f1c4c139f21377e4}{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{proc__if_8h_a9bea3dae53a91f2a3e3a459d1d3e22b3}{proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t} rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)
 \item 
 static int \hyperlink{ffmpeg__x264_8c_a905ff0cb89c6dde5065eb3e31dcf81b6}{ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{ffmpeg__x264_8c_ab6c23267c0cc6a10190149225a24e5e3}{ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
@@ -117,7 +117,7 @@ F\+Fmpeg\textquotesingle{}s x264 video encoder settings context structure.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_ad51aa4678caf150230bb8f0696df40d9}{}\label{ffmpeg__x264_8c_ad51aa4678caf150230bb8f0696df40d9}
 Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 621 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 641 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+dec\+\_\+open@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+open}}
 \index{ffmpeg\+\_\+x264\+\_\+dec\+\_\+open@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+open}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -131,7 +131,7 @@ Definition at line 621 of file ffmpeg\+\_\+x264.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_a1a7324b724b792fcdfc763b74b048c53}{}\label{ffmpeg__x264_8c_a1a7324b724b792fcdfc763b74b048c53}
 Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 562 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 582 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+dec\+\_\+process\+\_\+frame@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+process\+\_\+frame}}
 \index{ffmpeg\+\_\+x264\+\_\+dec\+\_\+process\+\_\+frame@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+process\+\_\+frame}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -144,19 +144,20 @@ Definition at line 562 of file ffmpeg\+\_\+x264.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_adfd2aa30ac6f4edefd59ff99d3ab58e1}{}\label{ffmpeg__x264_8c_adfd2aa30ac6f4edefd59ff99d3ab58e1}
 Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 652 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 672 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get}}
 \index{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
-\subsubsection[{\texorpdfstring{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)}{ffmpeg_x264_dec_rest_get(proc_ctx_t *proc_ctx, char **rest_str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get (
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)}{ffmpeg_x264_dec_rest_get(proc_ctx_t *proc_ctx, const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+get (
 \begin{DoxyParamCaption}
 \item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
-\item[{char $\ast$$\ast$}]{rest\+\_\+str}
+\item[{const {\bf proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t}}]{rest\+\_\+fmt, }
+\item[{void $\ast$$\ast$}]{ref\+\_\+reponse}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_a4c67f3938d5302582a194fc641f4fc43}{}\label{ffmpeg__x264_8c_a4c67f3938d5302582a194fc641f4fc43}
-Implements the \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_a58aed65fb9afb7a7f1c4c139f21377e4}{}\label{ffmpeg__x264_8c_a58aed65fb9afb7a7f1c4c139f21377e4}
+Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 740 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 760 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+put@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+put}}
 \index{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+put@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+rest\+\_\+put}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -168,7 +169,7 @@ Definition at line 740 of file ffmpeg\+\_\+x264.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_a4e985585f97641e8362201b9c339b7ba}{}\label{ffmpeg__x264_8c_a4e985585f97641e8362201b9c339b7ba}
 Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 698 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 718 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit}}
 \index{ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -187,7 +188,7 @@ Release specific x264 decoder settings (allocated in heap memory).
 \end{DoxyParams}
 
 
-Definition at line 856 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 890 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init}}
 \index{ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+x264\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -209,7 +210,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 826 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 860 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+enc\+\_\+close@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+close}}
 \index{ffmpeg\+\_\+x264\+\_\+enc\+\_\+close@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+close}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -220,7 +221,7 @@ Definition at line 826 of file ffmpeg\+\_\+x264.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_a1da68596d0c2f10605a6a0830b996c07}{}\label{ffmpeg__x264_8c_a1da68596d0c2f10605a6a0830b996c07}
 Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 239 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 245 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+enc\+\_\+open@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+open}}
 \index{ffmpeg\+\_\+x264\+\_\+enc\+\_\+open@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+open}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -234,7 +235,7 @@ Definition at line 239 of file ffmpeg\+\_\+x264.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_a86e4d3fde303a71b25964ab54133ec68}{}\label{ffmpeg__x264_8c_a86e4d3fde303a71b25964ab54133ec68}
 Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 180 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 186 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+enc\+\_\+process\+\_\+frame@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+process\+\_\+frame}}
 \index{ffmpeg\+\_\+x264\+\_\+enc\+\_\+process\+\_\+frame@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+process\+\_\+frame}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -247,19 +248,20 @@ Definition at line 180 of file ffmpeg\+\_\+x264.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_a261d9af751369524a2c233baf10ef154}{}\label{ffmpeg__x264_8c_a261d9af751369524a2c233baf10ef154}
 Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 270 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 276 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get}}
 \index{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
-\subsubsection[{\texorpdfstring{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, char $\ast$$\ast$rest\+\_\+str)}{ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx, char **rest_str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get (
+\subsubsection[{\texorpdfstring{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)}{ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx, const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)}}]{\setlength{\rightskip}{0pt plus 5cm}static int ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+get (
 \begin{DoxyParamCaption}
 \item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
-\item[{char $\ast$$\ast$}]{rest\+\_\+str}
+\item[{const {\bf proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t}}]{rest\+\_\+fmt, }
+\item[{void $\ast$$\ast$}]{ref\+\_\+reponse}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_aa4cd37f5cff03198fc13caf88b3207ca}{}\label{ffmpeg__x264_8c_aa4cd37f5cff03198fc13caf88b3207ca}
-Implements the \hyperlink{structproc__if__s_afd94617c2897f8b3bcbd28d90bdf0ca1}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_a93ade72563d866e4354905e6250787dd}{}\label{ffmpeg__x264_8c_a93ade72563d866e4354905e6250787dd}
+Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 409 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 415 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+put@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+put}}
 \index{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+put@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+rest\+\_\+put}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -271,7 +273,7 @@ Definition at line 409 of file ffmpeg\+\_\+x264.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__x264_8c_a3a8cedbbedb206d21e9e4eea447fc02a}{}\label{ffmpeg__x264_8c_a3a8cedbbedb206d21e9e4eea447fc02a}
 Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 316 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 322 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit}}
 \index{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -290,7 +292,7 @@ Release specific x264 encoder settings (allocated in heap memory).
 \end{DoxyParams}
 
 
-Definition at line 538 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 558 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init}}
 \index{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+x264\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -312,7 +314,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 504 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 524 of file ffmpeg\+\_\+x264.\+c.
 
 
 
@@ -324,11 +326,13 @@ Definition at line 504 of file ffmpeg\+\_\+x264.\+c.
 \begin{DoxyCode}
 =
 \{
-    \textcolor{stringliteral}{"ffmpeg\_x264\_dec"},
+    \textcolor{stringliteral}{"ffmpeg\_x264\_dec"}, \textcolor{stringliteral}{"decoder"}, \textcolor{stringliteral}{"video/H264"},
+    (uint64\_t)(PROC\_FEATURE\_RD|PROC\_FEATURE\_WR|PROC\_FEATURE\_IOSTATS|
+            PROC\_FEATURE\_IPUT\_PTS|PROC\_FEATURE\_LATSTATS),
     \hyperlink{ffmpeg__x264_8c_a1a7324b724b792fcdfc763b74b048c53}{ffmpeg\_x264\_dec\_open},
     \hyperlink{ffmpeg__x264_8c_ad51aa4678caf150230bb8f0696df40d9}{ffmpeg\_x264\_dec\_close},
     \hyperlink{ffmpeg__x264_8c_a4e985585f97641e8362201b9c339b7ba}{ffmpeg\_x264\_dec\_rest\_put},
-    \hyperlink{ffmpeg__x264_8c_a4c67f3938d5302582a194fc641f4fc43}{ffmpeg\_x264\_dec\_rest\_get},
+    \hyperlink{ffmpeg__x264_8c_a58aed65fb9afb7a7f1c4c139f21377e4}{ffmpeg\_x264\_dec\_rest\_get},
     \hyperlink{ffmpeg__x264_8c_adfd2aa30ac6f4edefd59ff99d3ab58e1}{ffmpeg\_x264\_dec\_process\_frame},
     NULL, 
     \hyperlink{proc__frame__2__ffmpeg_8c_acb3d4d9ac806277ea13a3defb9b713e6}{proc\_frame\_ctx\_2\_avpacket},
@@ -338,7 +342,7 @@ Definition at line 504 of file ffmpeg\+\_\+x264.\+c.
 \end{DoxyCode}
 Processor interface implementing the F\+Fmpeg wrapper of the x264 decoder. 
 
-Definition at line 162 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 166 of file ffmpeg\+\_\+x264.\+c.
 
 \index{ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}!proc\+\_\+if\+\_\+ffmpeg\+\_\+x264\+\_\+enc@{proc\+\_\+if\+\_\+ffmpeg\+\_\+x264\+\_\+enc}}
 \index{proc\+\_\+if\+\_\+ffmpeg\+\_\+x264\+\_\+enc@{proc\+\_\+if\+\_\+ffmpeg\+\_\+x264\+\_\+enc}!ffmpeg\+\_\+x264.\+c@{ffmpeg\+\_\+x264.\+c}}
@@ -347,11 +351,13 @@ Definition at line 162 of file ffmpeg\+\_\+x264.\+c.
 \begin{DoxyCode}
 =
 \{
-    \textcolor{stringliteral}{"ffmpeg\_x264\_enc"},
+    \textcolor{stringliteral}{"ffmpeg\_x264\_enc"}, \textcolor{stringliteral}{"encoder"}, \textcolor{stringliteral}{"video/H264"},
+    (uint64\_t)(PROC\_FEATURE\_RD|PROC\_FEATURE\_WR|PROC\_FEATURE\_IOSTATS|
+            PROC\_FEATURE\_IPUT\_PTS|PROC\_FEATURE\_LATSTATS),
     \hyperlink{ffmpeg__x264_8c_a86e4d3fde303a71b25964ab54133ec68}{ffmpeg\_x264\_enc\_open},
     \hyperlink{ffmpeg__x264_8c_a1da68596d0c2f10605a6a0830b996c07}{ffmpeg\_x264\_enc\_close},
     \hyperlink{ffmpeg__x264_8c_a3a8cedbbedb206d21e9e4eea447fc02a}{ffmpeg\_x264\_enc\_rest\_put},
-    \hyperlink{ffmpeg__x264_8c_aa4cd37f5cff03198fc13caf88b3207ca}{ffmpeg\_x264\_enc\_rest\_get},
+    \hyperlink{ffmpeg__x264_8c_a93ade72563d866e4354905e6250787dd}{ffmpeg\_x264\_enc\_rest\_get},
     \hyperlink{ffmpeg__x264_8c_a261d9af751369524a2c233baf10ef154}{ffmpeg\_x264\_enc\_process\_frame},
     NULL, 
     \hyperlink{proc__frame__2__ffmpeg_8c_a74d29920bec0c25b8de6cb1cf45394a1}{proc\_frame\_ctx\_2\_avframe},
@@ -361,5 +367,5 @@ Definition at line 162 of file ffmpeg\+\_\+x264.\+c.
 \end{DoxyCode}
 Processor interface implementing the F\+Fmpeg wrapper of the x264 encoder. 
 
-Definition at line 148 of file ffmpeg\+\_\+x264.\+c.
+Definition at line 150 of file ffmpeg\+\_\+x264.\+c.
 

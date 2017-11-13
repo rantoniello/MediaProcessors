@@ -116,7 +116,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &quot;<a class="el" href="proc__muxer_8h_source.html">proc_muxer.h</a>&quot;</code><br />
 <code>#include &lt;liveMedia/liveMedia.hh&gt;</code><br />
 <code>#include &lt;BasicUsageEnvironment/BasicUsageEnvironment.hh&gt;</code><br />
-<code>#include &lt;SimpleRTPSink.hh&gt;</code><br />
+<code>#include &quot;MultiFramedRTPSink.hh&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for live555_rtsp.cpp:</div>
 <div class="dyncontent">
@@ -144,6 +144,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlive555__rtsp__dmux__ctx__s.html">live555_rtsp_dmux_ctx_s</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleRTPSink2.html">SimpleRTPSink2</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleFramedSource.html">SimpleFramedSource</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleMediaSubsession.html">SimpleMediaSubsession</a></td></tr>
@@ -165,7 +167,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SERVER_TOUT</b>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:ae008cde8b9b583dabc423b58c60191c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42241aeef36063f99e93d23924664147"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42241aeef36063f99e93d23924664147"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FRAMED_SOURCE_FIFO_SLOTS</b>&#160;&#160;&#160;256</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FRAMED_SOURCE_FIFO_SLOTS</b>&#160;&#160;&#160;16</td></tr>
 <tr class="separator:a42241aeef36063f99e93d23924664147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1804958c871ba20b087420ea82878dda"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1804958c871ba20b087420ea82878dda"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SINK_BUFFER_SIZE</b>&#160;&#160;&#160;200000</td></tr>
@@ -218,8 +220,8 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>live555_rtsp_mu
 <tr class="separator:abe47b6b8febe17d311ecede4da45aea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad353f75943a3ca57089e984dd6a63821"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#ad353f75943a3ca57089e984dd6a63821">live555_rtsp_mux_opt</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const char *tag, va_list arg)</td></tr>
 <tr class="separator:ad353f75943a3ca57089e984dd6a63821"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f56cffbb3c31acc00a84d9e48a966cc"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#a3f56cffbb3c31acc00a84d9e48a966cc">live555_rtsp_mux_rest_get</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, char **rest_str)</td></tr>
-<tr class="separator:a3f56cffbb3c31acc00a84d9e48a966cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79702efb465218250b0e0b47968daa19"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#a79702efb465218250b0e0b47968daa19">live555_rtsp_mux_rest_get</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a> rest_fmt, void **ref_reponse)</td></tr>
+<tr class="separator:a79702efb465218250b0e0b47968daa19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7aae14020d074edce87943c2737a1ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7aae14020d074edce87943c2737a1ac"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>live555_rtsp_mux_rest_get_es_array</b> (<a class="el" href="procs_8c.html#a9dcafd40720bff127bdc596e9c6dd6cd">procs_ctx_t</a> *procs_ctx_es_muxers, cJSON **ref_cjson_es_array, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx)</td></tr>
 <tr class="separator:ae7aae14020d074edce87943c2737a1ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,8 +241,8 @@ static <a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_
 <tr class="separator:abb290dc91efdc5ecf11447a219348321"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab43b1de001e299f5a71b7c6ca41c3835"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#ab43b1de001e299f5a71b7c6ca41c3835">live555_rtsp_es_mux_rest_put</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const char *str)</td></tr>
 <tr class="separator:ab43b1de001e299f5a71b7c6ca41c3835"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4cfec4d7d7a00d103544d0e9438c8cd"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#ac4cfec4d7d7a00d103544d0e9438c8cd">live555_rtsp_es_mux_rest_get</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, char **rest_str)</td></tr>
-<tr class="separator:ac4cfec4d7d7a00d103544d0e9438c8cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56e14bf531cf71bcc507f3f19d1f6d26"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#a56e14bf531cf71bcc507f3f19d1f6d26">live555_rtsp_es_mux_rest_get</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a> rest_fmt, void **ref_reponse)</td></tr>
+<tr class="separator:a56e14bf531cf71bcc507f3f19d1f6d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cafefe0d5b9076c03a66faa5c7c0e2c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cafefe0d5b9076c03a66faa5c7c0e2c"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>live555_rtsp_es_mux_settings_ctx_init</b> (volatile <a class="el" href="live555__rtsp_8cpp.html#a7e27ada4b10e120c5a3695816e1b8715">live555_rtsp_es_mux_settings_ctx_t</a> *live555_rtsp_es_mux_settings_ctx, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx)</td></tr>
 <tr class="separator:a4cafefe0d5b9076c03a66faa5c7c0e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,8 +259,8 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>live555_rtsp_dm
 <tr class="memitem:ac839fef4f792fe6fc0669d9712fb4d4c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac839fef4f792fe6fc0669d9712fb4d4c"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>live555_rtsp_dmux_deinit_except_settings</b> (<a class="el" href="structlive555__rtsp__dmux__ctx__s.html">live555_rtsp_dmux_ctx_t</a> *live555_rtsp_dmux_ctx, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx)</td></tr>
 <tr class="separator:ac839fef4f792fe6fc0669d9712fb4d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75d0994e1122c13adc35ab70d1ebc334"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#a75d0994e1122c13adc35ab70d1ebc334">live555_rtsp_dmux_rest_get</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, char **rest_str)</td></tr>
-<tr class="separator:a75d0994e1122c13adc35ab70d1ebc334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dff06c81ab4c1f15bdc768ffb06fe51"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#a1dff06c81ab4c1f15bdc768ffb06fe51">live555_rtsp_dmux_rest_get</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a> rest_fmt, void **ref_reponse)</td></tr>
+<tr class="separator:a1dff06c81ab4c1f15bdc768ffb06fe51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7424e763a4f50f3b4563f86b28569f9d"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#a7424e763a4f50f3b4563f86b28569f9d">live555_rtsp_dmux_process_frame</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, <a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *iput_fifo_ctx, <a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *oput_fifo_ctx)</td></tr>
 <tr class="separator:a7424e763a4f50f3b4563f86b28569f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd61654410d5c9ce8d3d7fc52430d8be"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="live555__rtsp_8cpp.html#abd61654410d5c9ce8d3d7fc52430d8be">live555_rtsp_dmux_rest_put</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const char *str)</td></tr>
@@ -323,7 +325,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns non-zero if given 'tag' string contains 'needle' sub-string. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00076">76</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00078">78</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -342,7 +344,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns non-zero if 'tag' string is equal to given TAG string. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00081">81</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00083">83</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -423,7 +425,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#af5971ac1d09d1c6ec3508c36fb286c19">proc_if_s::close</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02029">2029</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02184">2184</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -472,7 +474,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#a34999576771394dfb721463c8455ba06">proc_if_s::open</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01941">1941</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02096">2096</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -515,11 +517,11 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#ab67b4061f94b6f15ae40c796b6b33597">proc_if_s::process_frame</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02240">2240</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02409">2409</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a75d0994e1122c13adc35ab70d1ebc334"></a>
+<a class="anchor" id="a1dff06c81ab4c1f15bdc768ffb06fe51"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -535,8 +537,14 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>rest_str</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a>&#160;</td>
+          <td class="paramname"><em>rest_fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void **&#160;</td>
+          <td class="paramname"><em>ref_reponse</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -550,9 +558,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Implements the <a class="el" href="structproc__if__s.html#afd94617c2897f8b3bcbd28d90bdf0ca1">proc_if_s::rest_get</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
+<p>Implements the <a class="el" href="structproc__if__s.html#a1e45b33c52b931954f7a0d8a14f0db53">proc_if_s::rest_get</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02091">2091</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02246">2246</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -589,7 +597,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#acb4d2c240c52904ebd6904f54b1a9b78">proc_if_s::rest_put</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02332">2332</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02501">2501</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -632,7 +640,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02408">2408</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02577">2577</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -676,7 +684,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02377">2377</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02546">2546</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -703,7 +711,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#af5971ac1d09d1c6ec3508c36fb286c19">proc_if_s::close</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01304">1304</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01373">1373</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -746,11 +754,11 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#ab67b4061f94b6f15ae40c796b6b33597">proc_if_s::process_frame</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01335">1335</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01404">1404</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac4cfec4d7d7a00d103544d0e9438c8cd"></a>
+<a class="anchor" id="a56e14bf531cf71bcc507f3f19d1f6d26"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -766,8 +774,14 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>rest_str</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a>&#160;</td>
+          <td class="paramname"><em>rest_fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void **&#160;</td>
+          <td class="paramname"><em>ref_reponse</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -781,9 +795,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Implements the <a class="el" href="structproc__if__s.html#afd94617c2897f8b3bcbd28d90bdf0ca1">proc_if_s::rest_get</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
+<p>Implements the <a class="el" href="structproc__if__s.html#a1e45b33c52b931954f7a0d8a14f0db53">proc_if_s::rest_get</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01492">1492</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01561">1561</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -820,7 +834,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#acb4d2c240c52904ebd6904f54b1a9b78">proc_if_s::rest_put</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01387">1387</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01456">1456</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -847,7 +861,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#af5971ac1d09d1c6ec3508c36fb286c19">proc_if_s::close</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00692">692</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00736">736</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -884,7 +898,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Release RTSP multiplexer at the exception of its settings context structure. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00723">723</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00767">767</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -933,7 +947,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#a34999576771394dfb721463c8455ba06">proc_if_s::open</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00557">557</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00601">601</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -976,7 +990,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#a4ca0939d6721f368d2560851197fca36">proc_if_s::opt</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00855">855</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00899">899</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1019,11 +1033,11 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#ab67b4061f94b6f15ae40c796b6b33597">proc_if_s::process_frame</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00801">801</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00845">845</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3f56cffbb3c31acc00a84d9e48a966cc"></a>
+<a class="anchor" id="a79702efb465218250b0e0b47968daa19"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1039,8 +1053,14 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>rest_str</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a>&#160;</td>
+          <td class="paramname"><em>rest_fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void **&#160;</td>
+          <td class="paramname"><em>ref_reponse</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1054,9 +1074,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Implements the <a class="el" href="structproc__if__s.html#afd94617c2897f8b3bcbd28d90bdf0ca1">proc_if_s::rest_get</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
+<p>Implements the <a class="el" href="structproc__if__s.html#a1e45b33c52b931954f7a0d8a14f0db53">proc_if_s::rest_get</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00962">962</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01006">1006</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1093,7 +1113,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Implements the <a class="el" href="structproc__if__s.html#acb4d2c240c52904ebd6904f54b1a9b78">proc_if_s::rest_put</a> callback. See .<a class="el" href="proc__if_8h.html" title="PROC interface prototype related definitions and functions. ">proc_if.h</a> for further details. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00920">920</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00964">964</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1136,7 +1156,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01182">1182</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01251">1251</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1180,7 +1200,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01151">1151</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l01220">1220</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1207,7 +1227,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Iterate through each stream's 'sub-sessions', setting up each one. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02486">2486</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02655">2655</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1244,7 +1264,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Used to shut down and close a stream (including its "RTSPClient" object). </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02687">2687</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02856">2856</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1271,7 +1291,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>called when a stream's sub-session (e.g., audio or video sub-stream) ends. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02634">2634</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02803">2803</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1298,7 +1318,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Called when a RTCP "BYE" is received for a sub-session. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02664">2664</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l02833">2833</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1312,14 +1332,14 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    <span class="stringliteral">&quot;live555_rtsp_dmux&quot;</span>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a47ff243b0d13dd2e2fa45e543957d4e5">live555_rtsp_dmux_open</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a6725a20c83725a3080c2eca916800dab">live555_rtsp_dmux_close</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#abd61654410d5c9ce8d3d7fc52430d8be">live555_rtsp_dmux_rest_put</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a75d0994e1122c13adc35ab70d1ebc334">live555_rtsp_dmux_rest_get</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a7424e763a4f50f3b4563f86b28569f9d">live555_rtsp_dmux_process_frame</a>,</div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">}</div><div class="ttc" id="live555__rtsp_8cpp_html_abd61654410d5c9ce8d3d7fc52430d8be"><div class="ttname"><a href="live555__rtsp_8cpp.html#abd61654410d5c9ce8d3d7fc52430d8be">live555_rtsp_dmux_rest_put</a></div><div class="ttdeci">static int live555_rtsp_dmux_rest_put(proc_ctx_t *proc_ctx, const char *str)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l02332">live555_rtsp.cpp:2332</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_a47ff243b0d13dd2e2fa45e543957d4e5"><div class="ttname"><a href="live555__rtsp_8cpp.html#a47ff243b0d13dd2e2fa45e543957d4e5">live555_rtsp_dmux_open</a></div><div class="ttdeci">static proc_ctx_t * live555_rtsp_dmux_open(const proc_if_t *proc_if, const char *settings_str, log_ctx_t *log_ctx, va_list arg)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l01941">live555_rtsp.cpp:1941</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_a6725a20c83725a3080c2eca916800dab"><div class="ttname"><a href="live555__rtsp_8cpp.html#a6725a20c83725a3080c2eca916800dab">live555_rtsp_dmux_close</a></div><div class="ttdeci">static void live555_rtsp_dmux_close(proc_ctx_t **ref_proc_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l02029">live555_rtsp.cpp:2029</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_a75d0994e1122c13adc35ab70d1ebc334"><div class="ttname"><a href="live555__rtsp_8cpp.html#a75d0994e1122c13adc35ab70d1ebc334">live555_rtsp_dmux_rest_get</a></div><div class="ttdeci">static int live555_rtsp_dmux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l02091">live555_rtsp.cpp:2091</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_a7424e763a4f50f3b4563f86b28569f9d"><div class="ttname"><a href="live555__rtsp_8cpp.html#a7424e763a4f50f3b4563f86b28569f9d">live555_rtsp_dmux_process_frame</a></div><div class="ttdeci">static int live555_rtsp_dmux_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l02240">live555_rtsp.cpp:2240</a></div></div>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    <span class="stringliteral">&quot;live555_rtsp_dmux&quot;</span>, <span class="stringliteral">&quot;demultiplexer&quot;</span>, <span class="stringliteral">&quot;application/octet-stream&quot;</span>,</div><div class="line">    (uint64_t)PROC_FEATURE_RD,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a47ff243b0d13dd2e2fa45e543957d4e5">live555_rtsp_dmux_open</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a6725a20c83725a3080c2eca916800dab">live555_rtsp_dmux_close</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#abd61654410d5c9ce8d3d7fc52430d8be">live555_rtsp_dmux_rest_put</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a1dff06c81ab4c1f15bdc768ffb06fe51">live555_rtsp_dmux_rest_get</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a7424e763a4f50f3b4563f86b28569f9d">live555_rtsp_dmux_process_frame</a>,</div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">}</div><div class="ttc" id="live555__rtsp_8cpp_html_a1dff06c81ab4c1f15bdc768ffb06fe51"><div class="ttname"><a href="live555__rtsp_8cpp.html#a1dff06c81ab4c1f15bdc768ffb06fe51">live555_rtsp_dmux_rest_get</a></div><div class="ttdeci">static int live555_rtsp_dmux_rest_get(proc_ctx_t *proc_ctx, const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l02246">live555_rtsp.cpp:2246</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_abd61654410d5c9ce8d3d7fc52430d8be"><div class="ttname"><a href="live555__rtsp_8cpp.html#abd61654410d5c9ce8d3d7fc52430d8be">live555_rtsp_dmux_rest_put</a></div><div class="ttdeci">static int live555_rtsp_dmux_rest_put(proc_ctx_t *proc_ctx, const char *str)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l02501">live555_rtsp.cpp:2501</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_a47ff243b0d13dd2e2fa45e543957d4e5"><div class="ttname"><a href="live555__rtsp_8cpp.html#a47ff243b0d13dd2e2fa45e543957d4e5">live555_rtsp_dmux_open</a></div><div class="ttdeci">static proc_ctx_t * live555_rtsp_dmux_open(const proc_if_t *proc_if, const char *settings_str, log_ctx_t *log_ctx, va_list arg)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l02096">live555_rtsp.cpp:2096</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_a6725a20c83725a3080c2eca916800dab"><div class="ttname"><a href="live555__rtsp_8cpp.html#a6725a20c83725a3080c2eca916800dab">live555_rtsp_dmux_close</a></div><div class="ttdeci">static void live555_rtsp_dmux_close(proc_ctx_t **ref_proc_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l02184">live555_rtsp.cpp:2184</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_a7424e763a4f50f3b4563f86b28569f9d"><div class="ttname"><a href="live555__rtsp_8cpp.html#a7424e763a4f50f3b4563f86b28569f9d">live555_rtsp_dmux_process_frame</a></div><div class="ttdeci">static int live555_rtsp_dmux_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l02409">live555_rtsp.cpp:2409</a></div></div>
 </div><!-- fragment --><p>Processor interface implementing the wrapper of the live555 RTSP de-multiplexer. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00538">538</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00581">581</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1340,11 +1360,11 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    <span class="stringliteral">&quot;live555_rtsp_es_mux&quot;</span>,</div><div class="line">    live555_rtsp_es_mux_open,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a5ecc6f5de6844803a83fab12a13476a2">live555_rtsp_es_mux_close</a>,</div><div class="line">    NULL, </div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#ac4cfec4d7d7a00d103544d0e9438c8cd">live555_rtsp_es_mux_rest_get</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#abb290dc91efdc5ecf11447a219348321">live555_rtsp_es_mux_process_frame</a>,</div><div class="line">    NULL, </div><div class="line">    NULL,</div><div class="line">    NULL,</div><div class="line">    NULL,</div><div class="line">}</div><div class="ttc" id="live555__rtsp_8cpp_html_ac4cfec4d7d7a00d103544d0e9438c8cd"><div class="ttname"><a href="live555__rtsp_8cpp.html#ac4cfec4d7d7a00d103544d0e9438c8cd">live555_rtsp_es_mux_rest_get</a></div><div class="ttdeci">static int live555_rtsp_es_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l01492">live555_rtsp.cpp:1492</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_abb290dc91efdc5ecf11447a219348321"><div class="ttname"><a href="live555__rtsp_8cpp.html#abb290dc91efdc5ecf11447a219348321">live555_rtsp_es_mux_process_frame</a></div><div class="ttdeci">static int live555_rtsp_es_mux_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l01335">live555_rtsp.cpp:1335</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_a5ecc6f5de6844803a83fab12a13476a2"><div class="ttname"><a href="live555__rtsp_8cpp.html#a5ecc6f5de6844803a83fab12a13476a2">live555_rtsp_es_mux_close</a></div><div class="ttdeci">static void live555_rtsp_es_mux_close(proc_ctx_t **ref_proc_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l01304">live555_rtsp.cpp:1304</a></div></div>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    <span class="stringliteral">&quot;live555_rtsp_es_mux&quot;</span>, <span class="stringliteral">&quot;multiplexer&quot;</span>, <span class="stringliteral">&quot;application/octet-stream&quot;</span>,</div><div class="line">    (uint64_t)PROC_FEATURE_WR,</div><div class="line">    live555_rtsp_es_mux_open,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a5ecc6f5de6844803a83fab12a13476a2">live555_rtsp_es_mux_close</a>,</div><div class="line">    NULL, </div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a56e14bf531cf71bcc507f3f19d1f6d26">live555_rtsp_es_mux_rest_get</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#abb290dc91efdc5ecf11447a219348321">live555_rtsp_es_mux_process_frame</a>,</div><div class="line">    NULL, </div><div class="line">    NULL,</div><div class="line">    NULL,</div><div class="line">    NULL,</div><div class="line">}</div><div class="ttc" id="live555__rtsp_8cpp_html_a56e14bf531cf71bcc507f3f19d1f6d26"><div class="ttname"><a href="live555__rtsp_8cpp.html#a56e14bf531cf71bcc507f3f19d1f6d26">live555_rtsp_es_mux_rest_get</a></div><div class="ttdeci">static int live555_rtsp_es_mux_rest_get(proc_ctx_t *proc_ctx, const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l01561">live555_rtsp.cpp:1561</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_abb290dc91efdc5ecf11447a219348321"><div class="ttname"><a href="live555__rtsp_8cpp.html#abb290dc91efdc5ecf11447a219348321">live555_rtsp_es_mux_process_frame</a></div><div class="ttdeci">static int live555_rtsp_es_mux_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l01404">live555_rtsp.cpp:1404</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_a5ecc6f5de6844803a83fab12a13476a2"><div class="ttname"><a href="live555__rtsp_8cpp.html#a5ecc6f5de6844803a83fab12a13476a2">live555_rtsp_es_mux_close</a></div><div class="ttdeci">static void live555_rtsp_es_mux_close(proc_ctx_t **ref_proc_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l01373">live555_rtsp.cpp:1373</a></div></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00524">524</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00566">566</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>
@@ -1357,15 +1377,15 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    <span class="stringliteral">&quot;live555_rtsp_mux&quot;</span>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a2f593befac270f3c0f87fd59306c9a07">live555_rtsp_mux_open</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#ae36c82c14b171460aad0cdf9b167c5b0">live555_rtsp_mux_close</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#abe47b6b8febe17d311ecede4da45aea0">live555_rtsp_mux_rest_put</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a3f56cffbb3c31acc00a84d9e48a966cc">live555_rtsp_mux_rest_get</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#ad71374130a2220d19874d40b086b1631">live555_rtsp_mux_process_frame</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#ad353f75943a3ca57089e984dd6a63821">live555_rtsp_mux_opt</a>,</div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">}</div><div class="ttc" id="live555__rtsp_8cpp_html_a3f56cffbb3c31acc00a84d9e48a966cc"><div class="ttname"><a href="live555__rtsp_8cpp.html#a3f56cffbb3c31acc00a84d9e48a966cc">live555_rtsp_mux_rest_get</a></div><div class="ttdeci">static int live555_rtsp_mux_rest_get(proc_ctx_t *proc_ctx, char **rest_str)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00962">live555_rtsp.cpp:962</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_ad353f75943a3ca57089e984dd6a63821"><div class="ttname"><a href="live555__rtsp_8cpp.html#ad353f75943a3ca57089e984dd6a63821">live555_rtsp_mux_opt</a></div><div class="ttdeci">static int live555_rtsp_mux_opt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00855">live555_rtsp.cpp:855</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_abe47b6b8febe17d311ecede4da45aea0"><div class="ttname"><a href="live555__rtsp_8cpp.html#abe47b6b8febe17d311ecede4da45aea0">live555_rtsp_mux_rest_put</a></div><div class="ttdeci">static int live555_rtsp_mux_rest_put(proc_ctx_t *proc_ctx, const char *str)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00920">live555_rtsp.cpp:920</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_ae36c82c14b171460aad0cdf9b167c5b0"><div class="ttname"><a href="live555__rtsp_8cpp.html#ae36c82c14b171460aad0cdf9b167c5b0">live555_rtsp_mux_close</a></div><div class="ttdeci">static void live555_rtsp_mux_close(proc_ctx_t **ref_proc_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00692">live555_rtsp.cpp:692</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_a2f593befac270f3c0f87fd59306c9a07"><div class="ttname"><a href="live555__rtsp_8cpp.html#a2f593befac270f3c0f87fd59306c9a07">live555_rtsp_mux_open</a></div><div class="ttdeci">static proc_ctx_t * live555_rtsp_mux_open(const proc_if_t *proc_if, const char *settings_str, log_ctx_t *log_ctx, va_list arg)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00557">live555_rtsp.cpp:557</a></div></div>
-<div class="ttc" id="live555__rtsp_8cpp_html_ad71374130a2220d19874d40b086b1631"><div class="ttname"><a href="live555__rtsp_8cpp.html#ad71374130a2220d19874d40b086b1631">live555_rtsp_mux_process_frame</a></div><div class="ttdeci">static int live555_rtsp_mux_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00801">live555_rtsp.cpp:801</a></div></div>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    <span class="stringliteral">&quot;live555_rtsp_mux&quot;</span>, <span class="stringliteral">&quot;multiplexer&quot;</span>, <span class="stringliteral">&quot;application/octet-stream&quot;</span>,</div><div class="line">    (uint64_t)PROC_FEATURE_WR,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a2f593befac270f3c0f87fd59306c9a07">live555_rtsp_mux_open</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#ae36c82c14b171460aad0cdf9b167c5b0">live555_rtsp_mux_close</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#abe47b6b8febe17d311ecede4da45aea0">live555_rtsp_mux_rest_put</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#a79702efb465218250b0e0b47968daa19">live555_rtsp_mux_rest_get</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#ad71374130a2220d19874d40b086b1631">live555_rtsp_mux_process_frame</a>,</div><div class="line">    <a class="code" href="live555__rtsp_8cpp.html#ad353f75943a3ca57089e984dd6a63821">live555_rtsp_mux_opt</a>,</div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">    NULL, </div><div class="line">}</div><div class="ttc" id="live555__rtsp_8cpp_html_ad353f75943a3ca57089e984dd6a63821"><div class="ttname"><a href="live555__rtsp_8cpp.html#ad353f75943a3ca57089e984dd6a63821">live555_rtsp_mux_opt</a></div><div class="ttdeci">static int live555_rtsp_mux_opt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00899">live555_rtsp.cpp:899</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_a79702efb465218250b0e0b47968daa19"><div class="ttname"><a href="live555__rtsp_8cpp.html#a79702efb465218250b0e0b47968daa19">live555_rtsp_mux_rest_get</a></div><div class="ttdeci">static int live555_rtsp_mux_rest_get(proc_ctx_t *proc_ctx, const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l01006">live555_rtsp.cpp:1006</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_abe47b6b8febe17d311ecede4da45aea0"><div class="ttname"><a href="live555__rtsp_8cpp.html#abe47b6b8febe17d311ecede4da45aea0">live555_rtsp_mux_rest_put</a></div><div class="ttdeci">static int live555_rtsp_mux_rest_put(proc_ctx_t *proc_ctx, const char *str)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00964">live555_rtsp.cpp:964</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_ae36c82c14b171460aad0cdf9b167c5b0"><div class="ttname"><a href="live555__rtsp_8cpp.html#ae36c82c14b171460aad0cdf9b167c5b0">live555_rtsp_mux_close</a></div><div class="ttdeci">static void live555_rtsp_mux_close(proc_ctx_t **ref_proc_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00736">live555_rtsp.cpp:736</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_a2f593befac270f3c0f87fd59306c9a07"><div class="ttname"><a href="live555__rtsp_8cpp.html#a2f593befac270f3c0f87fd59306c9a07">live555_rtsp_mux_open</a></div><div class="ttdeci">static proc_ctx_t * live555_rtsp_mux_open(const proc_if_t *proc_if, const char *settings_str, log_ctx_t *log_ctx, va_list arg)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00601">live555_rtsp.cpp:601</a></div></div>
+<div class="ttc" id="live555__rtsp_8cpp_html_ad71374130a2220d19874d40b086b1631"><div class="ttname"><a href="live555__rtsp_8cpp.html#ad71374130a2220d19874d40b086b1631">live555_rtsp_mux_process_frame</a></div><div class="ttdeci">static int live555_rtsp_mux_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)</div><div class="ttdef"><b>Definition:</b> <a href="live555__rtsp_8cpp_source.html#l00845">live555_rtsp.cpp:845</a></div></div>
 </div><!-- fragment --><p>Processor interface implementing the wrapper of the live555 RTSP multiplexer. </p>
 
-<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00510">510</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="live555__rtsp_8cpp_source.html#l00551">551</a> of file <a class="el" href="live555__rtsp_8cpp_source.html">live555_rtsp.cpp</a>.</p>
 
 </div>
 </div>

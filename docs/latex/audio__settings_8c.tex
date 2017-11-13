@@ -48,6 +48,11 @@ int \hyperlink{audio__settings_8c_a93a57a5c49dc87da5e5bd7b60c30aad8}{audio\+\_\+
 \item 
 int \hyperlink{audio__settings_8c_a43d736ba88c1a3a5704efe49cdfa180e}{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get} (volatile \hyperlink{audio__settings_8h_a1ec2b2e83ade2c4fc33cfb910bc007ad}{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$audio\+\_\+settings\+\_\+dec\+\_\+ctx, c\+J\+S\+ON $\ast$$\ast$ref\+\_\+cjson\+\_\+rest, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const char $\ast$ \hyperlink{audio__settings_8c_a66f2d046cf48d90df86ea0e19ce0c73b}{supported\+\_\+samples\+\_\+format\+\_\+oput\+\_\+array\+\_\+dec} \mbox{[}$\,$\mbox{]}
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -69,7 +74,7 @@ Pointer to the generic audio decoder settings context structure.
 \end{DoxyReturn}
 
 
-Definition at line 208 of file audio\+\_\+settings.\+c.
+Definition at line 218 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy}}
 \index{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+cpy}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -91,7 +96,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 251 of file audio\+\_\+settings.\+c.
+Definition at line 275 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit}}
 \index{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+deinit}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -107,7 +112,7 @@ De-\/initialize audio decoder generic settings. This function release any heap-\
 \end{DoxyParams}
 
 
-Definition at line 244 of file audio\+\_\+settings.\+c.
+Definition at line 256 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init}}
 \index{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+init}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -126,7 +131,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 229 of file audio\+\_\+settings.\+c.
+Definition at line 242 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release}}
 \index{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+release}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -142,7 +147,7 @@ Release generic audio decoder settings context structure previously allocated by
 \end{DoxyParams}
 
 
-Definition at line 214 of file audio\+\_\+settings.\+c.
+Definition at line 224 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get}}
 \index{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+get}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -167,7 +172,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 329 of file audio\+\_\+settings.\+c.
+Definition at line 399 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put}}
 \index{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put@{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+restful\+\_\+put}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -192,7 +197,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 267 of file audio\+\_\+settings.\+c.
+Definition at line 298 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate}}
 \index{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+allocate}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -206,7 +211,7 @@ Pointer to the generic audio encoder settings context structure.
 \end{DoxyReturn}
 
 
-Definition at line 38 of file audio\+\_\+settings.\+c.
+Definition at line 48 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy}}
 \index{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+cpy}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -228,7 +233,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 80 of file audio\+\_\+settings.\+c.
+Definition at line 90 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit}}
 \index{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+deinit}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -244,7 +249,7 @@ De-\/initialize audio encoder generic settings. This function release any heap-\
 \end{DoxyParams}
 
 
-Definition at line 73 of file audio\+\_\+settings.\+c.
+Definition at line 83 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init}}
 \index{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+init}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -263,7 +268,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 59 of file audio\+\_\+settings.\+c.
+Definition at line 69 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release}}
 \index{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+release}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -279,7 +284,7 @@ Release generic audio encoder settings context structure previously allocated by
 \end{DoxyParams}
 
 
-Definition at line 44 of file audio\+\_\+settings.\+c.
+Definition at line 54 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get}}
 \index{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+get}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -304,7 +309,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 163 of file audio\+\_\+settings.\+c.
+Definition at line 173 of file audio\+\_\+settings.\+c.
 
 \index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put}}
 \index{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put@{audio\+\_\+settings\+\_\+enc\+\_\+ctx\+\_\+restful\+\_\+put}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
@@ -329,5 +334,23 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 99 of file audio\+\_\+settings.\+c.
+Definition at line 109 of file audio\+\_\+settings.\+c.
+
+
+
+\subsection{Variable Documentation}
+\index{audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}!supported\+\_\+samples\+\_\+format\+\_\+oput\+\_\+array\+\_\+dec@{supported\+\_\+samples\+\_\+format\+\_\+oput\+\_\+array\+\_\+dec}}
+\index{supported\+\_\+samples\+\_\+format\+\_\+oput\+\_\+array\+\_\+dec@{supported\+\_\+samples\+\_\+format\+\_\+oput\+\_\+array\+\_\+dec}!audio\+\_\+settings.\+c@{audio\+\_\+settings.\+c}}
+\subsubsection[{\texorpdfstring{supported\+\_\+samples\+\_\+format\+\_\+oput\+\_\+array\+\_\+dec}{supported_samples_format_oput_array_dec}}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ supported\+\_\+samples\+\_\+format\+\_\+oput\+\_\+array\+\_\+dec\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{audio__settings_8c_a66f2d046cf48d90df86ea0e19ce0c73b}{}\label{audio__settings_8c_a66f2d046cf48d90df86ea0e19ce0c73b}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+        \textcolor{stringliteral}{"planar\_signed\_16b"},
+        \textcolor{stringliteral}{"interleaved\_signed\_16b"},
+        NULL
+\}
+\end{DoxyCode}
+Array of character string specifying the supported sample-\/formats for the audio decoder output. 
+
+Definition at line 42 of file audio\+\_\+settings.\+c.
 

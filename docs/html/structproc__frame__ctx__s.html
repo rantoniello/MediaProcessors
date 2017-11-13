@@ -107,6 +107,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ab3f274e1a3c0df994275d29d7fce36da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa68098f554e8a167b34d8454af44afda"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__frame__ctx__s.html#aa68098f554e8a167b34d8454af44afda">proc_sample_fmt</a></td></tr>
 <tr class="separator:aa68098f554e8a167b34d8454af44afda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b92794eac73a513fe18d5e4847ec4ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__frame__ctx__s.html#a6b92794eac73a513fe18d5e4847ec4ed">proc_sampling_rate</a></td></tr>
+<tr class="separator:a6b92794eac73a513fe18d5e4847ec4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab08e6752be55e23d4a37ec37931a30b9"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__frame__ctx__s.html#ab08e6752be55e23d4a37ec37931a30b9">pts</a></td></tr>
 <tr class="separator:ab08e6752be55e23d4a37ec37931a30b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7300cb89fc1872dbcad499aa4d8435dd"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__frame__ctx__s.html#a7300cb89fc1872dbcad499aa4d8435dd">dts</a></td></tr>
@@ -117,7 +119,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Input/output frame context structure. This aims to be a generic input/output frame structure for any kind of processing (e.g. video, audio, subtitles, data, ...). Not all the fields will be necessarily used by all the processors, in fact, most of the processors will only use a subset of these fields. </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00077">77</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00078">78</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="ae3e8c9753324e6798ef8613fd3e772d2"></a>
 <div class="memitem">
@@ -130,7 +132,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Pointer to data buffer. Data may be organized in one or more "data planes". </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00083">83</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00084">84</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -145,7 +147,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Decoding time-stamp, in microseconds. Not used in the case of raw data (only used at encoder output/decoder input, by encoders that use internal frame reordering). </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00136">136</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00144">144</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -160,7 +162,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Elementary stream identifier. Used, for example, in mutiplexion / demultiplexion. </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00141">141</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00149">149</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -175,7 +177,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Frame height. In the case of audio, compressed/encoded data, or any 1-dimensional data, this value should be set to 1. </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00118">118</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00119">119</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -190,7 +192,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Number of bytes per line for each plane. This is not the number of actual data bytes per line, but the stride in byte units (stride bytes &gt;= data bytes per line). For example, in the case of raw video YUV planar formatted data, each line-size refer to the buffer line stride applicable to each data plane. In the case of non-planar raw data or compressed/encoded data, only one entry may be used and would specify the buffer size in bytes (note that buffer size &gt;= actual data size) The number of actual data bytes per line is given by 'width' parameter for the corresponding plane. </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00106">106</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00107">107</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -205,7 +207,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Pointers to data planes. These pointers refer to a position within the data buffer. For example, in the case of raw video YUV planar formatted data, three planes may be used corresponding to the luminance and the two chrominances components respectively. In the case of non-planar raw data or compressed/encoded data, only the first plane may be used. </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00093">93</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00094">94</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -220,7 +222,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Processor samples format identifier. Type proc_sample_fmt_t enumerates the supported formats (table proc_sample_fmt_lut can also be used if literal description is preferred). Typically not used in the case of compressed/encoded data. </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00126">126</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00127">127</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6b92794eac73a513fe18d5e4847ec4ed"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int proc_frame_ctx_s::proc_sampling_rate</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Processor data sampling rate. For example, for video, this value approximately represent the frames-per-second (FPS). For audio, the sampling-rate value in units of Hz. (e.g. 44100, ...) </p>
+
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00134">134</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -235,7 +252,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Presentation time-stamp, in microseconds. </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00130">130</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00138">138</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -250,7 +267,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Frame width. In the case of audio, compressed/encoded data, or any 1-dimensional data, this value is used to specify the actual data size in bytes. </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00112">112</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00113">113</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>

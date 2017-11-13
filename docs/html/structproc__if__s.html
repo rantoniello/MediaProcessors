@@ -111,14 +111,20 @@ Collaboration diagram for proc_if_s:</div>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa284f1d0bdde2fae0b51101f658430ee"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#aa284f1d0bdde2fae0b51101f658430ee">proc_name</a></td></tr>
 <tr class="separator:aa284f1d0bdde2fae0b51101f658430ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a8a04d2e81ca4dfa55a8526644dd729"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#a3a8a04d2e81ca4dfa55a8526644dd729">proc_type</a></td></tr>
+<tr class="separator:a3a8a04d2e81ca4dfa55a8526644dd729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdb204f8c976ed829466774aaa6cdf89"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#afdb204f8c976ed829466774aaa6cdf89">proc_mime</a></td></tr>
+<tr class="separator:afdb204f8c976ed829466774aaa6cdf89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a657d976a32c34bff11070599b11c2dd7"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#a657d976a32c34bff11070599b11c2dd7">flag_proc_features</a></td></tr>
+<tr class="separator:a657d976a32c34bff11070599b11c2dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34999576771394dfb721463c8455ba06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#a34999576771394dfb721463c8455ba06">open</a> )(const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if, const char *settings_str, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx, va_list arg)</td></tr>
 <tr class="separator:a34999576771394dfb721463c8455ba06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5971ac1d09d1c6ec3508c36fb286c19"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#af5971ac1d09d1c6ec3508c36fb286c19">close</a> )(<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> **ref_proc_ctx)</td></tr>
 <tr class="separator:af5971ac1d09d1c6ec3508c36fb286c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb4d2c240c52904ebd6904f54b1a9b78"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#acb4d2c240c52904ebd6904f54b1a9b78">rest_put</a> )(<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const char *str)</td></tr>
 <tr class="separator:acb4d2c240c52904ebd6904f54b1a9b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd94617c2897f8b3bcbd28d90bdf0ca1"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#afd94617c2897f8b3bcbd28d90bdf0ca1">rest_get</a> )(<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, char **ref_str)</td></tr>
-<tr class="separator:afd94617c2897f8b3bcbd28d90bdf0ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e45b33c52b931954f7a0d8a14f0db53"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#a1e45b33c52b931954f7a0d8a14f0db53">rest_get</a> )(<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a> rest_fmt, void **ref_reponse)</td></tr>
+<tr class="separator:a1e45b33c52b931954f7a0d8a14f0db53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab67b4061f94b6f15ae40c796b6b33597"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#ab67b4061f94b6f15ae40c796b6b33597">process_frame</a> )(<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, <a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx_iput, <a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx_oput)</td></tr>
 <tr class="separator:ab67b4061f94b6f15ae40c796b6b33597"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ca0939d6721f368d2560851197fca36"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structproc__if__s.html#a4ca0939d6721f368d2560851197fca36">opt</a> )(<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const char *tag, va_list arg)</td></tr>
@@ -133,7 +139,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>PROC interface structure prototype. Each PROC type will define a static and unambiguous interface of this type. </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00149">149</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00168">168</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="af5971ac1d09d1c6ec3508c36fb286c19"></a>
 <div class="memitem">
@@ -151,7 +157,22 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00177">177</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00215">215</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a657d976a32c34bff11070599b11c2dd7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t proc_if_s::flag_proc_features</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Processor features flags. </p>
+
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00186">186</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -171,7 +192,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00249">249</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00291">291</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -191,7 +212,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00262">262</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00304">304</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -215,7 +236,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the processor context structure on success, NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00167">167</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00205">205</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -237,7 +258,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00233">233</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00275">275</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -257,7 +278,22 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00277">277</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00319">319</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afdb204f8c976ed829466774aaa6cdf89"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* proc_if_s::proc_mime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Media type and sub-type (formerly known as MIME types and sub-type). See <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">http://www.iana.org/assignments/media-types/media-types.xhtml</a>. For muxers we use by default: "application/octet-stream" </p>
+
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00182">182</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -272,7 +308,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Unambiguous PROC identifier name (character string). </p>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00153">153</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00172">172</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3a8a04d2e81ca4dfa55a8526644dd729"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* proc_if_s::proc_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Processor type: encoder, decoder, multiplexer, demultiplexer. </p>
+
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00176">176</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -295,29 +346,30 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00217">217</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00259">259</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="afd94617c2897f8b3bcbd28d90bdf0ca1"></a>
+<a class="anchor" id="a1e45b33c52b931954f7a0d8a14f0db53"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* proc_if_s::rest_get) (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, char **ref_str)</td>
+          <td class="memname">int(* proc_if_s::rest_get) (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const <a class="el" href="proc__if_8h.html#a9bea3dae53a91f2a3e3a459d1d3e22b3">proc_if_rest_fmt_t</a> rest_fmt, void **ref_reponse)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Get current processor (PROC) settings. Settings are returned by argument in a character string in JSON format. This method is asynchronous and thread safe. This callback is optional (can be set to NULL). </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">proc_ctx</td><td>Pointer to the processor (PROC) context structure obtained in a previous call to the '<a class="el" href="structproc__if__s.html#a34999576771394dfb721463c8455ba06">open()</a>' callback method. </td></tr>
-    <tr><td class="paramname">ref_str</td><td>Reference to the pointer to a character string returning the processor's representational state (including current settings). </td></tr>
+    <tr><td class="paramname">rest_fmt</td><td>Indicates the format in which the response data is to be returned. Available formats are enumerated at 'proc_if_rest_fmt_t'. </td></tr>
+    <tr><td class="paramname">ref_reponse</td><td>Reference to the pointer to a data structure returning the processor's representational state (including current settings). The returned data structure is formatted according to what is indicated in the parameter 'rest_fmt'. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00204">204</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00245">245</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>
@@ -339,7 +391,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00190">190</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8h_source.html#l00228">228</a> of file <a class="el" href="proc__if_8h_source.html">proc_if.h</a>.</p>
 
 </div>
 </div>

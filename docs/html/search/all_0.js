@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['acc_5fio_5fbits',['acc_io_bits',['../structproc__ctx__s.html#a63e59dc7c4a361ca2b52e2354f51c33a',1,'proc_ctx_s']]],
+  ['acc_5flatency_5fnsec',['acc_latency_nsec',['../structproc__ctx__s.html#a58e7e20b896b1d74789f2fe9b971fd09',1,'proc_ctx_s']]],
   ['allocate_5fframe_5fvideo',['allocate_frame_video',['../proc__frame__2__ffmpeg_8c.html#a49cb3d8a3699061fad962b8a28fb6259',1,'allocate_frame_video(int pix_fmt, int width, int height):&#160;proc_frame_2_ffmpeg.c'],['../proc__frame__2__ffmpeg_8h.html#a49cb3d8a3699061fad962b8a28fb6259',1,'allocate_frame_video(int pix_fmt, int width, int height):&#160;proc_frame_2_ffmpeg.c']]],
   ['api_5fmutex',['api_mutex',['../structfifo__ctx__s.html#a27be272ae3fa045dfb5e64778a484725',1,'fifo_ctx_s::api_mutex()'],['../structproc__ctx__s.html#aea90c57d9b0a303b638a51ce7efa9a1e',1,'proc_ctx_s::api_mutex()'],['../structprocs__reg__elem__s.html#a9b7bb6d12868ba74184d95f1a2fdd2ab',1,'procs_reg_elem_s::api_mutex()'],['../structprocs__ctx__s.html#a27330c986436226abfa1b5a00b7bdeb1',1,'procs_ctx_s::api_mutex()']]],
   ['assert',['ASSERT',['../check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99',1,'check_utils.h']]],

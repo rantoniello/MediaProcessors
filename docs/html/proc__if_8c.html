@@ -123,6 +123,8 @@ Functions</h2></td></tr>
 <tr class="separator:adb9a1ff0b9cb3a06aa512f4728d412a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63c55c9b2cec24b252402b3a7f6e66b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8c.html#a63c55c9b2cec24b252402b3a7f6e66b3">proc_if_dup</a> (const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if_arg)</td></tr>
 <tr class="separator:a63c55c9b2cec24b252402b3a7f6e66b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a366394612f85367d742901ccaecc4921"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8c.html#a366394612f85367d742901ccaecc4921">proc_if_cmp</a> (const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if1, const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *proc_if2)</td></tr>
+<tr class="separator:a366394612f85367d742901ccaecc4921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ada48e5d6583a44f295821f2e5c5b05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc__if_8c.html#a8ada48e5d6583a44f295821f2e5c5b05">proc_if_release</a> (<a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> **ref_proc_if)</td></tr>
 <tr class="separator:a8ada48e5d6583a44f295821f2e5c5b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -150,7 +152,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Allocate an uninitialized input/ouput processor frame structure. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the newly allocated input/output processor frame structure; NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00046">46</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00047">47</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -175,7 +177,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the new allocated replica of the given input structure; NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00051">51</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00052">52</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -199,7 +201,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00123">123</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00125">125</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -217,7 +219,43 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Allocate an uninitialized processor interface context structure. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the newly allocated processor interface context structure; NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00142">142</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00144">144</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a366394612f85367d742901ccaecc4921"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int proc_if_cmp </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *&#160;</td>
+          <td class="paramname"><em>proc_if1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="proc_8h.html#a679816cf30e0b7a8f3e7464e67a6a844">proc_if_t</a> *&#160;</td>
+          <td class="paramname"><em>proc_if2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Compares if given processor interfaces are the equal. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proc_if1</td><td>Pointer to the first processor interface context structure to be compared. </td></tr>
+    <tr><td class="paramname">proc_if2</td><td>Pointer to the second processor interface context structure to be compared. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Value 0 if given contexts are equal, otherwise non-zero value is returned. </dd></dl>
+
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00189">189</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -242,7 +280,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to a new allocated replica of the given input structure; NULL if fails. </dd></dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00147">147</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00149">149</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -266,7 +304,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00178">178</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
+<p>Definition at line <a class="el" href="proc__if_8c_source.html#l00234">234</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>
 
 </div>
 </div>
@@ -280,9 +318,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    {<a class="code" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a994f41f061f7c0e8fc91e0851a62f574">PROC_IF_FMT_UNDEF</a>, <span class="stringliteral">&quot;Undefined format&quot;</span>},</div><div class="line">    {<a class="code" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a777f2e9fab3b405cc9dd46062d3eab33">PROC_IF_FMT_YUV420P</a>, <span class="stringliteral">&quot;Planar YUV 4:2:0 with 12bpp&quot;</span>},</div><div class="line">    </div><div class="line">    {<a class="code" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9ad70b5725d66f06b07ec6e9927c39eaa8">PROC_IF_FMT_S16P</a>, <span class="stringliteral">&quot;Planar signed 16 bits&quot;</span>}</div><div class="line">}</div><div class="ttc" id="proc__if_8h_html_ac4cd7cdccf4a238d4816b30a0c60c7d9a777f2e9fab3b405cc9dd46062d3eab33"><div class="ttname"><a href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a777f2e9fab3b405cc9dd46062d3eab33">PROC_IF_FMT_YUV420P</a></div><div class="ttdoc">Planar YUV 4:2:0 with 12bpp (video) </div><div class="ttdef"><b>Definition:</b> <a href="proc__if_8h_source.html#l00055">proc_if.h:55</a></div></div>
-<div class="ttc" id="proc__if_8h_html_ac4cd7cdccf4a238d4816b30a0c60c7d9ad70b5725d66f06b07ec6e9927c39eaa8"><div class="ttname"><a href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9ad70b5725d66f06b07ec6e9927c39eaa8">PROC_IF_FMT_S16P</a></div><div class="ttdoc">Planar signed 16 bits (typically audio) </div><div class="ttdef"><b>Definition:</b> <a href="proc__if_8h_source.html#l00057">proc_if.h:57</a></div></div>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    {<a class="code" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a994f41f061f7c0e8fc91e0851a62f574">PROC_IF_FMT_UNDEF</a>, <span class="stringliteral">&quot;Undefined format&quot;</span>},</div><div class="line">    {<a class="code" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a777f2e9fab3b405cc9dd46062d3eab33">PROC_IF_FMT_YUV420P</a>, <span class="stringliteral">&quot;Planar YUV 4:2:0 with 12bpp&quot;</span>},</div><div class="line">    </div><div class="line">    {<a class="code" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a808f9357cebd8802ec48e80b5a2f28e8">PROC_IF_FMT_S16</a>, <span class="stringliteral">&quot;Interleaved signed 16 bits&quot;</span>},</div><div class="line">    {<a class="code" href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9ad70b5725d66f06b07ec6e9927c39eaa8">PROC_IF_FMT_S16P</a>, <span class="stringliteral">&quot;Planar signed 16 bits&quot;</span>}</div><div class="line">}</div><div class="ttc" id="proc__if_8h_html_ac4cd7cdccf4a238d4816b30a0c60c7d9a777f2e9fab3b405cc9dd46062d3eab33"><div class="ttname"><a href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a777f2e9fab3b405cc9dd46062d3eab33">PROC_IF_FMT_YUV420P</a></div><div class="ttdoc">Planar YUV 4:2:0 with 12bpp (video) </div><div class="ttdef"><b>Definition:</b> <a href="proc__if_8h_source.html#l00055">proc_if.h:55</a></div></div>
+<div class="ttc" id="proc__if_8h_html_ac4cd7cdccf4a238d4816b30a0c60c7d9ad70b5725d66f06b07ec6e9927c39eaa8"><div class="ttname"><a href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9ad70b5725d66f06b07ec6e9927c39eaa8">PROC_IF_FMT_S16P</a></div><div class="ttdoc">Planar signed 16 bits (typically audio) </div><div class="ttdef"><b>Definition:</b> <a href="proc__if_8h_source.html#l00058">proc_if.h:58</a></div></div>
 <div class="ttc" id="proc__if_8h_html_ac4cd7cdccf4a238d4816b30a0c60c7d9a994f41f061f7c0e8fc91e0851a62f574"><div class="ttname"><a href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a994f41f061f7c0e8fc91e0851a62f574">PROC_IF_FMT_UNDEF</a></div><div class="ttdoc">Undefined format. </div><div class="ttdef"><b>Definition:</b> <a href="proc__if_8h_source.html#l00054">proc_if.h:54</a></div></div>
+<div class="ttc" id="proc__if_8h_html_ac4cd7cdccf4a238d4816b30a0c60c7d9a808f9357cebd8802ec48e80b5a2f28e8"><div class="ttname"><a href="proc__if_8h.html#ac4cd7cdccf4a238d4816b30a0c60c7d9a808f9357cebd8802ec48e80b5a2f28e8">PROC_IF_FMT_S16</a></div><div class="ttdoc">Interleaved signed 16 bits (typically audio) </div><div class="ttdef"><b>Definition:</b> <a href="proc__if_8h_source.html#l00057">proc_if.h:57</a></div></div>
 </div><!-- fragment --><p>Processor samples format look-up table. </p>
 
 <p>Definition at line <a class="el" href="proc__if_8c_source.html#l00038">38</a> of file <a class="el" href="proc__if_8c_source.html">proc_if.c</a>.</p>

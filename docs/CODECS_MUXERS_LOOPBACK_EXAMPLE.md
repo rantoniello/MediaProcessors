@@ -143,7 +143,7 @@ $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs.
       "procs":[
          {
             "proc_id":0,
-            "type_name":"ffmpeg_m2v_enc",
+            "proc_name":"ffmpeg_m2v_enc",
             "links":[
                {
                   "rel":"self",
@@ -153,7 +153,7 @@ $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs.
          },
          {
             "proc_id":1,
-            "type_name":"ffmpeg_m2v_dec",
+            "proc_name":"ffmpeg_m2v_dec",
             "links":[
                {
                   "rel":"self",
@@ -163,7 +163,7 @@ $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs.
          },
          {
             "proc_id":2,
-            "type_name":"live555_rtsp_mux",
+            "proc_name":"live555_rtsp_mux",
             "links":[
                {
                   "rel":"self",
@@ -173,7 +173,7 @@ $ curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs.
          },
          {
             "proc_id":3,
-            "type_name":"live555_rtsp_dmux",
+            "proc_name":"live555_rtsp_dmux",
             "links":[
                {
                   "rel":"self",
@@ -281,7 +281,9 @@ $curl -H "Content-Type: application/json" -X GET -d '{}' "127.0.0.1:8088/procs/0
    "status":"OK",
    "message":null,
    "data":{
+      "latency_avg_usec":40751,
       "settings":{
+         "proc_name":"ffmpeg_m2v_enc",
          "bit_rate_output":307200,
          "frame_rate_output":15,
          "width_output":720,
