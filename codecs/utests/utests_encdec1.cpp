@@ -978,7 +978,7 @@ static void encdec_loopback(const proc_if_t *proc_if_enc,
 			CHECK(false);
 			goto end;
 		}
-		printf("Response: '%s'\n", settings_str); //comment-me
+		printf("Response (settings): '%s'\n", settings_str); //comment-me
 		fflush(stdout); //comment-me
 		/* Check response.
 		 * Note we omit specific codec parameters -as response may be an

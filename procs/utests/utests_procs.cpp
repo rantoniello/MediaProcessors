@@ -241,6 +241,8 @@ SUITE(UTESTS_PROCS)
 		int ret_code;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
+			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
+					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
@@ -266,6 +268,8 @@ SUITE(UTESTS_PROCS)
 		int ret_code;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
+			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
+					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
@@ -304,6 +308,8 @@ SUITE(UTESTS_PROCS)
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
+			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
+					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
@@ -364,6 +370,8 @@ end:
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/encoder",
+			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
+					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
@@ -373,6 +381,8 @@ end:
 		};
 		const proc_if_t proc_if_bypass_proc2= {
 			"bypass_processor2", "encoder2", "application/encoder2",
+			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
+					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,
@@ -498,6 +508,8 @@ end:
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
+			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
+					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
 			bypass_proc_open,
 			bypass_proc_close,
 			bypass_proc_rest_put,

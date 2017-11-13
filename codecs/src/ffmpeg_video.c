@@ -189,6 +189,8 @@ int ffmpeg_video_enc_frame(ffmpeg_video_enc_ctx_t *ffmpeg_video_enc_ctx,
 	register int prev_pix_fmt_iput, pix_fmt_iput, pix_fmt_native_codec;
 	register int prev_width_iput, prev_height_iput, width_iput, height_iput,
 		width_codec_oput, height_codec_oput;
+	const proc_if_t *proc_if;
+	uint64_t flag_proc_features;
     int ret_code, end_code= STAT_ERROR;
     proc_ctx_t *proc_ctx= NULL; // Do not release
     AVCodecContext *avcodecctx= NULL; // Do not release
@@ -207,6 +209,11 @@ int ffmpeg_video_enc_frame(ffmpeg_video_enc_ctx_t *ffmpeg_video_enc_ctx,
 
     /* Get (cast to) processor context structure */
     proc_ctx= (proc_ctx_t*)ffmpeg_video_enc_ctx;
+
+	/* Get required variables from PROC interface structure */
+	proc_if= proc_ctx->proc_if;
+	CHECK_DO(proc_if!= NULL, goto end);
+	flag_proc_features= proc_if->flag_proc_features;
 
     /* Get video CODEC context */
     avcodecctx= ffmpeg_video_enc_ctx->avcodecctx;
@@ -294,6 +301,8 @@ int ffmpeg_video_enc_frame(ffmpeg_video_enc_ctx_t *ffmpeg_video_enc_ctx,
 
     /* Read output packet from the encoder and put into output FIFO buffer */
     while(ret_code>= 0 && proc_ctx->flag_exit== 0) {
+
+
     	av_packet_unref(&pkt_oput);
     	ret_code= avcodec_receive_packet(avcodecctx, &pkt_oput);
         if(ret_code== AVERROR(EAGAIN) || ret_code== AVERROR_EOF) {
@@ -317,6 +326,12 @@ int ffmpeg_video_enc_frame(ffmpeg_video_enc_ctx_t *ffmpeg_video_enc_ctx,
          */
         pkt_oput.pos= avcodecctx->framerate.num;
 
+        /* Latency statistics related */
+        if((flag_proc_features&PROC_FEATURE_LATSTATS) &&
+        		pkt_oput.pts!= AV_NOPTS_VALUE)
+        	proc_acc_latency_measure(proc_ctx, pkt_oput.pts);
+
+		/* Put output frame into output FIFO */
         fifo_put_dup(oput_fifo_ctx, &pkt_oput, sizeof(void*));
     }
 
@@ -398,6 +413,8 @@ void ffmpeg_video_dec_ctx_deinit(ffmpeg_video_dec_ctx_t *ffmpeg_video_dec_ctx,
 int ffmpeg_video_dec_frame(ffmpeg_video_dec_ctx_t *ffmpeg_video_dec_ctx,
 		AVPacket *avpacket_iput, fifo_ctx_t* oput_fifo_ctx, log_ctx_t *log_ctx)
 {
+	const proc_if_t *proc_if;
+	uint64_t flag_proc_features;
     int ret_code, end_code= STAT_ERROR;
     proc_ctx_t *proc_ctx= NULL; // Do not release
     AVCodecContext *avcodecctx= NULL; // Do not release;
@@ -413,6 +430,11 @@ int ffmpeg_video_dec_frame(ffmpeg_video_dec_ctx_t *ffmpeg_video_dec_ctx,
 
     /* Get (cast to) processor context structure */
     proc_ctx= (proc_ctx_t*)ffmpeg_video_dec_ctx;
+
+	/* Get required variables from PROC interface structure */
+	proc_if= proc_ctx->proc_if;
+	CHECK_DO(proc_if!= NULL, goto end);
+	flag_proc_features= proc_if->flag_proc_features;
 
     /* Get video CODEC context */
     avcodecctx= ffmpeg_video_dec_ctx->avcodecctx;
@@ -454,6 +476,12 @@ int ffmpeg_video_dec_frame(ffmpeg_video_dec_ctx_t *ffmpeg_video_dec_ctx,
          */
         avframe_oput->sample_rate= avcodecctx->framerate.num;
 
+        /* Latency statistics related */
+        if((flag_proc_features&PROC_FEATURE_LATSTATS) &&
+        		avframe_oput->pts!= AV_NOPTS_VALUE)
+        	proc_acc_latency_measure(proc_ctx, avframe_oput->pts);
+
+		/* Put output frame into output FIFO */
     	fifo_put_dup(oput_fifo_ctx, avframe_oput, sizeof(void*));
     }
 

@@ -181,6 +181,15 @@ typedef struct proc_if_s {
 	 */
 	const char *proc_mime;
 	/**
+	 * Processor features flags.
+	 */
+	uint64_t flag_proc_features;
+#define PROC_FEATURE_RD 1 //< Readable (implements 'proc_recv_frame()')
+#define PROC_FEATURE_WR 2 //< Writable (implements 'proc_send_frame()')
+#define PROC_FEATURE_IOSTATS 4 //< Implements input/output statistics.
+#define PROC_FEATURE_IPUT_PTS 8 //< Implements input PTS statistics
+#define PROC_FEATURE_LATSTATS 16 //< Implements latency statistics.
+	/**
 	 * Allocates specific processor (PROC) context structure, initializes,
 	 * and launches processing thread.
 	 * This callback is mandatory (cannot be NULL).

@@ -149,6 +149,8 @@ void ffmpeg_audio_enc_ctx_deinit(ffmpeg_audio_enc_ctx_t *ffmpeg_audio_enc_ctx,
 int ffmpeg_audio_enc_frame(ffmpeg_audio_enc_ctx_t *ffmpeg_audio_enc_ctx,
 		AVFrame *avframe_iput, fifo_ctx_t* oput_fifo_ctx, log_ctx_t *log_ctx)
 {
+	const proc_if_t *proc_if;
+	uint64_t flag_proc_features;
     int ret_code, end_code= STAT_ERROR;
     proc_ctx_t *proc_ctx= NULL; // Do not release
     AVCodecContext *avcodecctx= NULL; // Do not release
@@ -164,6 +166,11 @@ int ffmpeg_audio_enc_frame(ffmpeg_audio_enc_ctx_t *ffmpeg_audio_enc_ctx,
 
     /* Get (cast to) processor context structure */
     proc_ctx= (proc_ctx_t*)ffmpeg_audio_enc_ctx;
+
+	/* Get required variables from PROC interface structure */
+	proc_if= proc_ctx->proc_if;
+	CHECK_DO(proc_if!= NULL, goto end);
+	flag_proc_features= proc_if->flag_proc_features;
 
     /* Get audio CODEC context */
     avcodecctx= ffmpeg_audio_enc_ctx->avcodecctx;
@@ -204,6 +211,12 @@ int ffmpeg_audio_enc_frame(ffmpeg_audio_enc_ctx_t *ffmpeg_audio_enc_ctx,
          */
         pkt_oput.pos= avcodecctx->sample_rate;
 
+        /* Latency statistics related */
+        if((flag_proc_features&PROC_FEATURE_LATSTATS) &&
+        		pkt_oput.pts!= AV_NOPTS_VALUE)
+        	proc_acc_latency_measure(proc_ctx, pkt_oput.pts);
+
+		/* Put output frame into output FIFO */
         fifo_put_dup(oput_fifo_ctx, &pkt_oput, sizeof(void*));
     }
 
@@ -298,6 +311,8 @@ void ffmpeg_audio_dec_ctx_deinit(ffmpeg_audio_dec_ctx_t *ffmpeg_audio_dec_ctx,
 int ffmpeg_audio_dec_frame(ffmpeg_audio_dec_ctx_t *ffmpeg_audio_dec_ctx,
 		AVPacket *avpacket_iput, fifo_ctx_t* oput_fifo_ctx, log_ctx_t *log_ctx)
 {
+	const proc_if_t *proc_if;
+	uint64_t flag_proc_features;
     int ret_code, end_code= STAT_ERROR;
     proc_ctx_t *proc_ctx= NULL; // Do not release
     AVCodecContext *avcodecctx= NULL; // Do not release;
@@ -313,6 +328,11 @@ int ffmpeg_audio_dec_frame(ffmpeg_audio_dec_ctx_t *ffmpeg_audio_dec_ctx,
 
     /* Get (cast to) processor context structure */
     proc_ctx= (proc_ctx_t*)ffmpeg_audio_dec_ctx;
+
+	/* Get required variables from PROC interface structure */
+	proc_if= proc_ctx->proc_if;
+	CHECK_DO(proc_if!= NULL, goto end);
+	flag_proc_features= proc_if->flag_proc_features;
 
     /* Get audio CODEC context */
     avcodecctx= ffmpeg_audio_dec_ctx->avcodecctx;
@@ -352,6 +372,12 @@ int ffmpeg_audio_dec_frame(ffmpeg_audio_dec_ctx_t *ffmpeg_audio_dec_ctx,
         /* Set sampling rate at output frame */
         avframe_oput->sample_rate= avcodecctx->sample_rate;
 
+        /* Latency statistics related */
+        if((flag_proc_features&PROC_FEATURE_LATSTATS) &&
+        		avframe_oput->pts!= AV_NOPTS_VALUE)
+        	proc_acc_latency_measure(proc_ctx, avframe_oput->pts);
+
+		/* Put output frame into output FIFO */
     	fifo_put_dup(oput_fifo_ctx, avframe_oput, sizeof(void*));
     }
 

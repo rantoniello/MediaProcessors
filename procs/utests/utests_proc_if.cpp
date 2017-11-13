@@ -92,6 +92,8 @@ SUITE(UTESTS_PROC_IF)
 		proc_if_t *proc_if= NULL;
 		const proc_if_t proc_if_dummy_proc= {
 			"dummy_processor", "encoder", "application/octet-stream",
+			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
+					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
 			dummy_proc_open,
 			dummy_proc_close,
 			dummy_proc_rest_put,

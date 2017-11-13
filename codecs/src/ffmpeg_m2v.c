@@ -145,6 +145,8 @@ static void ffmpeg_m2v_dec_settings_ctx_deinit(
 const proc_if_t proc_if_ffmpeg_m2v_enc=
 {
 	"ffmpeg_m2v_enc", "encoder", "video/MPV",
+	(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
+			PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
 	ffmpeg_m2v_enc_open,
 	ffmpeg_m2v_enc_close,
 	ffmpeg_m2v_enc_rest_put,
@@ -159,6 +161,8 @@ const proc_if_t proc_if_ffmpeg_m2v_enc=
 const proc_if_t proc_if_ffmpeg_m2v_dec=
 {
 	"ffmpeg_m2v_dec", "decoder", "video/MPV",
+	(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
+			PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
 	ffmpeg_m2v_dec_open,
 	ffmpeg_m2v_dec_close,
 	ffmpeg_m2v_dec_rest_put,

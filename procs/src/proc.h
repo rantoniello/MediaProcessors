@@ -108,20 +108,46 @@ typedef struct proc_ctx_s {
 	 * Input/output mutual exclusion locks.
 	 */
 	fair_lock_t *fair_lock_io_array[PROC_IO_NUM];
+	//@{
 	/**
-	 * Input/output bitrate statistics [bits per second]
-	 */
-	volatile uint32_t bitrate[PROC_IO_NUM];
-	/**
-	 * Accumulated bits at input/output interface. These variables are used
+	 * Bitrate measurement related variables:
+	 * - Input/output bitrate statistics [bits per second];
+	 * - Accumulated bits at input/output interface. These variables are used
 	 * internally to compute the input and output bitrate statistics
-	 * periodically.
+	 * periodically;
+	 * - Critical region to acquire or modify 'acc_io_bits[]' variable field.
 	 */
 	volatile uint32_t acc_io_bits[PROC_IO_NUM];
-	/**
-	 * Critical region to acquire or modify 'acc_io_bits[]' variable field.
-	 */
 	pthread_mutex_t acc_io_bits_mutex[PROC_IO_NUM];
+	volatile uint32_t bitrate[PROC_IO_NUM];
+	//@}
+    //@{
+	/**
+	 * Array registering the last input presentation time-stamps (PTS's).
+	 * Each PTS is registered together with the system-time clock (STC)
+	 * corresponding to the registration instant.
+	 */
+#define IPUT_PTS_ARRAY_SIZE 128
+#define IPUT_PTS_VAL 0
+#define IPUT_PTS_STC_VAL 1
+	int64_t iput_pts_array[2][IPUT_PTS_ARRAY_SIZE];
+	volatile int iput_pts_array_idx;
+	//@}
+    //@{
+	/**
+	 * Latency measurement related variables.
+	 * - Accumulated latency value (addition of individual frame latencies);
+	 * - Addition counter (number of values that are added, used to compute
+	 * average value);
+	 * - Critical region to acquire or modify these field.
+	 */
+	volatile int64_t acc_latency_nsec;
+	volatile int acc_latency_cnt;
+	pthread_mutex_t latency_mutex;
+	volatile int64_t latency_avg_usec;
+	volatile int64_t latency_max_usec;
+	volatile int64_t latency_min_usec;
+	//@}
 	/**
 	 * Processing thread exit indicator.
 	 * Set to non-zero to signal processing to abort immediately.
@@ -253,5 +279,10 @@ int proc_opt(proc_ctx_t *proc_ctx, const char *tag, ...);
  * va_arg macro, the value of the argument pointer is undefined after the call.
  */
 int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg);
+
+/* **** Utilities **** */
+
+void proc_acc_latency_measure(proc_ctx_t *proc_ctx,
+		const int64_t oput_frame_pts);
 
 #endif /* MEDIAPROCESSORS_SRC_PROC_H_ */

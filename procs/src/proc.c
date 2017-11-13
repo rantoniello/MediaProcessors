@@ -28,6 +28,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <pthread.h>
+#include <time.h>
+#include <errno.h>
+
+#include <libcjson/cJSON.h>
 
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
@@ -75,8 +79,16 @@ typedef struct proc_stats_thr_arg_s {
 
 /* **** Prototypes **** */
 
+static int procs_id_get(proc_ctx_t *proc_ctx, log_ctx_t *log_ctx,
+		proc_if_rest_fmt_t rest_fmt, void **ref_reponse);
+
 static void* proc_stats_thr(void *t);
 static void* proc_thr(void *t);
+
+static void proc_send_frame_stats_iput_pts(proc_ctx_t *proc_ctx,
+		const proc_frame_ctx_t *proc_frame_ctx);
+static void proc_send_frame_stats_io(proc_ctx_t *proc_ctx,
+		const proc_frame_ctx_t *proc_frame_ctx);
 
 /* **** Implementations **** */
 
@@ -156,6 +168,16 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 	ret_code= pthread_mutex_init(&proc_ctx->acc_io_bits_mutex[PROC_OPUT], NULL);
 	CHECK_DO(ret_code== 0, goto end);
 
+	/* Initialize array registering input presentation time-stamps (PTS's) */
+	proc_ctx->iput_pts_array_idx= 0;
+	memset(proc_ctx->iput_pts_array, -1, sizeof(proc_ctx->iput_pts_array));
+
+	/* Initialize latency measurement related variables */
+	proc_ctx->acc_latency_nsec= 0;
+	proc_ctx->acc_latency_cnt= 0;
+	ret_code= pthread_mutex_init(&proc_ctx->latency_mutex, NULL);
+	CHECK_DO(ret_code== 0, goto end);
+
 	/* At last, launch PROC thread */
 	proc_ctx->flag_exit= 0;
 	proc_ctx->start_routine= (const void*(*)(void*))proc_thr;
@@ -217,6 +239,9 @@ void proc_close(proc_ctx_t **ref_proc_ctx)
 		ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_OPUT])
 				== 0);
 
+		/* Release latency measurement related variables */
+		ASSERT(pthread_mutex_destroy(&proc_ctx->latency_mutex)== 0);
+
 		/* Close the specific PROC instance */
 		CHECK_DO((proc_if= proc_ctx->proc_if)!= NULL, return); // sanity check
 		CHECK_DO(proc_if->close!= NULL, return); // sanity check
@@ -239,41 +264,13 @@ int proc_send_frame(proc_ctx_t *proc_ctx,
 
 	LOG_CTX_SET(proc_ctx->log_ctx);
 
+	/* Treat input frame statistics */
+	proc_send_frame_stats_iput_pts(proc_ctx, proc_frame_ctx);
+	proc_send_frame_stats_io(proc_ctx, proc_frame_ctx);
+
 	/* Write frame to input FIFO */
 	end_code= fifo_put_dup(proc_ctx->fifo_ctx_array[PROC_IPUT],
 			proc_frame_ctx, sizeof(void*));
-
-	/* Update processor's input bitrate statistics
-	 * (note we are "sending frame *into* the processor").
-	 * For most processors implementation (specially for encoders and
-	 * decoders), measuring traffic at this point would be precise.
-	 * Nevertheless, for certain processors, as is the case of demultiplexers,
-	 * this function ('proc_send_frame()') is not used thus input bitrate
-	 * should be measured at some other point of the specific implementation
-	 * (e.g. when receiving data from an INET socket).
-	 */
-	if(end_code== STAT_SUCCESS && proc_frame_ctx!= NULL) {
-		register int i;
-		register uint32_t byte_cnt_iput, bit_cnt_iput;
-		register size_t width;
-		pthread_mutex_t *acc_io_bits_mutex_p=
-				&proc_ctx->acc_io_bits_mutex[PROC_IPUT];
-
-		/* Get frame size (we "unroll" for the most common cases) */
-		byte_cnt_iput= (proc_frame_ctx->width[0]* proc_frame_ctx->height[0])+
-				(proc_frame_ctx->width[1]* proc_frame_ctx->height[1])+
-				(proc_frame_ctx->width[2]* proc_frame_ctx->height[2]);
-		// We do the rest in a loop...
-		for(i= 3; (width= proc_frame_ctx->width[i])> 0 &&
-				i< PROC_FRAME_NUM_DATA_POINTERS; i++)
-			byte_cnt_iput+= width* proc_frame_ctx->height[i];
-
-		/* Update currently accumulated bit value */
-		bit_cnt_iput= (byte_cnt_iput<< 3);
-		ASSERT(pthread_mutex_lock(acc_io_bits_mutex_p)== 0);
-		proc_ctx->acc_io_bits[PROC_IPUT]+= bit_cnt_iput;
-		ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_p)== 0);
-	}
 
 	fair_unlock(proc_ctx->fair_lock_io_array[PROC_IPUT]);
 	return end_code;
@@ -363,8 +360,6 @@ int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)
 {
 	int end_code= STAT_ERROR;
 	const proc_if_t *proc_if= NULL;
-	int (*rest_get)(proc_ctx_t *proc_ctx, proc_if_rest_fmt_t rest_fmt,
-			void **ref_reponse)= NULL;
 	int (*rest_put)(proc_ctx_t *proc_ctx, const char *str)= NULL;
 	int (*opt)(proc_ctx_t *proc_ctx, const char *tag, va_list arg)= NULL;
 	LOG_CTX_INIT(NULL);
@@ -384,12 +379,9 @@ int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)
 		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 0);
 		end_code= STAT_SUCCESS;
 	} else if(TAG_IS("PROC_GET")) {
-		end_code= STAT_ENOTFOUND;
-		if(proc_if!= NULL && (rest_get= proc_if->rest_get)!= NULL) {
-			proc_if_rest_fmt_t rest_fmt= va_arg(arg, proc_if_rest_fmt_t);
-			void **ref_reponse= va_arg(arg, void**);
-			end_code= rest_get(proc_ctx, rest_fmt, ref_reponse);
-		}
+		proc_if_rest_fmt_t rest_fmt= va_arg(arg, proc_if_rest_fmt_t);
+		void **ref_reponse= va_arg(arg, void**);
+		end_code= procs_id_get(proc_ctx, LOG_CTX_GET(), rest_fmt, ref_reponse);
 	} else if(TAG_IS("PROC_PUT")) {
 		end_code= STAT_ENOTFOUND;
 		if(proc_if!= NULL && (rest_put= proc_if->rest_put)!= NULL)
@@ -407,8 +399,143 @@ int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)
 	return end_code;
 }
 
+void proc_acc_latency_measure(proc_ctx_t *proc_ctx,
+		const int64_t oput_frame_pts)
+{
+	register int i, idx;
+	LOG_CTX_INIT(NULL);
+
+	/* Check arguments */
+	CHECK_DO(proc_ctx!= NULL, return);
+	if(oput_frame_pts== 0)
+		return;
+
+	LOG_CTX_SET(proc_ctx->log_ctx);
+
+	/* Parse input circular PTS register.
+	 * Note that we do not care if this register is modified
+	 * concurrently in function 'proc_send_frame_stats_iput_pts()'...
+	 * this measurement is still valid.
+	 */
+	for(i= 0, idx= proc_ctx->iput_pts_array_idx; i< IPUT_PTS_ARRAY_SIZE;
+			i++, idx= (idx+ 1)% IPUT_PTS_ARRAY_SIZE) {
+		int64_t pts_iput= proc_ctx->iput_pts_array[IPUT_PTS_VAL][idx];
+
+		if(pts_iput== oput_frame_pts) {
+			register int ret_code;
+			register int64_t curr_nsec, iput_nsec;
+			struct timespec monotime_curr= {0};
+
+			ret_code= clock_gettime(CLOCK_MONOTONIC, &monotime_curr);
+			CHECK_DO(ret_code== 0, return);
+			curr_nsec= (int64_t)monotime_curr.tv_sec*1000000000+
+					(int64_t)monotime_curr.tv_nsec;
+			iput_nsec= proc_ctx->iput_pts_array[IPUT_PTS_STC_VAL][idx];
+			if(curr_nsec> iput_nsec) {
+				pthread_mutex_t *latency_mutex_p= &proc_ctx->latency_mutex;
+				ASSERT((pthread_mutex_lock(latency_mutex_p))== 0);
+				proc_ctx->acc_latency_nsec+= curr_nsec- iput_nsec;
+				proc_ctx->acc_latency_cnt++;
+				//LOGV("acc_latency_nsec= %"PRId64" (count: %d)\n",
+				//		proc_ctx->acc_latency_nsec,
+				//		proc_ctx->acc_latency_cnt); //comment-me
+				ASSERT((pthread_mutex_unlock(latency_mutex_p))== 0);
+			}
+			return;
+		}
+	}
+	return;
+}
+
+static int procs_id_get(proc_ctx_t *proc_ctx, log_ctx_t *log_ctx,
+		proc_if_rest_fmt_t rest_fmt, void **ref_reponse)
+{
+	const proc_if_t *proc_if;
+	int ret_code, end_code= STAT_ERROR;
+	cJSON *cjson_rest= NULL, *cjson_aux= NULL;
+	int (*rest_get)(proc_ctx_t *proc_ctx, proc_if_rest_fmt_t rest_fmt,
+			void **ref_reponse)= NULL;
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(proc_ctx!= NULL, return STAT_ERROR);
+	//log_ctx allowed to be NULL
+	CHECK_DO(rest_fmt>= 0 && rest_fmt< PROC_IF_REST_FMT_ENUM_MAX,
+			return STAT_ERROR);
+	CHECK_DO(ref_reponse!= NULL, return STAT_ERROR);
+
+	*ref_reponse= NULL;
+
+	/* Check that processor API critical section is locked */
+	ret_code= pthread_mutex_trylock(&proc_ctx->api_mutex);
+	CHECK_DO(ret_code== EBUSY, goto end);
+
+	/* Get required variables from PROC interface structure */
+	proc_if= proc_ctx->proc_if;
+	CHECK_DO(proc_if!= NULL, goto end);
+	rest_get= proc_if->rest_get;
+
+	/* Check if GET function callback is implemented by specific processor */
+	if(rest_get== NULL) {
+		/* Nothing to do */
+		end_code= STAT_ENOTFOUND;
+		goto end;
+	}
+
+	/* GET processor's REST response */
+	ret_code= rest_get(proc_ctx, PROC_IF_REST_FMT_CJSON, (void**)&cjson_rest);
+	if(ret_code!= STAT_SUCCESS) {
+		end_code= ret_code;
+		goto end;
+	}
+	CHECK_DO(cjson_rest!= NULL, goto end);
+
+	/* **** Add some REST elements at top ****
+	 * We do a little HACK to insert elements at top as cJSON library does not
+	 * support it natively -it always insert at the bottom-
+	 * We do this at the risk of braking in a future library version, as we
+	 * base current solution on the internal implementation of function
+	 * 'cJSON_AddItemToObject()' -may change in future-.
+	 */
+
+	/* 'latency_avg_usec' */
+	cjson_aux= cJSON_CreateNumber((double)proc_ctx->latency_avg_usec);
+	CHECK_DO(cjson_aux!= NULL, goto end);
+	// Hack of 'cJSON_AddItemToObject(cjson_rest, "latency_avg_usec",
+	// 		cjson_aux);':
+	cjson_aux->string= (char*)strdup("latency_avg_usec");
+	cjson_aux->type|= cJSON_StringIsConst;
+    //cJSON_AddItemToArray(cjson_rest, cjson_aux);
+    cJSON_InsertItemInArray(cjson_rest, 0, cjson_aux); // Insert at top
+    cjson_aux->type&= ~cJSON_StringIsConst;
+
+	/* Format response to be returned */
+	switch(rest_fmt) {
+	case PROC_IF_REST_FMT_CHAR:
+		/* Print cJSON structure data to char string */
+		*ref_reponse= (void*)CJSON_PRINT(cjson_rest);
+		CHECK_DO(*ref_reponse!= NULL && strlen((char*)*ref_reponse)> 0,
+				goto end);
+		break;
+	case PROC_IF_REST_FMT_CJSON:
+		*ref_reponse= (void*)cjson_rest;
+		cjson_rest= NULL; // Avoid double referencing
+		break;
+	default:
+		goto end;
+	}
+
+	end_code= STAT_SUCCESS;
+end:
+	if(cjson_rest!= NULL)
+		cJSON_Delete(cjson_rest);
+	return end_code;
+}
+
 static void* proc_stats_thr(void *t)
 {
+	const proc_if_t *proc_if;
+	uint64_t flag_proc_features;
 	proc_stats_thr_arg_t* proc_stats_thr_arg= (proc_stats_thr_arg_t*)t;
 	int *ref_end_code= NULL;
 	proc_ctx_t *proc_ctx= NULL; // Do not release
@@ -431,28 +558,61 @@ static void* proc_stats_thr(void *t)
 
 	LOG_CTX_SET(proc_ctx->log_ctx);
 
+	/* Get required variables from PROC interface structure */
+	proc_if= proc_ctx->proc_if;
+	CHECK_DO(proc_if!= NULL, goto end);
+	flag_proc_features= proc_if->flag_proc_features;
+
 	while(proc_ctx->flag_exit== 0) {
-		register uint32_t bit_counter_iput, bit_counter_oput;
 		register int ret_code;
-		pthread_mutex_t *acc_io_bits_mutex_iput_p=
-				&proc_ctx->acc_io_bits_mutex[PROC_IPUT];
-		pthread_mutex_t *acc_io_bits_mutex_oput_p=
-				&proc_ctx->acc_io_bits_mutex[PROC_OPUT];
 
-		/* Note that this is a periodic loop executed once per second
-		 * (Thus, 'bitrate' is given in bits per second)
-		 */
-		ASSERT(pthread_mutex_lock(acc_io_bits_mutex_iput_p)== 0);
-		bit_counter_iput= proc_ctx->acc_io_bits[PROC_IPUT];
-		proc_ctx->acc_io_bits[PROC_IPUT]= 0;
-		ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_iput_p)== 0);
-		proc_ctx->bitrate[PROC_IPUT]= bit_counter_iput;
+		/* Check if i/o statistics are used by this processor */
+		if(flag_proc_features& PROC_FEATURE_IOSTATS) {
+			register uint32_t bit_counter_iput, bit_counter_oput;
+			pthread_mutex_t *acc_io_bits_mutex_iput_p=
+					&proc_ctx->acc_io_bits_mutex[PROC_IPUT];
+			pthread_mutex_t *acc_io_bits_mutex_oput_p=
+					&proc_ctx->acc_io_bits_mutex[PROC_OPUT];
 
-		ASSERT(pthread_mutex_lock(acc_io_bits_mutex_oput_p)== 0);
-		bit_counter_oput= proc_ctx->acc_io_bits[PROC_OPUT];
-		proc_ctx->acc_io_bits[PROC_OPUT]= 0;
-		ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_oput_p)== 0);
-		proc_ctx->bitrate[PROC_OPUT]= bit_counter_oput;
+			/* Note that this is a periodic loop executed once per second
+			 * (Thus, 'bitrate' is given in bits per second)
+			 */
+			ASSERT(pthread_mutex_lock(acc_io_bits_mutex_iput_p)== 0);
+			bit_counter_iput= proc_ctx->acc_io_bits[PROC_IPUT];
+			proc_ctx->acc_io_bits[PROC_IPUT]= 0;
+			ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_iput_p)== 0);
+			proc_ctx->bitrate[PROC_IPUT]= bit_counter_iput;
+
+			ASSERT(pthread_mutex_lock(acc_io_bits_mutex_oput_p)== 0);
+			bit_counter_oput= proc_ctx->acc_io_bits[PROC_OPUT];
+			proc_ctx->acc_io_bits[PROC_OPUT]= 0;
+			ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_oput_p)== 0);
+			proc_ctx->bitrate[PROC_OPUT]= bit_counter_oput;
+		}
+
+		/* Check if latency statistics are used by this processor */
+		if(flag_proc_features&PROC_FEATURE_LATSTATS) {
+			register int acc_latency_cnt;
+			register int64_t acc_latency_usec= 0;
+			pthread_mutex_t *latency_mutex_p= &proc_ctx->latency_mutex;
+
+			ASSERT((pthread_mutex_lock(latency_mutex_p))== 0);
+			acc_latency_cnt= proc_ctx->acc_latency_cnt;
+			proc_ctx->acc_latency_cnt= 0;
+			if(acc_latency_cnt> 0)
+				acc_latency_usec= proc_ctx->acc_latency_nsec/ acc_latency_cnt;
+			proc_ctx->acc_latency_nsec= 0;
+			ASSERT((pthread_mutex_unlock(latency_mutex_p))== 0);
+			acc_latency_usec/= 1000; // convert nsec-> usec
+			proc_ctx->latency_avg_usec= acc_latency_usec;
+			//LOGV("----> Average latency (usec/sec)= %"PRId64"\n",
+			//		acc_latency_usec); //comment-me
+			if(acc_latency_usec> proc_ctx->latency_max_usec)
+				proc_ctx->latency_max_usec= acc_latency_usec;
+			if(acc_latency_usec> 0 &&
+					acc_latency_usec< proc_ctx->latency_min_usec)
+				proc_ctx->latency_min_usec= acc_latency_usec;
+		}
 
 		/* Sleep given time (interruptible by external thread) */
 		ret_code= interr_usleep(interr_usleep_ctx,
@@ -537,4 +697,112 @@ end:
 	}
 	interr_usleep_close(&interr_usleep_ctx);
 	return (void*)ref_end_code;
+}
+
+/**
+ * Input presentation time stamps (PTS's) statistics treatment performed at
+ * function 'proc_send_frame()'.
+ */
+static void proc_send_frame_stats_iput_pts(proc_ctx_t *proc_ctx,
+		const proc_frame_ctx_t *proc_frame_ctx)
+{
+	const proc_if_t *proc_if;
+	register uint64_t flag_proc_features;
+	register int64_t curr_nsec;
+	struct timespec monotime_curr= {0};
+	LOG_CTX_INIT(NULL);
+
+	/* Check arguments */
+	CHECK_DO(proc_ctx!= NULL, return);
+	CHECK_DO(proc_frame_ctx!= NULL, return);
+
+	LOG_CTX_SET(proc_ctx->log_ctx);
+
+	/* Get required variables from PROC interface structure */
+	proc_if= proc_ctx->proc_if;
+	CHECK_DO(proc_if!= NULL, return);
+	flag_proc_features= proc_if->flag_proc_features;
+
+	/* Check if input PTS statistics are used by this processor */
+	if(!(flag_proc_features& PROC_FEATURE_IPUT_PTS) &&
+			!(flag_proc_features&PROC_FEATURE_LATSTATS))
+		return;
+
+	/* Register input PTS */
+	proc_ctx->iput_pts_array[IPUT_PTS_VAL][proc_ctx->iput_pts_array_idx]=
+			proc_frame_ctx->pts;
+
+	/* Register STC value corresponding to the input PTS */
+    CHECK_DO(clock_gettime(CLOCK_MONOTONIC, &monotime_curr)== 0, return);
+    curr_nsec= (int64_t)monotime_curr.tv_sec*1000000000+
+    		(int64_t)monotime_curr.tv_nsec;
+    proc_ctx->iput_pts_array[IPUT_PTS_STC_VAL][proc_ctx->iput_pts_array_idx]=
+    		curr_nsec;
+
+	/* Update array index */
+	proc_ctx->iput_pts_array_idx= (proc_ctx->iput_pts_array_idx+ 1)%
+			IPUT_PTS_ARRAY_SIZE;
+
+	return;
+}
+
+/**
+ * Generic input statistics treatment performed at function
+ * 'proc_send_frame()'.
+ * Statistics include:
+ * - input bitrate measurement;
+ */
+static void proc_send_frame_stats_io(proc_ctx_t *proc_ctx,
+		const proc_frame_ctx_t *proc_frame_ctx)
+{
+	const proc_if_t *proc_if;
+	register uint64_t flag_proc_features;
+	register uint32_t byte_cnt_iput, bit_cnt_iput;
+	register size_t width;
+	register int i;
+	pthread_mutex_t *acc_io_bits_mutex_p= NULL;
+	LOG_CTX_INIT(NULL);
+
+	/* Check arguments */
+	CHECK_DO(proc_ctx!= NULL, return);
+	CHECK_DO(proc_frame_ctx!= NULL, return);
+
+	LOG_CTX_SET(proc_ctx->log_ctx);
+
+	/* Get required variables from PROC interface structure */
+	proc_if= proc_ctx->proc_if;
+	CHECK_DO(proc_if!= NULL, return);
+	flag_proc_features= proc_if->flag_proc_features;
+
+	/* Check if i/o statistics are used by this processor */
+	if(!(flag_proc_features& PROC_FEATURE_IOSTATS))
+		return;
+
+	/* Update processor's input bitrate statistics
+	 * (note we are "sending frame *into* the processor").
+	 * For most processors implementation (specially for encoders and
+	 * decoders), measuring traffic at this point would be precise.
+	 * Nevertheless, for certain processors, as is the case of demultiplexers,
+	 * this function ('proc_send_frame()') is not used thus input bitrate
+	 * should be measured at some other point of the specific implementation
+	 * (e.g. when receiving data from an INET socket).
+	 */
+	acc_io_bits_mutex_p= &proc_ctx->acc_io_bits_mutex[PROC_IPUT];
+
+	/* Get frame size (we "unroll" for the most common cases) */
+	byte_cnt_iput= (proc_frame_ctx->width[0]* proc_frame_ctx->height[0])+
+			(proc_frame_ctx->width[1]* proc_frame_ctx->height[1])+
+			(proc_frame_ctx->width[2]* proc_frame_ctx->height[2]);
+	// We do the rest in a loop...
+	for(i= 3; (width= proc_frame_ctx->width[i])> 0 &&
+			i< PROC_FRAME_NUM_DATA_POINTERS; i++)
+		byte_cnt_iput+= width* proc_frame_ctx->height[i];
+
+	/* Update currently accumulated bit value */
+	bit_cnt_iput= (byte_cnt_iput<< 3);
+	ASSERT(pthread_mutex_lock(acc_io_bits_mutex_p)== 0);
+	proc_ctx->acc_io_bits[PROC_IPUT]+= bit_cnt_iput;
+	ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_p)== 0);
+
+	return;
 }
