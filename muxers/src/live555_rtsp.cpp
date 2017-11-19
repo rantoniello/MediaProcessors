@@ -551,9 +551,12 @@ extern "C" {
 const proc_if_t proc_if_live555_rtsp_mux=
 {
 	"live555_rtsp_mux", "multiplexer", "application/octet-stream",
-	(uint64_t)PROC_FEATURE_WR,
+	(uint64_t)0, // no generic processor features implemented
 	live555_rtsp_mux_open,
 	live555_rtsp_mux_close,
+	proc_send_frame_default1,
+	NULL, // no 'send-no-dup'
+	NULL, // no 'recv_frame'
 	live555_rtsp_mux_rest_put,
 	live555_rtsp_mux_rest_get,
 	live555_rtsp_mux_process_frame,
@@ -566,9 +569,12 @@ const proc_if_t proc_if_live555_rtsp_mux=
 static const proc_if_t proc_if_live555_rtsp_es_mux=
 {
 	"live555_rtsp_es_mux", "multiplexer", "application/octet-stream",
-	(uint64_t)PROC_FEATURE_WR,
+	(uint64_t)0, // no generic processor features implemented
 	live555_rtsp_es_mux_open,
 	live555_rtsp_es_mux_close,
+	proc_send_frame_default1,
+	NULL, // no 'send-no-dup'
+	NULL, // no 'recv_frame'
 	NULL, //live555_rtsp_es_mux_rest_put // used internally only (not in API)
 	live555_rtsp_es_mux_rest_get,
 	live555_rtsp_es_mux_process_frame,
@@ -581,9 +587,12 @@ static const proc_if_t proc_if_live555_rtsp_es_mux=
 const proc_if_t proc_if_live555_rtsp_dmux=
 {
 	"live555_rtsp_dmux", "demultiplexer", "application/octet-stream",
-	(uint64_t)PROC_FEATURE_RD,
+	(uint64_t)0, // no generic processor features implemented
 	live555_rtsp_dmux_open,
 	live555_rtsp_dmux_close,
+	NULL, // no 'send_frame'
+	NULL, // no 'send-no-dup'
+	proc_recv_frame_default1,
 	live555_rtsp_dmux_rest_put,
 	live555_rtsp_dmux_rest_get,
 	live555_rtsp_dmux_process_frame,

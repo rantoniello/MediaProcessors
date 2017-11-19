@@ -150,10 +150,13 @@ static void ffmpeg_x264_dec_settings_ctx_deinit(
 const proc_if_t proc_if_ffmpeg_x264_enc=
 {
 	"ffmpeg_x264_enc", "encoder", "video/H264",
-	(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-			PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+	(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+			PROC_FEATURE_LATENCY),
 	ffmpeg_x264_enc_open,
 	ffmpeg_x264_enc_close,
+	proc_send_frame_default1,
+	NULL, // no 'send-no-dup'
+	proc_recv_frame_default1,
 	ffmpeg_x264_enc_rest_put,
 	ffmpeg_x264_enc_rest_get,
 	ffmpeg_x264_enc_process_frame,
@@ -166,10 +169,13 @@ const proc_if_t proc_if_ffmpeg_x264_enc=
 const proc_if_t proc_if_ffmpeg_x264_dec=
 {
 	"ffmpeg_x264_dec", "decoder", "video/H264",
-	(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-			PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+	(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+			PROC_FEATURE_LATENCY),
 	ffmpeg_x264_dec_open,
 	ffmpeg_x264_dec_close,
+	proc_send_frame_default1,
+	NULL, // no 'send-no-dup'
+	proc_recv_frame_default1,
 	ffmpeg_x264_dec_rest_put,
 	ffmpeg_x264_dec_rest_get,
 	ffmpeg_x264_dec_process_frame,

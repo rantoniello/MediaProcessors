@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -168,27 +168,28 @@ typedef enum proc_if_rest_fmt_enum {
 typedef struct proc_if_s {
 	/**
 	 * Unambiguous PROC identifier name (character string).
+	 * This field is mandatory (can not be set to NULL).
 	 */
 	const char *proc_name;
 	/**
 	 * Processor type: encoder, decoder, multiplexer, demultiplexer.
+	 * This field is mandatory (can not be set to NULL).
 	 */
 	const char *proc_type;
 	/**
 	 * Media type and sub-type (formerly known as MIME types and sub-type).
 	 * See http://www.iana.org/assignments/media-types/media-types.xhtml.
 	 * For muxers we use by default: "application/octet-stream"
+	 * This field is mandatory (can not be set to NULL).
 	 */
 	const char *proc_mime;
 	/**
 	 * Processor features flags.
 	 */
 	uint64_t flag_proc_features;
-#define PROC_FEATURE_RD 1 //< Readable (implements 'proc_recv_frame()')
-#define PROC_FEATURE_WR 2 //< Writable (implements 'proc_send_frame()')
-#define PROC_FEATURE_IOSTATS 4 //< Implements input/output statistics.
-#define PROC_FEATURE_IPUT_PTS 8 //< Implements input PTS statistics
-#define PROC_FEATURE_LATSTATS 16 //< Implements latency statistics.
+#define PROC_FEATURE_BITRATE 1 //< Implements i/o bitrate statistics.
+#define PROC_FEATURE_REGISTER_PTS 2 //< Implements i/o PTS statistics
+#define PROC_FEATURE_LATENCY 4 //< Implements latency statistics.
 	/**
 	 * Allocates specific processor (PROC) context structure, initializes,
 	 * and launches processing thread.
@@ -213,6 +214,20 @@ typedef struct proc_if_s {
 	 * to the 'open()' callback method. Pointer is set to NULL on return.
 	 */
 	void (*close)(proc_ctx_t **ref_proc_ctx);
+	/**
+	 * // TODO
+	 * This callback is optional (can be set to NULL).
+	 */
+	int (*send_frame)(proc_ctx_t *proc_ctx,
+			const proc_frame_ctx_t *proc_frame_ctx);
+	int (*send_frame_nodup)(proc_ctx_t *proc_ctx,
+			proc_frame_ctx_t **ref_proc_frame_ctx);
+	/**
+	 * //TODO
+	 * This callback is optional (can be set to NULL).
+	 */
+	int (*recv_frame)(proc_ctx_t *proc_ctx,
+			proc_frame_ctx_t **ref_proc_frame_ctx);
 	/**
 	 * Put new processor (PROC) settings. Parameters can be passed either as a
 	 * query-string or JSON.

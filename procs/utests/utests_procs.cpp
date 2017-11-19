@@ -241,10 +241,13 @@ SUITE(UTESTS_PROCS)
 		int ret_code;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
@@ -268,10 +271,13 @@ SUITE(UTESTS_PROCS)
 		int ret_code;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
@@ -308,10 +314,13 @@ SUITE(UTESTS_PROCS)
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
@@ -370,10 +379,13 @@ end:
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/encoder",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
@@ -381,10 +393,13 @@ end:
 		};
 		const proc_if_t proc_if_bypass_proc2= {
 			"bypass_processor2", "encoder2", "application/encoder2",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
@@ -508,10 +523,13 @@ end:
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,

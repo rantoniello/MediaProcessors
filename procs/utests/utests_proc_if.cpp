@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -36,6 +36,7 @@ extern "C" {
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
 #include <libmediaprocs/proc_if.h>
+#include <libmediaprocs/proc.h>
 }
 
 /* **** Define dummy callback's for the interface **** */
@@ -92,10 +93,13 @@ SUITE(UTESTS_PROC_IF)
 		proc_if_t *proc_if= NULL;
 		const proc_if_t proc_if_dummy_proc= {
 			"dummy_processor", "encoder", "application/octet-stream",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			dummy_proc_open,
 			dummy_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
 			dummy_proc_rest_put,
 			dummy_proc_rest_get,
 			dummy_proc_process_frame,

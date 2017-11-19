@@ -327,9 +327,9 @@ int ffmpeg_video_enc_frame(ffmpeg_video_enc_ctx_t *ffmpeg_video_enc_ctx,
         pkt_oput.pos= avcodecctx->framerate.num;
 
         /* Latency statistics related */
-        if((flag_proc_features&PROC_FEATURE_LATSTATS) &&
+        if((flag_proc_features&PROC_FEATURE_LATENCY) &&
         		pkt_oput.pts!= AV_NOPTS_VALUE)
-        	proc_acc_latency_measure(proc_ctx, pkt_oput.pts);
+        	proc_stats_register_accumulated_latency(proc_ctx, pkt_oput.pts);
 
 		/* Put output frame into output FIFO */
         fifo_put_dup(oput_fifo_ctx, &pkt_oput, sizeof(void*));
@@ -477,9 +477,10 @@ int ffmpeg_video_dec_frame(ffmpeg_video_dec_ctx_t *ffmpeg_video_dec_ctx,
         avframe_oput->sample_rate= avcodecctx->framerate.num;
 
         /* Latency statistics related */
-        if((flag_proc_features&PROC_FEATURE_LATSTATS) &&
+        if((flag_proc_features&PROC_FEATURE_LATENCY) &&
         		avframe_oput->pts!= AV_NOPTS_VALUE)
-        	proc_acc_latency_measure(proc_ctx, avframe_oput->pts);
+        	proc_stats_register_accumulated_latency(proc_ctx,
+        			avframe_oput->pts);
 
 		/* Put output frame into output FIFO */
     	fifo_put_dup(oput_fifo_ctx, avframe_oput, sizeof(void*));

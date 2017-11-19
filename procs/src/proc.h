@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -117,9 +117,9 @@ typedef struct proc_ctx_s {
 	 * periodically;
 	 * - Critical region to acquire or modify 'acc_io_bits[]' variable field.
 	 */
+	volatile uint32_t bitrate[PROC_IO_NUM];
 	volatile uint32_t acc_io_bits[PROC_IO_NUM];
 	pthread_mutex_t acc_io_bits_mutex[PROC_IO_NUM];
-	volatile uint32_t bitrate[PROC_IO_NUM];
 	//@}
     //@{
 	/**
@@ -136,17 +136,20 @@ typedef struct proc_ctx_s {
     //@{
 	/**
 	 * Latency measurement related variables.
-	 * - Accumulated latency value (addition of individual frame latencies);
-	 * - Addition counter (number of values that are added, used to compute
+	 * - Average latency statistic [microseconds/second] (average value
+	 * computed in a one-second period);
+	 * - Accumulated latency value (addition of individual frame latencies in
+	 * the average period);
+	 * - Average counter (number of values that are added, used to compute
 	 * average value);
 	 * - Critical region to acquire or modify these field.
 	 */
-	volatile int64_t acc_latency_nsec;
-	volatile int acc_latency_cnt;
-	pthread_mutex_t latency_mutex;
 	volatile int64_t latency_avg_usec;
 	volatile int64_t latency_max_usec;
 	volatile int64_t latency_min_usec;
+	volatile int64_t acc_latency_nsec;
+	volatile int acc_latency_cnt;
+	pthread_mutex_t latency_mutex;
 	//@}
 	/**
 	 * Processing thread exit indicator.
@@ -197,15 +200,15 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 void proc_close(proc_ctx_t **ref_proc_ctx);
 
 /**
- * Put new frame of data to be processed in the processor's input FIFO buffer.
+ * Put new frame of data to be processed in the processor's input buffer.
  * Unless unblocked (see processor options 'proc_opt()'), this function blocks
  * until a slot is available to be able to push the new frame into the
- * processor's input FIFO.
+ * processor's input buffer.
  * This function is thread-safe and can be called concurrently.
  * @param proc_ctx Pointer to the processor (PROC) context structure obtained
  * in a previous call to the 'proc_open()' function.
  * @param proc_frame_ctx Pointer to the structure characterizing the input
- * frame to be processed. The frame is duplicated and inserted in the FIFO
+ * frame to be processed. The frame is duplicated and inserted in the input
  * buffer.
  * @return Status code (STAT_SUCCESS code in case of success, for other code
  * values please refer to .stat_codes.h).
@@ -214,9 +217,9 @@ int proc_send_frame(proc_ctx_t *proc_ctx,
 		const proc_frame_ctx_t *proc_frame_ctx);
 
 /**
- * Get new processed frame of data from the processor's output FIFO buffer.
+ * Get new processed frame of data from the processor's output buffer.
  * Unless unblocked (see processor options 'proc_opt()'), this function blocks
- * until a new frame is available to be read from the processor's output FIFO.
+ * until a new frame is available to be read from the processor's output buffer.
  * This function is thread-safe and can be called concurrently.
  * @param proc_ctx Pointer to the processor (PROC) context structure obtained
  * in a previous call to the 'proc_open()' function.
@@ -280,9 +283,19 @@ int proc_opt(proc_ctx_t *proc_ctx, const char *tag, ...);
  */
 int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg);
 
-/* **** Utilities **** */
+/* **** Utilities ****
+ * The following functions are available to be used by the specific
+ * implementations of the processor, but are not part of the public processor
+ * API.
+ */
 
-void proc_acc_latency_measure(proc_ctx_t *proc_ctx,
+int proc_send_frame_default1(proc_ctx_t *proc_ctx,
+		const proc_frame_ctx_t *proc_frame_ctx);
+
+int proc_recv_frame_default1(proc_ctx_t *proc_ctx,
+		proc_frame_ctx_t **ref_proc_frame_ctx);
+
+void proc_stats_register_accumulated_latency(proc_ctx_t *proc_ctx,
 		const int64_t oput_frame_pts);
 
 #endif /* MEDIAPROCESSORS_SRC_PROC_H_ */

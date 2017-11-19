@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -145,10 +145,13 @@ static void ffmpeg_m2v_dec_settings_ctx_deinit(
 const proc_if_t proc_if_ffmpeg_m2v_enc=
 {
 	"ffmpeg_m2v_enc", "encoder", "video/MPV",
-	(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-			PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+	(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+			PROC_FEATURE_LATENCY),
 	ffmpeg_m2v_enc_open,
 	ffmpeg_m2v_enc_close,
+	proc_send_frame_default1,
+	NULL, // send-no-dup
+	proc_recv_frame_default1,
 	ffmpeg_m2v_enc_rest_put,
 	ffmpeg_m2v_enc_rest_get,
 	ffmpeg_m2v_enc_process_frame,
@@ -161,10 +164,13 @@ const proc_if_t proc_if_ffmpeg_m2v_enc=
 const proc_if_t proc_if_ffmpeg_m2v_dec=
 {
 	"ffmpeg_m2v_dec", "decoder", "video/MPV",
-	(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-			PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+	(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+			PROC_FEATURE_LATENCY),
 	ffmpeg_m2v_dec_open,
 	ffmpeg_m2v_dec_close,
+	proc_send_frame_default1,
+	NULL, // no 'send-no-dup'
+	proc_recv_frame_default1,
 	ffmpeg_m2v_dec_rest_put,
 	ffmpeg_m2v_dec_rest_get,
 	ffmpeg_m2v_dec_process_frame,
