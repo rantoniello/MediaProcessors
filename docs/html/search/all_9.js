@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['latency_5favg_5fusec',['latency_avg_usec',['../structproc__ctx__s.html#acdd3cc73dadcf7eb7c70c6e5ffb53293',1,'proc_ctx_s']]],
   ['linesize',['linesize',['../structproc__frame__ctx__s.html#a68abb3bc396beba4b30cd13b2bcc8eda',1,'proc_frame_ctx_s']]],
   ['live555_5frtsp_2ecpp',['live555_rtsp.cpp',['../live555__rtsp_8cpp.html',1,'']]],
   ['live555_5frtsp_2eh',['live555_rtsp.h',['../live555__rtsp_8h.html',1,'']]],

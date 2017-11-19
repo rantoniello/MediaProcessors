@@ -178,6 +178,12 @@ Functions</h2></td></tr>
 <tr class="separator:a0367a65712bcd2e762ec1e9e3035cb3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a720ee51d86625b42b09f508a13977f37"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proc_8h.html#a720ee51d86625b42b09f508a13977f37">proc_vopt</a> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const char *tag, va_list arg)</td></tr>
 <tr class="separator:a720ee51d86625b42b09f508a13977f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4eb8ffc342262ec8b748746fecae348"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4eb8ffc342262ec8b748746fecae348"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>proc_send_frame_default1</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const <a class="el" href="structproc__frame__ctx__s.html">proc_frame_ctx_t</a> *proc_frame_ctx)</td></tr>
+<tr class="separator:ab4eb8ffc342262ec8b748746fecae348"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ec368fc617b0066b9fab8a788ec92db"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ec368fc617b0066b9fab8a788ec92db"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>proc_recv_frame_default1</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, <a class="el" href="structproc__frame__ctx__s.html">proc_frame_ctx_t</a> **ref_proc_frame_ctx)</td></tr>
+<tr class="separator:a8ec368fc617b0066b9fab8a788ec92db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b8d892a67c4ba670cedc9a569f8387b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b8d892a67c4ba670cedc9a569f8387b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>proc_acc_latency_measure</b> (<a class="el" href="proc_8h.html#ae264f89be30fc03f5053bc16d58cba05">proc_ctx_t</a> *proc_ctx, const int64_t oput_frame_pts)</td></tr>
 <tr class="separator:a0b8d892a67c4ba670cedc9a569f8387b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -434,7 +440,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>proc_acc_latency_meas
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00345">345</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00334">334</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -461,7 +467,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>proc_acc_latency_meas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get new processed frame of data from the processor's output FIFO buffer. Unless unblocked (see processor options '<a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a>'), this function blocks until a new frame is available to be read from the processor's output FIFO. This function is thread-safe and can be called concurrently. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Get new processed frame of data from the processor's output buffer. Unless unblocked (see processor options '<a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a>'), this function blocks until a new frame is available to be read from the processor's output buffer. This function is thread-safe and can be called concurrently. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">proc_ctx</td><td>Pointer to the processor (PROC) context structure obtained in a previous call to the '<a class="el" href="proc_8h.html#a903e30d67b3e65f0711a87945be97cc4">proc_open()</a>' function. </td></tr>
     <tr><td class="paramname">ref_proc_frame_ctx</td><td>Reference to the pointer to a structure characterizing the output processed frame. This function will return the processed frame passing its structure pointer by argument. </td></tr>
@@ -470,7 +476,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>proc_acc_latency_meas
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00279">279</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00289">289</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>
@@ -497,10 +503,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>proc_acc_latency_meas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Put new frame of data to be processed in the processor's input FIFO buffer. Unless unblocked (see processor options '<a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a>'), this function blocks until a slot is available to be able to push the new frame into the processor's input FIFO. This function is thread-safe and can be called concurrently. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Put new frame of data to be processed in the processor's input buffer. Unless unblocked (see processor options '<a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a>'), this function blocks until a slot is available to be able to push the new frame into the processor's input buffer. This function is thread-safe and can be called concurrently. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">proc_ctx</td><td>Pointer to the processor (PROC) context structure obtained in a previous call to the '<a class="el" href="proc_8h.html#a903e30d67b3e65f0711a87945be97cc4">proc_open()</a>' function. </td></tr>
-    <tr><td class="paramname">proc_frame_ctx</td><td>Pointer to the structure characterizing the input frame to be processed. The frame is duplicated and inserted in the FIFO buffer. </td></tr>
+    <tr><td class="paramname">proc_frame_ctx</td><td>Pointer to the structure characterizing the input frame to be processed. The frame is duplicated and inserted in the input buffer. </td></tr>
   </table>
   </dd>
 </dl>
@@ -541,7 +547,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>proc_acc_latency_meas
 </div><div class="memdoc">
 <p>The function '<a class="el" href="proc_8h.html#a720ee51d86625b42b09f508a13977f37">proc_vopt()</a>' is the same as <a class="el" href="proc_8h.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a> except that it is called with a va_list instead of a variable number of arguments. This function does not call the va_end macro. Because it invoke the va_arg macro, the value of the argument pointer is undefined after the call. </p>
 
-<p>Definition at line <a class="el" href="proc_8c_source.html#l00359">359</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
+<p>Definition at line <a class="el" href="proc_8c_source.html#l00348">348</a> of file <a class="el" href="proc_8c_source.html">proc.c</a>.</p>
 
 </div>
 </div>

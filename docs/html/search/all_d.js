@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['recv_5fframe',['recv_frame',['../structproc__if__s.html#a43115b2b1fa63fbfca191c18f28f2fea',1,'proc_if_s']]],
   ['response_5ffmt',['RESPONSE_FMT',['../procs__api__http_8c.html#a05ed92208045e6475b4192c0bbc6651e',1,'procs_api_http.c']]],
   ['rest_5fget',['rest_get',['../structproc__if__s.html#a1e45b33c52b931954f7a0d8a14f0db53',1,'proc_if_s']]],
   ['rest_5fput',['rest_put',['../structproc__if__s.html#acb4d2c240c52904ebd6904f54b1a9b78',1,'proc_if_s']]],

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['latency_5favg_5fusec',['latency_avg_usec',['../structproc__ctx__s.html#acdd3cc73dadcf7eb7c70c6e5ffb53293',1,'proc_ctx_s']]],
   ['linesize',['linesize',['../structproc__frame__ctx__s.html#a68abb3bc396beba4b30cd13b2bcc8eda',1,'proc_frame_ctx_s']]],
   ['live555_5frtsp_5fdmux_5fsettings_5fctx',['live555_rtsp_dmux_settings_ctx',['../structlive555__rtsp__dmux__ctx__s.html#a0bc32363e8188adb69ea357277bf9620',1,'live555_rtsp_dmux_ctx_s']]],
   ['live555_5frtsp_5fes_5fmux_5fsettings_5fctx',['live555_rtsp_es_mux_settings_ctx',['../structlive555__rtsp__es__mux__ctx__s.html#aad4b5b5b7f6728e513332025cdb5ad84',1,'live555_rtsp_es_mux_ctx_s']]],

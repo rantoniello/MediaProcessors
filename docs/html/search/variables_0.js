@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['acc_5fio_5fbits',['acc_io_bits',['../structproc__ctx__s.html#a63e59dc7c4a361ca2b52e2354f51c33a',1,'proc_ctx_s']]],
-  ['acc_5flatency_5fnsec',['acc_latency_nsec',['../structproc__ctx__s.html#a58e7e20b896b1d74789f2fe9b971fd09',1,'proc_ctx_s']]],
   ['api_5fmutex',['api_mutex',['../structfifo__ctx__s.html#a27be272ae3fa045dfb5e64778a484725',1,'fifo_ctx_s::api_mutex()'],['../structproc__ctx__s.html#aea90c57d9b0a303b638a51ce7efa9a1e',1,'proc_ctx_s::api_mutex()'],['../structprocs__reg__elem__s.html#a9b7bb6d12868ba74184d95f1a2fdd2ab',1,'procs_reg_elem_s::api_mutex()'],['../structprocs__ctx__s.html#a27330c986436226abfa1b5a00b7bdeb1',1,'procs_ctx_s::api_mutex()']]],
   ['audio_5fsettings_5fdec_5fctx',['audio_settings_dec_ctx',['../structffmpeg__mp3__dec__settings__ctx__s.html#a7d85d6a96ffe6563fe7f3083c389699f',1,'ffmpeg_mp3_dec_settings_ctx_s']]],
   ['audio_5fsettings_5fenc_5fctx',['audio_settings_enc_ctx',['../structffmpeg__mp3__enc__settings__ctx__s.html#a199ef797aa61bde0de50a9e09ed21f5c',1,'ffmpeg_mp3_enc_settings_ctx_s']]],
