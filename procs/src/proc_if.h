@@ -229,6 +229,10 @@ typedef struct proc_if_s {
 	int (*recv_frame)(proc_ctx_t *proc_ctx,
 			proc_frame_ctx_t **ref_proc_frame_ctx);
 	/**
+	 * //TODO
+	 */
+	int (*unblock)(proc_ctx_t *proc_ctx);
+	/**
 	 * Put new processor (PROC) settings. Parameters can be passed either as a
 	 * query-string or JSON.
 	 * This method is asynchronous and thread safe.

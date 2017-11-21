@@ -112,6 +112,7 @@ SUITE(UTESTS_PROC)
 			proc_send_frame_default1,
 			NULL, // no 'send-no-dup'
 			proc_recv_frame_default1,
+			NULL, // no specific unblock function extension
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,

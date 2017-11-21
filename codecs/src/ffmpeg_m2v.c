@@ -152,6 +152,7 @@ const proc_if_t proc_if_ffmpeg_m2v_enc=
 	proc_send_frame_default1,
 	NULL, // send-no-dup
 	proc_recv_frame_default1,
+	NULL, // no specific unblock function extension
 	ffmpeg_m2v_enc_rest_put,
 	ffmpeg_m2v_enc_rest_get,
 	ffmpeg_m2v_enc_process_frame,
@@ -171,6 +172,7 @@ const proc_if_t proc_if_ffmpeg_m2v_dec=
 	proc_send_frame_default1,
 	NULL, // no 'send-no-dup'
 	proc_recv_frame_default1,
+	NULL, // no specific unblock function extension
 	ffmpeg_m2v_dec_rest_put,
 	ffmpeg_m2v_dec_rest_get,
 	ffmpeg_m2v_dec_process_frame,

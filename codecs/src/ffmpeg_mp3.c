@@ -152,6 +152,7 @@ const proc_if_t proc_if_ffmpeg_mp3_enc=
 	proc_send_frame_default1,
 	NULL, // no 'send-no-dup'
 	proc_recv_frame_default1,
+	NULL, // no specific unblock function extension
 	ffmpeg_mp3_enc_rest_put,
 	ffmpeg_mp3_enc_rest_get,
 	ffmpeg_mp3_enc_process_frame,
@@ -171,6 +172,7 @@ const proc_if_t proc_if_ffmpeg_mp3_dec=
 	proc_send_frame_default1,
 	NULL, // no 'send-no-dup'
 	proc_recv_frame_default1,
+	NULL, // no specific unblock function extension
 	ffmpeg_mp3_dec_rest_put,
 	ffmpeg_mp3_dec_rest_get,
 	ffmpeg_mp3_dec_process_frame,

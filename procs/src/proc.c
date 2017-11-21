@@ -349,6 +349,7 @@ int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)
 {
 	int end_code= STAT_ERROR;
 	const proc_if_t *proc_if= NULL;
+	int (*unblock)(proc_ctx_t *proc_ctx)= NULL;
 	int (*rest_put)(proc_ctx_t *proc_ctx, const char *str)= NULL;
 	int (*opt)(proc_ctx_t *proc_ctx, const char *tag, va_list arg)= NULL;
 	LOG_CTX_INIT(NULL);
@@ -367,6 +368,8 @@ int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)
 		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_IPUT], 0);
 		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 0);
 		end_code= STAT_SUCCESS;
+		if(proc_if!= NULL && (unblock= proc_if->unblock)!= NULL)
+			end_code= unblock(proc_ctx);
 	} else if(TAG_IS("PROC_GET")) {
 		proc_if_rest_fmt_t rest_fmt= va_arg(arg, proc_if_rest_fmt_t);
 		void **ref_reponse= va_arg(arg, void**);

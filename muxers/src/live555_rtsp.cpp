@@ -557,6 +557,7 @@ const proc_if_t proc_if_live555_rtsp_mux=
 	proc_send_frame_default1,
 	NULL, // no 'send-no-dup'
 	NULL, // no 'recv_frame'
+	NULL, // no specific unblock function extension
 	live555_rtsp_mux_rest_put,
 	live555_rtsp_mux_rest_get,
 	live555_rtsp_mux_process_frame,
@@ -575,6 +576,7 @@ static const proc_if_t proc_if_live555_rtsp_es_mux=
 	proc_send_frame_default1,
 	NULL, // no 'send-no-dup'
 	NULL, // no 'recv_frame'
+	NULL, // no specific unblock function extension
 	NULL, //live555_rtsp_es_mux_rest_put // used internally only (not in API)
 	live555_rtsp_es_mux_rest_get,
 	live555_rtsp_es_mux_process_frame,
@@ -593,6 +595,7 @@ const proc_if_t proc_if_live555_rtsp_dmux=
 	NULL, // no 'send_frame'
 	NULL, // no 'send-no-dup'
 	proc_recv_frame_default1,
+	NULL, // no specific unblock function extension
 	live555_rtsp_dmux_rest_put,
 	live555_rtsp_dmux_rest_get,
 	live555_rtsp_dmux_process_frame,
