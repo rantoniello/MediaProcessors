@@ -379,6 +379,15 @@ int ffmpeg_video_dec_ctx_init(ffmpeg_video_dec_ctx_t *ffmpeg_video_dec_ctx,
 
     /* Put settings */
     avcodecctx->codec_id= avcodecid;
+    // { //RAL //TODO: this is to discuss with LHE CODEC designers
+    // The following initialization is not necessary for most of decoders
+    // (as descos should be able to adapt pixel-format and resolution to input
+    // frame). Nevertheless, we add a default initialization here to
+    // support specific descos as LHE.
+    avcodecctx->pix_fmt= AV_PIX_FMT_YUV420P; // natively supported
+	avcodecctx->width= 352;
+	avcodecctx->height= 288;
+	// {
     //if(avcodec->capabilities& AV_CODEC_CAP_TRUNCATED) // Do not use!!!
     //	avcodecctx->flags|=
     //			AV_CODEC_FLAG_TRUNCATED; // we do not send complete frames
