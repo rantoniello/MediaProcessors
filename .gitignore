@@ -57,5 +57,5 @@ dkms.conf
 
 # My private files/drafts
 private
-transcoders
+#transcoders
 

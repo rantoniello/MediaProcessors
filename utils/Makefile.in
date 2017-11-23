@@ -16,7 +16,7 @@ else
    # 32 bit stuff here
 endif
 
-LIBS=-lm -ldl -L$(LIB_DIR) -luriparser
+LIBS=-lm -ldl -lpthread -L$(LIB_DIR) -luriparser
 
 _OBJ = $(wildcard $(SRCDIR)/*.c*)
 OBJ = $(patsubst $(SRCDIR)/%.c*,$(BUILDDIR)/%.o,$(_OBJ))
