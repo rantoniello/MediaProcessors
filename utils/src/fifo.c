@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,9 +34,10 @@
 
 #include "fifo.h"
 
-#include <stdlib.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/mman.h>
 #include <pthread.h>
 
 #include "check_utils.h"
@@ -54,6 +55,7 @@ typedef struct fifo_ctx_s {
 	/**
 	 * Module flags:
 	 * - FIFO_O_NONBLOCK
+	 * - FIFO_PROCESS_SHARED
 	 */
 	volatile uint32_t flags;
 	/**
@@ -62,17 +64,33 @@ typedef struct fifo_ctx_s {
 	 */
 	volatile int flag_exit;
 	/**
-	 * FIFO buffer maximum size.
+	 * Maximum number of element-slots (namely, maximum number of possible
+	 * chunks) of the FIFO buffer.
 	 */
-	uint32_t buf_max_size;
+	size_t buf_slots_max;
 	/**
-	 * FIFO buffer.
-	 * This is a circular buffer of chunks of data.
+	 * Maximum permitted size of chunks [bytes].
+	 * In the case of shared memory, this value must be set greater than zero.
+	 * Otherwise, setting this value to zero means no limit to input chunk
+	 * size.
+	 */
+	size_t chunk_size_max;
+	/**
+	 * This is a circular buffer of pointers to chunks of data.
 	 * Instead of managing a single pool of data, the buffer stores pointers to
 	 * a fixed number of chunk objects, each one holding the reference and the
 	 * size of each chunk.
 	 */
 	fifo_elem_ctx_t *buf;
+	/**
+	 * Preallocated chunk-buffer pool.
+	 * This is only used with shared memory.
+	 */
+	void *shm_buf_pool;
+	/**
+	 * Number of slots currently used.
+	 */
+	volatile ssize_t slots_used_cnt;
 	/**
 	 * Summation of all the size values of the chunk-buffers that compose the
 	 * input buffer. Namely, is the overall input buffer level.
@@ -94,20 +112,25 @@ typedef struct fifo_ctx_s {
 	/**
 	 * Module API mutex.
 	 */
-	pthread_mutex_t api_mutex;
+	pthread_mutex_t *api_mutex_p;
 	/**
 	 * Signals each time a new chunk enters the FIFO buffer.
 	 */
-	pthread_cond_t buf_put_signal;
+	pthread_cond_t *buf_put_signal_p;
 	/**
 	 * Signals each time a new chunk is consumed from the FIFO buffer.
 	 */
-	pthread_cond_t buf_get_signal;
+	pthread_cond_t *buf_get_signal_p;
 	/**
-	 * Externally defined duplication and releasing functions.
+	 * Externally defined duplication function.
+	 * Not applicable when using shared memory.
 	 */
-	FIFO_ELEM_CTX_DUP;
-	FIFO_ELEM_CTX_RELEASE;
+	fifo_elem_ctx_dup_fxn_t *elem_ctx_dup;
+	/**
+	 * Externally defined releasing functions.
+	 * Not applicable when using shared memory.
+	 */
+	fifo_elem_ctx_release_fxn_t *elem_ctx_release;
 } fifo_ctx_t;
 
 /* **** Prototypes **** */
@@ -117,36 +140,80 @@ static inline int fifo_input(fifo_ctx_t *fifo_ctx, void **ref_elem,
 static inline int fifo_output(fifo_ctx_t *fifo_ctx, void **ref_elem,
 		size_t *ref_elem_size, int flush_flag);
 
+static void* fifo_malloc(int flag_use_shm, size_t size);
+static void fifo_free(int flag_use_shm, void **ref_p, size_t size);
+
+static pthread_mutex_t* fifo_mutex_create(int flag_use_shm);
+static void fifo_mutex_destroy(int flag_use_shm,
+		pthread_mutex_t **ref_pthread_mutex);
+
+static pthread_cond_t* fifo_cond_create(int flag_use_shm);
+static void fifo_cond_destroy(int flag_use_shm,
+		pthread_cond_t **ref_pthread_cond);
+
 /* **** Implementations **** */
 
-fifo_ctx_t* fifo_open(uint32_t buf_max_size, uint32_t flags,
-		const fifo_elem_alloc_fxn_t *fifo_elem_alloc_fxn)
+fifo_ctx_t* fifo_open(size_t buf_slots_max, size_t chunk_size_max,
+		uint32_t flags, const fifo_elem_alloc_fxn_t *fifo_elem_alloc_fxn)
 {
 	fifo_ctx_t *fifo_ctx= NULL;
-	int ret_code, end_code= STAT_ERROR;
+	int flag_use_shm, end_code= STAT_ERROR;
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
-	CHECK_DO(buf_max_size> 0, return NULL);
+	CHECK_DO(buf_slots_max> 0, return NULL);
+
+	flag_use_shm= flags& FIFO_PROCESS_SHARED;
 
 	/* Allocate FIFO context structure */
-	fifo_ctx= (fifo_ctx_t*)calloc(1, sizeof(fifo_ctx_t));
+	fifo_ctx= (fifo_ctx_t*)fifo_malloc(flag_use_shm, sizeof(fifo_ctx_t));
 	CHECK_DO(fifo_ctx!= NULL, goto end);
 
-	/* Initialize context structure */
+	/* **** Initialize context structure **** */
+
 	fifo_ctx->flags= flags;
+
 	fifo_ctx->flag_exit= 0;
-	fifo_ctx->buf_max_size= buf_max_size;
-	fifo_ctx->buf= (fifo_elem_ctx_t*)calloc(buf_max_size, sizeof(
-			fifo_elem_ctx_t));
+
+	fifo_ctx->buf_slots_max= buf_slots_max;
+
+	if(flag_use_shm && chunk_size_max== 0) {
+		LOGE("A valid maximum chunk size must be provided when opening a "
+				"shared-memory FIFO.\n");
+		goto end;
+	}
+	fifo_ctx->chunk_size_max= chunk_size_max;
+
+	/* Allocate circular pointer-buffer */
+	fifo_ctx->buf= (fifo_elem_ctx_t*)fifo_malloc(flag_use_shm, buf_slots_max*
+			sizeof(fifo_elem_ctx_t));
 	CHECK_DO(fifo_ctx->buf!= NULL, goto end);
-	ret_code= pthread_mutex_init(&fifo_ctx->api_mutex, NULL);
-	CHECK_DO(ret_code== 0, goto end);
-	ret_code= pthread_cond_init(&fifo_ctx->buf_put_signal, NULL);
-	CHECK_DO(ret_code== 0, goto end);
-	ret_code= pthread_cond_init(&fifo_ctx->buf_get_signal, NULL);
-	CHECK_DO(ret_code== 0, goto end);
+
+	/* Allocate shared memory pool if applicable */
+	if(flag_use_shm) {
+		fifo_ctx->shm_buf_pool= fifo_malloc(flag_use_shm, buf_slots_max*
+				chunk_size_max);
+		CHECK_DO(fifo_ctx->shm_buf_pool!= NULL, goto end);
+	}
+
+	/* API MUTEX */
+	fifo_ctx->api_mutex_p= fifo_mutex_create(flag_use_shm);
+	CHECK_DO(fifo_ctx->api_mutex_p!= NULL, goto end);
+
+	/* Put into buffer conditional */
+	fifo_ctx->buf_put_signal_p= fifo_cond_create(flag_use_shm);
+	CHECK_DO(fifo_ctx->buf_put_signal_p!= NULL, goto end);
+
+	/* Get from buffer conditional */
+	fifo_ctx->buf_get_signal_p= fifo_cond_create(flag_use_shm);
+	CHECK_DO(fifo_ctx->buf_get_signal_p!= NULL, goto end);
+
 	if(fifo_elem_alloc_fxn!= NULL) {
+		if(flag_use_shm) {
+			LOGE("Cannot use external duplication callback when using "
+					"shared-memory FIFO.\n");
+			goto end;
+		}
 		fifo_ctx->elem_ctx_dup= fifo_elem_alloc_fxn->elem_ctx_dup;
 		fifo_ctx->elem_ctx_release= fifo_elem_alloc_fxn->elem_ctx_release;
 	}
@@ -158,13 +225,80 @@ end:
 	return fifo_ctx;
 }
 
+void fifo_close(fifo_ctx_t **ref_fifo_ctx)
+{
+	int flag_use_shm;
+	fifo_ctx_t *fifo_ctx;
+	//LOG_CTX_INIT(NULL);
+
+	if(ref_fifo_ctx== NULL || (fifo_ctx= *ref_fifo_ctx)== NULL)
+		return;
+
+	flag_use_shm= fifo_ctx->flags& FIFO_PROCESS_SHARED;
+
+	/* Set exit flag and send signals to eventually unlock MUTEX */
+	fifo_ctx->flag_exit= 1;
+	if(fifo_ctx->api_mutex_p!= NULL && fifo_ctx->buf_put_signal_p!= NULL &&
+			fifo_ctx->buf_get_signal_p!= NULL) {
+		pthread_mutex_lock(fifo_ctx->api_mutex_p);
+		pthread_cond_broadcast(fifo_ctx->buf_put_signal_p);
+		pthread_cond_broadcast(fifo_ctx->buf_get_signal_p);
+		pthread_mutex_unlock(fifo_ctx->api_mutex_p);
+	}
+
+	/* Release FIFO buffer */
+	if(fifo_ctx->buf!= NULL) {
+		int i;
+
+		/* Check and release each element of buffer */
+		for(i= 0; i< fifo_ctx->buf_slots_max; i++) {
+			fifo_elem_ctx_t *fifo_elem_ctx= &fifo_ctx->buf[i];
+			if(fifo_elem_ctx->elem!= NULL) {
+				if(fifo_ctx->elem_ctx_release!= NULL) {
+					fifo_ctx->elem_ctx_release(&fifo_elem_ctx->elem);
+				} else {
+					/* This is the only case shared memory may be being used.
+					 * If it is the case, it is not applicable to free memory as
+					 * we use a preallocated pool (just set element pointer to
+					 * NULL).
+					 */
+					if(!flag_use_shm)
+						free(fifo_elem_ctx->elem);
+				}
+				fifo_elem_ctx->elem= NULL;
+				fifo_elem_ctx->size= 0;
+			}
+		}
+		fifo_free(flag_use_shm, (void**)&fifo_ctx->buf,
+				(size_t)fifo_ctx->buf_slots_max* sizeof(fifo_elem_ctx_t));
+		//fifo_ctx->buf= NULL; // redundant
+	}
+
+	/* Release shared memory pool if applicable */
+	if(flag_use_shm) {
+		fifo_free(flag_use_shm, &fifo_ctx->shm_buf_pool,
+				fifo_ctx->buf_slots_max* fifo_ctx->chunk_size_max);
+	}
+
+	/* Release API MUTEX */
+	fifo_mutex_destroy(flag_use_shm, &fifo_ctx->api_mutex_p);
+
+	/* Release conditionals */
+	fifo_cond_destroy(flag_use_shm, &fifo_ctx->buf_put_signal_p);
+	fifo_cond_destroy(flag_use_shm, &fifo_ctx->buf_get_signal_p);
+
+	/* Release module instance context structure */
+	fifo_free(flag_use_shm, (void**)ref_fifo_ctx, sizeof(fifo_ctx_t));
+	//*ref_fifo_ctx= NULL; // redundant
+}
+
 void fifo_set_blocking_mode(fifo_ctx_t *fifo_ctx, int do_block)
 {
 	LOG_CTX_INIT(NULL);
 
 	CHECK_DO(fifo_ctx!= NULL, return);
 
-	pthread_mutex_lock(&fifo_ctx->api_mutex);
+	pthread_mutex_lock(fifo_ctx->api_mutex_p);
 
 	/* Set the 'non-blocking' bit-flag */
 	if(do_block!= 0) {
@@ -174,78 +308,33 @@ void fifo_set_blocking_mode(fifo_ctx_t *fifo_ctx, int do_block)
 	}
 
 	/* Announce to unblock conditional waits */
-	pthread_cond_broadcast(&fifo_ctx->buf_put_signal);
-	pthread_cond_broadcast(&fifo_ctx->buf_get_signal);
+	pthread_cond_broadcast(fifo_ctx->buf_put_signal_p);
+	pthread_cond_broadcast(fifo_ctx->buf_get_signal_p);
 
-	pthread_mutex_unlock(&fifo_ctx->api_mutex);
-}
-
-void fifo_close(fifo_ctx_t **pfifo_ctx)
-{
-	fifo_ctx_t *fifo_ctx;
-
-	if(pfifo_ctx== NULL)
-		return;
-
-	if((fifo_ctx= *pfifo_ctx)!= NULL) {
-
-		/* Set exit flag and send signals to eventually unlock mutex */
-		fifo_ctx->flag_exit= 1;
-		pthread_mutex_lock(&fifo_ctx->api_mutex);
-    	pthread_cond_broadcast(&fifo_ctx->buf_put_signal);
-    	pthread_cond_broadcast(&fifo_ctx->buf_get_signal);
-    	pthread_mutex_unlock(&fifo_ctx->api_mutex);
-
-		/* Release FIFO buffer */
-		if(fifo_ctx->buf!= NULL) {
-			/* Check and release each element of buffer */
-			int i;
-			for(i= 0; i< fifo_ctx->buf_max_size; i++) {
-				fifo_elem_ctx_t *fifo_elem_ctx= &fifo_ctx->buf[i];
-				if(fifo_elem_ctx->elem!= NULL) {
-					if(fifo_ctx->elem_ctx_release!= NULL) {
-						fifo_ctx->elem_ctx_release(&fifo_elem_ctx->elem);
-					} else {
-						free(fifo_elem_ctx->elem);
-					}
-					fifo_elem_ctx->elem= NULL;
-					fifo_elem_ctx->size= 0;
-				}
-			}
-			free(fifo_ctx->buf);
-			fifo_ctx->buf= NULL;
-		}
-
-		/* Release mutex and conditionals */
-		pthread_mutex_destroy(&fifo_ctx->api_mutex);
-		pthread_cond_destroy(&fifo_ctx->buf_put_signal);
-		pthread_cond_destroy(&fifo_ctx->buf_get_signal);
-
-		/* Release module instance context structure */
-		free(fifo_ctx);
-		*pfifo_ctx= NULL;
-	}
+	pthread_mutex_unlock(fifo_ctx->api_mutex_p);
+	return;
 }
 
 int fifo_put_dup(fifo_ctx_t *fifo_ctx, const void *elem, size_t elem_size)
 {
 	void *p= (void*)elem;
-	return fifo_input(fifo_ctx, &p, elem_size, 1);
+	return fifo_input(fifo_ctx, &p, elem_size, 1/*duplicate*/);
 }
 
 int fifo_put(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t elem_size)
 {
-	return fifo_input(fifo_ctx, ref_elem, elem_size, 0);
+	return fifo_input(fifo_ctx, ref_elem, elem_size, 0/*do not duplicate*/);
 }
 
 int fifo_get(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size)
 {
-	return fifo_output(fifo_ctx, ref_elem, ref_elem_size, 1);
+	return fifo_output(fifo_ctx, ref_elem, ref_elem_size, 1/*flush FIFO*/);
 }
 
-int fifo_show(fifo_ctx_t *fifo_ctx, void **elem, size_t *elem_size)
+int fifo_show(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size)
 {
-	return fifo_output(fifo_ctx, elem, elem_size, 0);
+	return fifo_output(fifo_ctx, ref_elem, ref_elem_size,
+			0/*do NOT flush FIFO*/);
 }
 
 ssize_t fifo_get_buffer_level(fifo_ctx_t *fifo_ctx)
@@ -256,9 +345,9 @@ ssize_t fifo_get_buffer_level(fifo_ctx_t *fifo_ctx)
 	/* Check arguments */
 	CHECK_DO(fifo_ctx!= NULL, return -1);
 
-	pthread_mutex_lock(&fifo_ctx->api_mutex);
+	pthread_mutex_lock(fifo_ctx->api_mutex_p);
 	buf_level= fifo_ctx->buf_level;
-	pthread_mutex_unlock(&fifo_ctx->api_mutex);
+	pthread_mutex_unlock(fifo_ctx->api_mutex_p);
 
 	return buf_level;
 }
@@ -268,9 +357,9 @@ int fifo_traverse(fifo_ctx_t *fifo_ctx, int elem_cnt,
 				int *ref_flag_break),
 		void *it_arg)
 {
-	ssize_t buf_level;
+	ssize_t slots_used_cnt;
 	int i, cnt, cnt_max, flag_break;
-	uint32_t buf_max_size;
+	size_t buf_slots_max;
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
@@ -279,16 +368,16 @@ int fifo_traverse(fifo_ctx_t *fifo_ctx, int elem_cnt,
 	CHECK_DO(it_fxn!= NULL, return STAT_ERROR);
 
 	/* Lock API MUTEX */
-	pthread_mutex_lock(&fifo_ctx->api_mutex);
+	pthread_mutex_lock(fifo_ctx->api_mutex_p);
 
 	/* Iterate: we do it beginning with the input index (namely, we go from
 	 * the newest queued element to the oldest).
 	 */
-	buf_level= fifo_ctx->buf_level;
+	slots_used_cnt= fifo_ctx->slots_used_cnt;
 	if(elem_cnt== -1)
-		elem_cnt= buf_level; // '-1' means "traverse all the FIFO"
-	cnt_max= (elem_cnt< buf_level)? elem_cnt: buf_level;
-	buf_max_size= fifo_ctx->buf_max_size;
+		elem_cnt= slots_used_cnt; // '-1' means "traverse all the FIFO"
+	cnt_max= (elem_cnt< slots_used_cnt)? elem_cnt: slots_used_cnt;
+	buf_slots_max= fifo_ctx->buf_slots_max;
 	flag_break= 0;
 	for(i= fifo_ctx->input_idx- 1, cnt= 0; cnt< cnt_max; cnt++) {
 		fifo_elem_ctx_t fifo_elem_ctx= fifo_ctx->buf[i];
@@ -298,17 +387,17 @@ int fifo_traverse(fifo_ctx_t *fifo_ctx, int elem_cnt,
 		if(flag_break!= 0)
 			break;
 
-		/* Update for next iteration; note that 'buf_max_size' is > 0 in
+		/* Update for next iteration; note that 'buf_slots_max' is > 0 in
 		 * modulo operation:
 		 * integer r = a % b;
 		 * r= r < 0 ? r + b : r; <- Only works if B> 0
 		 */
-		i= (i- 1)% buf_max_size;
+		i= (i- 1)% buf_slots_max;
 		if(i< 0)
-			i= i+ buf_max_size;
+			i= i+ buf_slots_max;
 	}
 
-	pthread_mutex_unlock(&fifo_ctx->api_mutex);
+	pthread_mutex_unlock(fifo_ctx->api_mutex_p);
 	return STAT_SUCCESS;
 }
 
@@ -320,16 +409,22 @@ void fifo_empty(fifo_ctx_t *fifo_ctx)
 	CHECK_DO(fifo_ctx!= NULL, return);
 
 	/* Lock API mutex */
-	pthread_mutex_lock(&fifo_ctx->api_mutex);
+	pthread_mutex_lock(fifo_ctx->api_mutex_p);
 
 	/* Release all the elements available in FIFO buffer */
-	for(i= 0; i< fifo_ctx->buf_max_size; i++) {
+	for(i= 0; i< fifo_ctx->buf_slots_max; i++) {
 		fifo_elem_ctx_t *fifo_elem_ctx= &fifo_ctx->buf[i];
 		if(fifo_elem_ctx->elem!= NULL) {
 			if(fifo_ctx->elem_ctx_release!= NULL) {
 				fifo_ctx->elem_ctx_release(&fifo_elem_ctx->elem);
 			} else {
-				free(fifo_elem_ctx->elem);
+				/* This is the only case shared memory may be being used.
+				 * If it is the case, it is not applicable to free memory as
+				 * we use a preallocated pool (just set element pointer to
+				 * NULL).
+				 */
+				if(!(fifo_ctx->flags& FIFO_PROCESS_SHARED))
+					free(fifo_elem_ctx->elem);
 			}
 			fifo_elem_ctx->elem= NULL;
 			fifo_elem_ctx->size= 0;
@@ -337,17 +432,18 @@ void fifo_empty(fifo_ctx_t *fifo_ctx)
 	}
 
 	/* Reset FIFO level and indexes */
+	fifo_ctx->slots_used_cnt= 0;
 	fifo_ctx->buf_level= 0;
 	fifo_ctx->input_idx= 0;
 	fifo_ctx->output_idx= 0;
 
-	pthread_mutex_unlock(&fifo_ctx->api_mutex);
+	pthread_mutex_unlock(fifo_ctx->api_mutex_p);
 }
 
 static inline int fifo_input(fifo_ctx_t *fifo_ctx, void **ref_elem,
 		size_t elem_size, int dup_flag)
 {
-	uint32_t buf_max_size;
+	size_t buf_slots_max, chunk_size_max;
 	fifo_elem_ctx_t *fifo_elem_ctx= NULL;
 	int end_code= STAT_ERROR;
 	LOG_CTX_INIT(NULL);
@@ -356,31 +452,41 @@ static inline int fifo_input(fifo_ctx_t *fifo_ctx, void **ref_elem,
 	CHECK_DO(fifo_ctx!= NULL, return STAT_ERROR);
 	CHECK_DO(ref_elem!= NULL && *ref_elem!= NULL, return STAT_ERROR);
 	CHECK_DO(elem_size> 0, return STAT_ERROR);
+	if((chunk_size_max= fifo_ctx->chunk_size_max)!= 0 &&
+			(elem_size> chunk_size_max)) {
+		LOGE("Size of element exceed configured maximum chunk size for this "
+				"FIFO\n");
+		return STAT_ERROR;
+	}
+	if((dup_flag== 0) && (fifo_ctx->flags& FIFO_PROCESS_SHARED)) {
+		// Duplication is mandatory when using shared memory
+		LOGE("Cannot put element into shared-memory FIFO without duplication. "
+				"Please consider using 'fifo_put_dup()' instead.\n");
+		return STAT_ERROR;
+	}
 
-	/* Lock API mutex */
-	pthread_mutex_lock(&fifo_ctx->api_mutex);
+	/* Lock API MUTEX */
+	pthread_mutex_lock(fifo_ctx->api_mutex_p);
 
-	buf_max_size= fifo_ctx->buf_max_size;
+	buf_slots_max= fifo_ctx->buf_slots_max;
 
-	/* Block until we have space in buffer to put new element */
-	while(fifo_ctx->buf_level>= buf_max_size &&
+	/* In the case of blocking FIFO, if buffer is full we block until a
+	 * element is consumed and a new free slot is available.
+	 * In the case of a non-blocking FIFO, if buffer is full we exit
+	 * returning 'STAT_ENOMEM' status.
+	 */
+	while(fifo_ctx->slots_used_cnt>= buf_slots_max &&
 			!(fifo_ctx->flags& FIFO_O_NONBLOCK) &&
 			fifo_ctx->flag_exit== 0) {
-		pthread_cond_broadcast(&fifo_ctx->buf_put_signal);
-		pthread_cond_wait(&fifo_ctx->buf_get_signal, &fifo_ctx->api_mutex);
+		pthread_cond_broadcast(fifo_ctx->buf_put_signal_p);
+		pthread_cond_wait(fifo_ctx->buf_get_signal_p, fifo_ctx->api_mutex_p);
 	}
-	/* If 'FIFO_O_NONBLOCK' flag is set, check if buffer has available space
-	 * before proceeding.
-	 */
-	if(fifo_ctx->buf_level>= buf_max_size &&
+	if(fifo_ctx->slots_used_cnt>= buf_slots_max &&
 			(fifo_ctx->flags& FIFO_O_NONBLOCK)) {
 		//LOGV("FIFO buffer overflow!\n"); //Comment-me
 		end_code= STAT_ENOMEM;
 		goto end;
 	}
-
-	/* Allocate, copy and insert element */
-
 
 	/* Get FIFO slot where to put new element */
 	fifo_elem_ctx= &fifo_ctx->buf[fifo_ctx->input_idx];
@@ -393,7 +499,16 @@ static inline int fifo_input(fifo_ctx_t *fifo_ctx, void **ref_elem,
 		CHECK_DO(fifo_elem_ctx->elem!= NULL, goto end);
 	}
 	if(dup_flag!= 0 && fifo_ctx->elem_ctx_dup== NULL) {
-		fifo_elem_ctx->elem= malloc(elem_size);
+		/* This is the only case shared memory may be being used.
+		 * If it is the case, it is not need to allocate memory as we use a
+		 * preallocated pool.
+		 */
+		if(!(fifo_ctx->flags& FIFO_PROCESS_SHARED)) {
+			fifo_elem_ctx->elem= malloc(elem_size);
+		} else {
+			fifo_elem_ctx->elem= &((uint8_t*)fifo_ctx->shm_buf_pool)
+					[fifo_ctx->input_idx* chunk_size_max];
+		}
 		CHECK_DO(fifo_elem_ctx->elem!= NULL, goto end);
 		memcpy(fifo_elem_ctx->elem, *ref_elem, elem_size);
 	}
@@ -404,15 +519,16 @@ static inline int fifo_input(fifo_ctx_t *fifo_ctx, void **ref_elem,
 	fifo_elem_ctx->size= elem_size;
 
 	/* Update circular buffer management variables */
-	fifo_ctx->buf_level+= 1;
-	//CHECK_DO(fifo_ctx->buf_level<= buf_max_size,
-	//		fifo_ctx->buf_level= buf_max_size); //comment-me
-	fifo_ctx->input_idx= (fifo_ctx->input_idx+ 1)% buf_max_size;
-	pthread_cond_broadcast(&fifo_ctx->buf_put_signal);
+	fifo_ctx->slots_used_cnt+= 1;
+	fifo_ctx->buf_level+= elem_size;
+	//CHECK_DO(fifo_ctx->slots_used_cnt<= buf_slots_max,
+	//		fifo_ctx->slots_used_cnt= buf_slots_max); //comment-me
+	fifo_ctx->input_idx= (fifo_ctx->input_idx+ 1)% buf_slots_max;
+	pthread_cond_broadcast(fifo_ctx->buf_put_signal_p);
 
 	end_code= STAT_SUCCESS;
 end:
-	pthread_mutex_unlock(&fifo_ctx->api_mutex);
+	pthread_mutex_unlock(fifo_ctx->api_mutex_p);
 	return end_code;
 }
 
@@ -421,6 +537,9 @@ static inline int fifo_output(fifo_ctx_t *fifo_ctx, void **ref_elem,
 {
 	fifo_elem_ctx_t *fifo_elem_ctx= NULL;
 	int end_code= STAT_ERROR;
+	void *elem= NULL; // Do not release
+	ssize_t elem_size= 0;  // Do not release
+	void *elem_cpy= NULL;
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
@@ -428,52 +547,188 @@ static inline int fifo_output(fifo_ctx_t *fifo_ctx, void **ref_elem,
 	CHECK_DO(ref_elem!= NULL, return STAT_ERROR);
 	CHECK_DO(ref_elem_size!= NULL, return STAT_ERROR);
 
-	/* Lock API mutex */
-	pthread_mutex_lock(&fifo_ctx->api_mutex);
-
 	/* Reset arguments to be returned by value */
 	*ref_elem= NULL;
 	*ref_elem_size= 0;
 
-	//CHECK_DO(fifo_ctx->buf_level<= fifo_ctx->buf_max_size,
-	//		goto end); //comment-me
+	/* Lock API MUTEX */
+	pthread_mutex_lock(fifo_ctx->api_mutex_p);
 
-	/* If buffer is empty, block until a new element is inserted */
-	while(fifo_ctx->buf_level<= 0 && !(fifo_ctx->flags & FIFO_O_NONBLOCK)
-			&& fifo_ctx->flag_exit== 0) {
-		//LOGV("FIFO buffer underun!\n"); //comment-me
-		pthread_cond_broadcast(&fifo_ctx->buf_get_signal);
-		pthread_cond_wait(&fifo_ctx->buf_put_signal, &fifo_ctx->api_mutex);
-	}
-	/* If 'FIFO_O_NONBLOCK' flag is set, check if buffer is empty before
-	 * proceeding.
+	/* In the case of blocking FIFO, if buffer is empty we block until a
+	 * new element is inserted.
+	 * In the case of a non-blocking FIFO, if buffer is empty we exit
+	 * returning 'STAT_EAGAIN' status.
 	 */
-	if(fifo_ctx->buf_level<= 0 && (fifo_ctx->flags & FIFO_O_NONBLOCK)) {
-		//LOGV("FIFO buffer underun!\n"); //comment-me
+	while(fifo_ctx->slots_used_cnt<= 0 && !(fifo_ctx->flags& FIFO_O_NONBLOCK)
+			&& fifo_ctx->flag_exit== 0) {
+		//LOGV("FIFO buffer underrun!\n"); //comment-me
+		pthread_cond_broadcast(fifo_ctx->buf_get_signal_p);
+		pthread_cond_wait(fifo_ctx->buf_put_signal_p, fifo_ctx->api_mutex_p);
+	}
+	if(fifo_ctx->slots_used_cnt<= 0 && (fifo_ctx->flags& FIFO_O_NONBLOCK)) {
+		//LOGV("FIFO buffer underrun!\n"); //comment-me
 		end_code= STAT_EAGAIN;
 		goto end;
 	}
 
-	/* Get element */
+	/* Get the element */
 	fifo_elem_ctx= &fifo_ctx->buf[fifo_ctx->output_idx];
-	*ref_elem= fifo_elem_ctx->elem;
-	*ref_elem_size= fifo_elem_ctx->size;
+	elem= fifo_elem_ctx->elem;
+	elem_size= fifo_elem_ctx->size;
+	CHECK_DO(elem!= NULL && elem_size> 0, goto end);
 
-	/* If applicable, flush (release) element from FIFO */
+	/* Flush element from FIFO if required
+	 * (Update circular buffer management variables).
+	 */
 	if(flush_flag) {
 		fifo_elem_ctx->elem= NULL;
 		fifo_elem_ctx->size= 0;
-
-		/* Update circular buffer management variables */
-		fifo_ctx->buf_level-= 1;
-		//CHECK_DO(fifo_ctx->buf_level>= 0,
-		//	fifo_ctx->buf_level= 0); //comment-me
-		fifo_ctx->output_idx= (fifo_ctx->output_idx+ 1) %fifo_ctx->buf_max_size;
-		pthread_cond_broadcast(&fifo_ctx->buf_get_signal);
+		fifo_ctx->slots_used_cnt-= 1;
+		fifo_ctx->buf_level-= elem_size;
+		fifo_ctx->output_idx= (fifo_ctx->output_idx+ 1)%
+				fifo_ctx->buf_slots_max;
+		pthread_cond_broadcast(fifo_ctx->buf_get_signal_p);
 	}
+
+	/* Set the element references to return.
+	 * In the special case we work with shared memory, we must return a copy.
+	 */
+	if(!(fifo_ctx->flags& FIFO_PROCESS_SHARED)) {
+		*ref_elem= elem; // directly return the pointer
+	} else {
+		elem_cpy= malloc(elem_size);
+		CHECK_DO(elem_cpy!= NULL, goto end);
+		memcpy(elem_cpy, elem, elem_size);
+		*ref_elem= elem_cpy; // return a copy
+		elem_cpy= NULL; // Avoid double referencing
+	}
+	*ref_elem_size= (size_t)elem_size;
 
 	end_code= STAT_SUCCESS;
 end:
-	pthread_mutex_unlock(&fifo_ctx->api_mutex);
+	pthread_mutex_unlock(fifo_ctx->api_mutex_p);
+	if(elem_cpy!= NULL)
+		free(elem_cpy);
 	return end_code;
+}
+
+static void* fifo_malloc(int flag_use_shm, size_t size)
+{
+	void *p= NULL;
+
+	if(flag_use_shm!= 0) {
+		p= mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS,
+				0, 0);
+		if(p== MAP_FAILED)
+			p= NULL;
+	} else {
+		p= malloc(size);
+	}
+	if(p!= NULL)
+		memset(p, 0, size);
+	return p;
+}
+
+static void fifo_free(int flag_use_shm, void **ref_p, size_t size)
+{
+	void *p= NULL;
+	LOG_CTX_INIT(NULL);
+
+	if(ref_p== NULL || (p= *ref_p)== NULL)
+		return;
+
+	if(flag_use_shm!= 0) {
+		ASSERT(munmap(p, size)== 0);
+	} else {
+		free(p);
+	}
+	*ref_p= NULL;
+}
+
+static pthread_mutex_t* fifo_mutex_create(int flag_use_shm)
+{
+	pthread_mutexattr_t attr, *attr_p= NULL;
+	int ret_code, end_code= STAT_ERROR;
+	pthread_mutex_t *pthread_mutex= NULL;
+	LOG_CTX_INIT(NULL);
+
+	pthread_mutex= (pthread_mutex_t*)fifo_malloc(flag_use_shm,
+			sizeof(pthread_mutex_t));
+	CHECK_DO(pthread_mutex!= NULL, goto end);
+
+	/* Initialize */
+	if(flag_use_shm!= 0) {
+		pthread_mutexattr_init(&attr);
+		ret_code= pthread_mutexattr_setpshared(&attr,PTHREAD_PROCESS_SHARED);
+		CHECK_DO(ret_code== 0, goto end);
+		attr_p= &attr; // update pointer
+	}
+	ret_code= pthread_mutex_init(pthread_mutex, attr_p);
+	CHECK_DO(ret_code== 0, goto end);
+
+	end_code= STAT_SUCCESS;
+end:
+	if(end_code!= STAT_SUCCESS)
+		fifo_mutex_destroy(flag_use_shm, &pthread_mutex);
+	return pthread_mutex;
+}
+
+static void fifo_mutex_destroy(int flag_use_shm,
+		pthread_mutex_t **ref_pthread_mutex)
+{
+	pthread_mutex_t *pthread_mutex= NULL;
+	LOG_CTX_INIT(NULL);
+
+	if(ref_pthread_mutex== NULL || (pthread_mutex= *ref_pthread_mutex)== NULL)
+		return;
+
+	/* Release mutex */
+	ASSERT(pthread_mutex_destroy(pthread_mutex)== 0);
+
+	/* Free memory */
+	fifo_free(flag_use_shm, (void**)ref_pthread_mutex, sizeof(pthread_mutex_t));
+}
+
+static pthread_cond_t* fifo_cond_create(int flag_use_shm)
+{
+	pthread_condattr_t attr, *attr_p= NULL;
+	int ret_code, end_code= STAT_ERROR;
+	pthread_cond_t *pthread_cond= NULL;
+	LOG_CTX_INIT(NULL);
+
+	pthread_cond= (pthread_cond_t*)fifo_malloc(flag_use_shm,
+			sizeof(pthread_cond_t));
+	CHECK_DO(pthread_cond!= NULL, goto end);
+
+	/* Initialize */
+	if(flag_use_shm!= 0) {
+		pthread_condattr_init(&attr);
+		ret_code= pthread_condattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
+		CHECK_DO(ret_code== 0, goto end);
+		attr_p= &attr;
+	}
+	ret_code= pthread_cond_init(pthread_cond, attr_p);
+	CHECK_DO(ret_code== 0, goto end);
+
+	end_code= STAT_SUCCESS;
+end:
+	if(end_code!= STAT_SUCCESS)
+		fifo_cond_destroy(flag_use_shm, &pthread_cond);
+	return pthread_cond;
+}
+
+static void fifo_cond_destroy(int flag_use_shm,
+		pthread_cond_t **ref_pthread_cond)
+{
+	pthread_cond_t *pthread_cond= NULL;
+	LOG_CTX_INIT(NULL);
+
+	if(ref_pthread_cond== NULL || (pthread_cond= *ref_pthread_cond)== NULL)
+		return;
+
+	/* Release conditional */
+	ASSERT(pthread_cond_destroy(pthread_cond)== 0);
+
+	/* Free memory */
+	fifo_free(flag_use_shm, (void**)ref_pthread_cond, sizeof(pthread_cond_t));
 }
