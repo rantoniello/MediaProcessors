@@ -69,14 +69,6 @@
  */
 #define PROC_STATS_THR_MEASURE_PERIOD_USECS (1000000)
 
-/**
- * Processor's statistic thread argument.
- */
-typedef struct proc_stats_thr_arg_s {
-	proc_ctx_t *proc_ctx;
-	interr_usleep_ctx_t *interr_usleep_ctx;
-} proc_stats_thr_arg_t;
-
 /* **** Prototypes **** */
 
 static int procs_id_get(proc_ctx_t *proc_ctx, log_ctx_t *log_ctx,
@@ -96,6 +88,7 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 		int proc_instance_index, uint32_t fifo_ctx_maxsize[PROC_IO_NUM],
 		log_ctx_t *log_ctx, va_list arg)
 {
+	uint64_t flag_proc_features;
 	int i, ret_code, end_code= STAT_ERROR;
 	proc_ctx_t *proc_ctx= NULL;
 	fifo_elem_alloc_fxn_t fifo_elem_alloc_fxn= {0};
@@ -140,8 +133,8 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 			proc_if->iput_fifo_elem_opaque_release:
 			(fifo_elem_ctx_release_fxn_t*)proc_frame_ctx_release;
 
-	proc_ctx->fifo_ctx_array[PROC_IPUT]= fifo_open(
-			fifo_ctx_maxsize[PROC_IPUT], 0, &fifo_elem_alloc_fxn);
+	proc_ctx->fifo_ctx_array[PROC_IPUT]= fifo_open(fifo_ctx_maxsize[PROC_IPUT],
+			0/*unlimited chunk size*/, 0, &fifo_elem_alloc_fxn);
 	CHECK_DO(proc_ctx->fifo_ctx_array[PROC_IPUT]!= NULL, goto end);
 
 	/* Initialize output FIFO buffer */
@@ -151,8 +144,8 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 			(fifo_elem_ctx_dup_fxn_t*)proc_frame_ctx_dup;
 	fifo_elem_alloc_fxn.elem_ctx_release=
 			(fifo_elem_ctx_release_fxn_t*)proc_frame_ctx_release;
-	proc_ctx->fifo_ctx_array[PROC_OPUT]= fifo_open(
-			fifo_ctx_maxsize[PROC_OPUT], 0, &fifo_elem_alloc_fxn);
+	proc_ctx->fifo_ctx_array[PROC_OPUT]= fifo_open(fifo_ctx_maxsize[PROC_OPUT],
+			0/*unlimited chunk size*/, 0, &fifo_elem_alloc_fxn);
 	CHECK_DO(proc_ctx->fifo_ctx_array[PROC_OPUT]!= NULL, goto end);
 
 	/* Initialize input/output fair-locks */
@@ -178,6 +171,22 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 	ret_code= pthread_mutex_init(&proc_ctx->latency_mutex, NULL);
 	CHECK_DO(ret_code== 0, goto end);
 
+	/* Launch statistics thread if applicable */
+	flag_proc_features= proc_if->flag_proc_features;
+	if(flag_proc_features& (PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+			PROC_FEATURE_LATENCY)) {
+		/* Launch periodical statistics computing thread
+		 * (e.g. for computing processor's input/output bitrate statistics):
+		 * - Instantiate (open) an interruptible usleep module instance;
+		 * - Launch statistic thread passing corresponding argument structure.
+		 */
+		proc_ctx->interr_usleep_ctx= interr_usleep_open();
+		CHECK_DO(proc_ctx->interr_usleep_ctx!= NULL, goto end);
+		ret_code= pthread_create(&proc_ctx->stats_thread, NULL, proc_stats_thr,
+				(void*)proc_ctx);
+		CHECK_DO(ret_code== 0, goto end);
+	}
+
 	/* At last, launch PROC thread */
 	proc_ctx->flag_exit= 0;
 	proc_ctx->start_routine= (const void*(*)(void*))proc_thr;
@@ -201,25 +210,44 @@ void proc_close(proc_ctx_t **ref_proc_ctx)
 		return;
 
 	if((proc_ctx= *ref_proc_ctx)!= NULL) {
-		const proc_if_t *proc_if;
+		int (*unblock)(proc_ctx_t *proc_ctx)= NULL;
+		const proc_if_t *proc_if= proc_ctx->proc_if;
 		void *thread_end_code= NULL;
 		LOG_CTX_SET(proc_ctx->log_ctx);
 
 		/* Join processing thread first
 		 * - set flag to notify we are exiting processing;
-		 * - unlock input and output FIFO's;
+		 * - unlock input/output FIFO's and unblock processor;
 		 * - join thread.
 		 */
 		proc_ctx->flag_exit= 1;
 		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_IPUT], 0);
 		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 0);
-		LOGD("Waiting thread to join... "); // comment-me
+		if(proc_if!= NULL && (unblock= proc_if->unblock)!= NULL) {
+			ASSERT(unblock(proc_ctx));
+		}
+		LOGD("Waiting processor thread to join... "); // comment-me
 		pthread_join(proc_ctx->proc_thread, &thread_end_code);
 		if(thread_end_code!= NULL) {
 			ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
 			free(thread_end_code);
 			thread_end_code= NULL;
 		}
+		LOGD("joined O.K; "
+				"Waiting statistics thread to join... "); // comment-me
+		/* Join periodical statistics thread:
+		 * - Unlock interruptible usleep module instance;
+		 * - Join the statistics thread;
+		 * - Release (close) the interruptible usleep module instance.
+		 */
+		interr_usleep_unblock(proc_ctx->interr_usleep_ctx);
+		pthread_join(proc_ctx->stats_thread, &thread_end_code);
+		if(thread_end_code!= NULL) {
+			ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
+			free(thread_end_code);
+			thread_end_code= NULL;
+		}
+		interr_usleep_close(&proc_ctx->interr_usleep_ctx);
 		LOGD("joined O.K.\n"); // comment-me
 
 		/* Release API mutual exclusion lock */
@@ -243,7 +271,7 @@ void proc_close(proc_ctx_t **ref_proc_ctx)
 		ASSERT(pthread_mutex_destroy(&proc_ctx->latency_mutex)== 0);
 
 		/* Close the specific PROC instance */
-		CHECK_DO((proc_if= proc_ctx->proc_if)!= NULL, return); // sanity check
+		CHECK_DO(proc_if!= NULL, return); // sanity check
 		CHECK_DO(proc_if->close!= NULL, return); // sanity check
 		proc_if->close(ref_proc_ctx);
 	}
@@ -621,9 +649,8 @@ static void* proc_stats_thr(void *t)
 {
 	const proc_if_t *proc_if;
 	uint64_t flag_proc_features;
-	proc_stats_thr_arg_t* proc_stats_thr_arg= (proc_stats_thr_arg_t*)t;
+	proc_ctx_t *proc_ctx= (proc_ctx_t*)t;
 	int *ref_end_code= NULL;
-	proc_ctx_t *proc_ctx= NULL; // Do not release
 	interr_usleep_ctx_t *interr_usleep_ctx= NULL; // Do not release
 	LOG_CTX_INIT(NULL);
 
@@ -633,12 +660,9 @@ static void* proc_stats_thr(void *t)
 	*ref_end_code= STAT_ERROR;
 
 	/* Check arguments */
-	CHECK_DO(proc_stats_thr_arg!= NULL, goto end);
-
-	proc_ctx= proc_stats_thr_arg->proc_ctx;
 	CHECK_DO(proc_ctx!= NULL, goto end);
 
-	interr_usleep_ctx= proc_stats_thr_arg->interr_usleep_ctx;
+	interr_usleep_ctx= proc_ctx->interr_usleep_ctx;
 	CHECK_DO(interr_usleep_ctx!= NULL, goto end);
 
 	LOG_CTX_SET(proc_ctx->log_ctx);
@@ -715,14 +739,10 @@ end:
 static void* proc_thr(void *t)
 {
 	const proc_if_t *proc_if;
-	pthread_t stats_thread;
 	proc_ctx_t* proc_ctx= (proc_ctx_t*)t;
 	int ret_code, *ref_end_code= NULL;
 	int (*process_frame)(proc_ctx_t*, fifo_ctx_t*, fifo_ctx_t*)= NULL;
 	fifo_ctx_t *iput_fifo_ctx= NULL, *oput_fifo_ctx= NULL;
-	void *thread_end_code= NULL;
-	interr_usleep_ctx_t *interr_usleep_ctx= NULL;
-	proc_stats_thr_arg_t proc_stats_thr_arg= {0};
 	LOG_CTX_INIT(NULL);
 
 	/* Allocate return context; initialize to a default 'ERROR' value */
@@ -746,19 +766,6 @@ static void* proc_thr(void *t)
 	oput_fifo_ctx= proc_ctx->fifo_ctx_array[PROC_OPUT];
 	CHECK_DO(iput_fifo_ctx!= NULL && oput_fifo_ctx!= NULL, goto end);
 
-	/* Launch periodical statistics computing thread
-	 * (e.g. for computing processor's input/output bitrate statistics):
-	 * - Instantiate (open) an interruptible usleep module instance;
-	 * - Launch statistic thread passing corresponding argument structure.
-	 */
-	interr_usleep_ctx= interr_usleep_open();
-	CHECK_DO(interr_usleep_ctx!= NULL, goto end);
-	proc_stats_thr_arg.proc_ctx= proc_ctx;
-	proc_stats_thr_arg.interr_usleep_ctx= interr_usleep_ctx;
-	ret_code= pthread_create(&stats_thread, NULL, proc_stats_thr,
-			(void*)&proc_stats_thr_arg);
-	CHECK_DO(ret_code== 0, goto end);
-
 	/* Run processing thread */
 	while(proc_ctx->flag_exit== 0) {
 		ret_code= process_frame(proc_ctx, iput_fifo_ctx, oput_fifo_ctx);
@@ -770,19 +777,6 @@ static void* proc_thr(void *t)
 
 	*ref_end_code= STAT_SUCCESS;
 end:
-	/* Join periodical statistics thread:
-	 * - Unlock interruptible usleep module instance;
-	 * - Join the statistics thread;
-	 * - Release (close) the interruptible usleep module instance.
-	 */
-	interr_usleep_unblock(interr_usleep_ctx);
-	pthread_join(stats_thread, &thread_end_code);
-	if(thread_end_code!= NULL) {
-		ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
-		free(thread_end_code);
-		thread_end_code= NULL;
-	}
-	interr_usleep_close(&interr_usleep_ctx);
 	return (void*)ref_end_code;
 }
 

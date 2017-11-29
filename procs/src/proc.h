@@ -60,6 +60,7 @@ typedef struct log_ctx_s log_ctx_t;
 typedef struct fifo_ctx_s fifo_ctx_t;
 typedef struct fair_lock_s fair_lock_t;
 typedef struct proc_frame_ctx_s proc_frame_ctx_t;
+typedef struct interr_usleep_ctx_s interr_usleep_ctx_t;
 
 /**
  * cJSON to character string conversion function definition.
@@ -150,6 +151,16 @@ typedef struct proc_ctx_s {
 	volatile int64_t acc_latency_nsec;
 	volatile int acc_latency_cnt;
 	pthread_mutex_t latency_mutex;
+	//@}
+    //@{
+	/**
+	 * Interruptible u-sleep used for periodical statistics thread.
+	 */
+	interr_usleep_ctx_t *interr_usleep_ctx;
+	/**
+	 * Statistics thread.
+	 */
+	pthread_t stats_thread;
 	//@}
 	/**
 	 * Processing thread exit indicator.

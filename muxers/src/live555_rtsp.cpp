@@ -1793,8 +1793,8 @@ SimpleFramedSource::SimpleFramedSource(UsageEnvironment& env,
 			(fifo_elem_ctx_dup_fxn_t*)proc_frame_ctx_dup;
 	fifo_elem_alloc_fxn.elem_ctx_release=
 			(fifo_elem_ctx_release_fxn_t*)proc_frame_ctx_release;
-	m_fifo_ctx= fifo_open(FRAMED_SOURCE_FIFO_SLOTS, FIFO_O_NONBLOCK,
-			&fifo_elem_alloc_fxn);
+	m_fifo_ctx= fifo_open(FRAMED_SOURCE_FIFO_SLOTS, 0/*unlimited chunk size*/,
+			FIFO_O_NONBLOCK, &fifo_elem_alloc_fxn);
 	ASSERT(m_fifo_ctx!= NULL);
 
 	/* We arrange here for our "deliverFrame" member function to be called
