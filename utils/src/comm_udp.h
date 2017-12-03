@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,37 +28,29 @@
  */
 
 /**
- * @file stat_codes.h
- * @brief General status codes enumeration.
+ * @file comm_udp.h
+ * @brief UDP communication module.
  * @author Rafael Antoniello
  */
 
-#ifndef UTILS_SRC_STAT_CODES_H_
-#define UTILS_SRC_STAT_CODES_H_
+#ifndef MEDIAPROCESSORS_UTILS_SRC_COMM_UDP_H_
+#define MEDIAPROCESSORS_UTILS_SRC_COMM_UDP_H_
 
-typedef enum stat_codes_ctx_s {
-    STAT_SUCCESS= 0,
-	STAT_NOTMODIFIED, //< Resource requested found but not modified
-	STAT_ERROR,
-	STAT_ENOTFOUND, //< Resource requested not found
-	STAT_EAGAIN, //< Resource temporarily unavailable (call again)
-	STAT_EOF, //< End of file
-	STAT_ENOMEM, //< Not enough space
-	STAT_EINVAL, //< Invalid argument
-	STAT_ECONFLICT, //< Conflict with the current state of the target resource
-	STAT_EBAVFORMAT, //< Bad or not supported audio/video format
-	STAT_EBMUXFORMAT, //< Bad or not supported multiplex format
-	STAT_ETIMEDOUT, //< Operation timed out
-	STAT_EINTR, //< Operation interrupted
-	STAT_ENOPROTOOPT, //< Bad protocol option
-	STAT_EAFNOSUPPORT, //< Address family not supported
-	/** Address family not supported: need to specify host IP */
-	STAT_EAFNOSUPPORT_HOSTNAME,
-	/** Address family not supported: need to specify port */
-	STAT_EAFNOSUPPORT_PORT,
-	STAT_CODES_MAX
-} stat_codes_ctx_t;
+/* **** Definitions **** */
 
-const char* stat_codes_get_description(stat_codes_ctx_t code);
+/**
+ * Maximum datagram size that can be received.
+ */
+#define UDP_COM_RECV_DGRAM_MAXSIZE 	2048
 
-#endif /* UTILS_SRC_STAT_CODES_H_ */
+/* Forward definitions */
+typedef struct comm_if_s comm_if_t;
+
+/* **** prototypes **** */
+
+/**
+ * Communication protocol interface implementing the User Data Protocol (UDP).
+ */
+extern const comm_if_t comm_if_udp;
+
+#endif /* MEDIAPROCESSORS_UTILS_SRC_COMM_UDP_H_ */

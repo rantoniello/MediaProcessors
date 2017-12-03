@@ -15,11 +15,18 @@ VALGRIND_OPTIONS="--error-exitcode=$VALGRIND_ERROR_CODE --leak-check=full"
 #--log-file="my log file full path and name"
 #-v --track-origins=yes
 
+echo ""
+echo "################################"
+echo "#### NOTE: utils library needs super-user permission to execute sockets \
+in high priority"
+echo "################################"
+echo ""
+
 if [ "$USE_VALGRIND" == 'yes' ] ; then
-	LD_LIBRARY_PATH=$1/lib stdbuf -o0 -e0 $1/bin/valgrind $VALGRIND_OPTIONS \
-	$1/bin/$2
+	sudo LD_LIBRARY_PATH=$1/lib stdbuf -o0 -e0 $1/bin/valgrind \
+	$VALGRIND_OPTIONS $1/bin/$2
 else
-	LD_LIBRARY_PATH=$1/lib $1/bin/$2
+	sudo LD_LIBRARY_PATH=$1/lib $1/bin/$2
 fi
 
 TEST_STATUS=$?

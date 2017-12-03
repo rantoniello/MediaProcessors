@@ -53,7 +53,13 @@ static const stat_codes_lu_ctx_t stat_codes_lutable[STAT_CODES_MAX]=
 		{"Bad or not supported audio/video format"}, //STAT_EBAVFORMAT
 		{"Bad or not supported multiplex format"}, //STAT_EBMUXFORMAT
 		{"Operation timed out"}, //STAT_ETIMEDOUT
-		{"Operation interrupted"} //STAT_EINTR
+		{"Operation interrupted"}, //STAT_EINTR
+		{"Bad protocol option"}, //STAT_ENOPROTOOPT
+		{"Address family not supported"}, //STAT_EAFNOSUPPORT
+		{"Address family not supported: need to specify host IP"
+				""}, //STAT_EAFNOSUPPORT_HOSTNAME
+		{"Address family not supported: need to specify port"
+				""}, //STAT_EAFNOSUPPORT_PORT
 };
 
 const char* stat_codes_get_description(stat_codes_ctx_t code)

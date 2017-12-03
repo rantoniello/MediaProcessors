@@ -25,6 +25,7 @@
 
 #include <UnitTest++/UnitTest++.h>
 
+extern "C" {
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -35,7 +36,6 @@
 #include <sys/mman.h>
 #include <sys/wait.h>
 
-extern "C" {
 #include <libmediaprocsutils/fifo.h>
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
@@ -271,17 +271,17 @@ SUITE(UTESTS_FIFO)
 	   		LOGD("Waiting for consumer process\n");
             w= waitpid(child_pid, &status, WUNTRACED);
             if(w== -1) {
-                perror("waitpid");
+            	LOGD("Error detected while executing 'waitpid()'");
                 exit(EXIT_FAILURE);
             }
             if(WIFEXITED(status)) {
-                printf("exited, status=%d\n", WEXITSTATUS(status));
+            	LOGD("exited, status=%d\n", WEXITSTATUS(status));
             } else if(WIFSIGNALED(status)) {
-                printf("killed by signal %d\n", WTERMSIG(status));
+            	LOGD("killed by signal %d\n", WTERMSIG(status));
             } else if(WIFSTOPPED(status)) {
-                printf("stopped by signal %d\n", WSTOPSIG(status));
+            	LOGD("stopped by signal %d\n", WSTOPSIG(status));
             } else if(WIFCONTINUED(status)) {
-                printf("continued\n");
+            	LOGD("continued\n");
             }
             LOGD("OK\n");
 
