@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,44 +28,23 @@
  */
 
 /**
- * @file stat_codes.c
+ * @file crc_32_mpeg2.h
+ * @brief CRC-32 wrapper module
  * @author Rafael Antoniello
  */
 
-#include "stat_codes.h"
+#ifndef SPUTIL_SRC_CRC_32_MPEG2_H_
+#define SPUTIL_SRC_CRC_32_MPEG2_H_
 
-typedef struct stat_codes_lu_ctx_s {
-	const char *description;
-} stat_codes_lu_ctx_t;
+#include <sys/types.h>
+#include <inttypes.h>
 
-static const stat_codes_lu_ctx_t stat_codes_lutable[STAT_CODES_MAX]=
-{
-		{""}, //STAT_SUCCESS
-		{"Resource requested found but not modified"}, //STAT_NOTMODIFIED
-		{"Error occurred"}, //STAT_ERROR
-		{"Resource requested not found"}, //STAT_ENOTFOUND
-		{"Resource temporarily unavailable (call again)"}, //STAT_EAGAIN
-		{"End of file"}, //STAT_EOF
-		{"Not enough space/memory"}, //STAT_ENOMEM
-		{"Invalid argument passed. Please review ranges."}, //STAT_EINVAL
-		{"Conflict with the current state of the target "
-				"resource"}, //STAT_ECONFLICT
-		{"Bad or not supported audio/video format"}, //STAT_EBAVFORMAT
-		{"Bad or not supported multiplex format"}, //STAT_EBMUXFORMAT
-		{"Operation timed out"}, //STAT_ETIMEDOUT
-		{"Operation interrupted"}, //STAT_EINTR
-		{"Bad protocol option"}, //STAT_ENOPROTOOPT
-		{"Address family not supported"}, //STAT_EAFNOSUPPORT
-		{"Address family not supported: need to specify host IP"
-				""}, //STAT_EAFNOSUPPORT_HOSTNAME
-		{"Address family not supported: need to specify port"
-				""}, //STAT_EAFNOSUPPORT_PORT
-		{"Valid request, no data record of requested type"}, //STAT_ENODATA
-};
+/**
+ * Check CRC-32 (3rd party library wrapper).
+ * @param buf Input buffer pointer
+ * @param size Input buffer size in bytes
+ * @return CRC32 computation, as defined int ISO/IEC 13818-1, Annex A.
+ **/
+uint32_t crc_32_mpeg2(uint8_t *buf, uint16_t size);
 
-const char* stat_codes_get_description(stat_codes_ctx_t code)
-{
-	if(code< 0 || code> (STAT_CODES_MAX- 1))
-		return stat_codes_lutable[STAT_ERROR].description;
-	return stat_codes_lutable[code].description;
-}
+#endif /* SPUTIL_SRC_CRC_32_MPEG2_H_ */

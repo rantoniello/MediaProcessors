@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,6 +77,36 @@ int llist_push(llist_t** ref_llist_head, void *data);
 void* llist_pop(llist_t** ref_llist_head);
 
 /**
+ * Return the number of nodes in a list.
+ * @param Pointer to the so-called "head" of the list.
+ * @return The number of elements in the list is returned. Note that if a NULL
+ * pointer is passed by argument, we assume that the linked list is empty
+ * (thus, returning zero).
+ */
+int llist_len(const llist_t *llist_head);
+
+/**
+ * Get the 'Nth' element of the list (does not delete the element).
+ * @param Pointer to the so-called "head" of the list.
+ * @index Position of the element within the list.
+ * @return Pointer to the element if found, NULL otherwise.
+ */
+void* llist_get_nth(const llist_t *llist_head, int index);
+
+/**
+ * Insert the given element in the 'N-th' position of the list. If the given
+ * index position is out of bounds, the element will be appended at the end of
+ * the list.
+ * @param ref_llist_head Reference to the pointer to the so-called "head" of
+ * the list. If the list is empty, the head pointer should be NULL.
+ * @index Position in which the element is to be inserted within the list.
+ * @param data Pointer to a new data element to be inserted in the list.
+ * @return Status code (refer to 'stat_codes_ctx_t' type).
+ * @see stat_codes_ctx_t
+ */
+int llist_insert_nth(llist_t **ref_llist_head, int index, void *data);
+
+/**
  * Duplicate entire linked list (MACRO).
  * @param ref_llist_dst Reference to the pointer to the so-called "head" of
  * the destination list (where the nodes are to be copied).
@@ -96,12 +126,12 @@ do {\
 	const llist_t *_llist_src= llist_src;\
 	node_dup_fxn_t*(*_node_dup_fxn)(const node_dup_fxn_t*)= node_dup_fxn;\
 \
-	ret_code= ERROR;\
+	ret_code= STAT_ERROR;\
 \
-	ASSERT_DO(_ref_llist_dst!= NULL, break);\
-	ASSERT_DO(_node_dup_fxn!= NULL, break);\
+	CHECK_DO(_ref_llist_dst!= NULL, break);\
+	CHECK_DO(_node_dup_fxn!= NULL, break);\
 	if(_llist_src== NULL) {\
-		ret_code= SUCCESS;\
+		ret_code= STAT_SUCCESS;\
 		break;\
     }\
 \
@@ -110,15 +140,15 @@ do {\
 \
 		node= llist_get_nth(_llist_src, i);\
 		if(node== NULL) {\
-			ret_code= SUCCESS;\
+			ret_code= STAT_SUCCESS;\
 			break;\
 		}\
 \
 		node_copy= _node_dup_fxn((const node_dup_fxn_t*)node);\
-		ASSERT_DO(node_copy!= NULL, break);\
+		CHECK_DO(node_copy!= NULL, break);\
 \
-		ASSERT_DO(\
-			llist_insert_nth(_ref_llist_dst, i, node_copy)== SUCCESS,\
+CHECK_DO(\
+			llist_insert_nth(_ref_llist_dst, i, node_copy)== STAT_SUCCESS,\
 			break);\
 	}\
 } while(0);

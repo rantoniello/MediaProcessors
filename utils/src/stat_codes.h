@@ -56,6 +56,7 @@ typedef enum stat_codes_ctx_s {
 	STAT_EAFNOSUPPORT_HOSTNAME,
 	/** Address family not supported: need to specify port */
 	STAT_EAFNOSUPPORT_PORT,
+	STAT_ENODATA, //< Valid request, no data record of requested type
 	STAT_CODES_MAX
 } stat_codes_ctx_t;
 

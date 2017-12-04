@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -90,4 +90,74 @@ void* llist_pop(llist_t** ref_llist_head)
 	free(head);
 
 	return data;
+}
+
+int llist_len(const llist_t *llist_head)
+{
+	int cnt= 0;
+	llist_t *curr_node;
+	//LOG_CTX_INIT(NULL);
+
+	/* Check arguments.
+	 * Note: argument 'llist_head' is allowed to be NULL.
+	 */
+
+	curr_node= (llist_t*)llist_head;
+	while(curr_node!= NULL) {
+		cnt++;
+		curr_node= curr_node->next;
+	}
+	return cnt;
+}
+
+void* llist_get_nth(const llist_t *llist_head, int index)
+{
+	int cnt= 0;
+	llist_t *curr_node;
+	LOG_CTX_INIT(NULL);
+
+	/* Check arguments.
+	 * Note: argument 'llist_head' is allowed to be NULL.
+	 */
+	if(llist_head== NULL)
+		return NULL; // element not found (empty list)
+	CHECK_DO(index>= 0, return NULL);
+
+	curr_node= (llist_t*)llist_head;
+
+	// the index of the node we're currently looking at
+	while(curr_node!= NULL) {
+		if(cnt++== index)
+			return curr_node->data;
+		curr_node= curr_node->next;
+	}
+	return NULL; // element not found
+}
+
+int llist_insert_nth(llist_t **ref_llist_head, int index, void *data)
+{
+	llist_t **curr_node;
+	int i;
+	LOG_CTX_INIT(NULL);
+
+	/* Check arguments */
+	CHECK_DO(ref_llist_head!= NULL, return STAT_ERROR);
+	CHECK_DO(index>= 0, return STAT_ERROR);
+	CHECK_DO(data!= NULL, return STAT_ERROR);
+
+	if(index== 0) // Position 0 is a special case
+		return llist_push(ref_llist_head, data);
+
+	/* Find node at given index */
+	curr_node= ref_llist_head;
+	for(i= 0; i< index- 1; i++) {
+		if(*curr_node== NULL) // index was too big
+			return llist_push(curr_node, data); // Append at the end
+		curr_node= &(*curr_node)->next;
+	}
+	if(*curr_node== NULL) // index was too big
+		return llist_push(curr_node, data); // Append at the end
+
+	/* Push new node at given index */
+	return llist_push(&(*curr_node)->next, data);
 }

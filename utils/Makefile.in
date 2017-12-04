@@ -23,7 +23,7 @@ else
 endif
 
 LIBS= -lm -ldl -lpthread
-LIBS+= -L$(LIB_DIR) -luriparser
+LIBS+= -L$(LIB_DIR) -luriparser -lmediaprocscrc
 
 _OBJ = $(wildcard $(SRCDIR)/*.c)
 OBJ = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(_OBJ))

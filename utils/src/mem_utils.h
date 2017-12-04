@@ -59,4 +59,18 @@
  */
 #define SIZE_IS_MULTIPLE(SIZE, MULTIPLE) (((SIZE)% MULTIPLE)== 0)
 
+#if _FILE_OFFSET_BITS==64
+#define WORD_T 			uint64_t
+#define DPATHW 			64
+#define DPATHW_SHIFTb 	6
+#define DPATHW_SHIFTB 	3
+#define SWAPW 			SWAP8
+#else
+#define WORD_T 			uint32_t
+#define DPATHW 			32
+#define DPATHW_SHIFTb 	5
+#define DPATHW_SHIFTB 	2
+#define SWAPW 			SWAP4
+#endif
+
 #endif /* UTILS_SRC_MEM_UTILS_H_ */
