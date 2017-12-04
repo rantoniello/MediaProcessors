@@ -98,12 +98,11 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 	CHECK_DO(proc_if!= NULL, return NULL);
 	CHECK_DO(settings_str!= NULL, return NULL);
 	CHECK_DO(fifo_ctx_maxsize!= NULL , return NULL);
-		// Note: 'log_ctx' is allowed to be NULL
+	// Note: 'log_ctx' is allowed to be NULL
 
 	/* Check mandatory call-backs existence */
 	CHECK_DO(proc_if->open!= NULL, goto end);
 	CHECK_DO(proc_if->close!= NULL, goto end);
-	CHECK_DO(proc_if->process_frame!= NULL, goto end);
 
 	/* Open (allocate) the specific processor (PROC) instance */
 	proc_ctx= proc_if->open(proc_if, settings_str, LOG_CTX_GET(), arg);
@@ -187,11 +186,14 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 		CHECK_DO(ret_code== 0, goto end);
 	}
 
-	/* At last, launch PROC thread */
+	/* At last, launch processing thread if applicable */
 	proc_ctx->flag_exit= 0;
-	proc_ctx->start_routine= (const void*(*)(void*))proc_thr;
-	ret_code= pthread_create(&proc_ctx->proc_thread, NULL, proc_thr, proc_ctx);
-	CHECK_DO(ret_code== 0, goto end);
+	if(proc_if->process_frame!= NULL) {
+		proc_ctx->start_routine= (const void*(*)(void*))proc_thr;
+		ret_code= pthread_create(&proc_ctx->proc_thread, NULL, proc_thr,
+				proc_ctx);
+		CHECK_DO(ret_code== 0, goto end);
+	}
 
 	end_code= STAT_SUCCESS;
 end:
@@ -224,7 +226,7 @@ void proc_close(proc_ctx_t **ref_proc_ctx)
 		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_IPUT], 0);
 		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 0);
 		if(proc_if!= NULL && (unblock= proc_if->unblock)!= NULL) {
-			ASSERT(unblock(proc_ctx));
+			ASSERT(unblock(proc_ctx)== STAT_SUCCESS);
 		}
 		LOGD("Waiting processor thread to join... "); // comment-me
 		pthread_join(proc_ctx->proc_thread, &thread_end_code);
@@ -240,7 +242,8 @@ void proc_close(proc_ctx_t **ref_proc_ctx)
 		 * - Join the statistics thread;
 		 * - Release (close) the interruptible usleep module instance.
 		 */
-		interr_usleep_unblock(proc_ctx->interr_usleep_ctx);
+		if(proc_ctx->interr_usleep_ctx!= NULL)
+			interr_usleep_unblock(proc_ctx->interr_usleep_ctx);
 		pthread_join(proc_ctx->stats_thread, &thread_end_code);
 		if(thread_end_code!= NULL) {
 			ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);

@@ -173,6 +173,10 @@ typedef struct proc_ctx_s {
 	pthread_t proc_thread;
 	/**
 	 * Processing thread function reference.
+	 * It is initialized to point to the predefined module internal processing
+	 * function 'proc_thr()' by default. Nevertheless, this pointer can be
+	 * rewritten by any specific implementation in the 'proc_if_s::open()'
+	 * callback.
 	 */
 	const void*(*start_routine)(void *);
 } proc_ctx_t;

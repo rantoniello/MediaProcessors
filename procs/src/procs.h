@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -71,7 +71,7 @@ void procs_module_close();
  * ### Tags description (additional variable arguments per tag)
  * <ul>
  * <li> <b>Tag "PROCS_REGISTER_TYPE":</b><br>
- * Register interface of an specific processor type.<br>
+ * Register the interface of an specific processor type.<br>
  * Additional variable arguments for function procs_module_opt() are:<br>
  * @param proc_if Pointer to the processor interface structure (static
  * and unambiguous interface of the type of processor we are registering).

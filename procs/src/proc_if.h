@@ -267,7 +267,7 @@ typedef struct proc_if_s {
 	 * Process one frame of data. The frame is read from the input FIFO buffer
 	 * and is completely processed. If an output frame is produced, is written
 	 * to the output FIFO buffer.
-	 * This callback is mandatory (cannot be NULL).
+	 * This callback is optional (can be set to NULL).
 	 * @param proc_ctx Pointer to the processor (PROC) context structure
 	 * obtained in a previous call to the 'open()' callback method.
 	 * @param fifo_ctx_iput Pointer to the input FIFO buffer context structure.
