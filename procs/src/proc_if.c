@@ -126,19 +126,17 @@ void proc_frame_ctx_release(proc_frame_ctx_t **ref_proc_frame_ctx)
 {
 	proc_frame_ctx_t *proc_frame_ctx= NULL;
 
-	if(ref_proc_frame_ctx== NULL)
+	if(ref_proc_frame_ctx== NULL ||
+			(proc_frame_ctx= *ref_proc_frame_ctx)== NULL)
 		return;
 
-	if((proc_frame_ctx= *ref_proc_frame_ctx)!= NULL) {
-
-		if(proc_frame_ctx->data!= NULL) {
-			free(proc_frame_ctx->data);
-			proc_frame_ctx->data= NULL;
-		}
-
-		free(proc_frame_ctx);
-		*ref_proc_frame_ctx= NULL;
+	if(proc_frame_ctx->data!= NULL) {
+		free(proc_frame_ctx->data);
+		proc_frame_ctx->data= NULL;
 	}
+
+	free(proc_frame_ctx);
+	*ref_proc_frame_ctx= NULL;
 }
 
 proc_if_t* proc_if_allocate()

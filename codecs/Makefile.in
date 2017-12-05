@@ -30,7 +30,7 @@ LIBS+= -lmediaprocsutils -lmediaprocs
 _OBJ = $(wildcard $(SRCDIR)/*.c)
 OBJ = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(_OBJ))
 
-LIBS_UTESTS= $(LIBS) -lmediaprocscodecs -lUnitTest++
+LIBS_UTESTS= $(LIBS) -lmediaprocscodecs -lUnitTest++ -lmediaprocscrc
 
 _OBJ_UTESTS_EXE = $(wildcard $(SRCDIR)/../utests/utests*.c*)
 OBJ_UTESTS_EXE = $(patsubst $(SRCDIR)/../utests/%.c*,$(BUILDDIR)/utests/%.o,$(_OBJ_UTESTS_EXE))

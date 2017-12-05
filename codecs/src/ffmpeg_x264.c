@@ -510,6 +510,7 @@ static int ffmpeg_x264_enc_rest_get(proc_ctx_t *proc_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 
@@ -846,6 +847,7 @@ static int ffmpeg_x264_dec_rest_get(proc_ctx_t *proc_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 

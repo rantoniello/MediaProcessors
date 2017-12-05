@@ -638,6 +638,7 @@ static int procs_id_get(proc_ctx_t *proc_ctx, log_ctx_t *log_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 

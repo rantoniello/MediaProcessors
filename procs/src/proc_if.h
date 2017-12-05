@@ -157,6 +157,7 @@ typedef struct proc_frame_ctx_s {
 typedef enum proc_if_rest_fmt_enum {
 	PROC_IF_REST_FMT_CHAR,   ///< Character string response
 	PROC_IF_REST_FMT_CJSON, ///< cJSON structure response
+	PROC_IF_REST_FMT_BINARY, ///< C structure or block of binary data
 	PROC_IF_REST_FMT_ENUM_MAX
 } proc_if_rest_fmt_t;
 
