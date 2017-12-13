@@ -185,4 +185,53 @@ int comm_recv(comm_ctx_t *comm_ctx, void** ref_buf, size_t *ref_count,
 
 int comm_unblock(comm_ctx_t* comm_ctx);
 
+/* **** Communication module functions to integrate with an "external API" ****
+ *
+ * The set of functions below are provided to be integrated in an external
+ * application with a typical send/receive interface and a control interface
+ * implemented as an API.
+ *
+ * Let us call the 'control functions' to the following set:
+ * - 'comm_open_external()';
+ * - 'comm_close_external()';
+ * - 'comm_reset_external()';
+ * We will call the 'i/o functions' to:
+ * - 'comm_send_external()'
+ * - 'comm_recv_external()'.
+ *
+ * The calling application must be designed in order to make sure the
+ * 'control functions' are never executed concurrently. That is, it should
+ * define a critical section to provide that these functions are never executed
+ * "at the same time", avoiding the potential problems of "opening" while
+ * "closing", etc.
+ *
+ * In the case of 'i/o' functions, these may be executed asynchronously and
+ * concurrently by the calling application, so these are designed to provide
+ * secure means to be able to be executed at the same time as the
+ * 'control functions' (for example, we should be able to read, write at the
+ * same time another thread is requested to close or reset the same COMM
+ * instance).
+ * To make this possible, we use an external specific critical section (given
+ * by the argument 'comm_ctx_mutex_external') to be used to
+ * execute in mutual exclusion the "control functions" and the "i/o" functions.
+ * Finally, it is to note that "unblocking" operation is not performed within
+ * this critical section to avoid deadlocks, as i/o functions may
+ * be defined as blocking operations.
+ */
+
+int comm_open_external(pthread_mutex_t *comm_ctx_mutex_external,
+		const char *url, const char *local_url, comm_mode_t comm_mode,
+		log_ctx_t *log_ctx, comm_ctx_t **ref_comm_ctx, ...);
+
+void comm_close_external(pthread_mutex_t *comm_ctx_mutex_external,
+		comm_ctx_t **ref_comm_ctx, log_ctx_t *log_ctx);
+
+int comm_reset_external(pthread_mutex_t *comm_ctx_mutex_external,
+		const char *new_url, const char *local_url, comm_mode_t comm_mode,
+		log_ctx_t *log_ctx, comm_ctx_t **ref_comm_ctx_curr, ...);
+
+int comm_recv_external(pthread_mutex_t *comm_ctx_mutex_external,
+		comm_ctx_t **ref_comm_ctx, void** ref_buf, size_t *ref_count,
+		char **ref_from, struct timeval* timeout, log_ctx_t *log_ctx);
+
 #endif /* MEDIAPROCESSORS_UTILS_SRC_COMM_H_ */

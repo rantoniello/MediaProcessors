@@ -53,7 +53,7 @@
 /**
  * Returns non-zero if 'tag' string is equal to given TAG string.
  */
-#define TAG_IS(TAG) (strncmp(tag, TAG, strlen(TAG))== 0)
+#define TAG_IS(TAG) (strcmp(tag, TAG)== 0)
 
 /**
  * Module's context structure.
@@ -88,6 +88,8 @@ static comm_if_t* comm_if_allocate();
 static comm_if_t* comm_if_dup(const comm_if_t *comm_if_arg);
 //static int comm_if_cmp(const comm_if_t* comm_if1, const comm_if_t* comm_if2);
 static void comm_if_release(comm_if_t **ref_comm_if);
+
+static int comm_module_url_probe(const char *url);
 
 /* **** Implementations **** */
 
@@ -369,6 +371,141 @@ int comm_unblock(comm_ctx_t* comm_ctx)
 	return STAT_SUCCESS;
 }
 
+int comm_open_external(pthread_mutex_t *comm_ctx_mutex_external,
+		const char *url, const char *local_url, comm_mode_t comm_mode,
+		log_ctx_t *log_ctx, comm_ctx_t **ref_comm_ctx, ...)
+{
+	int ret_code, end_code= STAT_ENOPROTOOPT;
+	comm_ctx_t *comm_ctx= NULL;
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(comm_module_ctx!= NULL, return STAT_ERROR);
+	CHECK_DO(comm_ctx_mutex_external!= NULL, return STAT_ERROR);
+	CHECK_DO(url!= NULL && strlen(url)> 0, return STAT_ERROR);
+	// argument 'local_url' is allowed to be NULL in certain implementations
+	// (e.g. as "binding" is not needed in certain protocol-stacks)
+	CHECK_DO(comm_mode< COMM_MODE_MAX, return STAT_ERROR);
+	// argument 'log_ctx' is allowed to be NULL
+	CHECK_DO(ref_comm_ctx!= NULL, return STAT_ERROR);
+LOGV("%s\n", url); //FIXME!!
+	/* Test if new URL is supported */
+	if((ret_code= comm_module_url_probe(url))!= STAT_SUCCESS) {
+		end_code= ret_code;
+		goto end;
+	}
+LOGV("\n"); //FIXME!!
+	/* Open module instance */
+	comm_ctx= comm_open(url, local_url, comm_mode, LOG_CTX_GET());
+	if(comm_ctx== NULL)
+		goto end;
+LOGV("\n"); //FIXME!!
+	/* Open succeed, update external COMM module reference.
+	 * Always treat external reference within given critical section.
+	 */
+	ASSERT(pthread_mutex_lock(comm_ctx_mutex_external)== 0);
+	if(*ref_comm_ctx!= NULL) {
+		LOGE("Trying to open an already opened communication interface\n");
+		end_code= STAT_ECONFLICT;
+	} else {
+		*ref_comm_ctx= comm_ctx;
+		comm_ctx= NULL; // Avoid double referencing
+		end_code= STAT_SUCCESS;
+	}
+	ASSERT(pthread_mutex_unlock(comm_ctx_mutex_external)== 0);
+end:
+	if(comm_ctx!= NULL)
+		comm_close_external(comm_ctx_mutex_external, &comm_ctx, LOG_CTX_GET());
+LOGV("end_code= %d\n", end_code); //FIXME!!
+	return end_code;
+}
+
+void comm_close_external(pthread_mutex_t *comm_ctx_mutex_external,
+		comm_ctx_t **ref_comm_ctx, log_ctx_t *log_ctx)
+{
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(comm_module_ctx!= NULL, return);
+	CHECK_DO(comm_ctx_mutex_external!= NULL, return);
+	CHECK_DO(ref_comm_ctx!= NULL, return);
+
+	/* Firstly, unlock module outside critical section to avoid deadlocks */
+	if(*ref_comm_ctx!= NULL)
+		comm_unblock(*ref_comm_ctx);
+LOGV("\n"); //FIXME!!
+	/* Close module instance */
+	ASSERT(pthread_mutex_lock(comm_ctx_mutex_external)== 0);
+	comm_close(ref_comm_ctx);
+	*ref_comm_ctx= NULL; // redundant; for the sake of clarification
+	ASSERT(pthread_mutex_unlock(comm_ctx_mutex_external)== 0);
+	return;
+}
+
+int comm_reset_external(pthread_mutex_t *comm_ctx_mutex_external,
+		const char *new_url, const char *local_url, comm_mode_t comm_mode,
+		log_ctx_t *log_ctx, comm_ctx_t **ref_comm_ctx_curr, ...)
+{
+	char *p_curr_url= NULL; // Do not release
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(comm_module_ctx!= NULL, return STAT_ERROR);
+	CHECK_DO(comm_ctx_mutex_external!= NULL, return STAT_ERROR);
+	// argument 'new_url' is allowed to be NULL
+	// argument 'local_url' is allowed to be NULL in certain implementations
+	// (e.g. as "binding" is not needed in certain protocol-stacks)
+	CHECK_DO(comm_mode< COMM_MODE_MAX, return STAT_ERROR);
+	// argument 'log_ctx' is allowed to be NULL
+	CHECK_DO(ref_comm_ctx_curr!= NULL, return STAT_ERROR);
+LOGV("%s\n", new_url? new_url: "null"); //FIXME!!
+	/* Check if URL has changed */
+	p_curr_url= (*ref_comm_ctx_curr)!= NULL? (*ref_comm_ctx_curr)->url: NULL;
+LOGV("\n"); //FIXME!!
+	if(new_url!= NULL && p_curr_url!= NULL && strcmp(new_url, p_curr_url)== 0)
+		return STAT_NOTMODIFIED;
+LOGV("\n"); //FIXME!!
+	/* Special case: requesting to close interface */
+	if(new_url== NULL || (new_url!= NULL && strcmp(new_url, "")== 0)) {
+		comm_close_external(comm_ctx_mutex_external, ref_comm_ctx_curr,
+				LOG_CTX_GET());
+		return STAT_SUCCESS;
+	}
+LOGV("\n"); //FIXME!!
+	/* **** At this point we assume we have a new valid URL **** */
+
+	/* Close previous COMM module instance and open new one */
+	comm_close_external(comm_ctx_mutex_external, ref_comm_ctx_curr,
+			LOG_CTX_GET());
+	return comm_open_external(comm_ctx_mutex_external, new_url, local_url,
+			comm_mode, LOG_CTX_GET(), ref_comm_ctx_curr);
+}
+
+int comm_recv_external(pthread_mutex_t *comm_ctx_mutex_external,
+		comm_ctx_t **ref_comm_ctx, void** ref_buf, size_t *ref_count,
+		char **ref_from, struct timeval* timeout, log_ctx_t *log_ctx)
+{
+	int end_code= STAT_ENODATA;
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(comm_module_ctx!= NULL, return STAT_ERROR);
+	CHECK_DO(comm_ctx_mutex_external!= NULL, return STAT_ERROR);
+	CHECK_DO(ref_comm_ctx!= NULL, return STAT_ERROR);
+	CHECK_DO(ref_buf!= NULL, return STAT_ERROR);
+	CHECK_DO(ref_count!= NULL, return STAT_ERROR);
+	// argument 'ref_from' is allowed to be NULL
+	// timeout NULL means indefinitely wait
+
+    ASSERT(pthread_mutex_lock(comm_ctx_mutex_external)== 0);
+    if(*ref_comm_ctx!= NULL) {
+    	end_code= comm_recv(*ref_comm_ctx, ref_buf, ref_count, ref_from,
+    			timeout);
+    }
+    ASSERT(pthread_mutex_unlock(comm_ctx_mutex_external)== 0);
+    return end_code;
+}
+
 static int register_comm_if(const comm_if_t *comm_if, log_ctx_t *log_ctx)
 {
 	llist_t *n;
@@ -556,4 +693,61 @@ static void comm_if_release(comm_if_t **ref_comm_if)
 
 	free(comm_if);
 	*ref_comm_if= NULL;
+}
+
+static int comm_module_url_probe(const char *url)
+{
+	llist_t *n;
+	int end_code= STAT_ENOPROTOOPT;
+	size_t uri_part_size= 0;
+	char *uri_part= NULL;
+	LOG_CTX_INIT(NULL);
+
+	/* Check arguments */
+	CHECK_DO(url!= NULL, return end_code);
+
+	if(strlen(url)== 0)
+		goto end;
+
+	/* Check protocol scheme */
+	uri_part= uri_parser_get_uri_part(url, SCHEME);
+	if(!(uri_part!= NULL && (uri_part_size= strlen(uri_part))> 0))
+		goto end;
+	for(n= comm_module_ctx->comm_if_llist;; n= n->next) {
+		comm_if_t *comm_if_nth;
+		if(n== NULL) {
+			LOGE("Unknown protocol\n");
+			goto end; // end of list; protocol not supported
+		}
+		comm_if_nth= (comm_if_t*)n->data;
+		CHECK_DO(comm_if_nth!= NULL, continue);
+		if(strcmp(comm_if_nth->scheme, uri_part)== 0)
+			break; // scheme found; protocol is supported
+	}
+	free(uri_part);
+	uri_part= NULL;
+
+	/* Check host-text existence */
+	uri_part= uri_parser_get_uri_part(url, HOSTTEXT);
+	if(!(uri_part!= NULL && (uri_part_size= strlen(uri_part))> 0)) {
+		end_code= STAT_EAFNOSUPPORT_HOSTNAME;
+		goto end;
+	}
+	free(uri_part);
+	uri_part= NULL;
+
+	/* Check port-text existence */
+	uri_part= uri_parser_get_uri_part(url, PORTTEXT);
+	if(!(uri_part!= NULL && (uri_part_size= strlen(uri_part))> 0)) {
+		end_code= STAT_EAFNOSUPPORT_PORT;
+		goto end;
+	}
+	free(uri_part);
+	uri_part= NULL;
+
+	end_code= STAT_SUCCESS;
+end:
+	if(uri_part!= NULL)
+		free(uri_part);
+	return end_code;
 }
