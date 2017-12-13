@@ -137,9 +137,9 @@ const proc_if_t proc_if_transcoder=
 	transcoder_rest_get,
 	transcoder_process_frame,
 	NULL, // no extra options
-	NULL, // use proc_frame_ctx duplication default (*NOT* used really)
-	NULL, // use proc_frame_ctx release default (*NOT* used really)
-	NULL, // use proc_frame_ctx duplication default (*NOT* used really)
+	(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup, // *NOT* used really
+	(void(*)(void**))proc_frame_ctx_release, // *NOT* used really
+	(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup // *NOT* used really
 };
 
 /**
@@ -196,7 +196,7 @@ static proc_ctx_t* transcoder_open(const proc_if_t *proc_if,
 	CHECK_DO(transcoder_ctx->transcoder_subtype!= NULL, goto end);
 
 	/* Open decoder->encoder processors module */
-	procs_ctx_decenc= procs_open(LOG_CTX_GET());
+	procs_ctx_decenc= procs_open(LOG_CTX_GET(), 2);
 	CHECK_DO(procs_ctx_decenc!= NULL, goto end);
 
 	/* Open decoder processor */
@@ -419,6 +419,87 @@ end:
 		proc_frame_ctx_release(&proc_frame_ctx);
 	return end_code;
 }
+
+////////////////////////////////////////////////////////////////////////////////////
+static int transcoder_rest_parse4codec_names(procs_ctx_t *procs_ctx, int proc_id,
+		char *volatile*ref_proc_name_curr,
+		const char *rest_proc_name_tag /*(e.g. 'proc_name_dec')*/,
+		const char *str, log_ctx_t *log_ctx)
+{
+	int ret_code, end_code= STAT_ERROR;
+	int flag_is_query= 0; // 0-> JSON / 1->query string
+	char *proc_name_str_dec= NULL, *proc_name_str_enc= NULL;
+	cJSON *cjson_rest= NULL;
+	cJSON *cjson_aux= NULL; // Do not release
+	size_t proc_name_str_len= 0;
+	char name_put_array[256]= {0}; // should be enough
+	cJSON *cjson_settings= NULL, *cjson_proc_name= NULL; // DO not release
+	char *get_rest_str= NULL;
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	CHECK_DO(procs_ctx!= NULL, return STAT_ERROR);
+	CHECK_DO(proc_id>= 0, return STAT_ERROR);
+	CHECK_DO(ref_proc_name_curr!= NULL && *ref_proc_name_curr!= NULL,
+			return STAT_ERROR);
+	CHECK_DO(rest_proc_name_tag!= NULL, return STAT_ERROR);
+	CHECK_DO(str!= NULL, return STAT_ERROR);
+	//log_ctx is allowed to be NULL
+
+	/* Guess string representation format (JSON-REST or Query) */
+	//LOGV("'%s'\n", str); //comment-me
+	flag_is_query= (str[0]=='{' && str[strlen(str)-1]=='}')? 0: 1;
+
+	/* **** PUT decoder and encoder processor names ****
+	 * First of all we put eventually new decoder and encoder processor
+	 * names. If any of the processors names have changed, a new processor
+	 * type will be instantiated substituting the current one (and recycling
+	 * current settings that are also applicable to the new type). If names
+	 * does not change, putting processors names has no effect.
+	 */
+	if(flag_is_query== 1) {
+		proc_name_str_dec= uri_parser_query_str_get_value("proc_name_dec", str);
+		proc_name_str_enc= uri_parser_query_str_get_value("proc_name_enc", str);
+	} else {
+		cJSON *cjson_proc_name_dec, *cjson_proc_name_enc;
+
+		/* In the case string format is JSON-REST, parse to cJSON structure */
+		cjson_rest= cJSON_Parse(str);
+		CHECK_DO(cjson_rest!= NULL, goto end);
+
+		cjson_proc_name_dec= cJSON_GetObjectItem(cjson_rest, "proc_name_dec");
+		if(cjson_proc_name_dec!= NULL)
+			proc_name_str_dec= strdup(cjson_proc_name_dec->valuestring);
+		cjson_proc_name_enc= cJSON_GetObjectItem(cjson_rest, "proc_name_enc");
+		if(cjson_proc_name_enc!= NULL)
+			proc_name_str_enc= strdup(cjson_proc_name_enc->valuestring);
+	}
+
+	/* If no new name is specified we are done */
+	if(proc_name_str== NULL || (proc_name_str_len= strlen(proc_name_str))== 0
+			|| strcmp(proc_name_str, *ref_proc_name_curr)== 0) {
+		end_code= STAT_SUCCESS;
+		goto end;
+	}
+
+
+
+	/* Once confirmed PUT succeed, we set new processor name */
+	free(*ref_proc_name_curr);
+	*ref_proc_name_curr= proc_name_str;
+	proc_name_str= NULL; // Avoid double referencing
+	end_code= STAT_SUCCESS;
+end:
+	if(proc_name_str!= NULL)
+		free(proc_name_str);
+	if(cjson_rest!= NULL)
+		cJSON_Delete(cjson_rest);
+	if(get_rest_str!= NULL)
+		free(get_rest_str);
+	return end_code;
+}
+
+/////////////////////////////////////////////////////////////////////
 
 static int transcoder_rest_put_codec_name(procs_ctx_t *procs_ctx, int proc_id,
 		char *volatile*ref_proc_name_curr,
@@ -733,6 +814,7 @@ static int transcoder_rest_get(proc_ctx_t *proc_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 
