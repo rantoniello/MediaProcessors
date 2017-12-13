@@ -62,7 +62,7 @@
 /**
  * Returns non-zero if 'tag' string is equal to given TAG string.
  */
-#define TAG_IS(TAG) (strncmp(tag, TAG, strlen(TAG))== 0)
+#define TAG_IS(TAG) (strcmp(tag, TAG)== 0)
 
 /**
  * Processor's statistic thread period (1 second).
@@ -118,31 +118,34 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 	ret_code= pthread_mutex_init(&proc_ctx->api_mutex, NULL);
 	CHECK_DO(ret_code== 0, goto end);
 
-	/* Set external LOG module */
-	proc_ctx->log_ctx= LOG_CTX_GET();
+	/* Set LOG module:
+	 * IMPORTANT NOTE: LOG module is thought to be set externally (thus
+	 * passed by argument as a pointer). Nevertheless, any specific
+	 * implementation may implement its own module instance internally, so we
+	 * check it before overwriting what was set at 'proc_if_t::open'.
+	 */
+	if(proc_ctx->log_ctx!= NULL) {
+		// Processor manages its own internal instantiation
+		LOG_CTX_SET(proc_ctx->log_ctx);
+	} else {
+		// Processor use external instance passed by argument
+		proc_ctx->log_ctx= LOG_CTX_GET();
+	}
 
 	/* Initialize input FIFO buffer */
-	fifo_elem_alloc_fxn.elem_ctx_dup=
-			proc_if->iput_fifo_elem_opaque_dup!= NULL?
-			(fifo_elem_ctx_dup_fxn_t*)proc_if->iput_fifo_elem_opaque_dup:
-			(fifo_elem_ctx_dup_fxn_t*)proc_frame_ctx_dup;
-	fifo_elem_alloc_fxn.elem_ctx_release=
-			proc_if->iput_fifo_elem_opaque_release!= NULL?
-			(fifo_elem_ctx_release_fxn_t*)
-			proc_if->iput_fifo_elem_opaque_release:
-			(fifo_elem_ctx_release_fxn_t*)proc_frame_ctx_release;
-
+	fifo_elem_alloc_fxn.elem_ctx_dup= (fifo_elem_ctx_dup_fxn_t*)
+			proc_if->iput_fifo_elem_opaque_dup;
+	fifo_elem_alloc_fxn.elem_ctx_release= (fifo_elem_ctx_release_fxn_t*)
+			proc_if->iput_fifo_elem_opaque_release;
 	proc_ctx->fifo_ctx_array[PROC_IPUT]= fifo_open(fifo_ctx_maxsize[PROC_IPUT],
 			0/*unlimited chunk size*/, 0, &fifo_elem_alloc_fxn);
 	CHECK_DO(proc_ctx->fifo_ctx_array[PROC_IPUT]!= NULL, goto end);
 
 	/* Initialize output FIFO buffer */
-	fifo_elem_alloc_fxn.elem_ctx_dup=
-			proc_if->oput_fifo_elem_opaque_dup!= NULL?
-			(fifo_elem_ctx_dup_fxn_t*)proc_if->oput_fifo_elem_opaque_dup:
-			(fifo_elem_ctx_dup_fxn_t*)proc_frame_ctx_dup;
-	fifo_elem_alloc_fxn.elem_ctx_release=
-			(fifo_elem_ctx_release_fxn_t*)proc_frame_ctx_release;
+	fifo_elem_alloc_fxn.elem_ctx_dup= (fifo_elem_ctx_dup_fxn_t*)
+			proc_if->oput_fifo_elem_opaque_dup;
+	fifo_elem_alloc_fxn.elem_ctx_release= (fifo_elem_ctx_release_fxn_t*)
+			proc_frame_ctx_release;
 	proc_ctx->fifo_ctx_array[PROC_OPUT]= fifo_open(fifo_ctx_maxsize[PROC_OPUT],
 			0/*unlimited chunk size*/, 0, &fifo_elem_alloc_fxn);
 	CHECK_DO(proc_ctx->fifo_ctx_array[PROC_OPUT]!= NULL, goto end);

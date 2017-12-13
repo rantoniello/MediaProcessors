@@ -253,7 +253,10 @@ SUITE(UTESTS_PROCS)
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 
 		ret_code= procs_module_open(NULL);
@@ -284,7 +287,10 @@ SUITE(UTESTS_PROCS)
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		proc_if_t *proc_if_cpy= NULL;
 
@@ -328,7 +334,10 @@ SUITE(UTESTS_PROCS)
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		LOG_CTX_INIT(NULL);
 
@@ -342,7 +351,7 @@ SUITE(UTESTS_PROCS)
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL);
+		procs_ctx= procs_open(NULL, 16);
 		CHECK_DO(procs_ctx!= NULL, CHECK(false); goto end);
 
 		ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",
@@ -394,7 +403,10 @@ end:
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		const proc_if_t proc_if_bypass_proc2= {
 			"bypass_processor2", "encoder2", "application/encoder2",
@@ -409,7 +421,10 @@ end:
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		LOG_CTX_INIT(NULL);
 
@@ -426,7 +441,7 @@ end:
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL);
+		procs_ctx= procs_open(NULL, 16);
 		CHECK_DO(procs_ctx!= NULL, CHECK(false); goto end);
 
 		ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",
@@ -540,7 +555,10 @@ end:
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		proc_frame_ctx_t *proc_frame_ctx= NULL;
 		uint8_t yuv_frame[48]= { // YUV4:2:0 simple data example
@@ -579,7 +597,7 @@ end:
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL);
+		procs_ctx= procs_open(NULL, 16);
 		CHECK_DO(procs_ctx!= NULL, CHECK(false); goto end);
 
 		ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",

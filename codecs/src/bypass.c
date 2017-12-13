@@ -95,9 +95,9 @@ const proc_if_t proc_if_bypass=
 	bypass_rest_get,
 	bypass_process_frame,
 	NULL, // no extra options
-	NULL, // use default 'proc_frame_ctx_dup'
-	NULL, // use default 'proc_frame_ctx_release'
-	NULL, // use default 'proc_frame_ctx_dup'
+	(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+	(void(*)(void**))proc_frame_ctx_release,
+	(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 };
 
 /**

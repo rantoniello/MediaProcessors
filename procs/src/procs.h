@@ -127,10 +127,12 @@ int procs_module_opt(const char *tag, ...);
  * Allocates and initializes processors (PROCS) module instance context
  * structure.
  * @param log_ctx Pointer to the LOG module context structure.
+ * @param max_procs_num Maximum number of processors that can be created
+ * (and managed) by this instance.
  * @return Pointer to the processors context structure on success, NULL if
  * fails.
  */
-procs_ctx_t* procs_open(log_ctx_t *log_ctx);
+procs_ctx_t* procs_open(log_ctx_t *log_ctx, size_t max_procs_num);
 
 /**
  * De-initialize and release the processors (PROCS) module instance context
@@ -188,11 +190,18 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * Additional variable arguments for function procs_opt() are:<br>
  * @param ref_str Reference to the pointer to a character string
  * returning the processors list representational state.
+ * @param filter_str Character string indicating one of the following filters
+ * apply:
+ * - "proc_name==x": Filter the returning list discarding all the processors
+ * that are not of the type 'x';
+ * - "proc_name!=x": Filter the returning list discarding all the processors
+ * that *are* of the type 'x'.
+ * This parameter is optional, and can be set to NULL (no filter apply).
  * Code example:
  * @code
  * char *rest_str= NULL;
  * ...
- * ret_code= procs_opt(procs_ctx, "PROCS_GET", &rest_str);
+ * ret_code= procs_opt(procs_ctx, "PROCS_GET", &rest_str, NULL);
  * @endcode
  *
  * <li> <b>Tag "PROCS_ID_DELETE":</b><br>

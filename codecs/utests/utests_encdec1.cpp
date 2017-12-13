@@ -848,7 +848,7 @@ static void encdec_loopback(const proc_if_t *proc_if_enc,
 	}
 
 	/* Get PROCS module's instance */
-	procs_ctx= procs_open(NULL);
+	procs_ctx= procs_open(NULL, 16);
 	if(procs_ctx== NULL) {
 		CHECK(false);
 		goto end;

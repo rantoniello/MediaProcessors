@@ -116,7 +116,10 @@ SUITE(UTESTS_PROC)
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		uint32_t fifo_ctx_maxsize[PROC_IO_NUM]= {FIFO_SIZE, FIFO_SIZE};
 		proc_frame_ctx_t *proc_frame_ctx= NULL;

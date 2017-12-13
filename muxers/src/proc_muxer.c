@@ -40,6 +40,11 @@
 
 /* **** Definitions **** */
 
+/**
+ * Maximum number of elementary streams that can be registered in this MUXER.
+ */
+#define PROC_MUXER_MAX_ES_NUM 64
+
 /* **** Implementations **** */
 
 int proc_muxer_mux_ctx_init(proc_muxer_mux_ctx_t *proc_muxer_mux_ctx,
@@ -51,7 +56,8 @@ int proc_muxer_mux_ctx_init(proc_muxer_mux_ctx_t *proc_muxer_mux_ctx,
 	/* Check arguments */
 	CHECK_DO(proc_muxer_mux_ctx!= NULL, goto end);
 
-	proc_muxer_mux_ctx->procs_ctx_es_muxers= procs_open(LOG_CTX_GET());
+	proc_muxer_mux_ctx->procs_ctx_es_muxers= procs_open(LOG_CTX_GET(),
+			PROC_MUXER_MAX_ES_NUM);
 	CHECK_DO(proc_muxer_mux_ctx->procs_ctx_es_muxers!= NULL, goto end);
 
 	end_code= STAT_SUCCESS;

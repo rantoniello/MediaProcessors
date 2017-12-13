@@ -133,7 +133,7 @@ int procs_api_http_req_handler(procs_ctx_t *procs_ctx, const char *url,
 					query_string, &data_obj_str);
 
 		} else if(URL_METHOD_IS("GET")) {
-			end_code= procs_opt(procs_ctx, "PROCS_GET", &data_obj_str);
+			end_code= procs_opt(procs_ctx, "PROCS_GET", &data_obj_str, NULL);
 		} else {
 			end_code= STAT_ENOTFOUND;
 		}

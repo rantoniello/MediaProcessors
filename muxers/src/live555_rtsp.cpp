@@ -80,7 +80,7 @@ using namespace std;
 /**
  * Returns non-zero if 'tag' string is equal to given TAG string.
  */
-#define TAG_IS(TAG) (strncmp(tag, TAG, strlen(TAG))== 0)
+#define TAG_IS(TAG) (strcmp(tag, TAG)== 0)
 
 /**
  * Live555's RTSP multiplexer settings context structure.
@@ -562,9 +562,9 @@ const proc_if_t proc_if_live555_rtsp_mux=
 	live555_rtsp_mux_rest_get,
 	live555_rtsp_mux_process_frame,
 	live555_rtsp_mux_opt,
-	NULL, // input proc_frame_ctx to "private-frame-format"
-	NULL, // "private-frame-format" release
-	NULL, // "private-frame-format" to proc_frame_ctx
+	(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+	(void(*)(void**))proc_frame_ctx_release,
+	(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 };
 
 static const proc_if_t proc_if_live555_rtsp_es_mux=
@@ -581,9 +581,9 @@ static const proc_if_t proc_if_live555_rtsp_es_mux=
 	live555_rtsp_es_mux_rest_get,
 	live555_rtsp_es_mux_process_frame,
 	NULL, //live555_rtsp_es_mux_opt
-	NULL,
-	NULL,
-	NULL,
+	(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+	(void(*)(void**))proc_frame_ctx_release,
+	(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 };
 
 const proc_if_t proc_if_live555_rtsp_dmux=
@@ -600,9 +600,9 @@ const proc_if_t proc_if_live555_rtsp_dmux=
 	live555_rtsp_dmux_rest_get,
 	live555_rtsp_dmux_process_frame,
 	NULL, //live555_rtsp_dmux_opt,
-	NULL, // input proc_frame_ctx to "private-frame-format"
-	NULL, // "private-frame-format" release
-	NULL, // "private-frame-format" to proc_frame_ctx
+	(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+	(void(*)(void**))proc_frame_ctx_release,
+	(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 };
 } //extern "C"
 
@@ -1148,7 +1148,7 @@ static int live555_rtsp_mux_rest_get_es_array(procs_ctx_t *procs_ctx_es_muxers,
 	 * ]
 	 */
 
-	ret_code= procs_opt(procs_ctx_es_muxers, "PROCS_GET", &rest_str_aux);
+	ret_code= procs_opt(procs_ctx_es_muxers, "PROCS_GET", &rest_str_aux, NULL);
 	CHECK_DO(ret_code== STAT_SUCCESS && rest_str_aux!= NULL, goto end);
 
 	/* Parse to cJSON structure */
