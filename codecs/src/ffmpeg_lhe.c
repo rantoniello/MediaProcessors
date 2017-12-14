@@ -43,11 +43,6 @@
 
 /* **** Definitions **** */
 
-//HACK to make possible compiling with official FFmpeg (without LHE support)
-#ifndef AV_CODEC_ID_MLHE
-#define AV_CODEC_ID_MLHE AV_CODEC_ID_NONE
-#endif
-
 /**
  * FFmpeg's MLHE video encoder settings context structure.
  */

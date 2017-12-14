@@ -21,6 +21,14 @@ ifeq ($(LBITS),64)
 else
    # 32 bit stuff here
 endif
+# "Hack" to make possible compiling library "codecs" with official FFmpeg 
+# (without LHE encoder/decoder support). Refer also to 
+# 'arch_x86_linux/codecs/Makefile' to see how 'ffmpeg_codecs.txt' is generated.
+CODECS_LHE_DEF := $(shell grep -c lhe $(BUILDDIR)/ffmpeg_codecs.txt)
+ifeq ($(CODECS_LHE_DEF),2)
+else
+   CFLAGS+= -DAV_CODEC_ID_MLHE=AV_CODEC_ID_NONE
+endif
 
 LIBS= -lm -ldl -lpthread
 LIBS+= -L$(LIB_DIR) -luriparser -lcjson -lmongoose 
