@@ -102,6 +102,12 @@ int fifo_get(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size);
 /**
  * //TODO
  */
+int fifo_timedget(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size,
+		int64_t tout_usecs);
+
+/**
+ * //TODO
+ */
 int fifo_show(fifo_ctx_t *fifo_ctx, void **elem, size_t *elem_size);
 
 /**

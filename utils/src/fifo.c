@@ -39,6 +39,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <pthread.h>
+#include <errno.h>
 
 #include "check_utils.h"
 #include "log.h"
@@ -138,7 +139,7 @@ typedef struct fifo_ctx_s {
 static inline int fifo_input(fifo_ctx_t *fifo_ctx, void **ref_elem,
 		size_t elem_size, int dup_flag);
 static inline int fifo_output(fifo_ctx_t *fifo_ctx, void **ref_elem,
-		size_t *ref_elem_size, int flush_flag);
+		size_t *ref_elem_size, int flush_flag, int64_t tout_usecs);
 
 static void* fifo_malloc(int flag_use_shm, size_t size);
 static void fifo_free(int flag_use_shm, void **ref_p, size_t size);
@@ -328,13 +329,21 @@ int fifo_put(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t elem_size)
 
 int fifo_get(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size)
 {
-	return fifo_output(fifo_ctx, ref_elem, ref_elem_size, 1/*flush FIFO*/);
+	return fifo_output(fifo_ctx, ref_elem, ref_elem_size, 1/*flush FIFO*/,
+			-1/*no time-out*/);
+}
+
+int fifo_timedget(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size,
+		int64_t tout_usecs)
+{
+	return fifo_output(fifo_ctx, ref_elem, ref_elem_size, 1/*flush FIFO*/,
+			tout_usecs/*user specified time-out*/);
 }
 
 int fifo_show(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size)
 {
 	return fifo_output(fifo_ctx, ref_elem, ref_elem_size,
-			0/*do NOT flush FIFO*/);
+			0/*do NOT flush FIFO*/, -1/*no time-out*/);
 }
 
 ssize_t fifo_get_buffer_level(fifo_ctx_t *fifo_ctx)
@@ -533,13 +542,14 @@ end:
 }
 
 static inline int fifo_output(fifo_ctx_t *fifo_ctx, void **ref_elem,
-		size_t *ref_elem_size, int flush_flag)
+		size_t *ref_elem_size, int flush_flag, int64_t tout_usecs)
 {
 	fifo_elem_ctx_t *fifo_elem_ctx= NULL;
-	int end_code= STAT_ERROR;
+	int ret_code, end_code= STAT_ERROR;
 	void *elem= NULL; // Do not release
 	ssize_t elem_size= 0;  // Do not release
 	void *elem_cpy= NULL;
+	struct timespec ts_tout= {0};
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
@@ -554,8 +564,31 @@ static inline int fifo_output(fifo_ctx_t *fifo_ctx, void **ref_elem,
 	/* Lock API MUTEX */
 	pthread_mutex_lock(fifo_ctx->api_mutex_p);
 
+	/* Get current time and compute time-out if applicable.
+	 * Note that a negative time-out mens 'wait indefinitely'.
+	 */
+	if(tout_usecs>= 0) {
+		struct timespec ts_curr;
+		register int64_t curr_nsec;
+		/* Get current time */
+		CHECK_DO(clock_gettime(CLOCK_MONOTONIC, &ts_curr)== 0, goto end);
+	    curr_nsec= (int64_t)ts_curr.tv_sec*1000000000+ (int64_t)ts_curr.tv_nsec;
+	    //LOGV("curr_nsec: %"PRId64"\n", curr_nsec); //comment-me
+	    //LOGV("secs: %"PRId64"\n", (int64_t)ts_curr.tv_sec); //comment-me
+	    //LOGV("nsecs: %"PRId64"\n", (int64_t)ts_curr.tv_nsec); //comment-me
+	    /* Compute time-out */
+	    curr_nsec+= (tout_usecs* 1000);
+	    ts_tout.tv_sec= curr_nsec/ 1000000000;
+	    ts_tout.tv_nsec= curr_nsec% 1000000000;
+	    curr_nsec= (int64_t)ts_tout.tv_sec*1000000000+
+	    		(int64_t)ts_tout.tv_nsec; //comment-me
+	    //LOGV("tout_nsec: %"PRId64"\n", curr_nsec); //comment-me
+	    //LOGV("secs: %"PRId64"\n", (int64_t)ts_tout.tv_sec); //comment-me
+	    //LOGV("nsecs: %"PRId64"\n", (int64_t)ts_tout.tv_nsec); //comment-me
+	}
+
 	/* In the case of blocking FIFO, if buffer is empty we block until a
-	 * new element is inserted.
+	 * new element is inserted, or if it is the case, time-out occur.
 	 * In the case of a non-blocking FIFO, if buffer is empty we exit
 	 * returning 'STAT_EAGAIN' status.
 	 */
@@ -563,7 +596,19 @@ static inline int fifo_output(fifo_ctx_t *fifo_ctx, void **ref_elem,
 			&& fifo_ctx->flag_exit== 0) {
 		//LOGV("FIFO buffer underrun!\n"); //comment-me
 		pthread_cond_broadcast(fifo_ctx->buf_get_signal_p);
-		pthread_cond_wait(fifo_ctx->buf_put_signal_p, fifo_ctx->api_mutex_p);
+		if(tout_usecs>= 0) {
+			ret_code= pthread_cond_timedwait(fifo_ctx->buf_put_signal_p,
+					fifo_ctx->api_mutex_p, &ts_tout);
+			if(ret_code== ETIMEDOUT) {
+				LOGW("Warning: FIFO buffer timed-out!\n");
+				end_code= STAT_ETIMEDOUT;
+				goto end;
+			}
+		} else {
+			ret_code= pthread_cond_wait(fifo_ctx->buf_put_signal_p,
+					fifo_ctx->api_mutex_p);
+			CHECK_DO(ret_code== 0, goto end);
+		}
 	}
 	if(fifo_ctx->slots_used_cnt<= 0 && (fifo_ctx->flags& FIFO_O_NONBLOCK)) {
 		//LOGV("FIFO buffer underrun!\n"); //comment-me
@@ -691,7 +736,7 @@ static void fifo_mutex_destroy(int flag_use_shm,
 
 static pthread_cond_t* fifo_cond_create(int flag_use_shm)
 {
-	pthread_condattr_t attr, *attr_p= NULL;
+	pthread_condattr_t attr;
 	int ret_code, end_code= STAT_ERROR;
 	pthread_cond_t *pthread_cond= NULL;
 	LOG_CTX_INIT(NULL);
@@ -701,13 +746,16 @@ static pthread_cond_t* fifo_cond_create(int flag_use_shm)
 	CHECK_DO(pthread_cond!= NULL, goto end);
 
 	/* Initialize */
+	pthread_condattr_init(&attr);
+	ret_code= pthread_condattr_setclock(&attr, CLOCK_MONOTONIC);
+	CHECK_DO(ret_code== 0, goto end);
+
 	if(flag_use_shm!= 0) {
-		pthread_condattr_init(&attr);
 		ret_code= pthread_condattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
 		CHECK_DO(ret_code== 0, goto end);
-		attr_p= &attr;
 	}
-	ret_code= pthread_cond_init(pthread_cond, attr_p);
+
+	ret_code= pthread_cond_init(pthread_cond, &attr);
 	CHECK_DO(ret_code== 0, goto end);
 
 	end_code= STAT_SUCCESS;
