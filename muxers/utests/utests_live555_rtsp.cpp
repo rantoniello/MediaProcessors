@@ -265,7 +265,7 @@ SUITE(UTESTS_LIVE555_RTSP)
 		}
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL, 16);
+		procs_ctx= procs_open(NULL, 16, NULL, NULL);
 		if(procs_ctx== NULL) {
 			CHECK(false);
 			goto end;

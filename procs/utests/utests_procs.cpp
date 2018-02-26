@@ -351,7 +351,7 @@ SUITE(UTESTS_PROCS)
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL, 16);
+		procs_ctx= procs_open(NULL, 16, NULL, NULL);
 		CHECK_DO(procs_ctx!= NULL, CHECK(false); goto end);
 
 		ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",
@@ -441,7 +441,7 @@ end:
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL, 16);
+		procs_ctx= procs_open(NULL, 16, NULL, NULL);
 		CHECK_DO(procs_ctx!= NULL, CHECK(false); goto end);
 
 		ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",
@@ -597,7 +597,7 @@ end:
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL, 16);
+		procs_ctx= procs_open(NULL, 16, NULL, NULL);
 		CHECK_DO(procs_ctx!= NULL, CHECK(false); goto end);
 
 		ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",

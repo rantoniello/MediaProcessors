@@ -734,7 +734,7 @@ int main(int argc, char* argv[])
 	}
 
 	/* Get PROCS module's instance */
-	if((procs_ctx= procs_open(NULL, 16))== NULL) {
+	if((procs_ctx= procs_open(NULL, 16, NULL, NULL))== NULL) {
 		fprintf(stderr, "Error at line: %d\n", __LINE__);
 		exit(-1);
 	}

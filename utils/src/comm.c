@@ -388,18 +388,18 @@ int comm_open_external(pthread_mutex_t *comm_ctx_mutex_external,
 	CHECK_DO(comm_mode< COMM_MODE_MAX, return STAT_ERROR);
 	// argument 'log_ctx' is allowed to be NULL
 	CHECK_DO(ref_comm_ctx!= NULL, return STAT_ERROR);
-LOGV("%s\n", url); //FIXME!!
+
 	/* Test if new URL is supported */
 	if((ret_code= comm_module_url_probe(url))!= STAT_SUCCESS) {
 		end_code= ret_code;
 		goto end;
 	}
-LOGV("\n"); //FIXME!!
+
 	/* Open module instance */
 	comm_ctx= comm_open(url, local_url, comm_mode, LOG_CTX_GET());
 	if(comm_ctx== NULL)
 		goto end;
-LOGV("\n"); //FIXME!!
+
 	/* Open succeed, update external COMM module reference.
 	 * Always treat external reference within given critical section.
 	 */
@@ -416,7 +416,6 @@ LOGV("\n"); //FIXME!!
 end:
 	if(comm_ctx!= NULL)
 		comm_close_external(comm_ctx_mutex_external, &comm_ctx, LOG_CTX_GET());
-LOGV("end_code= %d\n", end_code); //FIXME!!
 	return end_code;
 }
 
@@ -433,7 +432,7 @@ void comm_close_external(pthread_mutex_t *comm_ctx_mutex_external,
 	/* Firstly, unlock module outside critical section to avoid deadlocks */
 	if(*ref_comm_ctx!= NULL)
 		comm_unblock(*ref_comm_ctx);
-LOGV("\n"); //FIXME!!
+
 	/* Close module instance */
 	ASSERT(pthread_mutex_lock(comm_ctx_mutex_external)== 0);
 	comm_close(ref_comm_ctx);
@@ -458,20 +457,19 @@ int comm_reset_external(pthread_mutex_t *comm_ctx_mutex_external,
 	CHECK_DO(comm_mode< COMM_MODE_MAX, return STAT_ERROR);
 	// argument 'log_ctx' is allowed to be NULL
 	CHECK_DO(ref_comm_ctx_curr!= NULL, return STAT_ERROR);
-LOGV("%s\n", new_url? new_url: "null"); //FIXME!!
+
 	/* Check if URL has changed */
 	p_curr_url= (*ref_comm_ctx_curr)!= NULL? (*ref_comm_ctx_curr)->url: NULL;
-LOGV("\n"); //FIXME!!
 	if(new_url!= NULL && p_curr_url!= NULL && strcmp(new_url, p_curr_url)== 0)
 		return STAT_NOTMODIFIED;
-LOGV("\n"); //FIXME!!
+
 	/* Special case: requesting to close interface */
 	if(new_url== NULL || (new_url!= NULL && strcmp(new_url, "")== 0)) {
 		comm_close_external(comm_ctx_mutex_external, ref_comm_ctx_curr,
 				LOG_CTX_GET());
 		return STAT_SUCCESS;
 	}
-LOGV("\n"); //FIXME!!
+
 	/* **** At this point we assume we have a new valid URL **** */
 
 	/* Close previous COMM module instance and open new one */

@@ -196,7 +196,7 @@ static proc_ctx_t* transcoder_open(const proc_if_t *proc_if,
 	CHECK_DO(transcoder_ctx->transcoder_subtype!= NULL, goto end);
 
 	/* Open decoder->encoder processors module */
-	procs_ctx_decenc= procs_open(LOG_CTX_GET(), 2);
+	procs_ctx_decenc= procs_open(LOG_CTX_GET(), 2, NULL, NULL);
 	CHECK_DO(procs_ctx_decenc!= NULL, goto end);
 
 	/* Open decoder processor */

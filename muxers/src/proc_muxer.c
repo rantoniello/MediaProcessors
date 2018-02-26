@@ -57,7 +57,7 @@ int proc_muxer_mux_ctx_init(proc_muxer_mux_ctx_t *proc_muxer_mux_ctx,
 	CHECK_DO(proc_muxer_mux_ctx!= NULL, goto end);
 
 	proc_muxer_mux_ctx->procs_ctx_es_muxers= procs_open(LOG_CTX_GET(),
-			PROC_MUXER_MAX_ES_NUM);
+			PROC_MUXER_MAX_ES_NUM, NULL, NULL);
 	CHECK_DO(proc_muxer_mux_ctx->procs_ctx_es_muxers!= NULL, goto end);
 
 	end_code= STAT_SUCCESS;

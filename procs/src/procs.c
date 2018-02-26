@@ -108,11 +108,6 @@
 #define PROCS_FIFO_SIZE 2
 
 /**
- * PROCS module URL base-path.
- */
-#define PROCS_URL_BASE_PATH 	"/procs/"
-
-/**
  * Module's context structure.
  * PROCS module context structure is statically defined in the program.
  */
@@ -175,6 +170,17 @@ typedef struct procs_reg_elem_s {
  * PROCS module context structure is statically defined in the program.
  */
 typedef struct procs_ctx_s {
+	/**
+	 * Module's API REST prefix name (256 characters maximum).
+	 * This parameter can be set by 'procs_open()' function; if not
+	 * (NULL is specified), the default name "procs" is used.
+	 */
+	char prefix_name[256];
+	/**
+	 * Module's API REST href attribute specifying the URL path
+	 * the API refers to. This parameter is optional (may be NULL).
+	 */
+	char *procs_href;
 	/**
 	 * Module's instance API mutual exclusion lock.
 	 * This lock is used to provide a critical section for external
@@ -327,7 +333,8 @@ int procs_module_opt(const char *tag, ...)
 	return end_code;
 }
 
-procs_ctx_t* procs_open(log_ctx_t *log_ctx, size_t max_procs_num)
+procs_ctx_t* procs_open(log_ctx_t *log_ctx, size_t max_procs_num,
+		const char *prefix_name, const char *procs_href)
 {
 	int proc_id, i, ret_code, end_code= STAT_ERROR;
 	procs_ctx_t *procs_ctx= NULL;
@@ -345,12 +352,28 @@ procs_ctx_t* procs_open(log_ctx_t *log_ctx, size_t max_procs_num)
 		LOGE("Specified maximum number of processor exceeds system capacity\n");
 		return NULL;
 	}
+	// Argument 'prefix_name' is allowed to be NULL
 
 	/* Allocate context structure */
 	procs_ctx= (procs_ctx_t*)calloc(1, sizeof(procs_ctx_t));
 	CHECK_DO(procs_ctx!= NULL, goto end);
 
 	/* **** Initialize context **** */
+
+	if(prefix_name!= NULL && strlen(prefix_name)> 0) {
+		CHECK_DO(strlen(prefix_name)< sizeof(procs_ctx->prefix_name),
+				goto end);
+		snprintf(procs_ctx->prefix_name, sizeof(procs_ctx->prefix_name),
+				"%s", prefix_name);
+	} else {
+		snprintf(procs_ctx->prefix_name, sizeof(procs_ctx->prefix_name),
+				"procs");
+	}
+
+	if(procs_href!= NULL && strlen(procs_href)> 0) {
+		procs_ctx->procs_href= strdup(procs_href);
+		CHECK_DO(procs_ctx->procs_href!= NULL, goto end);
+	}
 
 	ret_code= pthread_mutex_init(&procs_ctx->api_mutex, NULL);
 	CHECK_DO(ret_code== 0, goto end);
@@ -416,6 +439,12 @@ void procs_close(procs_ctx_t **ref_procs_ctx)
 		}
 	}
 	UNLOCK_PROCS_CTX_API(procs_ctx);
+
+	/* Module's API REST href attribute */
+	if(procs_ctx->procs_href!= NULL) {
+		free(procs_ctx->procs_href);
+		procs_ctx->procs_href= NULL;
+	}
 
 	/* Module's instance API mutual exclusion lock */
 	ASSERT(pthread_mutex_destroy(&procs_ctx->api_mutex)== 0);
@@ -714,7 +743,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 	cJSON *cjson_rest= NULL, *cjson_proc= NULL;
 	cJSON *cjson_aux= NULL, *cjson_procs; // Do not release
 	const char *filter_proc_name= NULL, *filter_proc_notname= NULL;
-	char href[128]= {0};
+	char href[1024]= {0};
 	LOG_CTX_INIT(log_ctx);
 
 	/* Check arguments */
@@ -731,8 +760,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 
 	/* JSON structure is as follows:
 	 * {
-	 *     "procs":
-	 *     [
+	 *     <selected prefix_name>("procs" by default):[
 	 *         {
 	 *             "proc_id":number,
 	 *             "proc_name":string,
@@ -753,7 +781,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 	/* Create and attach 'PROCS' array */
 	cjson_procs= cJSON_CreateArray();
 	CHECK_DO(cjson_procs!= NULL, goto end);
-	cJSON_AddItemToObject(cjson_rest, "procs", cjson_procs);
+	cJSON_AddItemToObject(cjson_rest, procs_ctx->prefix_name, cjson_procs);
 
 	/* Parse the filter if available */
 	if(filter_str!= NULL) {
@@ -825,8 +853,9 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 		CHECK_DO(cjson_aux!= NULL, goto end);
 		cJSON_AddItemToObject(cjson_link, "rel", cjson_aux);
 
-		snprintf(href, sizeof(href), PROCS_URL_BASE_PATH"%d.json",
-				proc_instance_index);
+		snprintf(href, sizeof(href), "%s/%s/%d.json",
+				procs_ctx->procs_href!= NULL? procs_ctx->procs_href: "",
+						procs_ctx->prefix_name, proc_instance_index);
 		cjson_aux= cJSON_CreateString(href);
 		CHECK_DO(cjson_aux!= NULL, goto end);
 		cJSON_AddItemToObject(cjson_link, "href", cjson_aux);

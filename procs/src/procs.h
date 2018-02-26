@@ -129,10 +129,27 @@ int procs_module_opt(const char *tag, ...);
  * @param log_ctx Pointer to the LOG module context structure.
  * @param max_procs_num Maximum number of processors that can be created
  * (and managed) by this instance.
+ * @param prefix_name Module's API REST prefix name (256 characters maximum).
+ * This parameter is optional (NULL may be passed); if not specified, the
+ * default name "procs" is used.
+ * @param procs_href Module's API REST href attribute specifying the URL path
+ * the API refers to. This parameter is optional (NULL may be passed).
  * @return Pointer to the processors context structure on success, NULL if
  * fails.
+ * Code example:<br>
+ * The following call creates a "processors module instance" capable of
+ * handling 16 processors. Prefix name "video_processors" suggest we will use
+ * this module instance to handle only "video processors", and we give an href
+ * such that the module's API may be used applying on the following URL:
+ * GET/PUT/POST/DELETE -> 127.0.0.1/video_processors.json<br>
+ * @code
+ * procs_ctx_t *procs_ctx;
+ * ...
+ * procs_ctx= procs_open(log_ctx, 16, "video_processors", "127.0.0.1");
+ * @endcode
  */
-procs_ctx_t* procs_open(log_ctx_t *log_ctx, size_t max_procs_num);
+procs_ctx_t* procs_open(log_ctx_t *log_ctx, size_t max_procs_num,
+		const char *prefix_name, const char *procs_href);
 
 /**
  * De-initialize and release the processors (PROCS) module instance context
