@@ -196,7 +196,10 @@ SUITE(UTESTS_FIFO)
 
 	TEST(FIFO_MULTI_THREADING_WITH_MMAP)
 	{
+		int ret_code;
 		fifo_ctx_t *fifo_ctx;
+		uint8_t *elem= NULL;
+		size_t elem_size= -1;
 		LOG_CTX_INIT(NULL);
 
 	    LOGV("\n\nExecuting UTESTS_FIFO::FIFO_MULTI_THREADING_WITH_MMAP...\n");
@@ -220,9 +223,19 @@ SUITE(UTESTS_FIFO)
    		pthread_join(consumer_thread, NULL);
    		LOGD("OK\n");
 
+   		/* Check time-out */
+   		fifo_set_blocking_mode(fifo_ctx, 1); // block FIFO to use time-out
+   		fifo_empty(fifo_ctx);
+   		LOGD("Performing 'fifo_timedget()' to check 2 second time-out...\n");
+   		ret_code= fifo_timedget(fifo_ctx, (void**)&elem, &elem_size,
+   				2* 1000* 1000);
+   		CHECK(ret_code== STAT_ETIMEDOUT);
+   		LOGD("OK\n");
+
    		/* Write four messages and check overflow */
    		LOGD("Checking overflow (maximum FIFO size is: %d)\n", FIFO_SIZE);
 	    /* Put messages on FIFO */
+   		fifo_set_blocking_mode(fifo_ctx, 0); // unblock FIFO to overflow
 	    for(int i= 0; i<= FIFO_SIZE; i++) {
 	    	const char *msg= "Message to test FIFO overflow!.\0";
 	    	size_t msg_len= strlen(msg);
@@ -245,6 +258,7 @@ SUITE(UTESTS_FIFO)
 
 	TEST(FIFO_FORK_WITH_MMAP)
 	{
+		int ret_code;
 		fifo_ctx_t *fifo_ctx;
 		pid_t child_pid= 0; // process ID
 		LOG_CTX_INIT(NULL);
@@ -270,6 +284,8 @@ SUITE(UTESTS_FIFO)
 		} else {
 			int status;
 			pid_t w;
+			uint8_t *elem= NULL;
+			size_t elem_size= -1;
 
 			/* **** PARENT CODE **** */
 
@@ -298,9 +314,19 @@ SUITE(UTESTS_FIFO)
             }
             LOGD("OK\n");
 
+       		/* Check time-out */
+       		fifo_set_blocking_mode(fifo_ctx, 1); // block FIFO to use time-out
+       		fifo_empty(fifo_ctx);
+       		LOGD("Performing 'fifo_timedget()' to check 2 second time-out...\n");
+       		ret_code= fifo_timedget(fifo_ctx, (void**)&elem, &elem_size,
+       				2* 1000* 1000);
+       		CHECK(ret_code== STAT_ETIMEDOUT);
+       		LOGD("OK\n");
+
 	   		/* Write four messages and check overflow */
 	   		LOGD("Checking overflow (maximum FIFO size is: %d)\n", FIFO_SIZE);
 		    /* Put messages on FIFO */
+	   		fifo_set_blocking_mode(fifo_ctx, 0); // unblock FIFO to overflow
 		    for(int i= 0; i<= FIFO_SIZE; i++) {
 		    	const char *msg= "Message to test FIFO overflow!.\0";
 		    	size_t msg_len= strlen(msg);
@@ -336,6 +362,8 @@ SUITE(UTESTS_FIFO)
 	    fifo_ctx= fifo_open(FIFO_SIZE, 0, FIFO_PROCESS_SHARED, NULL);
 	    CHECK(fifo_ctx== NULL);
 
+	    fifo_elem_alloc_fxn.elem_ctx_dup= (fifo_elem_ctx_dup_fxn_t*)
+	    		4; // Any value just to check
 	    fifo_ctx= fifo_open(FIFO_SIZE, 512, FIFO_PROCESS_SHARED,
 	    		&fifo_elem_alloc_fxn);
 	    CHECK(fifo_ctx== NULL);

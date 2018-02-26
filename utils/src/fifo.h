@@ -64,6 +64,12 @@ typedef void(fifo_elem_ctx_release_fxn_t)(void**);
 typedef struct fifo_elem_alloc_fxn_s {
 	fifo_elem_ctx_dup_fxn_t *elem_ctx_dup;
 	fifo_elem_ctx_release_fxn_t *elem_ctx_release;
+	/**
+	 * Used only if FIFO_PROCESS_SHARED is signaled.
+	 * In this case, this file-name is assigned to the shared memory object
+	 * to facilitate opening FIFO from an fork-exec setting.
+	 */
+	const char *fifo_file_name;
 } fifo_elem_alloc_fxn_t;
 
 /* **** Prototypes **** */
