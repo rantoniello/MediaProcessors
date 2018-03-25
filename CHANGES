@@ -1,0 +1,6 @@
+
+**** v1.1.0 (25 March, 2018)
+- Relevant internal API changes in module FIFO.
+Concretely, refer for changes in utils/src/fifo.h, function 'fifo_open()'
+
+**** v1.0.0 First functional version. (2017)
