@@ -164,5 +164,5 @@ int interr_usleep(interr_usleep_ctx_t *interr_usleep_ctx, uint32_t usec)
 				&interr_usleep_ctx->interr_mutex, &monotime_tout);
 	}
 	pthread_mutex_unlock(&interr_usleep_ctx->interr_mutex);
-	return (ret_code== STAT_ETIMEDOUT)? STAT_SUCCESS: STAT_EINTR;
+	return (ret_code== ETIMEDOUT)? STAT_SUCCESS: STAT_EINTR;
 }

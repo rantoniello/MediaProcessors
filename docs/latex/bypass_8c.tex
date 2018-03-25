@@ -1,0 +1,210 @@
+\hypertarget{bypass_8c}{}\section{bypass.\+c File Reference}
+\label{bypass_8c}\index{bypass.\+c@{bypass.\+c}}
+{\ttfamily \#include \char`\"{}bypass.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$libcjson/c\+J\+S\+O\+N.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/log.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/stat\+\_\+codes.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/check\+\_\+utils.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocsutils/fifo.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc\+\_\+if.\+h$>$}\\*
+{\ttfamily \#include $<$libmediaprocs/proc.\+h$>$}\\*
+Include dependency graph for bypass.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{bypass_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structbypass__settings__ctx__s}{bypass\+\_\+settings\+\_\+ctx\+\_\+s}
+\item 
+struct \hyperlink{structbypass__ctx__s}{bypass\+\_\+ctx\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structbypass__settings__ctx__s}{bypass\+\_\+settings\+\_\+ctx\+\_\+s} \hyperlink{bypass_8c_a36f41e7b435b7b49cd23e7506e42e7c0}{bypass\+\_\+settings\+\_\+ctx\+\_\+t}
+\item 
+typedef struct \hyperlink{structbypass__ctx__s}{bypass\+\_\+ctx\+\_\+s} \hyperlink{bypass_8c_a9a5d0d7e68f66eaa1afed1fded1cd1c2}{bypass\+\_\+ctx\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{bypass_8c_a13e7300dab549ef116086ba693c40bce}{bypass\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)
+\item 
+static void \hyperlink{bypass_8c_a357ded261525987762d1cdde4169a873}{bypass\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
+\item 
+static int \hyperlink{bypass_8c_a43b4dc7aaf4b148b02818c1565707b80}{bypass\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+\item 
+static int \hyperlink{bypass_8c_ae15807b95ca7fb1c3f262ec5827d8f8d}{bypass\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
+\item 
+static int \hyperlink{bypass_8c_a02d52ff6844e3ac59b8d444086970afd}{bypass\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{proc__if_8h_a9bea3dae53a91f2a3e3a459d1d3e22b3}{proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t} rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)
+\item 
+static int \hyperlink{bypass_8c_ab88482b5ab6911459af79dec957e33f6}{bypass\+\_\+settings\+\_\+ctx\+\_\+init} (volatile \hyperlink{bypass_8c_a36f41e7b435b7b49cd23e7506e42e7c0}{bypass\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$bypass\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+static void \hyperlink{bypass_8c_a434a20a7415b5204c0dcdd0afab196a2}{bypass\+\_\+settings\+\_\+ctx\+\_\+deinit} (volatile \hyperlink{bypass_8c_a36f41e7b435b7b49cd23e7506e42e7c0}{bypass\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$bypass\+\_\+settings\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} \hyperlink{bypass_8c_a26ad3ea6371ce8e95085aedabc0e4a40}{proc\+\_\+if\+\_\+bypass}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{bypass.\+c@{bypass.\+c}!bypass\+\_\+ctx\+\_\+t@{bypass\+\_\+ctx\+\_\+t}}
+\index{bypass\+\_\+ctx\+\_\+t@{bypass\+\_\+ctx\+\_\+t}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{bypass\+\_\+ctx\+\_\+t}{bypass_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf bypass\+\_\+ctx\+\_\+s}  {\bf bypass\+\_\+ctx\+\_\+t}}\hypertarget{bypass_8c_a9a5d0d7e68f66eaa1afed1fded1cd1c2}{}\label{bypass_8c_a9a5d0d7e68f66eaa1afed1fded1cd1c2}
+Bypass processor context structure. \index{bypass.\+c@{bypass.\+c}!bypass\+\_\+settings\+\_\+ctx\+\_\+t@{bypass\+\_\+settings\+\_\+ctx\+\_\+t}}
+\index{bypass\+\_\+settings\+\_\+ctx\+\_\+t@{bypass\+\_\+settings\+\_\+ctx\+\_\+t}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{bypass\+\_\+settings\+\_\+ctx\+\_\+t}{bypass_settings_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf bypass\+\_\+settings\+\_\+ctx\+\_\+s}  {\bf bypass\+\_\+settings\+\_\+ctx\+\_\+t}}\hypertarget{bypass_8c_a36f41e7b435b7b49cd23e7506e42e7c0}{}\label{bypass_8c_a36f41e7b435b7b49cd23e7506e42e7c0}
+Bypass processor settings context structure. 
+
+\subsection{Function Documentation}
+\index{bypass.\+c@{bypass.\+c}!bypass\+\_\+close@{bypass\+\_\+close}}
+\index{bypass\+\_\+close@{bypass\+\_\+close}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{bypass\+\_\+close(proc\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)}{bypass_close(proc_ctx_t **ref_proc_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void bypass\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+proc\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{bypass_8c_a357ded261525987762d1cdde4169a873}{}\label{bypass_8c_a357ded261525987762d1cdde4169a873}
+Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 146 of file bypass.\+c.
+
+\index{bypass.\+c@{bypass.\+c}!bypass\+\_\+open@{bypass\+\_\+open}}
+\index{bypass\+\_\+open@{bypass\+\_\+open}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{bypass\+\_\+open(const proc\+\_\+if\+\_\+t $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx, va\+\_\+list arg)}{bypass_open(const proc_if_t *proc_if, const char *settings_str, log_ctx_t *log_ctx, va_list arg)}}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf proc\+\_\+ctx\+\_\+t} $\ast$ bypass\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{const {\bf proc\+\_\+if\+\_\+t} $\ast$}]{proc\+\_\+if, }
+\item[{const char $\ast$}]{settings\+\_\+str, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx, }
+\item[{va\+\_\+list}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{bypass_8c_a13e7300dab549ef116086ba693c40bce}{}\label{bypass_8c_a13e7300dab549ef116086ba693c40bce}
+Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 107 of file bypass.\+c.
+
+\index{bypass.\+c@{bypass.\+c}!bypass\+\_\+process\+\_\+frame@{bypass\+\_\+process\+\_\+frame}}
+\index{bypass\+\_\+process\+\_\+frame@{bypass\+\_\+process\+\_\+frame}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{bypass\+\_\+process\+\_\+frame(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$iput\+\_\+fifo\+\_\+ctx, fifo\+\_\+ctx\+\_\+t $\ast$oput\+\_\+fifo\+\_\+ctx)}{bypass_process_frame(proc_ctx_t *proc_ctx, fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int bypass\+\_\+process\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{iput\+\_\+fifo\+\_\+ctx, }
+\item[{{\bf fifo\+\_\+ctx\+\_\+t} $\ast$}]{oput\+\_\+fifo\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{bypass_8c_a43b4dc7aaf4b148b02818c1565707b80}{}\label{bypass_8c_a43b4dc7aaf4b148b02818c1565707b80}
+Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 170 of file bypass.\+c.
+
+\index{bypass.\+c@{bypass.\+c}!bypass\+\_\+rest\+\_\+get@{bypass\+\_\+rest\+\_\+get}}
+\index{bypass\+\_\+rest\+\_\+get@{bypass\+\_\+rest\+\_\+get}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{bypass\+\_\+rest\+\_\+get(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)}{bypass_rest_get(proc_ctx_t *proc_ctx, const proc_if_rest_fmt_t rest_fmt, void **ref_reponse)}}]{\setlength{\rightskip}{0pt plus 5cm}static int bypass\+\_\+rest\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{const {\bf proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t}}]{rest\+\_\+fmt, }
+\item[{void $\ast$$\ast$}]{ref\+\_\+reponse}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{bypass_8c_a02d52ff6844e3ac59b8d444086970afd}{}\label{bypass_8c_a02d52ff6844e3ac59b8d444086970afd}
+Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 241 of file bypass.\+c.
+
+\index{bypass.\+c@{bypass.\+c}!bypass\+\_\+rest\+\_\+put@{bypass\+\_\+rest\+\_\+put}}
+\index{bypass\+\_\+rest\+\_\+put@{bypass\+\_\+rest\+\_\+put}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{bypass\+\_\+rest\+\_\+put(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const char $\ast$str)}{bypass_rest_put(proc_ctx_t *proc_ctx, const char *str)}}]{\setlength{\rightskip}{0pt plus 5cm}static int bypass\+\_\+rest\+\_\+put (
+\begin{DoxyParamCaption}
+\item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
+\item[{const char $\ast$}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{bypass_8c_ae15807b95ca7fb1c3f262ec5827d8f8d}{}\label{bypass_8c_ae15807b95ca7fb1c3f262ec5827d8f8d}
+Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
+
+Definition at line 215 of file bypass.\+c.
+
+\index{bypass.\+c@{bypass.\+c}!bypass\+\_\+settings\+\_\+ctx\+\_\+deinit@{bypass\+\_\+settings\+\_\+ctx\+\_\+deinit}}
+\index{bypass\+\_\+settings\+\_\+ctx\+\_\+deinit@{bypass\+\_\+settings\+\_\+ctx\+\_\+deinit}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{bypass\+\_\+settings\+\_\+ctx\+\_\+deinit(volatile bypass\+\_\+settings\+\_\+ctx\+\_\+t $\ast$bypass\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{bypass_settings_ctx_deinit(volatile bypass_settings_ctx_t *bypass_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void bypass\+\_\+settings\+\_\+ctx\+\_\+deinit (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf bypass\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{bypass\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{bypass_8c_a434a20a7415b5204c0dcdd0afab196a2}{}\label{bypass_8c_a434a20a7415b5204c0dcdd0afab196a2}
+Release specific bypass processor settings (allocated in heap memory). 
+\begin{DoxyParams}{Parameters}
+{\em bypass\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 352 of file bypass.\+c.
+
+\index{bypass.\+c@{bypass.\+c}!bypass\+\_\+settings\+\_\+ctx\+\_\+init@{bypass\+\_\+settings\+\_\+ctx\+\_\+init}}
+\index{bypass\+\_\+settings\+\_\+ctx\+\_\+init@{bypass\+\_\+settings\+\_\+ctx\+\_\+init}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{bypass\+\_\+settings\+\_\+ctx\+\_\+init(volatile bypass\+\_\+settings\+\_\+ctx\+\_\+t $\ast$bypass\+\_\+settings\+\_\+ctx, log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{bypass_settings_ctx_init(volatile bypass_settings_ctx_t *bypass_settings_ctx, log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static int bypass\+\_\+settings\+\_\+ctx\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{volatile {\bf bypass\+\_\+settings\+\_\+ctx\+\_\+t} $\ast$}]{bypass\+\_\+settings\+\_\+ctx, }
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{bypass_8c_ab88482b5ab6911459af79dec957e33f6}{}\label{bypass_8c_ab88482b5ab6911459af79dec957e33f6}
+Initialize specific bypass processor settings to defaults. 
+\begin{DoxyParams}{Parameters}
+{\em bypass\+\_\+settings\+\_\+ctx} & \\
+\hline
+{\em log\+\_\+ctx} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 332 of file bypass.\+c.
+
+
+
+\subsection{Variable Documentation}
+\index{bypass.\+c@{bypass.\+c}!proc\+\_\+if\+\_\+bypass@{proc\+\_\+if\+\_\+bypass}}
+\index{proc\+\_\+if\+\_\+bypass@{proc\+\_\+if\+\_\+bypass}!bypass.\+c@{bypass.\+c}}
+\subsubsection[{\texorpdfstring{proc\+\_\+if\+\_\+bypass}{proc_if_bypass}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf proc\+\_\+if\+\_\+t} proc\+\_\+if\+\_\+bypass}\hypertarget{bypass_8c_a26ad3ea6371ce8e95085aedabc0e4a40}{}\label{bypass_8c_a26ad3ea6371ce8e95085aedabc0e4a40}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+\{
+    \textcolor{stringliteral}{"bypass"}, \textcolor{stringliteral}{"bypass"}, \textcolor{stringliteral}{"video/bypass"},
+    (uint64\_t)(PROC\_FEATURE\_BITRATE|PROC\_FEATURE\_REGISTER\_PTS),
+    \hyperlink{bypass_8c_a13e7300dab549ef116086ba693c40bce}{bypass\_open},
+    \hyperlink{bypass_8c_a357ded261525987762d1cdde4169a873}{bypass\_close},
+    proc\_send\_frame\_default1,
+    NULL, 
+    proc\_recv\_frame\_default1,
+    NULL, 
+    \hyperlink{bypass_8c_ae15807b95ca7fb1c3f262ec5827d8f8d}{bypass\_rest\_put},
+    \hyperlink{bypass_8c_a02d52ff6844e3ac59b8d444086970afd}{bypass\_rest\_get},
+    \hyperlink{bypass_8c_a43b4dc7aaf4b148b02818c1565707b80}{bypass\_process\_frame},
+    NULL, 
+    (\textcolor{keywordtype}{void}*(*)(\textcolor{keyword}{const} \hyperlink{structproc__frame__ctx__s}{proc\_frame\_ctx\_t}*))\hyperlink{proc__if_8c_a778c0de8151b30abc17305131d149932}{proc\_frame\_ctx\_dup},
+    (void(*)(\textcolor{keywordtype}{void}**))\hyperlink{proc__if_8c_afad6906a6da22ba369b736863c1e204e}{proc\_frame\_ctx\_release},
+    (\hyperlink{structproc__frame__ctx__s}{proc\_frame\_ctx\_t}*(*)(\textcolor{keyword}{const} \textcolor{keywordtype}{void}*))proc\_frame\_ctx\_dup
+\}
+\end{DoxyCode}
+Processor interface implementing the \char`\"{}bypass\char`\"{} processor. 
+
+Definition at line 84 of file bypass.\+c.
+

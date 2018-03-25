@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,19 @@
 
 /* **** Definitions **** */
 
+/**
+ * FLag to indicate this FIFO is non-blocking. FIFO is blocking by default
+ * (namely, if this flag is not set), which means a writing operation (put)
+ * will block until an empty slot is available and reading (get) will block
+ * if FIFO is empty.
+ */
 #define FIFO_O_NONBLOCK 	1
+/**
+ * FLag to indicate this FIFO is to be defined in shared memory.
+ * If it is the case, the FIFO can be shared by parent and son processes
+ * (this is thought to be used as an interprocess communication mechanism).
+ */
+#define FIFO_PROCESS_SHARED 2
 
 /* Forward definitions */
 typedef struct fifo_ctx_s fifo_ctx_t;
@@ -50,12 +62,8 @@ typedef void*(fifo_elem_ctx_dup_fxn_t)(const void*);
 typedef void(fifo_elem_ctx_release_fxn_t)(void**);
 
 typedef struct fifo_elem_alloc_fxn_s {
-#define FIFO_ELEM_CTX_DUP \
-	fifo_elem_ctx_dup_fxn_t *elem_ctx_dup
-#define FIFO_ELEM_CTX_RELEASE \
-	fifo_elem_ctx_release_fxn_t *elem_ctx_release
-	FIFO_ELEM_CTX_DUP;
-	FIFO_ELEM_CTX_RELEASE;
+	fifo_elem_ctx_dup_fxn_t *elem_ctx_dup;
+	fifo_elem_ctx_release_fxn_t *elem_ctx_release;
 } fifo_elem_alloc_fxn_t;
 
 /* **** Prototypes **** */
@@ -63,18 +71,31 @@ typedef struct fifo_elem_alloc_fxn_s {
 /**
  * //TODO
  */
-fifo_ctx_t* fifo_open(uint32_t buf_max_size, uint32_t flags,
-		const fifo_elem_alloc_fxn_t *fifo_elem_alloc_fxn);
+fifo_ctx_t* fifo_open(size_t slots_max, size_t chunk_size_max,
+		uint32_t flags, const fifo_elem_alloc_fxn_t *fifo_elem_alloc_fxn);
+
+/**
+ * @param slots_max
+ * @param chunk_size_max
+ * @param flags
+ * @param fifo_file_name This file-name is assigned to the shared memory
+ * object to facilitate opening FIFO in a fork-exec setting.
+ */
+fifo_ctx_t* fifo_shm_open(size_t slots_max, size_t chunk_size_max,
+		uint32_t flags, const char *fifo_file_name);
+fifo_ctx_t* fifo_shm_exec_open(size_t slots_max, size_t chunk_size_max,
+		uint32_t flags, const char *fifo_file_name);
+
+
+/**
+ * //TODO
+ */
+void fifo_close(fifo_ctx_t **ref_fifo_ctx);
 
 /**
  * //TODO
  */
 void fifo_set_blocking_mode(fifo_ctx_t *fifo_ctx, int do_block);
-
-/**
- * //TODO
- */
-void fifo_close(fifo_ctx_t **pfifo_ctx);
 
 /**
  * //TODO
@@ -90,6 +111,12 @@ int fifo_put(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t elem_size);
  * //TODO
  */
 int fifo_get(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size);
+
+/**
+ * //TODO
+ */
+int fifo_timedget(fifo_ctx_t *fifo_ctx, void **ref_elem, size_t *ref_elem_size,
+		int64_t tout_usecs);
 
 /**
  * //TODO

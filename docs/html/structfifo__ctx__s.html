@@ -105,31 +105,47 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a6c86ce21bbd7a84d164d9c5ecf72ac3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4856c98e4576bd328ff3ee4063b1421a"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a4856c98e4576bd328ff3ee4063b1421a">flag_exit</a></td></tr>
 <tr class="separator:a4856c98e4576bd328ff3ee4063b1421a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2945108d1eec583f5cb70f1dcafa479"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#ac2945108d1eec583f5cb70f1dcafa479">buf_max_size</a></td></tr>
-<tr class="separator:ac2945108d1eec583f5cb70f1dcafa479"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a282d9421deabfcb2966d5134a6d76779"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfifo__elem__ctx__s.html">fifo_elem_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a282d9421deabfcb2966d5134a6d76779">buf</a></td></tr>
-<tr class="separator:a282d9421deabfcb2966d5134a6d76779"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad94e9742a0fe4eff3cd6bbc9501ca872"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad94e9742a0fe4eff3cd6bbc9501ca872"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_file_name</b> [<a class="el" href="fifo_8c.html#a42708bf618db9ea973b091a2d5bdfa9e">FIFO_FILE_NAME_MAX_SIZE</a>]</td></tr>
+<tr class="separator:ad94e9742a0fe4eff3cd6bbc9501ca872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29fe5cab2bded769f7aff0050877aa65"><td class="memItemLeft" align="right" valign="top">fifo_elem_ctx_dup_fxn_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a29fe5cab2bded769f7aff0050877aa65">elem_ctx_dup</a></td></tr>
+<tr class="separator:a29fe5cab2bded769f7aff0050877aa65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d110b8cfb21fe7f732ba5efc0013d59"><td class="memItemLeft" align="right" valign="top">fifo_elem_ctx_release_fxn_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a5d110b8cfb21fe7f732ba5efc0013d59">elem_ctx_release</a></td></tr>
+<tr class="separator:a5d110b8cfb21fe7f732ba5efc0013d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27be272ae3fa045dfb5e64778a484725"><td class="memItemLeft" align="right" valign="top">pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a27be272ae3fa045dfb5e64778a484725">api_mutex</a></td></tr>
+<tr class="separator:a27be272ae3fa045dfb5e64778a484725"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c003f60d37a471dc9f5bf517df52608"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c003f60d37a471dc9f5bf517df52608"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>flag_api_mutex_initialized</b></td></tr>
+<tr class="separator:a4c003f60d37a471dc9f5bf517df52608"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f9e6f9e1505a9f7e1756c212602a9df"><td class="memItemLeft" align="right" valign="top">pthread_cond_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a3f9e6f9e1505a9f7e1756c212602a9df">buf_put_signal</a></td></tr>
+<tr class="separator:a3f9e6f9e1505a9f7e1756c212602a9df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb6724f4e6b09980696d3e71440b8804"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb6724f4e6b09980696d3e71440b8804"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>flag_buf_put_signal_initialized</b></td></tr>
+<tr class="separator:adb6724f4e6b09980696d3e71440b8804"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af13501e5f83d5d1561bf76577c490f23"><td class="memItemLeft" align="right" valign="top">pthread_cond_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#af13501e5f83d5d1561bf76577c490f23">buf_get_signal</a></td></tr>
+<tr class="separator:af13501e5f83d5d1561bf76577c490f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1ee1332ce2af0a6bd6e77e7e99c4ca1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1ee1332ce2af0a6bd6e77e7e99c4ca1"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>flag_buf_get_signal_initialized</b></td></tr>
+<tr class="separator:af1ee1332ce2af0a6bd6e77e7e99c4ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a566e90d020d2b7a45b6a8879c63106c2"><td class="memItemLeft" align="right" valign="top">volatile ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a566e90d020d2b7a45b6a8879c63106c2">slots_used_cnt</a></td></tr>
+<tr class="separator:a566e90d020d2b7a45b6a8879c63106c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9661ff316afd08e4eb0919cd02e355ce"><td class="memItemLeft" align="right" valign="top">volatile ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a9661ff316afd08e4eb0919cd02e355ce">buf_level</a></td></tr>
 <tr class="separator:a9661ff316afd08e4eb0919cd02e355ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5c17b3a497d655710243cb2c14ef1bf"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#aa5c17b3a497d655710243cb2c14ef1bf">input_idx</a></td></tr>
 <tr class="separator:aa5c17b3a497d655710243cb2c14ef1bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28fca425f183a3add55c94dcdc5c04e0"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a28fca425f183a3add55c94dcdc5c04e0">output_idx</a></td></tr>
 <tr class="separator:a28fca425f183a3add55c94dcdc5c04e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27be272ae3fa045dfb5e64778a484725"><td class="memItemLeft" align="right" valign="top">pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a27be272ae3fa045dfb5e64778a484725">api_mutex</a></td></tr>
-<tr class="separator:a27be272ae3fa045dfb5e64778a484725"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f9e6f9e1505a9f7e1756c212602a9df"><td class="memItemLeft" align="right" valign="top">pthread_cond_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a3f9e6f9e1505a9f7e1756c212602a9df">buf_put_signal</a></td></tr>
-<tr class="separator:a3f9e6f9e1505a9f7e1756c212602a9df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af13501e5f83d5d1561bf76577c490f23"><td class="memItemLeft" align="right" valign="top">pthread_cond_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#af13501e5f83d5d1561bf76577c490f23">buf_get_signal</a></td></tr>
-<tr class="separator:af13501e5f83d5d1561bf76577c490f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5733ada7a9bf525cdddf6d839a4eef03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a5733ada7a9bf525cdddf6d839a4eef03">FIFO_ELEM_CTX_DUP</a></td></tr>
-<tr class="separator:a5733ada7a9bf525cdddf6d839a4eef03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c57706addad61c416527a3d4dee08a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c57706addad61c416527a3d4dee08a7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FIFO_ELEM_CTX_RELEASE</b></td></tr>
-<tr class="separator:a1c57706addad61c416527a3d4dee08a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e7f97c83e08c4dff68c1f4dedb25537"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#a9e7f97c83e08c4dff68c1f4dedb25537">buf_slots_max</a></td></tr>
+<tr class="separator:a9e7f97c83e08c4dff68c1f4dedb25537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab67621fb3c666a07ada8a20d03e3c26c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#ab67621fb3c666a07ada8a20d03e3c26c">chunk_size_max</a></td></tr>
+<tr class="separator:ab67621fb3c666a07ada8a20d03e3c26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaff82bce9d68fd7f61378270841b4969"><td class="memItemLeft" align="right" valign="top"><a class="el" href="fifo_8c.html#a3236a0200db719fdeb6d875a415ca7c9">fifo_elem_ctx_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html#aaff82bce9d68fd7f61378270841b4969">buf</a> []</td></tr>
+<tr class="separator:aaff82bce9d68fd7f61378270841b4969"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00053">53</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<div class="textblock"><p>FIFO context structure. </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00087">87</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a27be272ae3fa045dfb5e64778a484725"></a>
 <div class="memitem">
@@ -142,22 +158,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Module API mutex. </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00097">97</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00119">119</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a282d9421deabfcb2966d5134a6d76779"></a>
+<a class="anchor" id="aaff82bce9d68fd7f61378270841b4969"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structfifo__elem__ctx__s.html">fifo_elem_ctx_t</a>* fifo_ctx_s::buf</td>
+          <td class="memname"><a class="el" href="fifo_8c.html#a3236a0200db719fdeb6d875a415ca7c9">fifo_elem_ctx_t</a> fifo_ctx_s::buf[]</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>FIFO buffer. This is a circular buffer of chunks of data. Instead of managing a single pool of data, the buffer stores pointers to a fixed number of chunk objects, each one holding the reference and the size of each chunk. </p>
+<p>This is a circular buffer of pointers to chunks of data. Instead of managing a single pool of data, the buffer stores pointers to a fixed number of chunk objects, each one holding the reference and the size of each chunk. </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00075">75</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00172">172</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -172,7 +188,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Signals each time a new chunk is consumed from the FIFO buffer. </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00105">105</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00129">129</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -187,22 +203,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Summation of all the size values of the chunk-buffers that compose the input buffer. Namely, is the overall input buffer level. </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00080">80</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac2945108d1eec583f5cb70f1dcafa479"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t fifo_ctx_s::buf_max_size</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>FIFO buffer maximum size. </p>
-
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00067">67</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00139">139</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -217,22 +218,67 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Signals each time a new chunk enters the FIFO buffer. </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00101">101</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00124">124</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5733ada7a9bf525cdddf6d839a4eef03"></a>
+<a class="anchor" id="a9e7f97c83e08c4dff68c1f4dedb25537"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">fifo_ctx_s::FIFO_ELEM_CTX_DUP</td>
+          <td class="memname">size_t fifo_ctx_s::buf_slots_max</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Externally defined duplication and releasing functions. </p>
+<p>Maximum number of element-slots (namely, maximum number of possible chunks) of the FIFO buffer. </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00109">109</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00157">157</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab67621fb3c666a07ada8a20d03e3c26c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t fifo_ctx_s::chunk_size_max</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Maximum permitted size of chunks [bytes]. In the case of shared memory, this value <em>must</em> be set greater than zero. Otherwise, setting this value to zero means no limit to input chunk size. </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00165">165</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a29fe5cab2bded769f7aff0050877aa65"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">fifo_elem_ctx_dup_fxn_t* fifo_ctx_s::elem_ctx_dup</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Externally defined duplication function. Not applicable when using shared memory. </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00110">110</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5d110b8cfb21fe7f732ba5efc0013d59"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">fifo_elem_ctx_release_fxn_t* fifo_ctx_s::elem_ctx_release</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Externally defined releasing functions. Not applicable when using shared memory. </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00115">115</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -247,7 +293,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Exit flag: if set to non-zero value, FIFO module should finish/unblock transactions as fast as possible </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00063">63</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00098">98</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -261,10 +307,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Module flags:</p><ul>
-<li>FIFO_O_NONBLOCK </li>
+<li>FIFO_O_NONBLOCK</li>
+<li>FIFO_PROCESS_SHARED </li>
 </ul>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00058">58</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00093">93</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -279,7 +326,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Receiver chunk-buffer index. Each time a chunk-buffer is filled with new data, we increment this index to point to the next empty receiving buffer. </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00086">86</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00145">145</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -294,7 +341,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Consumer chunk-buffer index. Each time a chunk-buffer is consumed (emptied) by a consuming process, we increment this index to point to the next full buffer ready to be processed. </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00093">93</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00152">152</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a566e90d020d2b7a45b6a8879c63106c2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile ssize_t fifo_ctx_s::slots_used_cnt</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Number of slots currently used. </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00134">134</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>

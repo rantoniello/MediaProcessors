@@ -16,9 +16,29 @@ volatile uint32\+\_\+t \hyperlink{structfifo__ctx__s_a6c86ce21bbd7a84d164d9c5ecf
 \item 
 volatile int \hyperlink{structfifo__ctx__s_a4856c98e4576bd328ff3ee4063b1421a}{flag\+\_\+exit}
 \item 
-uint32\+\_\+t \hyperlink{structfifo__ctx__s_ac2945108d1eec583f5cb70f1dcafa479}{buf\+\_\+max\+\_\+size}
+char {\bfseries fifo\+\_\+file\+\_\+name} \mbox{[}\hyperlink{fifo_8c_a42708bf618db9ea973b091a2d5bdfa9e}{F\+I\+F\+O\+\_\+\+F\+I\+L\+E\+\_\+\+N\+A\+M\+E\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE}\mbox{]}\hypertarget{structfifo__ctx__s_ad94e9742a0fe4eff3cd6bbc9501ca872}{}\label{structfifo__ctx__s_ad94e9742a0fe4eff3cd6bbc9501ca872}
+
 \item 
-\hyperlink{structfifo__elem__ctx__s}{fifo\+\_\+elem\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{structfifo__ctx__s_a282d9421deabfcb2966d5134a6d76779}{buf}
+fifo\+\_\+elem\+\_\+ctx\+\_\+dup\+\_\+fxn\+\_\+t $\ast$ \hyperlink{structfifo__ctx__s_a29fe5cab2bded769f7aff0050877aa65}{elem\+\_\+ctx\+\_\+dup}
+\item 
+fifo\+\_\+elem\+\_\+ctx\+\_\+release\+\_\+fxn\+\_\+t $\ast$ \hyperlink{structfifo__ctx__s_a5d110b8cfb21fe7f732ba5efc0013d59}{elem\+\_\+ctx\+\_\+release}
+\item 
+pthread\+\_\+mutex\+\_\+t \hyperlink{structfifo__ctx__s_a27be272ae3fa045dfb5e64778a484725}{api\+\_\+mutex}
+\item 
+int {\bfseries flag\+\_\+api\+\_\+mutex\+\_\+initialized}\hypertarget{structfifo__ctx__s_a4c003f60d37a471dc9f5bf517df52608}{}\label{structfifo__ctx__s_a4c003f60d37a471dc9f5bf517df52608}
+
+\item 
+pthread\+\_\+cond\+\_\+t \hyperlink{structfifo__ctx__s_a3f9e6f9e1505a9f7e1756c212602a9df}{buf\+\_\+put\+\_\+signal}
+\item 
+int {\bfseries flag\+\_\+buf\+\_\+put\+\_\+signal\+\_\+initialized}\hypertarget{structfifo__ctx__s_adb6724f4e6b09980696d3e71440b8804}{}\label{structfifo__ctx__s_adb6724f4e6b09980696d3e71440b8804}
+
+\item 
+pthread\+\_\+cond\+\_\+t \hyperlink{structfifo__ctx__s_af13501e5f83d5d1561bf76577c490f23}{buf\+\_\+get\+\_\+signal}
+\item 
+int {\bfseries flag\+\_\+buf\+\_\+get\+\_\+signal\+\_\+initialized}\hypertarget{structfifo__ctx__s_af1ee1332ce2af0a6bd6e77e7e99c4ca1}{}\label{structfifo__ctx__s_af1ee1332ce2af0a6bd6e77e7e99c4ca1}
+
+\item 
+volatile ssize\+\_\+t \hyperlink{structfifo__ctx__s_a566e90d020d2b7a45b6a8879c63106c2}{slots\+\_\+used\+\_\+cnt}
 \item 
 volatile ssize\+\_\+t \hyperlink{structfifo__ctx__s_a9661ff316afd08e4eb0919cd02e355ce}{buf\+\_\+level}
 \item 
@@ -26,23 +46,18 @@ volatile int \hyperlink{structfifo__ctx__s_aa5c17b3a497d655710243cb2c14ef1bf}{in
 \item 
 volatile int \hyperlink{structfifo__ctx__s_a28fca425f183a3add55c94dcdc5c04e0}{output\+\_\+idx}
 \item 
-pthread\+\_\+mutex\+\_\+t \hyperlink{structfifo__ctx__s_a27be272ae3fa045dfb5e64778a484725}{api\+\_\+mutex}
+size\+\_\+t \hyperlink{structfifo__ctx__s_a9e7f97c83e08c4dff68c1f4dedb25537}{buf\+\_\+slots\+\_\+max}
 \item 
-pthread\+\_\+cond\+\_\+t \hyperlink{structfifo__ctx__s_a3f9e6f9e1505a9f7e1756c212602a9df}{buf\+\_\+put\+\_\+signal}
+size\+\_\+t \hyperlink{structfifo__ctx__s_ab67621fb3c666a07ada8a20d03e3c26c}{chunk\+\_\+size\+\_\+max}
 \item 
-pthread\+\_\+cond\+\_\+t \hyperlink{structfifo__ctx__s_af13501e5f83d5d1561bf76577c490f23}{buf\+\_\+get\+\_\+signal}
-\item 
-\hyperlink{structfifo__ctx__s_a5733ada7a9bf525cdddf6d839a4eef03}{F\+I\+F\+O\+\_\+\+E\+L\+E\+M\+\_\+\+C\+T\+X\+\_\+\+D\+UP}
-\item 
-{\bfseries F\+I\+F\+O\+\_\+\+E\+L\+E\+M\+\_\+\+C\+T\+X\+\_\+\+R\+E\+L\+E\+A\+SE}\hypertarget{structfifo__ctx__s_a1c57706addad61c416527a3d4dee08a7}{}\label{structfifo__ctx__s_a1c57706addad61c416527a3d4dee08a7}
-
+\hyperlink{fifo_8c_a3236a0200db719fdeb6d875a415ca7c9}{fifo\+\_\+elem\+\_\+ctx\+\_\+t} \hyperlink{structfifo__ctx__s_aaff82bce9d68fd7f61378270841b4969}{buf} \mbox{[}$\,$\mbox{]}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
+F\+I\+FO context structure. 
 
-
-Definition at line 53 of file fifo.\+c.
+Definition at line 87 of file fifo.\+c.
 
 
 
@@ -52,80 +67,102 @@ Definition at line 53 of file fifo.\+c.
 \subsubsection[{\texorpdfstring{api\+\_\+mutex}{api_mutex}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+mutex\+\_\+t fifo\+\_\+ctx\+\_\+s\+::api\+\_\+mutex}\hypertarget{structfifo__ctx__s_a27be272ae3fa045dfb5e64778a484725}{}\label{structfifo__ctx__s_a27be272ae3fa045dfb5e64778a484725}
 Module A\+PI mutex. 
 
-Definition at line 97 of file fifo.\+c.
+Definition at line 119 of file fifo.\+c.
 
 \index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!buf@{buf}}
 \index{buf@{buf}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
-\subsubsection[{\texorpdfstring{buf}{buf}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fifo\+\_\+elem\+\_\+ctx\+\_\+t}$\ast$ fifo\+\_\+ctx\+\_\+s\+::buf}\hypertarget{structfifo__ctx__s_a282d9421deabfcb2966d5134a6d76779}{}\label{structfifo__ctx__s_a282d9421deabfcb2966d5134a6d76779}
-F\+I\+FO buffer. This is a circular buffer of chunks of data. Instead of managing a single pool of data, the buffer stores pointers to a fixed number of chunk objects, each one holding the reference and the size of each chunk. 
+\subsubsection[{\texorpdfstring{buf}{buf}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fifo\+\_\+elem\+\_\+ctx\+\_\+t} fifo\+\_\+ctx\+\_\+s\+::buf\mbox{[}$\,$\mbox{]}}\hypertarget{structfifo__ctx__s_aaff82bce9d68fd7f61378270841b4969}{}\label{structfifo__ctx__s_aaff82bce9d68fd7f61378270841b4969}
+This is a circular buffer of pointers to chunks of data. Instead of managing a single pool of data, the buffer stores pointers to a fixed number of chunk objects, each one holding the reference and the size of each chunk. 
 
-Definition at line 75 of file fifo.\+c.
+Definition at line 172 of file fifo.\+c.
 
 \index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!buf\+\_\+get\+\_\+signal@{buf\+\_\+get\+\_\+signal}}
 \index{buf\+\_\+get\+\_\+signal@{buf\+\_\+get\+\_\+signal}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{buf\+\_\+get\+\_\+signal}{buf_get_signal}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+cond\+\_\+t fifo\+\_\+ctx\+\_\+s\+::buf\+\_\+get\+\_\+signal}\hypertarget{structfifo__ctx__s_af13501e5f83d5d1561bf76577c490f23}{}\label{structfifo__ctx__s_af13501e5f83d5d1561bf76577c490f23}
 Signals each time a new chunk is consumed from the F\+I\+FO buffer. 
 
-Definition at line 105 of file fifo.\+c.
+Definition at line 129 of file fifo.\+c.
 
 \index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!buf\+\_\+level@{buf\+\_\+level}}
 \index{buf\+\_\+level@{buf\+\_\+level}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{buf\+\_\+level}{buf_level}}]{\setlength{\rightskip}{0pt plus 5cm}volatile ssize\+\_\+t fifo\+\_\+ctx\+\_\+s\+::buf\+\_\+level}\hypertarget{structfifo__ctx__s_a9661ff316afd08e4eb0919cd02e355ce}{}\label{structfifo__ctx__s_a9661ff316afd08e4eb0919cd02e355ce}
 Summation of all the size values of the chunk-\/buffers that compose the input buffer. Namely, is the overall input buffer level. 
 
-Definition at line 80 of file fifo.\+c.
-
-\index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!buf\+\_\+max\+\_\+size@{buf\+\_\+max\+\_\+size}}
-\index{buf\+\_\+max\+\_\+size@{buf\+\_\+max\+\_\+size}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
-\subsubsection[{\texorpdfstring{buf\+\_\+max\+\_\+size}{buf_max_size}}]{\setlength{\rightskip}{0pt plus 5cm}uint32\+\_\+t fifo\+\_\+ctx\+\_\+s\+::buf\+\_\+max\+\_\+size}\hypertarget{structfifo__ctx__s_ac2945108d1eec583f5cb70f1dcafa479}{}\label{structfifo__ctx__s_ac2945108d1eec583f5cb70f1dcafa479}
-F\+I\+FO buffer maximum size. 
-
-Definition at line 67 of file fifo.\+c.
+Definition at line 139 of file fifo.\+c.
 
 \index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!buf\+\_\+put\+\_\+signal@{buf\+\_\+put\+\_\+signal}}
 \index{buf\+\_\+put\+\_\+signal@{buf\+\_\+put\+\_\+signal}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{buf\+\_\+put\+\_\+signal}{buf_put_signal}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+cond\+\_\+t fifo\+\_\+ctx\+\_\+s\+::buf\+\_\+put\+\_\+signal}\hypertarget{structfifo__ctx__s_a3f9e6f9e1505a9f7e1756c212602a9df}{}\label{structfifo__ctx__s_a3f9e6f9e1505a9f7e1756c212602a9df}
 Signals each time a new chunk enters the F\+I\+FO buffer. 
 
-Definition at line 101 of file fifo.\+c.
+Definition at line 124 of file fifo.\+c.
 
-\index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!F\+I\+F\+O\+\_\+\+E\+L\+E\+M\+\_\+\+C\+T\+X\+\_\+\+D\+UP@{F\+I\+F\+O\+\_\+\+E\+L\+E\+M\+\_\+\+C\+T\+X\+\_\+\+D\+UP}}
-\index{F\+I\+F\+O\+\_\+\+E\+L\+E\+M\+\_\+\+C\+T\+X\+\_\+\+D\+UP@{F\+I\+F\+O\+\_\+\+E\+L\+E\+M\+\_\+\+C\+T\+X\+\_\+\+D\+UP}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
-\subsubsection[{\texorpdfstring{F\+I\+F\+O\+\_\+\+E\+L\+E\+M\+\_\+\+C\+T\+X\+\_\+\+D\+UP}{FIFO_ELEM_CTX_DUP}}]{\setlength{\rightskip}{0pt plus 5cm}fifo\+\_\+ctx\+\_\+s\+::\+F\+I\+F\+O\+\_\+\+E\+L\+E\+M\+\_\+\+C\+T\+X\+\_\+\+D\+UP}\hypertarget{structfifo__ctx__s_a5733ada7a9bf525cdddf6d839a4eef03}{}\label{structfifo__ctx__s_a5733ada7a9bf525cdddf6d839a4eef03}
-Externally defined duplication and releasing functions. 
+\index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!buf\+\_\+slots\+\_\+max@{buf\+\_\+slots\+\_\+max}}
+\index{buf\+\_\+slots\+\_\+max@{buf\+\_\+slots\+\_\+max}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{buf\+\_\+slots\+\_\+max}{buf_slots_max}}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t fifo\+\_\+ctx\+\_\+s\+::buf\+\_\+slots\+\_\+max}\hypertarget{structfifo__ctx__s_a9e7f97c83e08c4dff68c1f4dedb25537}{}\label{structfifo__ctx__s_a9e7f97c83e08c4dff68c1f4dedb25537}
+Maximum number of element-\/slots (namely, maximum number of possible chunks) of the F\+I\+FO buffer. 
 
-Definition at line 109 of file fifo.\+c.
+Definition at line 157 of file fifo.\+c.
+
+\index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!chunk\+\_\+size\+\_\+max@{chunk\+\_\+size\+\_\+max}}
+\index{chunk\+\_\+size\+\_\+max@{chunk\+\_\+size\+\_\+max}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{chunk\+\_\+size\+\_\+max}{chunk_size_max}}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t fifo\+\_\+ctx\+\_\+s\+::chunk\+\_\+size\+\_\+max}\hypertarget{structfifo__ctx__s_ab67621fb3c666a07ada8a20d03e3c26c}{}\label{structfifo__ctx__s_ab67621fb3c666a07ada8a20d03e3c26c}
+Maximum permitted size of chunks \mbox{[}bytes\mbox{]}. In the case of shared memory, this value {\itshape must} be set greater than zero. Otherwise, setting this value to zero means no limit to input chunk size. 
+
+Definition at line 165 of file fifo.\+c.
+
+\index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!elem\+\_\+ctx\+\_\+dup@{elem\+\_\+ctx\+\_\+dup}}
+\index{elem\+\_\+ctx\+\_\+dup@{elem\+\_\+ctx\+\_\+dup}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{elem\+\_\+ctx\+\_\+dup}{elem_ctx_dup}}]{\setlength{\rightskip}{0pt plus 5cm}fifo\+\_\+elem\+\_\+ctx\+\_\+dup\+\_\+fxn\+\_\+t$\ast$ fifo\+\_\+ctx\+\_\+s\+::elem\+\_\+ctx\+\_\+dup}\hypertarget{structfifo__ctx__s_a29fe5cab2bded769f7aff0050877aa65}{}\label{structfifo__ctx__s_a29fe5cab2bded769f7aff0050877aa65}
+Externally defined duplication function. Not applicable when using shared memory. 
+
+Definition at line 110 of file fifo.\+c.
+
+\index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!elem\+\_\+ctx\+\_\+release@{elem\+\_\+ctx\+\_\+release}}
+\index{elem\+\_\+ctx\+\_\+release@{elem\+\_\+ctx\+\_\+release}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{elem\+\_\+ctx\+\_\+release}{elem_ctx_release}}]{\setlength{\rightskip}{0pt plus 5cm}fifo\+\_\+elem\+\_\+ctx\+\_\+release\+\_\+fxn\+\_\+t$\ast$ fifo\+\_\+ctx\+\_\+s\+::elem\+\_\+ctx\+\_\+release}\hypertarget{structfifo__ctx__s_a5d110b8cfb21fe7f732ba5efc0013d59}{}\label{structfifo__ctx__s_a5d110b8cfb21fe7f732ba5efc0013d59}
+Externally defined releasing functions. Not applicable when using shared memory. 
+
+Definition at line 115 of file fifo.\+c.
 
 \index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!flag\+\_\+exit@{flag\+\_\+exit}}
 \index{flag\+\_\+exit@{flag\+\_\+exit}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{flag\+\_\+exit}{flag_exit}}]{\setlength{\rightskip}{0pt plus 5cm}volatile int fifo\+\_\+ctx\+\_\+s\+::flag\+\_\+exit}\hypertarget{structfifo__ctx__s_a4856c98e4576bd328ff3ee4063b1421a}{}\label{structfifo__ctx__s_a4856c98e4576bd328ff3ee4063b1421a}
 Exit flag\+: if set to non-\/zero value, F\+I\+FO module should finish/unblock transactions as fast as possible 
 
-Definition at line 63 of file fifo.\+c.
+Definition at line 98 of file fifo.\+c.
 
 \index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!flags@{flags}}
 \index{flags@{flags}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{flags}{flags}}]{\setlength{\rightskip}{0pt plus 5cm}volatile uint32\+\_\+t fifo\+\_\+ctx\+\_\+s\+::flags}\hypertarget{structfifo__ctx__s_a6c86ce21bbd7a84d164d9c5ecf72ac3a}{}\label{structfifo__ctx__s_a6c86ce21bbd7a84d164d9c5ecf72ac3a}
 Module flags\+:
 \begin{DoxyItemize}
-\item F\+I\+F\+O\+\_\+\+O\+\_\+\+N\+O\+N\+B\+L\+O\+CK 
+\item F\+I\+F\+O\+\_\+\+O\+\_\+\+N\+O\+N\+B\+L\+O\+CK
+\item F\+I\+F\+O\+\_\+\+P\+R\+O\+C\+E\+S\+S\+\_\+\+S\+H\+A\+R\+ED 
 \end{DoxyItemize}
 
-Definition at line 58 of file fifo.\+c.
+Definition at line 93 of file fifo.\+c.
 
 \index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!input\+\_\+idx@{input\+\_\+idx}}
 \index{input\+\_\+idx@{input\+\_\+idx}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{input\+\_\+idx}{input_idx}}]{\setlength{\rightskip}{0pt plus 5cm}volatile int fifo\+\_\+ctx\+\_\+s\+::input\+\_\+idx}\hypertarget{structfifo__ctx__s_aa5c17b3a497d655710243cb2c14ef1bf}{}\label{structfifo__ctx__s_aa5c17b3a497d655710243cb2c14ef1bf}
 Receiver chunk-\/buffer index. Each time a chunk-\/buffer is filled with new data, we increment this index to point to the next empty receiving buffer. 
 
-Definition at line 86 of file fifo.\+c.
+Definition at line 145 of file fifo.\+c.
 
 \index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!output\+\_\+idx@{output\+\_\+idx}}
 \index{output\+\_\+idx@{output\+\_\+idx}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{output\+\_\+idx}{output_idx}}]{\setlength{\rightskip}{0pt plus 5cm}volatile int fifo\+\_\+ctx\+\_\+s\+::output\+\_\+idx}\hypertarget{structfifo__ctx__s_a28fca425f183a3add55c94dcdc5c04e0}{}\label{structfifo__ctx__s_a28fca425f183a3add55c94dcdc5c04e0}
 Consumer chunk-\/buffer index. Each time a chunk-\/buffer is consumed (emptied) by a consuming process, we increment this index to point to the next full buffer ready to be processed. 
 
-Definition at line 93 of file fifo.\+c.
+Definition at line 152 of file fifo.\+c.
+
+\index{fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}!slots\+\_\+used\+\_\+cnt@{slots\+\_\+used\+\_\+cnt}}
+\index{slots\+\_\+used\+\_\+cnt@{slots\+\_\+used\+\_\+cnt}!fifo\+\_\+ctx\+\_\+s@{fifo\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{slots\+\_\+used\+\_\+cnt}{slots_used_cnt}}]{\setlength{\rightskip}{0pt plus 5cm}volatile ssize\+\_\+t fifo\+\_\+ctx\+\_\+s\+::slots\+\_\+used\+\_\+cnt}\hypertarget{structfifo__ctx__s_a566e90d020d2b7a45b6a8879c63106c2}{}\label{structfifo__ctx__s_a566e90d020d2b7a45b6a8879c63106c2}
+Number of slots currently used. 
+
+Definition at line 134 of file fifo.\+c.
 
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *

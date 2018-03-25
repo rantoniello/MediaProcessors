@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -71,7 +71,7 @@ void procs_module_close();
  * ### Tags description (additional variable arguments per tag)
  * <ul>
  * <li> <b>Tag "PROCS_REGISTER_TYPE":</b><br>
- * Register interface of an specific processor type.<br>
+ * Register the interface of an specific processor type.<br>
  * Additional variable arguments for function procs_module_opt() are:<br>
  * @param proc_if Pointer to the processor interface structure (static
  * and unambiguous interface of the type of processor we are registering).
@@ -127,10 +127,29 @@ int procs_module_opt(const char *tag, ...);
  * Allocates and initializes processors (PROCS) module instance context
  * structure.
  * @param log_ctx Pointer to the LOG module context structure.
+ * @param max_procs_num Maximum number of processors that can be created
+ * (and managed) by this instance.
+ * @param prefix_name Module's API REST prefix name (256 characters maximum).
+ * This parameter is optional (NULL may be passed); if not specified, the
+ * default name "procs" is used.
+ * @param procs_href Module's API REST href attribute specifying the URL path
+ * the API refers to. This parameter is optional (NULL may be passed).
  * @return Pointer to the processors context structure on success, NULL if
  * fails.
+ * Code example:<br>
+ * The following call creates a "processors module instance" capable of
+ * handling 16 processors. Prefix name "video_processors" suggest we will use
+ * this module instance to handle only "video processors", and we give an href
+ * such that the module's API may be used applying on the following URL:
+ * GET/PUT/POST/DELETE -> 127.0.0.1/video_processors.json<br>
+ * @code
+ * procs_ctx_t *procs_ctx;
+ * ...
+ * procs_ctx= procs_open(log_ctx, 16, "video_processors", "127.0.0.1");
+ * @endcode
  */
-procs_ctx_t* procs_open(log_ctx_t *log_ctx);
+procs_ctx_t* procs_open(log_ctx_t *log_ctx, size_t max_procs_num,
+		const char *prefix_name, const char *procs_href);
 
 /**
  * De-initialize and release the processors (PROCS) module instance context
@@ -188,11 +207,18 @@ void procs_close(procs_ctx_t **ref_procs_ctx);
  * Additional variable arguments for function procs_opt() are:<br>
  * @param ref_str Reference to the pointer to a character string
  * returning the processors list representational state.
+ * @param filter_str Character string indicating one of the following filters
+ * apply:
+ * - "proc_name==x": Filter the returning list discarding all the processors
+ * that are not of the type 'x';
+ * - "proc_name!=x": Filter the returning list discarding all the processors
+ * that *are* of the type 'x'.
+ * This parameter is optional, and can be set to NULL (no filter apply).
  * Code example:
  * @code
  * char *rest_str= NULL;
  * ...
- * ret_code= procs_opt(procs_ctx, "PROCS_GET", &rest_str);
+ * ret_code= procs_opt(procs_ctx, "PROCS_GET", &rest_str, NULL);
  * @endcode
  *
  * <li> <b>Tag "PROCS_ID_DELETE":</b><br>

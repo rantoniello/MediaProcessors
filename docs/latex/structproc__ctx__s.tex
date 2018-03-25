@@ -24,7 +24,7 @@ pthread\+\_\+mutex\+\_\+t \hyperlink{structproc__ctx__s_aea90c57d9b0a303b638a51c
 \item 
 \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{structproc__ctx__s_a7c58dee78b4d7834e4c2fe430cd267d5}{log\+\_\+ctx}
 \item 
-\hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{structproc__ctx__s_a3b71d039235f439a87d9ec7d7b5b5549}{fifo\+\_\+ctx\+\_\+array} \mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}
+\hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{structproc__ctx__s_a3b71d039235f439a87d9ec7d7b5b5549}{fifo\+\_\+ctx\+\_\+array} \mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}
 \item 
 \hyperlink{structfair__lock__s}{fair\+\_\+lock\+\_\+t} $\ast$ \hyperlink{structproc__ctx__s_a6529e1ba97566c429d658e121bb604bb}{fair\+\_\+lock\+\_\+io\+\_\+array} \mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}
 \item 
@@ -37,12 +37,12 @@ const void $\ast$($\ast$ \hyperlink{structproc__ctx__s_a1149ce1c28aae8e553c85125
 {\bf }\par
 \begin{DoxyCompactItemize}
 \item 
-volatile uint32\+\_\+t \hyperlink{structproc__ctx__s_a63e59dc7c4a361ca2b52e2354f51c33a}{acc\+\_\+io\+\_\+bits} \mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}
+volatile uint32\+\_\+t \hyperlink{structproc__ctx__s_a31bad437eed5d81c08a01538416c3639}{bitrate} \mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}
 \item 
-pthread\+\_\+mutex\+\_\+t {\bfseries acc\+\_\+io\+\_\+bits\+\_\+mutex} \mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}\hypertarget{structproc__ctx__s_a486d5806453d8171e298c449c6391c1d}{}\label{structproc__ctx__s_a486d5806453d8171e298c449c6391c1d}
+volatile uint32\+\_\+t {\bfseries acc\+\_\+io\+\_\+bits} \mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}\hypertarget{structproc__ctx__s_a63e59dc7c4a361ca2b52e2354f51c33a}{}\label{structproc__ctx__s_a63e59dc7c4a361ca2b52e2354f51c33a}
 
 \item 
-volatile uint32\+\_\+t {\bfseries bitrate} \mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}\hypertarget{structproc__ctx__s_a31bad437eed5d81c08a01538416c3639}{}\label{structproc__ctx__s_a31bad437eed5d81c08a01538416c3639}
+pthread\+\_\+mutex\+\_\+t {\bfseries acc\+\_\+io\+\_\+bits\+\_\+mutex} \mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}\hypertarget{structproc__ctx__s_a486d5806453d8171e298c449c6391c1d}{}\label{structproc__ctx__s_a486d5806453d8171e298c449c6391c1d}
 
 \end{DoxyCompactItemize}
 
@@ -59,22 +59,30 @@ volatile int {\bfseries iput\+\_\+pts\+\_\+array\+\_\+idx}\hypertarget{structpro
 {\bf }\par
 \begin{DoxyCompactItemize}
 \item 
-volatile int64\+\_\+t \hyperlink{structproc__ctx__s_a58e7e20b896b1d74789f2fe9b971fd09}{acc\+\_\+latency\+\_\+nsec}
-\item 
-volatile int {\bfseries acc\+\_\+latency\+\_\+cnt}\hypertarget{structproc__ctx__s_a3dea6eaed00798ceac47451e5923dc41}{}\label{structproc__ctx__s_a3dea6eaed00798ceac47451e5923dc41}
-
-\item 
-pthread\+\_\+mutex\+\_\+t {\bfseries latency\+\_\+mutex}\hypertarget{structproc__ctx__s_ac9705b88786b067a17f84178d52bbce1}{}\label{structproc__ctx__s_ac9705b88786b067a17f84178d52bbce1}
-
-\item 
-volatile int64\+\_\+t {\bfseries latency\+\_\+avg\+\_\+usec}\hypertarget{structproc__ctx__s_acdd3cc73dadcf7eb7c70c6e5ffb53293}{}\label{structproc__ctx__s_acdd3cc73dadcf7eb7c70c6e5ffb53293}
-
+volatile int64\+\_\+t \hyperlink{structproc__ctx__s_acdd3cc73dadcf7eb7c70c6e5ffb53293}{latency\+\_\+avg\+\_\+usec}
 \item 
 volatile int64\+\_\+t {\bfseries latency\+\_\+max\+\_\+usec}\hypertarget{structproc__ctx__s_a5cbe8711ddd1b36a2b203cfc8ef1b01f}{}\label{structproc__ctx__s_a5cbe8711ddd1b36a2b203cfc8ef1b01f}
 
 \item 
 volatile int64\+\_\+t {\bfseries latency\+\_\+min\+\_\+usec}\hypertarget{structproc__ctx__s_a0546eedba9aabcc7edc958f1ccc8cd42}{}\label{structproc__ctx__s_a0546eedba9aabcc7edc958f1ccc8cd42}
 
+\item 
+volatile int64\+\_\+t {\bfseries acc\+\_\+latency\+\_\+nsec}\hypertarget{structproc__ctx__s_a58e7e20b896b1d74789f2fe9b971fd09}{}\label{structproc__ctx__s_a58e7e20b896b1d74789f2fe9b971fd09}
+
+\item 
+volatile int {\bfseries acc\+\_\+latency\+\_\+cnt}\hypertarget{structproc__ctx__s_a3dea6eaed00798ceac47451e5923dc41}{}\label{structproc__ctx__s_a3dea6eaed00798ceac47451e5923dc41}
+
+\item 
+pthread\+\_\+mutex\+\_\+t {\bfseries latency\+\_\+mutex}\hypertarget{structproc__ctx__s_ac9705b88786b067a17f84178d52bbce1}{}\label{structproc__ctx__s_ac9705b88786b067a17f84178d52bbce1}
+
+\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{interr__usleep_8c_a952a138df6a0c053aa91d931c6c7de57}{interr\+\_\+usleep\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{structproc__ctx__s_ae60a995d574f7f3e1719439b77ea02f9}{interr\+\_\+usleep\+\_\+ctx}
+\item 
+pthread\+\_\+t \hyperlink{structproc__ctx__s_a9cd9d87dfa63404f23d5571feaefcb71}{stats\+\_\+thread}
 \end{DoxyCompactItemize}
 
 
@@ -82,14 +90,21 @@ volatile int64\+\_\+t {\bfseries latency\+\_\+min\+\_\+usec}\hypertarget{structp
 \subsection{Detailed Description}
 Generic processor (P\+R\+OC) context structure. 
 
-Definition at line 84 of file proc.\+h.
+Definition at line 85 of file proc.\+h.
 
 
 
 \subsection{Member Data Documentation}
-\index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!acc\+\_\+io\+\_\+bits@{acc\+\_\+io\+\_\+bits}}
-\index{acc\+\_\+io\+\_\+bits@{acc\+\_\+io\+\_\+bits}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
-\subsubsection[{\texorpdfstring{acc\+\_\+io\+\_\+bits}{acc_io_bits}}]{\setlength{\rightskip}{0pt plus 5cm}volatile uint32\+\_\+t proc\+\_\+ctx\+\_\+s\+::acc\+\_\+io\+\_\+bits\mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}}\hypertarget{structproc__ctx__s_a63e59dc7c4a361ca2b52e2354f51c33a}{}\label{structproc__ctx__s_a63e59dc7c4a361ca2b52e2354f51c33a}
+\index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!api\+\_\+mutex@{api\+\_\+mutex}}
+\index{api\+\_\+mutex@{api\+\_\+mutex}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{api\+\_\+mutex}{api_mutex}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+mutex\+\_\+t proc\+\_\+ctx\+\_\+s\+::api\+\_\+mutex}\hypertarget{structproc__ctx__s_aea90c57d9b0a303b638a51ce7efa9a1e}{}\label{structproc__ctx__s_aea90c57d9b0a303b638a51ce7efa9a1e}
+Processor A\+PI mutual exclusion lock. 
+
+Definition at line 99 of file proc.\+h.
+
+\index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!bitrate@{bitrate}}
+\index{bitrate@{bitrate}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{bitrate}{bitrate}}]{\setlength{\rightskip}{0pt plus 5cm}volatile uint32\+\_\+t proc\+\_\+ctx\+\_\+s\+::bitrate\mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}}\hypertarget{structproc__ctx__s_a31bad437eed5d81c08a01538416c3639}{}\label{structproc__ctx__s_a31bad437eed5d81c08a01538416c3639}
 Bitrate measurement related variables\+:
 \begin{DoxyItemize}
 \item Input/output bitrate statistics \mbox{[}bits per second\mbox{]};
@@ -97,80 +112,88 @@ Bitrate measurement related variables\+:
 \item Critical region to acquire or modify \textquotesingle{}acc\+\_\+io\+\_\+bits\mbox{[}\mbox{]}\textquotesingle{} variable field. 
 \end{DoxyItemize}
 
-Definition at line 120 of file proc.\+h.
-
-\index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!acc\+\_\+latency\+\_\+nsec@{acc\+\_\+latency\+\_\+nsec}}
-\index{acc\+\_\+latency\+\_\+nsec@{acc\+\_\+latency\+\_\+nsec}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
-\subsubsection[{\texorpdfstring{acc\+\_\+latency\+\_\+nsec}{acc_latency_nsec}}]{\setlength{\rightskip}{0pt plus 5cm}volatile int64\+\_\+t proc\+\_\+ctx\+\_\+s\+::acc\+\_\+latency\+\_\+nsec}\hypertarget{structproc__ctx__s_a58e7e20b896b1d74789f2fe9b971fd09}{}\label{structproc__ctx__s_a58e7e20b896b1d74789f2fe9b971fd09}
-Latency measurement related variables.
-\begin{DoxyItemize}
-\item Accumulated latency value (addition of individual frame latencies);
-\item Addition counter (number of values that are added, used to compute average value);
-\item Critical region to acquire or modify these field. 
-\end{DoxyItemize}
-
-Definition at line 144 of file proc.\+h.
-
-\index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!api\+\_\+mutex@{api\+\_\+mutex}}
-\index{api\+\_\+mutex@{api\+\_\+mutex}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
-\subsubsection[{\texorpdfstring{api\+\_\+mutex}{api_mutex}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+mutex\+\_\+t proc\+\_\+ctx\+\_\+s\+::api\+\_\+mutex}\hypertarget{structproc__ctx__s_aea90c57d9b0a303b638a51ce7efa9a1e}{}\label{structproc__ctx__s_aea90c57d9b0a303b638a51ce7efa9a1e}
-Processor A\+PI mutual exclusion lock. 
-
-Definition at line 98 of file proc.\+h.
+Definition at line 121 of file proc.\+h.
 
 \index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!fair\+\_\+lock\+\_\+io\+\_\+array@{fair\+\_\+lock\+\_\+io\+\_\+array}}
 \index{fair\+\_\+lock\+\_\+io\+\_\+array@{fair\+\_\+lock\+\_\+io\+\_\+array}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{fair\+\_\+lock\+\_\+io\+\_\+array}{fair_lock_io_array}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fair\+\_\+lock\+\_\+t}$\ast$ proc\+\_\+ctx\+\_\+s\+::fair\+\_\+lock\+\_\+io\+\_\+array\mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}}\hypertarget{structproc__ctx__s_a6529e1ba97566c429d658e121bb604bb}{}\label{structproc__ctx__s_a6529e1ba97566c429d658e121bb604bb}
 Input/output mutual exclusion locks. 
 
-Definition at line 110 of file proc.\+h.
+Definition at line 111 of file proc.\+h.
 
 \index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!fifo\+\_\+ctx\+\_\+array@{fifo\+\_\+ctx\+\_\+array}}
 \index{fifo\+\_\+ctx\+\_\+array@{fifo\+\_\+ctx\+\_\+array}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{fifo\+\_\+ctx\+\_\+array}{fifo_ctx_array}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fifo\+\_\+ctx\+\_\+t}$\ast$ proc\+\_\+ctx\+\_\+s\+::fifo\+\_\+ctx\+\_\+array\mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}}\hypertarget{structproc__ctx__s_a3b71d039235f439a87d9ec7d7b5b5549}{}\label{structproc__ctx__s_a3b71d039235f439a87d9ec7d7b5b5549}
 Input/output F\+I\+FO buffers. 
 
-Definition at line 106 of file proc.\+h.
+Definition at line 107 of file proc.\+h.
 
 \index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!flag\+\_\+exit@{flag\+\_\+exit}}
 \index{flag\+\_\+exit@{flag\+\_\+exit}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{flag\+\_\+exit}{flag_exit}}]{\setlength{\rightskip}{0pt plus 5cm}volatile int proc\+\_\+ctx\+\_\+s\+::flag\+\_\+exit}\hypertarget{structproc__ctx__s_a86a21b28f6c41f7a9a4cc9586f782d68}{}\label{structproc__ctx__s_a86a21b28f6c41f7a9a4cc9586f782d68}
 Processing thread exit indicator. Set to non-\/zero to signal processing to abort immediately. 
 
-Definition at line 155 of file proc.\+h.
+Definition at line 169 of file proc.\+h.
+
+\index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!interr\+\_\+usleep\+\_\+ctx@{interr\+\_\+usleep\+\_\+ctx}}
+\index{interr\+\_\+usleep\+\_\+ctx@{interr\+\_\+usleep\+\_\+ctx}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{interr\+\_\+usleep\+\_\+ctx}{interr_usleep_ctx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf interr\+\_\+usleep\+\_\+ctx\+\_\+t}$\ast$ proc\+\_\+ctx\+\_\+s\+::interr\+\_\+usleep\+\_\+ctx}\hypertarget{structproc__ctx__s_ae60a995d574f7f3e1719439b77ea02f9}{}\label{structproc__ctx__s_ae60a995d574f7f3e1719439b77ea02f9}
+Interruptible u-\/sleep used for periodical statistics thread. 
+
+Definition at line 159 of file proc.\+h.
+
+\index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!latency\+\_\+avg\+\_\+usec@{latency\+\_\+avg\+\_\+usec}}
+\index{latency\+\_\+avg\+\_\+usec@{latency\+\_\+avg\+\_\+usec}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{latency\+\_\+avg\+\_\+usec}{latency_avg_usec}}]{\setlength{\rightskip}{0pt plus 5cm}volatile int64\+\_\+t proc\+\_\+ctx\+\_\+s\+::latency\+\_\+avg\+\_\+usec}\hypertarget{structproc__ctx__s_acdd3cc73dadcf7eb7c70c6e5ffb53293}{}\label{structproc__ctx__s_acdd3cc73dadcf7eb7c70c6e5ffb53293}
+Latency measurement related variables.
+\begin{DoxyItemize}
+\item Average latency statistic \mbox{[}microseconds/second\mbox{]} (average value computed in a one-\/second period);
+\item Accumulated latency value (addition of individual frame latencies in the average period);
+\item Average counter (number of values that are added, used to compute average value);
+\item Critical region to acquire or modify these field. 
+\end{DoxyItemize}
+
+Definition at line 148 of file proc.\+h.
 
 \index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!log\+\_\+ctx@{log\+\_\+ctx}}
 \index{log\+\_\+ctx@{log\+\_\+ctx}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{log\+\_\+ctx}{log_ctx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf log\+\_\+ctx\+\_\+t}$\ast$ proc\+\_\+ctx\+\_\+s\+::log\+\_\+ctx}\hypertarget{structproc__ctx__s_a7c58dee78b4d7834e4c2fe430cd267d5}{}\label{structproc__ctx__s_a7c58dee78b4d7834e4c2fe430cd267d5}
 External L\+OG module context structure instance. 
 
-Definition at line 102 of file proc.\+h.
+Definition at line 103 of file proc.\+h.
 
 \index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!proc\+\_\+if@{proc\+\_\+if}}
 \index{proc\+\_\+if@{proc\+\_\+if}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{proc\+\_\+if}{proc_if}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf proc\+\_\+if\+\_\+t}$\ast$ proc\+\_\+ctx\+\_\+s\+::proc\+\_\+if}\hypertarget{structproc__ctx__s_ae63f720fef21f807ed42fe76806140f6}{}\label{structproc__ctx__s_ae63f720fef21f807ed42fe76806140f6}
 P\+R\+OC interface structure. 
 
-Definition at line 88 of file proc.\+h.
+Definition at line 89 of file proc.\+h.
 
 \index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!proc\+\_\+instance\+\_\+index@{proc\+\_\+instance\+\_\+index}}
 \index{proc\+\_\+instance\+\_\+index@{proc\+\_\+instance\+\_\+index}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{proc\+\_\+instance\+\_\+index}{proc_instance_index}}]{\setlength{\rightskip}{0pt plus 5cm}int proc\+\_\+ctx\+\_\+s\+::proc\+\_\+instance\+\_\+index}\hypertarget{structproc__ctx__s_a3912d4b5eaffcdaefa00f149ca4a8c63}{}\label{structproc__ctx__s_a3912d4b5eaffcdaefa00f149ca4a8c63}
 Each P\+R\+OC instance is registered in an instance array with a specific index. The idea behind using an array is to fetch as fast as possible the P\+R\+OC instance to perform i/o operations. 
 
-Definition at line 94 of file proc.\+h.
+Definition at line 95 of file proc.\+h.
 
 \index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!proc\+\_\+thread@{proc\+\_\+thread}}
 \index{proc\+\_\+thread@{proc\+\_\+thread}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{proc\+\_\+thread}{proc_thread}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+t proc\+\_\+ctx\+\_\+s\+::proc\+\_\+thread}\hypertarget{structproc__ctx__s_a09ad60355584215cfeb4d5589ee390b9}{}\label{structproc__ctx__s_a09ad60355584215cfeb4d5589ee390b9}
 Processing thread. 
 
-Definition at line 159 of file proc.\+h.
+Definition at line 173 of file proc.\+h.
 
 \index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!start\+\_\+routine@{start\+\_\+routine}}
 \index{start\+\_\+routine@{start\+\_\+routine}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{start\+\_\+routine}{start_routine}}]{\setlength{\rightskip}{0pt plus 5cm}const void$\ast$($\ast$ proc\+\_\+ctx\+\_\+s\+::start\+\_\+routine) (void $\ast$)}\hypertarget{structproc__ctx__s_a1149ce1c28aae8e553c85125e30be661}{}\label{structproc__ctx__s_a1149ce1c28aae8e553c85125e30be661}
-Processing thread function reference. 
+Processing thread function reference. It is initialized to point to the predefined module internal processing function \textquotesingle{}proc\+\_\+thr()\textquotesingle{} by default. Nevertheless, this pointer can be rewritten by any specific implementation in the \textquotesingle{}\hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open()}\textquotesingle{} callback. 
+
+Definition at line 181 of file proc.\+h.
+
+\index{proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}!stats\+\_\+thread@{stats\+\_\+thread}}
+\index{stats\+\_\+thread@{stats\+\_\+thread}!proc\+\_\+ctx\+\_\+s@{proc\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{stats\+\_\+thread}{stats_thread}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+t proc\+\_\+ctx\+\_\+s\+::stats\+\_\+thread}\hypertarget{structproc__ctx__s_a9cd9d87dfa63404f23d5571feaefcb71}{}\label{structproc__ctx__s_a9cd9d87dfa63404f23d5571feaefcb71}
+Statistics thread. 
 
 Definition at line 163 of file proc.\+h.
 

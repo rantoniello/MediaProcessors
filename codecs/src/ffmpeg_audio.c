@@ -212,9 +212,9 @@ int ffmpeg_audio_enc_frame(ffmpeg_audio_enc_ctx_t *ffmpeg_audio_enc_ctx,
         pkt_oput.pos= avcodecctx->sample_rate;
 
         /* Latency statistics related */
-        if((flag_proc_features&PROC_FEATURE_LATSTATS) &&
+        if((flag_proc_features&PROC_FEATURE_LATENCY) &&
         		pkt_oput.pts!= AV_NOPTS_VALUE)
-        	proc_acc_latency_measure(proc_ctx, pkt_oput.pts);
+        	proc_stats_register_accumulated_latency(proc_ctx, pkt_oput.pts);
 
 		/* Put output frame into output FIFO */
         fifo_put_dup(oput_fifo_ctx, &pkt_oput, sizeof(void*));
@@ -373,9 +373,10 @@ int ffmpeg_audio_dec_frame(ffmpeg_audio_dec_ctx_t *ffmpeg_audio_dec_ctx,
         avframe_oput->sample_rate= avcodecctx->sample_rate;
 
         /* Latency statistics related */
-        if((flag_proc_features&PROC_FEATURE_LATSTATS) &&
+        if((flag_proc_features&PROC_FEATURE_LATENCY) &&
         		avframe_oput->pts!= AV_NOPTS_VALUE)
-        	proc_acc_latency_measure(proc_ctx, avframe_oput->pts);
+        	proc_stats_register_accumulated_latency(proc_ctx,
+        			avframe_oput->pts);
 
 		/* Put output frame into output FIFO */
     	fifo_put_dup(oput_fifo_ctx, avframe_oput, sizeof(void*));

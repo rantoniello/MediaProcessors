@@ -135,8 +135,8 @@ Functions</h2></td></tr>
 <tr class="separator:a0947527d95117e432f21354103c390a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a226ac6dfd7598a59b9ceab3a92239a80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8h.html#a226ac6dfd7598a59b9ceab3a92239a80">procs_module_opt</a> (const char *tag,...)</td></tr>
 <tr class="separator:a226ac6dfd7598a59b9ceab3a92239a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fae33560b633113d848f6ec5e8461e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="procs_8c.html#a9dcafd40720bff127bdc596e9c6dd6cd">procs_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8h.html#a6fae33560b633113d848f6ec5e8461e5">procs_open</a> (<a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx)</td></tr>
-<tr class="separator:a6fae33560b633113d848f6ec5e8461e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac44b6ac931afbeadeb7f07b660e30bac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="procs_8c.html#a9dcafd40720bff127bdc596e9c6dd6cd">procs_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8h.html#ac44b6ac931afbeadeb7f07b660e30bac">procs_open</a> (<a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx, size_t max_procs_num, const char *prefix_name, const char *procs_href)</td></tr>
+<tr class="separator:ac44b6ac931afbeadeb7f07b660e30bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0806c10ed3203ce53115ffb1a89e83d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8h.html#a0806c10ed3203ce53115ffb1a89e83d3">procs_close</a> (<a class="el" href="procs_8c.html#a9dcafd40720bff127bdc596e9c6dd6cd">procs_ctx_t</a> **ref_procs_ctx)</td></tr>
 <tr class="separator:a0806c10ed3203ce53115ffb1a89e83d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7af2e6f2788006cfc96ca8d811922ffa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="procs_8h.html#a7af2e6f2788006cfc96ca8d811922ffa">procs_opt</a> (<a class="el" href="procs_8c.html#a9dcafd40720bff127bdc596e9c6dd6cd">procs_ctx_t</a> *procs_ctx, const char *tag,...)</td></tr>
@@ -167,12 +167,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>De-initialize and release the processors (PROCS) module instance context structure. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ref_procs_ctx</td><td>Reference to the pointer to the processors (PROCS) module instance context structure to be release, obtained in a previous call to the '<a class="el" href="procs_8h.html#a6fae33560b633113d848f6ec5e8461e5">procs_open()</a>' function. Pointer is set to NULL on return. </td></tr>
+    <tr><td class="paramname">ref_procs_ctx</td><td>Reference to the pointer to the processors (PROCS) module instance context structure to be release, obtained in a previous call to the '<a class="el" href="procs_8h.html#ac44b6ac931afbeadeb7f07b660e30bac">procs_open()</a>' function. Pointer is set to NULL on return. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00369">369</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00417">417</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Close PROCS module. This is a global function and should be called only once at the end of the life of the application. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00261">261</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00273">273</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -215,7 +215,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00232">232</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00244">244</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -259,7 +259,7 @@ Functions</h2></td></tr>
 <ul>
 <li>
 <b>Tag "PROCS_REGISTER_TYPE":</b><br />
- Register interface of an specific processor type.<br />
+ Register the interface of an specific processor type.<br />
  Additional variable arguments for function <a class="el" href="procs_8h.html#a226ac6dfd7598a59b9ceab3a92239a80">procs_module_opt()</a> are:<br />
  <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -291,11 +291,11 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00282">282</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00294">294</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6fae33560b633113d848f6ec5e8461e5"></a>
+<a class="anchor" id="ac44b6ac931afbeadeb7f07b660e30bac"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -303,20 +303,47 @@ Functions</h2></td></tr>
           <td class="memname"><a class="el" href="procs_8c.html#a9dcafd40720bff127bdc596e9c6dd6cd">procs_ctx_t</a>* procs_open </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *&#160;</td>
-          <td class="paramname"><em>log_ctx</em></td><td>)</td>
+          <td class="paramname"><em>log_ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_procs_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>prefix_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>procs_href</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Allocates and initializes processors (PROCS) module instance context structure. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">log_ctx</td><td>Pointer to the LOG module context structure. </td></tr>
+    <tr><td class="paramname">max_procs_num</td><td>Maximum number of processors that can be created (and managed) by this instance. </td></tr>
+    <tr><td class="paramname">prefix_name</td><td>Module's API REST prefix name (256 characters maximum). This parameter is optional (NULL may be passed); if not specified, the default name "procs" is used. </td></tr>
+    <tr><td class="paramname">procs_href</td><td>Module's API REST href attribute specifying the URL path the API refers to. This parameter is optional (NULL may be passed). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to the processors context structure on success, NULL if fails. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the processors context structure on success, NULL if fails. Code example:<br />
+ The following call creates a "processors module instance" capable of handling 16 processors. Prefix name "video_processors" suggest we will use this module instance to handle only "video processors", and we give an href such that the module's API may be used applying on the following URL: GET/PUT/POST/DELETE -&gt; 127.0.0.1/video_processors.json<br />
+ <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;procs_ctx_t *procs_ctx;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;...</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;procs_ctx= procs_open(log_ctx, 16, &quot;video_processors&quot;, &quot;127.0.0.1&quot;);</div></div><!-- fragment --> </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00324">324</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00336">336</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -387,7 +414,12 @@ Functions</h2></td></tr>
  Additional variable arguments for function <a class="el" href="procs_8h.html#a7af2e6f2788006cfc96ca8d811922ffa">procs_opt()</a> are:<br />
  <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ref_str</td><td>Reference to the pointer to a character string returning the processors list representational state. Code example: <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;char *rest_str= NULL;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;...</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ret_code= procs_opt(procs_ctx, &quot;PROCS_GET&quot;, &amp;rest_str);</div></div><!-- fragment --></td></tr>
+    <tr><td class="paramname">ref_str</td><td>Reference to the pointer to a character string returning the processors list representational state. </td></tr>
+    <tr><td class="paramname">filter_str</td><td>Character string indicating one of the following filters apply:<ul>
+<li>"proc_name==x": Filter the returning list discarding all the processors that are not of the type 'x';</li>
+<li>"proc_name!=x": Filter the returning list discarding all the processors that <em>are</em> of the type 'x'. This parameter is optional, and can be set to NULL (no filter apply). Code example: <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;char *rest_str= NULL;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;...</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ret_code= procs_opt(procs_ctx, &quot;PROCS_GET&quot;, &amp;rest_str, NULL);</div></div><!-- fragment --></li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>
@@ -429,7 +461,7 @@ Functions</h2></td></tr>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00413">413</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00474">474</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -472,7 +504,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00483">483</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00545">545</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -515,7 +547,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status code (STAT_SUCCESS code in case of success, for other code values please refer to .<a class="el" href="stat__codes_8h.html" title="General status codes enumeration. ">stat_codes.h</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00443">443</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00504">504</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>

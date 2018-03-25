@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -63,7 +63,7 @@
 /**
  * Returns non-zero if 'tag' string is equal to given TAG string.
  */
-#define TAG_IS(TAG) (strncmp(tag, TAG, strlen(TAG))== 0)
+#define TAG_IS(TAG) (strcmp(tag, TAG)== 0)
 
 /**
  * Macro: lock PROCS module *instance* API critical section.
@@ -99,18 +99,13 @@
  * in the system.
  * This value may be just modified, in compilation, if needed.
  */
-#define PROCS_MAX_NUM_PROC_INSTANCES 16
+#define PROCS_MAX_NUM_PROC_INSTANCES 8192
 
 /*
  * Input/output processor's FIFOs size.
  * //TODO: This value should be passed as a module setting in the future.
  */
 #define PROCS_FIFO_SIZE 2
-
-/**
- * PROCS module URL base-path.
- */
-#define PROCS_URL_BASE_PATH 	"/procs/"
 
 /**
  * Module's context structure.
@@ -176,6 +171,17 @@ typedef struct procs_reg_elem_s {
  */
 typedef struct procs_ctx_s {
 	/**
+	 * Module's API REST prefix name (256 characters maximum).
+	 * This parameter can be set by 'procs_open()' function; if not
+	 * (NULL is specified), the default name "procs" is used.
+	 */
+	char prefix_name[256];
+	/**
+	 * Module's API REST href attribute specifying the URL path
+	 * the API refers to. This parameter is optional (may be NULL).
+	 */
+	char *procs_href;
+	/**
 	 * Module's instance API mutual exclusion lock.
 	 * This lock is used to provide a critical section for external
 	 * applications to be able to operate concurrently and asynchronously on
@@ -187,11 +193,17 @@ typedef struct procs_ctx_s {
 	 * Array listing the registered processor instances.
 	 * The idea behind using an array is to have a mean to fast fetch
 	 * a processor for input (receive) or output (send) operations.
-	 * This array is defined with a fixed maximum size of
-	 * PROCS_MAX_NUM_PROC_INSTANCES; each element of the array has a set of
+	 * This array is defined with a fixed maximum size (set when calling
+	 * the function 'procs_open()', but limited to a maximum of
+	 * PROCS_MAX_NUM_PROC_INSTANCES); each element of the array has a set of
 	 * locks already initialized to enable concurrency.
 	 */
-	procs_reg_elem_t procs_reg_elem_array[PROCS_MAX_NUM_PROC_INSTANCES];
+	procs_reg_elem_t *procs_reg_elem_array;
+	/**
+	 * Size of the array of registered processors.
+	 * See 'procs_ctx_s::procs_reg_elem_array'
+	 */
+	size_t procs_reg_elem_array_size;
 	/**
 	 * Externally defined LOG module instance context structure.
 	 */
@@ -209,7 +221,7 @@ static int procs_instance_opt(procs_ctx_t *procs_ctx, const char *tag,
 		log_ctx_t *log_ctx, va_list arg);
 
 static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
-		char **ref_rest_str);
+		char **ref_rest_str, const char *filter_str);
 static int proc_register(procs_ctx_t *procs_ctx, const char *proc_name,
 		const char *settings_str, log_ctx_t *log_ctx, int *ref_id, va_list arg);
 static int proc_unregister(procs_ctx_t *procs_ctx, int id, log_ctx_t *log_ctx);
@@ -236,8 +248,8 @@ int procs_module_open(log_ctx_t *log_ctx)
 
 	/* Check module initialization */
 	if(procs_module_ctx!= NULL) {
-		LOGE("'PROCS' module already initialized\n");
-		return STAT_ERROR;
+		LOGW("'PROCS' module already initialized\n");
+		return STAT_NOTMODIFIED;
 	}
 
 	procs_module_ctx= (procs_module_ctx_t*)calloc(1, sizeof(
@@ -321,7 +333,8 @@ int procs_module_opt(const char *tag, ...)
 	return end_code;
 }
 
-procs_ctx_t* procs_open(log_ctx_t *log_ctx)
+procs_ctx_t* procs_open(log_ctx_t *log_ctx, size_t max_procs_num,
+		const char *prefix_name, const char *procs_href)
 {
 	int proc_id, i, ret_code, end_code= STAT_ERROR;
 	procs_ctx_t *procs_ctx= NULL;
@@ -333,15 +346,42 @@ procs_ctx_t* procs_open(log_ctx_t *log_ctx)
 		return NULL;
 	}
 
+	/* Check arguments */
+	// Argument 'log_ctx' is allowed to be NULL
+	if(max_procs_num> PROCS_MAX_NUM_PROC_INSTANCES) {
+		LOGE("Specified maximum number of processor exceeds system capacity\n");
+		return NULL;
+	}
+	// Argument 'prefix_name' is allowed to be NULL
+
+	/* Allocate context structure */
 	procs_ctx= (procs_ctx_t*)calloc(1, sizeof(procs_ctx_t));
 	CHECK_DO(procs_ctx!= NULL, goto end);
 
 	/* **** Initialize context **** */
 
+	if(prefix_name!= NULL && strlen(prefix_name)> 0) {
+		CHECK_DO(strlen(prefix_name)< sizeof(procs_ctx->prefix_name),
+				goto end);
+		snprintf(procs_ctx->prefix_name, sizeof(procs_ctx->prefix_name),
+				"%s", prefix_name);
+	} else {
+		snprintf(procs_ctx->prefix_name, sizeof(procs_ctx->prefix_name),
+				"procs");
+	}
+
+	if(procs_href!= NULL && strlen(procs_href)> 0) {
+		procs_ctx->procs_href= strdup(procs_href);
+		CHECK_DO(procs_ctx->procs_href!= NULL, goto end);
+	}
+
 	ret_code= pthread_mutex_init(&procs_ctx->api_mutex, NULL);
 	CHECK_DO(ret_code== 0, goto end);
 
-	for(proc_id= 0; proc_id< PROCS_MAX_NUM_PROC_INSTANCES; proc_id++) {
+	procs_ctx->procs_reg_elem_array= (procs_reg_elem_t*)malloc(max_procs_num*
+			sizeof(procs_reg_elem_t));
+	CHECK_DO(procs_ctx->procs_reg_elem_array!= NULL, goto end)
+	for(proc_id= 0; proc_id< max_procs_num; proc_id++) {
 		procs_reg_elem_t *procs_reg_elem=
 				&procs_ctx->procs_reg_elem_array[proc_id];
 
@@ -357,6 +397,14 @@ procs_ctx_t* procs_open(log_ctx_t *log_ctx)
 		procs_reg_elem->proc_ctx= NULL;
 	}
 
+	/* Important note:
+	 * We update the register array size *after* we successfully allocated and
+	 * initialized the array; otherwise the size keeps set to zero
+	 * (thus, we can securely execute 'procs_close()' on failure, as other
+	 * PROCS module functions).
+	 */
+	procs_ctx->procs_reg_elem_array_size= max_procs_num;
+
 	procs_ctx->log_ctx= log_ctx;
 
 	end_code= STAT_SUCCESS;
@@ -368,32 +416,42 @@ end:
 
 void procs_close(procs_ctx_t **ref_procs_ctx)
 {
-	procs_ctx_t *procs_ctx= NULL;
+	procs_ctx_t *procs_ctx;
+	int procs_reg_elem_array_size, proc_id, i;
 	LOG_CTX_INIT(NULL);
 	LOGD(">>%s\n", __FUNCTION__); //comment-me
 
-	if(ref_procs_ctx== NULL)
+	if(ref_procs_ctx== NULL || (procs_ctx= *ref_procs_ctx)== NULL)
 		return;
 
-	if((procs_ctx= *ref_procs_ctx)!= NULL) {
-		int proc_id, i;
-		LOG_CTX_SET(procs_ctx->log_ctx);
+	LOG_CTX_SET(procs_ctx->log_ctx);
 
-		/* First of all release all the processors (note that for deleting
-		 * the processors we need the processor IF type to be still available).
-		 */
-		LOCK_PROCS_CTX_API(procs_ctx);
-		for(proc_id= 0; proc_id< PROCS_MAX_NUM_PROC_INSTANCES; proc_id++) {
+	procs_reg_elem_array_size= procs_ctx->procs_reg_elem_array_size;
+
+	/* First of all release all the processors (note that for deleting
+	 * the processors we need the processor IF type to be still available).
+	 */
+	LOCK_PROCS_CTX_API(procs_ctx);
+	if(procs_ctx->procs_reg_elem_array!= NULL) {
+		for(proc_id= 0; proc_id< procs_reg_elem_array_size; proc_id++) {
 			LOGD("unregistering proc with Id.: %d\n", proc_id); //comment-me
 			proc_unregister(procs_ctx, proc_id, LOG_CTX_GET());
 		}
-		UNLOCK_PROCS_CTX_API(procs_ctx);
+	}
+	UNLOCK_PROCS_CTX_API(procs_ctx);
 
-		/* Module's instance API mutual exclusion lock */
-		ASSERT(pthread_mutex_destroy(&procs_ctx->api_mutex)== 0);
+	/* Module's API REST href attribute */
+	if(procs_ctx->procs_href!= NULL) {
+		free(procs_ctx->procs_href);
+		procs_ctx->procs_href= NULL;
+	}
 
-		/* Array listing the registered processor instances */
-		for(proc_id= 0; proc_id< PROCS_MAX_NUM_PROC_INSTANCES; proc_id++) {
+	/* Module's instance API mutual exclusion lock */
+	ASSERT(pthread_mutex_destroy(&procs_ctx->api_mutex)== 0);
+
+	/* Array listing the registered processor instances */
+	if(procs_ctx->procs_reg_elem_array!= NULL) {
+		for(proc_id= 0; proc_id< procs_reg_elem_array_size; proc_id++) {
 			procs_reg_elem_t *procs_reg_elem=
 					&procs_ctx->procs_reg_elem_array[proc_id];
 
@@ -402,11 +460,14 @@ void procs_close(procs_ctx_t **ref_procs_ctx)
 			for(i= 0; i< PROC_IO_NUM; i++)
 				fair_lock_close(&procs_reg_elem->fair_lock_io_array[i]);
 		}
-
-		/* Release module's instance context structure */
-		free(procs_ctx);
-		*ref_procs_ctx= NULL;
+		free(procs_ctx->procs_reg_elem_array);
+		procs_ctx->procs_reg_elem_array= NULL;
 	}
+
+	/* Release module's instance context structure */
+	free(procs_ctx);
+	*ref_procs_ctx= NULL;
+
 	LOGD("<<%s\n", __FUNCTION__); //comment-me
 }
 
@@ -443,7 +504,7 @@ int procs_opt(procs_ctx_t *procs_ctx, const char *tag, ...)
 int procs_send_frame(procs_ctx_t *procs_ctx, int proc_id,
 		const proc_frame_ctx_t *proc_frame_ctx)
 {
-	int end_code= STAT_ERROR;
+	int procs_reg_elem_array_size, end_code= STAT_ERROR;
 	procs_reg_elem_t *procs_reg_elem;
 	fair_lock_t *p_fair_lock= NULL;
 	proc_ctx_t *proc_ctx= NULL;
@@ -452,7 +513,8 @@ int procs_send_frame(procs_ctx_t *procs_ctx, int proc_id,
 	/* Check arguments */
 	CHECK_DO(procs_module_ctx!= NULL, return STAT_ERROR);
 	CHECK_DO(procs_ctx!= NULL, return STAT_ERROR);
-	CHECK_DO(proc_id>= 0 && proc_id< PROCS_MAX_NUM_PROC_INSTANCES,
+	procs_reg_elem_array_size= procs_ctx->procs_reg_elem_array_size;
+	CHECK_DO(proc_id>= 0 && proc_id< procs_reg_elem_array_size,
 			return STAT_ERROR);
 	CHECK_DO(proc_frame_ctx!= NULL, return STAT_ERROR);
 
@@ -483,7 +545,7 @@ end:
 int procs_recv_frame(procs_ctx_t *procs_ctx, int proc_id,
 		proc_frame_ctx_t **ref_proc_frame_ctx)
 {
-	int end_code= STAT_ERROR;
+	int procs_reg_elem_array_size, end_code= STAT_ERROR;
 	procs_reg_elem_t *procs_reg_elem;
 	fair_lock_t *p_fair_lock= NULL;
 	proc_ctx_t *proc_ctx= NULL;
@@ -492,7 +554,8 @@ int procs_recv_frame(procs_ctx_t *procs_ctx, int proc_id,
 	/* Check arguments */
 	CHECK_DO(procs_module_ctx!= NULL, return STAT_ERROR);
 	CHECK_DO(procs_ctx!= NULL, return STAT_ERROR);
-	CHECK_DO(proc_id>= 0 && proc_id< PROCS_MAX_NUM_PROC_INSTANCES,
+	procs_reg_elem_array_size= procs_ctx->procs_reg_elem_array_size;
+	CHECK_DO(proc_id>= 0 && proc_id< procs_reg_elem_array_size,
 			return STAT_ERROR);
 	CHECK_DO(ref_proc_frame_ctx!= NULL, return STAT_ERROR);
 
@@ -656,8 +719,11 @@ static int procs_instance_opt(procs_ctx_t *procs_ctx, const char *tag,
 			*ref_rest_str= NULL;
 		}
 	} else if(TAG_IS("PROCS_GET")) {
-		end_code= procs_rest_get(procs_ctx, LOG_CTX_GET(), va_arg(arg, char**));
-	} else if(TAG_IS("PROCS_ID_DELETE")) {
+		char **ref_rest_str= va_arg(arg, char**);
+		const char *filter_str= va_arg(arg, const char*);
+		end_code= procs_rest_get(procs_ctx, LOG_CTX_GET(), ref_rest_str,
+				filter_str);
+	}  else if(TAG_IS("PROCS_ID_DELETE")) {
 		register int id= va_arg(arg, int);
 		end_code= proc_unregister(procs_ctx, id, LOG_CTX_GET());
 	} else {
@@ -671,18 +737,20 @@ static int procs_instance_opt(procs_ctx_t *procs_ctx, const char *tag,
 }
 
 static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
-		char **ref_rest_str)
+		char **ref_rest_str, const char *filter_str)
 {
 	int i, ret_code, end_code= STAT_ERROR;
-	cJSON *cjson_rest= NULL;
+	cJSON *cjson_rest= NULL, *cjson_proc= NULL;
 	cJSON *cjson_aux= NULL, *cjson_procs; // Do not release
-	char href[128]= {0};
+	const char *filter_proc_name= NULL, *filter_proc_notname= NULL;
+	char href[1024]= {0};
 	LOG_CTX_INIT(log_ctx);
 
 	/* Check arguments */
 	CHECK_DO(procs_module_ctx!= NULL, return STAT_ERROR);
 	CHECK_DO(procs_ctx!= NULL, return STAT_ERROR);
 	CHECK_DO(ref_rest_str!= NULL, return STAT_ERROR);
+	//argument 'filter_str' is allowed to be NULL
 
 	/*  Check that module instance API critical section is locked */
 	ret_code= pthread_mutex_trylock(&procs_ctx->api_mutex);
@@ -692,8 +760,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 
 	/* JSON structure is as follows:
 	 * {
-	 *     "procs":
-	 *     [
+	 *     <selected prefix_name>("procs" by default):[
 	 *         {
 	 *             "proc_id":number,
 	 *             "proc_name":string,
@@ -714,13 +781,23 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 	/* Create and attach 'PROCS' array */
 	cjson_procs= cJSON_CreateArray();
 	CHECK_DO(cjson_procs!= NULL, goto end);
-	cJSON_AddItemToObject(cjson_rest, "procs", cjson_procs);
+	cJSON_AddItemToObject(cjson_rest, procs_ctx->prefix_name, cjson_procs);
 
-	for(i= 0; i< PROCS_MAX_NUM_PROC_INSTANCES; i++) {
+	/* Parse the filter if available */
+	if(filter_str!= NULL) {
+		size_t filter_proc_name_len= strlen("proc_nameX=");
+		if(strncmp(filter_str, "proc_name==", filter_proc_name_len)== 0)
+			filter_proc_name= filter_str+ filter_proc_name_len;
+		else if(strncmp(filter_str, "proc_name!=", filter_proc_name_len)== 0)
+			filter_proc_notname= filter_str+ filter_proc_name_len;
+	}
+
+	/* Compose the REST list */
+	for(i= 0; i< procs_ctx->procs_reg_elem_array_size; i++) {
 		const char *proc_name;
 		const proc_if_t *proc_if;
 		register int proc_instance_index;
-		cJSON *cjson_proc, *cjson_links, *cjson_link;
+		cJSON *cjson_links, *cjson_link;
 		proc_ctx_t *proc_ctx= NULL;
 		procs_reg_elem_t *procs_reg_elem=
 				&procs_ctx->procs_reg_elem_array[i];
@@ -731,9 +808,27 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 		proc_instance_index= proc_ctx->proc_instance_index;
 		CHECK_DO(proc_instance_index== i, continue);
 
+		proc_if= proc_ctx->proc_if;
+		CHECK_DO(proc_if!= NULL, continue);
+		proc_name= proc_if->proc_name;
+		CHECK_DO(proc_name!= NULL, continue);
+
+		/* Check filters */
+		if(filter_proc_name!= NULL) {
+			if(strcmp(filter_proc_name, proc_name)!= 0)
+				continue;
+		} else if(filter_proc_notname!= NULL) {
+			if(strcmp(filter_proc_notname, proc_name)== 0)
+				continue;
+		}
+
+		if(cjson_proc!= NULL) {
+			cJSON_Delete(cjson_proc);
+			cjson_proc= NULL;
+		}
 		cjson_proc= cJSON_CreateObject();
 		CHECK_DO(cjson_proc!= NULL, goto end);
-		cJSON_AddItemToArray(cjson_procs, cjson_proc);
+		//cJSON_AddItemToArray(cjson_procs, cjson_proc); //at the end of loop
 
 		/* 'proc_id' */
 		cjson_aux= cJSON_CreateNumber((double)proc_instance_index);
@@ -741,10 +836,6 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 		cJSON_AddItemToObject(cjson_proc, "proc_id", cjson_aux);
 
 		/* 'proc_name' */
-		proc_if= proc_ctx->proc_if;
-		CHECK_DO(proc_if!= NULL, continue);
-		proc_name= proc_if->proc_name;
-		CHECK_DO(proc_name!= NULL, continue);
 		cjson_aux= cJSON_CreateString(proc_name);
 		CHECK_DO(cjson_aux!= NULL, goto end);
 		cJSON_AddItemToObject(cjson_proc, "proc_name", cjson_aux);
@@ -762,11 +853,16 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 		CHECK_DO(cjson_aux!= NULL, goto end);
 		cJSON_AddItemToObject(cjson_link, "rel", cjson_aux);
 
-		snprintf(href, sizeof(href), PROCS_URL_BASE_PATH"%d.json",
-				proc_instance_index);
+		snprintf(href, sizeof(href), "%s/%s/%d.json",
+				procs_ctx->procs_href!= NULL? procs_ctx->procs_href: "",
+						procs_ctx->prefix_name, proc_instance_index);
 		cjson_aux= cJSON_CreateString(href);
 		CHECK_DO(cjson_aux!= NULL, goto end);
 		cJSON_AddItemToObject(cjson_link, "href", cjson_aux);
+
+		/* Finally attach to REST list */
+		cJSON_AddItemToArray(cjson_procs, cjson_proc);
+		cjson_proc= NULL; // Avoid double referencing
 	}
 
 	/* Print cJSON structure data to char string */
@@ -777,6 +873,8 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 end:
 	if(cjson_rest!= NULL)
 		cJSON_Delete(cjson_rest);
+	if(cjson_proc!= NULL)
+		cJSON_Delete(cjson_proc);
 	return end_code;
 }
 
@@ -785,7 +883,12 @@ static int proc_register(procs_ctx_t *procs_ctx, const char *proc_name,
 {
 	procs_reg_elem_t *procs_reg_elem;
 	const proc_if_t *proc_if;
-	int proc_id, ret_code, end_code= STAT_ERROR;
+	int procs_reg_elem_array_size, ret_code, end_code= STAT_ERROR;
+	int proc_id= -1, flag_force_proc_id= 0;
+	int flag_is_query= 0; // 0-> JSON / 1->query string
+	char *proc_id_str= NULL;
+	cJSON *cjson_settings= NULL;
+	cJSON *cjson_aux= NULL; // Do not release
 	proc_ctx_t *proc_ctx= NULL;
 	uint32_t fifo_ctx_maxsize[PROC_IO_NUM]= {PROCS_FIFO_SIZE, PROCS_FIFO_SIZE};
 	LOG_CTX_INIT(log_ctx);
@@ -798,29 +901,73 @@ static int proc_register(procs_ctx_t *procs_ctx, const char *proc_name,
 	// Note: argument 'log_ctx' is allowed to be NULL
 	CHECK_DO(ref_id!= NULL, return STAT_ERROR);
 
+	procs_reg_elem_array_size= procs_ctx->procs_reg_elem_array_size;
+
 	*ref_id= -1; // Set to invalid (undefined) value
 
 	/* Check that module instance critical section is locked */
 	ret_code= pthread_mutex_trylock(&procs_ctx->api_mutex);
 	CHECK_DO(ret_code== EBUSY, goto end);
 
-	/* Get free slot where to register new processor.
-	 * Note that working on a locked module instance API critical section
-	 * guarantee that 'procs_reg_elem_array' is not accessed concurrently for
-	 * registering/unregistering.
-	 * Nevertheless, 'procs_reg_elem_array' is still accessible concurrently
-	 * by module's i/o operations, until corresponding "fair-lock" is locked.
+	/* **** Get processor Id. ****
+	 * API user has the option to request to force the processor Id. to a
+	 * proposed value (passed as setting: 'forced_proc_id=number').
 	 */
-	for(proc_id= 0; proc_id< PROCS_MAX_NUM_PROC_INSTANCES; proc_id++) {
-		if(procs_ctx->procs_reg_elem_array[proc_id].proc_ctx== NULL)
-			break;
+	/* Guess settings string representation format (JSON-REST or Query) */
+	flag_is_query= (settings_str[0]=='{' &&
+			settings_str[strlen(settings_str)-1]=='}')? 0: 1;
+
+	/* Parse JSON or query string and check for 'forced_proc_id' field */
+	if(flag_is_query== 1) {
+		proc_id_str= uri_parser_query_str_get_value("forced_proc_id",
+				settings_str);
+		if(proc_id_str!= NULL) {
+			proc_id= atoll(proc_id_str);
+			flag_force_proc_id= 1;
+		}
+	} else {
+		/* In the case string format is JSON-REST, parse to cJSON structure */
+		cjson_settings= cJSON_Parse(settings_str);
+		CHECK_DO(cjson_settings!= NULL, goto end);
+		cjson_aux= cJSON_GetObjectItem(cjson_settings, "forced_proc_id");
+		if(cjson_aux!= NULL) {
+			proc_id= cjson_aux->valuedouble;
+			flag_force_proc_id= 1;
+		}
 	}
-	if(proc_id>= PROCS_MAX_NUM_PROC_INSTANCES) {
+
+	/* If a forced processor Id. was not requested, get one */
+	if(flag_force_proc_id== 0) {
+		/* Get free slot where to register new processor */
+		for(proc_id= 0; proc_id< procs_reg_elem_array_size; proc_id++) {
+			if(procs_ctx->procs_reg_elem_array[proc_id].proc_ctx== NULL)
+				break;
+		}
+	}
+	if(proc_id< 0) {
+		LOGE("Invalid procesor identifier requested (Id. %d)\n", proc_id);
+		end_code= STAT_EINVAL;
+		goto end;
+	}
+	if(proc_id>= procs_reg_elem_array_size) {
 		LOGE("Maximum number of allowed processor instances exceeded\n");
 		end_code= STAT_ENOMEM;
 		goto end;
 	}
+	// In case Id. was forced, we need to check if slot is empty
+	if(procs_ctx->procs_reg_elem_array[proc_id].proc_ctx!= NULL) {
+		LOGE("Processor Id. conflict: requested Id. is being used.\n");
+		end_code= STAT_ECONFLICT;
+		goto end;
+	}
 
+	/* Note that working on a locked module instance API critical section
+	 * guarantee that 'procs_reg_elem_array' is not accessed concurrently
+	 * for registering/unregistering. Nevertheless, 'procs_reg_elem_array'
+	 * is still accessible concurrently by module's i/o operations, until
+	 * corresponding "fair-lock" is locked (in the code below we will lock
+	 * i/o "fair-locks" to register the new processor).
+	 */
 	procs_reg_elem= &procs_ctx->procs_reg_elem_array[proc_id];
 
 	/* Get processor interface (lock module!) */
@@ -854,9 +1001,12 @@ static int proc_register(procs_ctx_t *procs_ctx, const char *proc_name,
 	*ref_id= proc_id;
 	end_code= STAT_SUCCESS;
 end:
-	if(proc_ctx!= NULL) {
+	if(proc_ctx!= NULL)
 		proc_close(&proc_ctx);
-	}
+	if(proc_id_str!= NULL)
+		free(proc_id_str);
+	if(cjson_settings!= NULL)
+		cJSON_Delete(cjson_settings);
 	return end_code;
 }
 
@@ -864,7 +1014,7 @@ static int proc_unregister(procs_ctx_t *procs_ctx, int proc_id,
 		log_ctx_t *log_ctx)
 {
 	procs_reg_elem_t *procs_reg_elem;
-	int ret_code;
+	int procs_reg_elem_array_size, ret_code;
 	proc_ctx_t *proc_ctx= NULL;
 	LOG_CTX_INIT(log_ctx);
 	LOGD(">>%s\n", __FUNCTION__); //comment-me
@@ -872,7 +1022,8 @@ static int proc_unregister(procs_ctx_t *procs_ctx, int proc_id,
 	/* Check arguments */
 	CHECK_DO(procs_module_ctx!= NULL, return STAT_ERROR);
 	CHECK_DO(procs_ctx!= NULL, return STAT_ERROR);
-	CHECK_DO(proc_id>= 0 && proc_id< PROCS_MAX_NUM_PROC_INSTANCES,
+	procs_reg_elem_array_size= procs_ctx->procs_reg_elem_array_size;
+	CHECK_DO(proc_id>= 0 && proc_id< procs_reg_elem_array_size,
 			return STAT_ERROR);
 	// Note: argument 'log_ctx' is allowed to be NULL
 
@@ -921,7 +1072,7 @@ static int procs_id_opt(procs_ctx_t *procs_ctx, const char *tag,
 		log_ctx_t *log_ctx, va_list arg)
 {
 	procs_reg_elem_t *procs_reg_elem;
-	int end_code= STAT_ERROR, proc_id= -1;
+	int procs_reg_elem_array_size, end_code= STAT_ERROR, proc_id= -1;
 	int flag_procs_api_locked= 0, flag_proc_ctx_api_locked= 0;
 	proc_ctx_t *proc_ctx= NULL;
 	LOG_CTX_INIT(log_ctx);
@@ -949,7 +1100,8 @@ static int procs_id_opt(procs_ctx_t *procs_ctx, const char *tag,
 
 	/* Lock processor (PROC) API critical section */
 	proc_id= va_arg(arg, int);
-	CHECK_DO(proc_id>= 0 && proc_id< PROCS_MAX_NUM_PROC_INSTANCES, goto end);
+	procs_reg_elem_array_size= procs_ctx->procs_reg_elem_array_size;
+	CHECK_DO(proc_id>= 0 && proc_id< procs_reg_elem_array_size, goto end);
 	procs_reg_elem= &procs_ctx->procs_reg_elem_array[proc_id];
 	LOCK_PROCS_REG_ELEM_API(procs_ctx, procs_reg_elem, goto end);
 	flag_proc_ctx_api_locked= 1;
@@ -1068,7 +1220,7 @@ static proc_ctx_t* procs_id_opt_fetch_proc_ctx(procs_ctx_t *procs_ctx,
 {
 	va_list arg_cpy, va_list_empty;
 	procs_reg_elem_t *procs_reg_elem;
-	int ret_code;
+	int procs_reg_elem_array_size, ret_code;
 	int flag_is_query= 0; // 0-> JSON / 1->query string
 	proc_ctx_t *proc_ctx_ret= NULL, *proc_ctx_curr= NULL, *proc_ctx_new= NULL;
 	const char *settings_str_arg= NULL; // Do not release
@@ -1083,7 +1235,8 @@ static proc_ctx_t* procs_id_opt_fetch_proc_ctx(procs_ctx_t *procs_ctx,
 
 	/* Check arguments */
 	CHECK_DO(procs_ctx!= NULL, return NULL);
-	CHECK_DO(proc_id>= 0 && proc_id< PROCS_MAX_NUM_PROC_INSTANCES, return NULL);
+	procs_reg_elem_array_size= procs_ctx->procs_reg_elem_array_size;
+	CHECK_DO(proc_id>= 0 && proc_id< procs_reg_elem_array_size, return NULL);
 	CHECK_DO(tag!= NULL, return NULL);
 	//arg nothing to check
 	//log_ctx allowed to be NULL
@@ -1091,7 +1244,8 @@ static proc_ctx_t* procs_id_opt_fetch_proc_ctx(procs_ctx_t *procs_ctx,
 	/* Get register element and current processor references */
 	procs_reg_elem= &procs_ctx->procs_reg_elem_array[proc_id];
 	proc_ctx_curr= procs_reg_elem->proc_ctx;
-	CHECK_DO(proc_ctx_curr!= NULL, goto end);
+	if(proc_ctx_curr== NULL)
+		goto end;
 
 	/* Check that module instance critical section is locked and processor API
 	 * level critical section is also locked ("double locked").

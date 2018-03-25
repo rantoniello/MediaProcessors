@@ -23,7 +23,7 @@ else
 endif
 
 LIBS= -lm -ldl -lpthread
-LIBS+= -L$(LIB_DIR) -luriparser -lcjson -lmongoose -lSDL2
+LIBS+= -L$(LIB_DIR) -luriparser -lcjson -lmongoose -lSDL2 -lmediaprocscrc
 # Live555's libs
 LIBS+= -lliveMedia -lgroupsock -lBasicUsageEnvironment -lUsageEnvironment
 # FFmpeg libs

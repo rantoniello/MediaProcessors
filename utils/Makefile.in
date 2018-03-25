@@ -2,11 +2,17 @@
 # Specify interpreter
 SHELL = /bin/sh
 
+# C++ compiler
+CPP = c++
+
 INCLUDE_DIR = $(PREFIX)/include
 LIB_DIR = $(PREFIX)/lib
+EXE_DIR=$(PREFIX)/bin
 LIBNAME = mediaprocsutils
 
-CFLAGS+=-I$(INCLUDE_DIR)
+# Compiler options
+CFLAGS+=-Wall -O3
+CFLAGS+=-I$(INCLUDE_DIR) -D_INSTALL_DIR="\"$(PREFIX)\"" \
 # 32 /64 bits architecture stuff ...
 LBITS := $(shell getconf LONG_BIT)
 ifeq ($(LBITS),64)
@@ -16,10 +22,23 @@ else
    # 32 bit stuff here
 endif
 
-LIBS=-lm -ldl -L$(LIB_DIR) -luriparser
+LIBS= -lm -ldl -lpthread
+# shared memory stuff
+LIBS+= -lrt
+# 3rd party libraries dependencies
+LIBS+= -L$(LIB_DIR) -luriparser -lmediaprocscrc
 
-_OBJ = $(wildcard $(SRCDIR)/*.c*)
-OBJ = $(patsubst $(SRCDIR)/%.c*,$(BUILDDIR)/%.o,$(_OBJ))
+_OBJ = $(wildcard $(SRCDIR)/*.c)
+OBJ = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(_OBJ))
+
+LIBS_UTESTS= $(LIBS) -l$(LIBNAME) -lUnitTest++
+
+_OBJ_UTESTS_EXE = $(wildcard $(SRCDIR)/../utests/utests*.c*)
+OBJ_UTESTS_EXE = $(patsubst $(SRCDIR)/../utests/%.c*,$(BUILDDIR)/utests/%.o,$(_OBJ_UTESTS_EXE))
+
+_OBJ_UTESTS_APPS = $(wildcard $(SRCDIR)/../utests/app_utest*.c)
+OBJ_UTESTS_APPS = $(patsubst $(SRCDIR)/../utests/%.c,$(BUILDDIR)/utests/%.o,$(_OBJ_UTESTS_APPS))
+NAME_APPS = $(patsubst $(SRCDIR)/../utests/%.c,%,$(_OBJ_UTESTS_APPS))
 
 .PHONY : $(SRCDIR) $(BUILDDIR)
 
@@ -31,13 +50,14 @@ config:
 	@mkdir -p $(INCLUDE_DIR)/lib$(LIBNAME)
 	@mkdir -p $(LIB_DIR)
 	@mkdir -p $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)/utests
 
 build: config
 	@if [ ! -f $(LIB_DIR)/lib$(LIBNAME).so ] ; then \
 		$(MAKE) $(BUILDDIR)/lib$(LIBNAME).so; \
 	fi
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.c*
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(BUILDDIR)/lib$(LIBNAME).so: $(OBJ)
@@ -47,5 +67,21 @@ install:
 	cp $(BUILDDIR)/lib$(LIBNAME).so $(LIB_DIR)/lib$(LIBNAME).so;
 	cp -a $(SRCDIR)/*.h $(INCLUDE_DIR)/lib$(LIBNAME)/;
 
+utest:
+	$(MAKE) $(EXE_DIR)/$(LIBNAME)_utests
+	$(MAKE) $(EXE_DIR)/$(LIBNAME)_apps_$(NAME_APPS)
+	chmod +x $(EXE_DIR)/$(LIBNAME)_utests
+	chmod +x $(SRCDIR)/../utests/utests.sh
+	$(SRCDIR)/../utests/utests.sh $(PREFIX) $(LIBNAME)_utests yes
+
+$(BUILDDIR)/utests/%.o: $(SRCDIR)/../utests/%.c*
+	$(CPP) -c -o $@ $< $(CFLAGS)
+
+$(EXE_DIR)/$(LIBNAME)_utests: $(OBJ_UTESTS_EXE)
+	$(CPP) -o $@ $^ $(CFLAGS) $(LIBS_UTESTS)
+
+$(EXE_DIR)/$(LIBNAME)_apps_%: $(OBJ_UTESTS_APPS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) -l$(LIBNAME)
+
 clean:
-	rm -rf $(LIB_DIR)/lib$(LIBNAME).so $(INCLUDE_DIR)/lib$(LIBNAME)
+	rm -rf $(LIB_DIR)/lib$(LIBNAME).so $(INCLUDE_DIR)/lib$(LIBNAME) $(EXE_DIR)/$(LIBNAME)_utests

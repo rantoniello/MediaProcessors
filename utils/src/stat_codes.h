@@ -50,6 +50,13 @@ typedef enum stat_codes_ctx_s {
 	STAT_EBMUXFORMAT, //< Bad or not supported multiplex format
 	STAT_ETIMEDOUT, //< Operation timed out
 	STAT_EINTR, //< Operation interrupted
+	STAT_ENOPROTOOPT, //< Bad protocol option
+	STAT_EAFNOSUPPORT, //< Address family not supported
+	/** Address family not supported: need to specify host IP */
+	STAT_EAFNOSUPPORT_HOSTNAME,
+	/** Address family not supported: need to specify port */
+	STAT_EAFNOSUPPORT_PORT,
+	STAT_ENODATA, //< Valid request, no data record of requested type
 	STAT_CODES_MAX
 } stat_codes_ctx_t;
 

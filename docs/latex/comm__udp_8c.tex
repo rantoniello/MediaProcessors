@@ -1,0 +1,106 @@
+\hypertarget{comm__udp_8c}{}\section{comm\+\_\+udp.\+c File Reference}
+\label{comm__udp_8c}\index{comm\+\_\+udp.\+c@{comm\+\_\+udp.\+c}}
+{\ttfamily \#include \char`\"{}comm\+\_\+udp.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$fcntl.\+h$>$}\\*
+{\ttfamily \#include $<$sys/select.\+h$>$}\\*
+{\ttfamily \#include $<$sys/socket.\+h$>$}\\*
+{\ttfamily \#include $<$sys/un.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\\*
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}check\+\_\+utils.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}log.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}stat\+\_\+codes.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}comm.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}uri\+\_\+parser.\+h\char`\"{}}\\*
+Include dependency graph for comm\+\_\+udp.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{comm__udp_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcomm__udp__ctx__s}{comm\+\_\+udp\+\_\+ctx\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries U\+D\+P\+\_\+\+C\+O\+M\+\_\+\+A\+D\+D\+R\+\_\+\+I\+S\+\_\+\+M\+U\+L\+T\+I\+C\+A\+ST}(addr)~I\+N\+\_\+\+M\+U\+L\+T\+I\+C\+A\+ST(htonl(addr))\hypertarget{comm__udp_8c_aa480ce3132c5b5d02061a7c0f183cb03}{}\label{comm__udp_8c_aa480ce3132c5b5d02061a7c0f183cb03}
+
+\item 
+\#define {\bfseries U\+D\+P\+\_\+\+C\+O\+M\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+P\+R\+OT}~0\hypertarget{comm__udp_8c_aad39c4356310fc76a0e4429737fceac5}{}\label{comm__udp_8c_aad39c4356310fc76a0e4429737fceac5}
+
+\item 
+\#define {\bfseries U\+D\+P\+\_\+\+C\+O\+M\+\_\+\+D\+A\+T\+A\+G\+R\+A\+M\+\_\+\+B\+U\+F\+\_\+\+S\+I\+ZE}~(1024$\ast$1024$\ast$1024)\hypertarget{comm__udp_8c_a090368090d1eec4f9bf5f8c21e7bbbc3}{}\label{comm__udp_8c_a090368090d1eec4f9bf5f8c21e7bbbc3}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structcomm__udp__ctx__s}{comm\+\_\+udp\+\_\+ctx\+\_\+s} \hyperlink{comm__udp_8c_a6868f181bf22f0eaf2215d207f640428}{comm\+\_\+udp\+\_\+ctx\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$ {\bfseries comm\+\_\+udp\+\_\+open} (const char $\ast$url, const char $\ast$local\+\_\+url, \hyperlink{comm_8h_a2604d892f8ab29dfc96bd68e2cc3086f}{comm\+\_\+mode\+\_\+t} comm\+\_\+mode, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)\hypertarget{comm__udp_8c_a033354dd1c48e420a26d52d540190e33}{}\label{comm__udp_8c_a033354dd1c48e420a26d52d540190e33}
+
+\item 
+static void {\bfseries comm\+\_\+udp\+\_\+close} (\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+comm\+\_\+ctx)\hypertarget{comm__udp_8c_aabf0267a4b626412315fb0489ec342b8}{}\label{comm__udp_8c_aabf0267a4b626412315fb0489ec342b8}
+
+\item 
+static int {\bfseries comm\+\_\+udp\+\_\+send} (\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$comm\+\_\+ctx, const void $\ast$buf, size\+\_\+t count, struct timeval $\ast$timeout)\hypertarget{comm__udp_8c_a9a56fbbef77beab59be0f33a4bc00a34}{}\label{comm__udp_8c_a9a56fbbef77beab59be0f33a4bc00a34}
+
+\item 
+static int {\bfseries comm\+\_\+udp\+\_\+recv} (\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$comm\+\_\+ctx, void $\ast$$\ast$ref\+\_\+buf, size\+\_\+t $\ast$ref\+\_\+count, char $\ast$$\ast$ref\+\_\+from, struct timeval $\ast$timeout)\hypertarget{comm__udp_8c_a10563f454cef040d14edd5e7f04995a3}{}\label{comm__udp_8c_a10563f454cef040d14edd5e7f04995a3}
+
+\item 
+static int {\bfseries comm\+\_\+udp\+\_\+unblock} (\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$comm\+\_\+ctx)\hypertarget{comm__udp_8c_a84259e04cb1798e00e96587580d7d2f1}{}\label{comm__udp_8c_a84259e04cb1798e00e96587580d7d2f1}
+
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{comm_8h_a0d96b9368107e517ea8253837384faf5}{comm\+\_\+if\+\_\+t} \hyperlink{comm__udp_8c_abe388ee9ce49cba04e7c1adabf5ed9bc}{comm\+\_\+if\+\_\+udp}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{comm\+\_\+udp.\+c@{comm\+\_\+udp.\+c}!comm\+\_\+udp\+\_\+ctx\+\_\+t@{comm\+\_\+udp\+\_\+ctx\+\_\+t}}
+\index{comm\+\_\+udp\+\_\+ctx\+\_\+t@{comm\+\_\+udp\+\_\+ctx\+\_\+t}!comm\+\_\+udp.\+c@{comm\+\_\+udp.\+c}}
+\subsubsection[{\texorpdfstring{comm\+\_\+udp\+\_\+ctx\+\_\+t}{comm_udp_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf comm\+\_\+udp\+\_\+ctx\+\_\+s}  {\bf comm\+\_\+udp\+\_\+ctx\+\_\+t}}\hypertarget{comm__udp_8c_a6868f181bf22f0eaf2215d207f640428}{}\label{comm__udp_8c_a6868f181bf22f0eaf2215d207f640428}
+Module instance context structure 
+
+\subsection{Variable Documentation}
+\index{comm\+\_\+udp.\+c@{comm\+\_\+udp.\+c}!comm\+\_\+if\+\_\+udp@{comm\+\_\+if\+\_\+udp}}
+\index{comm\+\_\+if\+\_\+udp@{comm\+\_\+if\+\_\+udp}!comm\+\_\+udp.\+c@{comm\+\_\+udp.\+c}}
+\subsubsection[{\texorpdfstring{comm\+\_\+if\+\_\+udp}{comm_if_udp}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf comm\+\_\+if\+\_\+t} comm\+\_\+if\+\_\+udp}\hypertarget{comm__udp_8c_abe388ee9ce49cba04e7c1adabf5ed9bc}{}\label{comm__udp_8c_abe388ee9ce49cba04e7c1adabf5ed9bc}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+\{
+    \textcolor{stringliteral}{"udp"},
+    comm\_udp\_open,
+    comm\_udp\_close,
+    comm\_udp\_send,
+    comm\_udp\_recv,
+    comm\_udp\_unblock
+\}
+\end{DoxyCode}
+Communication protocol interface implementing the User Data Protocol (U\+DP). 
+
+Definition at line 102 of file comm\+\_\+udp.\+c.
+

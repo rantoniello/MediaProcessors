@@ -36,7 +36,7 @@ OBJ = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(_OBJ))
 _OBJ_CPP = $(wildcard $(SRCDIR)/*.cpp)
 OBJ_CPP = $(patsubst $(SRCDIR)/%.cpp,$(BUILDDIR)/%.oo,$(_OBJ_CPP))
 
-LIBS_UTESTS= $(LIBS) -lmediaprocsmuxers -lUnitTest++
+LIBS_UTESTS= $(LIBS) -lmediaprocsmuxers -lUnitTest++ -lmediaprocscrc
 
 _OBJ_UTESTS_EXE = $(wildcard $(SRCDIR)/../utests/utests*.c*)
 OBJ_UTESTS_EXE = $(patsubst $(SRCDIR)/../utests/%.c*,$(BUILDDIR)/utests/%.o,$(_OBJ_UTESTS_EXE))

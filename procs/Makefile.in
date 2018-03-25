@@ -23,13 +23,12 @@ else
 endif
 
 LIBS= -lm -ldl -lpthread
-LIBS+= -L$(LIB_DIR) -luriparser -lcjson
-LIBS+= -lmediaprocsutils
+LIBS+= -L$(LIB_DIR) -lmediaprocsutils -luriparser -lcjson
 
 _OBJ = $(wildcard $(SRCDIR)/*.c)
 OBJ = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(_OBJ))
 
-LIBS_UTESTS= $(LIBS) -lmediaprocs -lUnitTest++
+LIBS_UTESTS= $(LIBS) -l$(LIBNAME) -lUnitTest++ -lmediaprocscrc
 
 _OBJ_UTESTS_EXE = $(wildcard $(SRCDIR)/../utests/utests*.c*)
 OBJ_UTESTS_EXE = $(patsubst $(SRCDIR)/../utests/%.c*,$(BUILDDIR)/utests/%.o,$(_OBJ_UTESTS_EXE))

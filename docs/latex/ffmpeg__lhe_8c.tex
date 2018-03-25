@@ -52,7 +52,7 @@ static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+
 \item 
 static void \hyperlink{ffmpeg__lhe_8c_a7c3965125f6687c380083ce32cb8b490}{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
 \item 
-static int \hyperlink{ffmpeg__lhe_8c_afb8b8eea326e99096a58b2afadfbd010}{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+static int \hyperlink{ffmpeg__lhe_8c_afb8b8eea326e99096a58b2afadfbd010}{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
 \item 
 static int \hyperlink{ffmpeg__lhe_8c_a9facd2616190dc1775553be925358903}{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
@@ -66,7 +66,7 @@ static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+
 \item 
 static void \hyperlink{ffmpeg__lhe_8c_adb87987cdc7fbf0daa9330da5702b2c6}{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
 \item 
-static int \hyperlink{ffmpeg__lhe_8c_abb1b4b89f28a67306e95135da4d50ead}{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+static int \hyperlink{ffmpeg__lhe_8c_abb1b4b89f28a67306e95135da4d50ead}{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
 \item 
 static int \hyperlink{ffmpeg__lhe_8c_ab9c8cba295cf19a1db8d795b15d2a2ed}{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
@@ -116,7 +116,7 @@ F\+Fmpeg\textquotesingle{}s M\+L\+HE video encoder settings context structure.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_adb87987cdc7fbf0daa9330da5702b2c6}{}\label{ffmpeg__lhe_8c_adb87987cdc7fbf0daa9330da5702b2c6}
 Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 575 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 584 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+open@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+open}}
 \index{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+open@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+open}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -130,7 +130,7 @@ Definition at line 575 of file ffmpeg\+\_\+lhe.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_a02c043c86d7c1e4a3ed60ff912b97658}{}\label{ffmpeg__lhe_8c_a02c043c86d7c1e4a3ed60ff912b97658}
 Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 516 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 525 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+process\+\_\+frame@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+process\+\_\+frame}}
 \index{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+process\+\_\+frame@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+process\+\_\+frame}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -143,7 +143,7 @@ Definition at line 516 of file ffmpeg\+\_\+lhe.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_abb1b4b89f28a67306e95135da4d50ead}{}\label{ffmpeg__lhe_8c_abb1b4b89f28a67306e95135da4d50ead}
 Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 606 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 615 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+rest\+\_\+get@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+rest\+\_\+get}}
 \index{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+rest\+\_\+get@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+rest\+\_\+get}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -156,7 +156,7 @@ Definition at line 606 of file ffmpeg\+\_\+lhe.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_a137d8f70166a78111f6622ceac38865d}{}\label{ffmpeg__lhe_8c_a137d8f70166a78111f6622ceac38865d}
 Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 694 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 703 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+rest\+\_\+put@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+rest\+\_\+put}}
 \index{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+rest\+\_\+put@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+rest\+\_\+put}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -168,7 +168,7 @@ Definition at line 694 of file ffmpeg\+\_\+lhe.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_ab9c8cba295cf19a1db8d795b15d2a2ed}{}\label{ffmpeg__lhe_8c_ab9c8cba295cf19a1db8d795b15d2a2ed}
 Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 652 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 661 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit}}
 \index{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+deinit}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -187,7 +187,7 @@ Release specific M\+L\+HE decoder settings (allocated in heap memory).
 \end{DoxyParams}
 
 
-Definition at line 824 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 834 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init}}
 \index{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+mlhe\+\_\+dec\+\_\+settings\+\_\+ctx\+\_\+init}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -209,7 +209,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 794 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 804 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+close@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+close}}
 \index{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+close@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+close}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -220,7 +220,7 @@ Definition at line 794 of file ffmpeg\+\_\+lhe.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_a7c3965125f6687c380083ce32cb8b490}{}\label{ffmpeg__lhe_8c_a7c3965125f6687c380083ce32cb8b490}
 Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 240 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 248 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+open@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+open}}
 \index{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+open@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+open}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -234,7 +234,7 @@ Definition at line 240 of file ffmpeg\+\_\+lhe.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_a8095dff6bb2d48531d3adca53c94a729}{}\label{ffmpeg__lhe_8c_a8095dff6bb2d48531d3adca53c94a729}
 Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 181 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 189 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+process\+\_\+frame@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+process\+\_\+frame}}
 \index{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+process\+\_\+frame@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+process\+\_\+frame}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -247,7 +247,7 @@ Definition at line 181 of file ffmpeg\+\_\+lhe.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_afb8b8eea326e99096a58b2afadfbd010}{}\label{ffmpeg__lhe_8c_afb8b8eea326e99096a58b2afadfbd010}
 Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 272 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 280 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+rest\+\_\+get@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+rest\+\_\+get}}
 \index{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+rest\+\_\+get@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+rest\+\_\+get}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -260,7 +260,7 @@ Definition at line 272 of file ffmpeg\+\_\+lhe.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_ad129fc512e3f00ce7f524ec04fc85d5d}{}\label{ffmpeg__lhe_8c_ad129fc512e3f00ce7f524ec04fc85d5d}
 Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 360 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 368 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+rest\+\_\+put@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+rest\+\_\+put}}
 \index{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+rest\+\_\+put@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+rest\+\_\+put}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -272,7 +272,7 @@ Definition at line 360 of file ffmpeg\+\_\+lhe.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{ffmpeg__lhe_8c_a9facd2616190dc1775553be925358903}{}\label{ffmpeg__lhe_8c_a9facd2616190dc1775553be925358903}
 Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 318 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 326 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit}}
 \index{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+deinit}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -291,7 +291,7 @@ Release specific M\+L\+HE video encoder settings (allocated in heap memory).
 \end{DoxyParams}
 
 
-Definition at line 492 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 501 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init}}
 \index{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init@{ffmpeg\+\_\+mlhe\+\_\+enc\+\_\+settings\+\_\+ctx\+\_\+init}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -313,7 +313,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 462 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 471 of file ffmpeg\+\_\+lhe.\+c.
 
 
 
@@ -326,10 +326,14 @@ Definition at line 462 of file ffmpeg\+\_\+lhe.\+c.
 =
 \{
     \textcolor{stringliteral}{"ffmpeg\_mlhe\_dec"}, \textcolor{stringliteral}{"decoder"}, \textcolor{stringliteral}{"video/mlhe"},
-    (uint64\_t)(PROC\_FEATURE\_RD|PROC\_FEATURE\_WR|PROC\_FEATURE\_IOSTATS|
-            PROC\_FEATURE\_IPUT\_PTS|PROC\_FEATURE\_LATSTATS),
+    (uint64\_t)(PROC\_FEATURE\_BITRATE|PROC\_FEATURE\_REGISTER\_PTS|
+            PROC\_FEATURE\_LATENCY),
     \hyperlink{ffmpeg__lhe_8c_a02c043c86d7c1e4a3ed60ff912b97658}{ffmpeg\_mlhe\_dec\_open},
     \hyperlink{ffmpeg__lhe_8c_adb87987cdc7fbf0daa9330da5702b2c6}{ffmpeg\_mlhe\_dec\_close},
+    proc\_send\_frame\_default1,
+    NULL, 
+    proc\_recv\_frame\_default1,
+    NULL, 
     \hyperlink{ffmpeg__lhe_8c_ab9c8cba295cf19a1db8d795b15d2a2ed}{ffmpeg\_mlhe\_dec\_rest\_put},
     \hyperlink{ffmpeg__lhe_8c_a137d8f70166a78111f6622ceac38865d}{ffmpeg\_mlhe\_dec\_rest\_get},
     \hyperlink{ffmpeg__lhe_8c_abb1b4b89f28a67306e95135da4d50ead}{ffmpeg\_mlhe\_dec\_process\_frame},
@@ -341,7 +345,7 @@ Definition at line 462 of file ffmpeg\+\_\+lhe.\+c.
 \end{DoxyCode}
 Processor interface implementing the F\+Fmpeg wrapper of the M\+L\+HE video decoder. 
 
-Definition at line 161 of file ffmpeg\+\_\+lhe.\+c.
+Definition at line 165 of file ffmpeg\+\_\+lhe.\+c.
 
 \index{ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}!proc\+\_\+if\+\_\+ffmpeg\+\_\+mlhe\+\_\+enc@{proc\+\_\+if\+\_\+ffmpeg\+\_\+mlhe\+\_\+enc}}
 \index{proc\+\_\+if\+\_\+ffmpeg\+\_\+mlhe\+\_\+enc@{proc\+\_\+if\+\_\+ffmpeg\+\_\+mlhe\+\_\+enc}!ffmpeg\+\_\+lhe.\+c@{ffmpeg\+\_\+lhe.\+c}}
@@ -351,10 +355,14 @@ Definition at line 161 of file ffmpeg\+\_\+lhe.\+c.
 =
 \{
     \textcolor{stringliteral}{"ffmpeg\_mlhe\_enc"}, \textcolor{stringliteral}{"encoder"}, \textcolor{stringliteral}{"video/mlhe"},
-    (uint64\_t)(PROC\_FEATURE\_RD|PROC\_FEATURE\_WR|PROC\_FEATURE\_IOSTATS|
-            PROC\_FEATURE\_IPUT\_PTS|PROC\_FEATURE\_LATSTATS),
+    (uint64\_t)(PROC\_FEATURE\_BITRATE|PROC\_FEATURE\_REGISTER\_PTS|
+            PROC\_FEATURE\_LATENCY),
     \hyperlink{ffmpeg__lhe_8c_a8095dff6bb2d48531d3adca53c94a729}{ffmpeg\_mlhe\_enc\_open},
     \hyperlink{ffmpeg__lhe_8c_a7c3965125f6687c380083ce32cb8b490}{ffmpeg\_mlhe\_enc\_close},
+    proc\_send\_frame\_default1,
+    NULL, 
+    proc\_recv\_frame\_default1,
+    NULL, 
     \hyperlink{ffmpeg__lhe_8c_a9facd2616190dc1775553be925358903}{ffmpeg\_mlhe\_enc\_rest\_put},
     \hyperlink{ffmpeg__lhe_8c_ad129fc512e3f00ce7f524ec04fc85d5d}{ffmpeg\_mlhe\_enc\_rest\_get},
     \hyperlink{ffmpeg__lhe_8c_afb8b8eea326e99096a58b2afadfbd010}{ffmpeg\_mlhe\_enc\_process\_frame},

@@ -80,7 +80,7 @@ using namespace std;
 /**
  * Returns non-zero if 'tag' string is equal to given TAG string.
  */
-#define TAG_IS(TAG) (strncmp(tag, TAG, strlen(TAG))== 0)
+#define TAG_IS(TAG) (strcmp(tag, TAG)== 0)
 
 /**
  * Live555's RTSP multiplexer settings context structure.
@@ -551,46 +551,58 @@ extern "C" {
 const proc_if_t proc_if_live555_rtsp_mux=
 {
 	"live555_rtsp_mux", "multiplexer", "application/octet-stream",
-	(uint64_t)PROC_FEATURE_WR,
+	(uint64_t)0, // no generic processor features implemented
 	live555_rtsp_mux_open,
 	live555_rtsp_mux_close,
+	proc_send_frame_default1,
+	NULL, // no 'send-no-dup'
+	NULL, // no 'recv_frame'
+	NULL, // no specific unblock function extension
 	live555_rtsp_mux_rest_put,
 	live555_rtsp_mux_rest_get,
 	live555_rtsp_mux_process_frame,
 	live555_rtsp_mux_opt,
-	NULL, // input proc_frame_ctx to "private-frame-format"
-	NULL, // "private-frame-format" release
-	NULL, // "private-frame-format" to proc_frame_ctx
+	(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+	(void(*)(void**))proc_frame_ctx_release,
+	(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 };
 
 static const proc_if_t proc_if_live555_rtsp_es_mux=
 {
 	"live555_rtsp_es_mux", "multiplexer", "application/octet-stream",
-	(uint64_t)PROC_FEATURE_WR,
+	(uint64_t)0, // no generic processor features implemented
 	live555_rtsp_es_mux_open,
 	live555_rtsp_es_mux_close,
+	proc_send_frame_default1,
+	NULL, // no 'send-no-dup'
+	NULL, // no 'recv_frame'
+	NULL, // no specific unblock function extension
 	NULL, //live555_rtsp_es_mux_rest_put // used internally only (not in API)
 	live555_rtsp_es_mux_rest_get,
 	live555_rtsp_es_mux_process_frame,
 	NULL, //live555_rtsp_es_mux_opt
-	NULL,
-	NULL,
-	NULL,
+	(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+	(void(*)(void**))proc_frame_ctx_release,
+	(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 };
 
 const proc_if_t proc_if_live555_rtsp_dmux=
 {
 	"live555_rtsp_dmux", "demultiplexer", "application/octet-stream",
-	(uint64_t)PROC_FEATURE_RD,
+	(uint64_t)0, // no generic processor features implemented
 	live555_rtsp_dmux_open,
 	live555_rtsp_dmux_close,
+	NULL, // no 'send_frame'
+	NULL, // no 'send-no-dup'
+	proc_recv_frame_default1,
+	NULL, // no specific unblock function extension
 	live555_rtsp_dmux_rest_put,
 	live555_rtsp_dmux_rest_get,
 	live555_rtsp_dmux_process_frame,
 	NULL, //live555_rtsp_dmux_opt,
-	NULL, // input proc_frame_ctx to "private-frame-format"
-	NULL, // "private-frame-format" release
-	NULL, // "private-frame-format" to proc_frame_ctx
+	(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+	(void(*)(void**))proc_frame_ctx_release,
+	(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 };
 } //extern "C"
 
@@ -1094,6 +1106,7 @@ static int live555_rtsp_mux_rest_get(proc_ctx_t *proc_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 
@@ -1135,7 +1148,7 @@ static int live555_rtsp_mux_rest_get_es_array(procs_ctx_t *procs_ctx_es_muxers,
 	 * ]
 	 */
 
-	ret_code= procs_opt(procs_ctx_es_muxers, "PROCS_GET", &rest_str_aux);
+	ret_code= procs_opt(procs_ctx_es_muxers, "PROCS_GET", &rest_str_aux, NULL);
 	CHECK_DO(ret_code== STAT_SUCCESS && rest_str_aux!= NULL, goto end);
 
 	/* Parse to cJSON structure */
@@ -1642,6 +1655,7 @@ static int live555_rtsp_es_mux_rest_get(proc_ctx_t *proc_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 
@@ -1781,8 +1795,8 @@ SimpleFramedSource::SimpleFramedSource(UsageEnvironment& env,
 			(fifo_elem_ctx_dup_fxn_t*)proc_frame_ctx_dup;
 	fifo_elem_alloc_fxn.elem_ctx_release=
 			(fifo_elem_ctx_release_fxn_t*)proc_frame_ctx_release;
-	m_fifo_ctx= fifo_open(FRAMED_SOURCE_FIFO_SLOTS, FIFO_O_NONBLOCK,
-			&fifo_elem_alloc_fxn);
+	m_fifo_ctx= fifo_open(FRAMED_SOURCE_FIFO_SLOTS, 0/*unlimited chunk size*/,
+			FIFO_O_NONBLOCK, &fifo_elem_alloc_fxn);
 	ASSERT(m_fifo_ctx!= NULL);
 
 	/* We arrange here for our "deliverFrame" member function to be called
@@ -2386,6 +2400,7 @@ static int live555_rtsp_dmux_rest_get(proc_ctx_t *proc_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 

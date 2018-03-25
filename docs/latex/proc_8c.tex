@@ -23,11 +23,6 @@ Include dependency graph for proc.\+c\+:\nopagebreak
 \includegraphics[width=350pt]{proc_8c__incl}
 \end{center}
 \end{figure}
-\subsection*{Classes}
-\begin{DoxyCompactItemize}
-\item 
-struct \hyperlink{structproc__stats__thr__arg__s}{proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+s}
-\end{DoxyCompactItemize}
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -39,14 +34,9 @@ struct \hyperlink{structproc__stats__thr__arg__s}{proc\+\_\+stats\+\_\+thr\+\_\+
 \item 
 \#define \hyperlink{proc_8c_a8995a191e541088a47aec1798a8cec4b}{T\+A\+G\+\_\+\+H\+AS}(N\+E\+E\+D\+LE)~(strstr(tag, N\+E\+E\+D\+LE)!= N\+U\+LL)
 \item 
-\#define \hyperlink{proc_8c_a914faae84f39085695352bd45c0fca62}{T\+A\+G\+\_\+\+IS}(T\+AG)~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)
+\#define \hyperlink{proc_8c_a914faae84f39085695352bd45c0fca62}{T\+A\+G\+\_\+\+IS}(T\+AG)~(strcmp(tag, T\+AG)== 0)
 \item 
 \#define \hyperlink{proc_8c_ae748d1145794ec3eee8d693b690021d2}{P\+R\+O\+C\+\_\+\+S\+T\+A\+T\+S\+\_\+\+T\+H\+R\+\_\+\+M\+E\+A\+S\+U\+R\+E\+\_\+\+P\+E\+R\+I\+O\+D\+\_\+\+U\+S\+E\+CS}~(1000000)
-\end{DoxyCompactItemize}
-\subsection*{Typedefs}
-\begin{DoxyCompactItemize}
-\item 
-typedef struct \hyperlink{structproc__stats__thr__arg__s}{proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+s} \hyperlink{proc_8c_a41124cec72c232a7271177ddb72a8726}{proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+t}
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -60,9 +50,9 @@ static void $\ast$ {\bfseries proc\+\_\+stats\+\_\+thr} (void $\ast$t)\hypertarg
 static void $\ast$ {\bfseries proc\+\_\+thr} (void $\ast$t)\hypertarget{proc_8c_a6a3220a6637bf2eac3bc01c7c2a6e778}{}\label{proc_8c_a6a3220a6637bf2eac3bc01c7c2a6e778}
 
 \item 
-static void \hyperlink{proc_8c_a72d4a3ad103f601e7481fbdc5ce2c860}{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+iput\+\_\+pts} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx)
+static void \hyperlink{proc_8c_a8108a21cdd295dab6a93f7c562e2919d}{proc\+\_\+stats\+\_\+register\+\_\+frame\+\_\+pts} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx, const \hyperlink{proc_8h_ad9d50caaae50c1832dd22f487331657a}{proc\+\_\+io\+\_\+t} proc\+\_\+io)
 \item 
-static void \hyperlink{proc_8c_ae8bc9232d072fffff067c17cf4c2cf81}{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+io} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx)
+static void \hyperlink{proc_8c_a074bf2d0cf4ef1228a1c1d2aff100d93}{proc\+\_\+stats\+\_\+register\+\_\+accumulated\+\_\+io\+\_\+bits} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx, const \hyperlink{proc_8h_ad9d50caaae50c1832dd22f487331657a}{proc\+\_\+io\+\_\+t} proc\+\_\+io)
 \item 
 \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{proc_8c_a903e30d67b3e65f0711a87945be97cc4}{proc\+\_\+open} (const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\+\_\+t} $\ast$proc\+\_\+if, const char $\ast$settings\+\_\+str, int proc\+\_\+instance\+\_\+index, uint32\+\_\+t fifo\+\_\+ctx\+\_\+maxsize\mbox{[}P\+R\+O\+C\+\_\+\+I\+O\+\_\+\+N\+UM\mbox{]}, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)
 \item 
@@ -76,7 +66,13 @@ int \hyperlink{proc_8c_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt} (\hyper
 \item 
 int \hyperlink{proc_8c_a720ee51d86625b42b09f508a13977f37}{proc\+\_\+vopt} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$tag, va\+\_\+list arg)
 \item 
-void {\bfseries proc\+\_\+acc\+\_\+latency\+\_\+measure} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const int64\+\_\+t oput\+\_\+frame\+\_\+pts)\hypertarget{proc_8c_a0b8d892a67c4ba670cedc9a569f8387b}{}\label{proc_8c_a0b8d892a67c4ba670cedc9a569f8387b}
+int {\bfseries proc\+\_\+send\+\_\+frame\+\_\+default1} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx)\hypertarget{proc_8c_ab4eb8ffc342262ec8b748746fecae348}{}\label{proc_8c_ab4eb8ffc342262ec8b748746fecae348}
+
+\item 
+int {\bfseries proc\+\_\+recv\+\_\+frame\+\_\+default1} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+frame\+\_\+ctx)\hypertarget{proc_8c_a8ec368fc617b0066b9fab8a788ec92db}{}\label{proc_8c_a8ec368fc617b0066b9fab8a788ec92db}
+
+\item 
+void {\bfseries proc\+\_\+stats\+\_\+register\+\_\+accumulated\+\_\+latency} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const int64\+\_\+t oput\+\_\+frame\+\_\+pts)\hypertarget{proc_8c_aba1da2484ea0dbf14bc238c8ea776737}{}\label{proc_8c_aba1da2484ea0dbf14bc238c8ea776737}
 
 \end{DoxyCompactItemize}
 
@@ -112,18 +108,12 @@ Definition at line 60 of file proc.\+c.
 \begin{DoxyParamCaption}
 \item[{}]{T\+AG}
 \end{DoxyParamCaption}
-)~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)}\hypertarget{proc_8c_a914faae84f39085695352bd45c0fca62}{}\label{proc_8c_a914faae84f39085695352bd45c0fca62}
+)~(strcmp(tag, T\+AG)== 0)}\hypertarget{proc_8c_a914faae84f39085695352bd45c0fca62}{}\label{proc_8c_a914faae84f39085695352bd45c0fca62}
 Returns non-\/zero if \textquotesingle{}tag\textquotesingle{} string is equal to given T\+AG string. 
 
 Definition at line 65 of file proc.\+c.
 
 
-
-\subsection{Typedef Documentation}
-\index{proc.\+c@{proc.\+c}!proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+t@{proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+t}}
-\index{proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+t@{proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+t}!proc.\+c@{proc.\+c}}
-\subsubsection[{\texorpdfstring{proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+t}{proc_stats_thr_arg_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+s}  {\bf proc\+\_\+stats\+\_\+thr\+\_\+arg\+\_\+t}}\hypertarget{proc_8c_a41124cec72c232a7271177ddb72a8726}{}\label{proc_8c_a41124cec72c232a7271177ddb72a8726}
-Processor\textquotesingle{}s statistic thread argument. 
 
 \subsection{Function Documentation}
 \index{proc.\+c@{proc.\+c}!proc\+\_\+close@{proc\+\_\+close}}
@@ -140,7 +130,7 @@ Ends processing thread, de-\/initialize and release the generic processor (P\+R\
 \end{DoxyParams}
 
 
-Definition at line 194 of file proc.\+c.
+Definition at line 208 of file proc.\+c.
 
 \index{proc.\+c@{proc.\+c}!proc\+\_\+open@{proc\+\_\+open}}
 \index{proc\+\_\+open@{proc\+\_\+open}!proc.\+c@{proc.\+c}}
@@ -174,7 +164,7 @@ Pointer to the generic processor context structure on success, N\+U\+LL if fails
 \end{DoxyReturn}
 
 
-Definition at line 95 of file proc.\+c.
+Definition at line 87 of file proc.\+c.
 
 \index{proc.\+c@{proc.\+c}!proc\+\_\+opt@{proc\+\_\+opt}}
 \index{proc\+\_\+opt@{proc\+\_\+opt}!proc.\+c@{proc.\+c}}
@@ -233,7 +223,7 @@ Tag \char`\"{}\+P\+R\+O\+C\+\_\+\+P\+U\+T\char`\"{}\+: ~\newline
 
 \end{DoxyItemize}
 
-Definition at line 345 of file proc.\+c.
+Definition at line 368 of file proc.\+c.
 
 \index{proc.\+c@{proc.\+c}!proc\+\_\+recv\+\_\+frame@{proc\+\_\+recv\+\_\+frame}}
 \index{proc\+\_\+recv\+\_\+frame@{proc\+\_\+recv\+\_\+frame}!proc.\+c@{proc.\+c}}
@@ -243,7 +233,7 @@ Definition at line 345 of file proc.\+c.
 \item[{{\bf proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+proc\+\_\+frame\+\_\+ctx}
 \end{DoxyParamCaption}
 )}\hypertarget{proc_8c_a9cfe4d96cd6581d309e3bf2b1821bbb6}{}\label{proc_8c_a9cfe4d96cd6581d309e3bf2b1821bbb6}
-Get new processed frame of data from the processor\textquotesingle{}s output F\+I\+FO buffer. Unless unblocked (see processor options \textquotesingle{}\hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt()}\textquotesingle{}), this function blocks until a new frame is available to be read from the processor\textquotesingle{}s output F\+I\+FO. This function is thread-\/safe and can be called concurrently. 
+Get new processed frame of data from the processor\textquotesingle{}s output buffer. Unless unblocked (see processor options \textquotesingle{}\hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt()}\textquotesingle{}), this function blocks until a new frame is available to be read from the processor\textquotesingle{}s output buffer. This function is thread-\/safe and can be called concurrently. 
 \begin{DoxyParams}{Parameters}
 {\em proc\+\_\+ctx} & Pointer to the processor (P\+R\+OC) context structure obtained in a previous call to the \textquotesingle{}\hyperlink{proc_8h_a903e30d67b3e65f0711a87945be97cc4}{proc\+\_\+open()}\textquotesingle{} function. \\
 \hline
@@ -255,7 +245,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 279 of file proc.\+c.
+Definition at line 323 of file proc.\+c.
 
 \index{proc.\+c@{proc.\+c}!proc\+\_\+send\+\_\+frame@{proc\+\_\+send\+\_\+frame}}
 \index{proc\+\_\+send\+\_\+frame@{proc\+\_\+send\+\_\+frame}!proc.\+c@{proc.\+c}}
@@ -265,11 +255,11 @@ Definition at line 279 of file proc.\+c.
 \item[{const {\bf proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+frame\+\_\+ctx}
 \end{DoxyParamCaption}
 )}\hypertarget{proc_8c_a4aa53aea57e2193cedf38b7e2003fac1}{}\label{proc_8c_a4aa53aea57e2193cedf38b7e2003fac1}
-Put new frame of data to be processed in the processor\textquotesingle{}s input F\+I\+FO buffer. Unless unblocked (see processor options \textquotesingle{}\hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt()}\textquotesingle{}), this function blocks until a slot is available to be able to push the new frame into the processor\textquotesingle{}s input F\+I\+FO. This function is thread-\/safe and can be called concurrently. 
+Put new frame of data to be processed in the processor\textquotesingle{}s input buffer. Unless unblocked (see processor options \textquotesingle{}\hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt()}\textquotesingle{}), this function blocks until a slot is available to be able to push the new frame into the processor\textquotesingle{}s input buffer. This function is thread-\/safe and can be called concurrently. 
 \begin{DoxyParams}{Parameters}
 {\em proc\+\_\+ctx} & Pointer to the processor (P\+R\+OC) context structure obtained in a previous call to the \textquotesingle{}\hyperlink{proc_8h_a903e30d67b3e65f0711a87945be97cc4}{proc\+\_\+open()}\textquotesingle{} function. \\
 \hline
-{\em proc\+\_\+frame\+\_\+ctx} & Pointer to the structure characterizing the input frame to be processed. The frame is duplicated and inserted in the F\+I\+FO buffer. \\
+{\em proc\+\_\+frame\+\_\+ctx} & Pointer to the structure characterizing the input frame to be processed. The frame is duplicated and inserted in the input buffer. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -277,34 +267,33 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 253 of file proc.\+c.
+Definition at line 287 of file proc.\+c.
 
-\index{proc.\+c@{proc.\+c}!proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+io@{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+io}}
-\index{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+io@{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+io}!proc.\+c@{proc.\+c}}
-\subsubsection[{\texorpdfstring{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+io(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const proc\+\_\+frame\+\_\+ctx\+\_\+t $\ast$proc\+\_\+frame\+\_\+ctx)}{proc_send_frame_stats_io(proc_ctx_t *proc_ctx, const proc_frame_ctx_t *proc_frame_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+io (
+\index{proc.\+c@{proc.\+c}!proc\+\_\+stats\+\_\+register\+\_\+accumulated\+\_\+io\+\_\+bits@{proc\+\_\+stats\+\_\+register\+\_\+accumulated\+\_\+io\+\_\+bits}}
+\index{proc\+\_\+stats\+\_\+register\+\_\+accumulated\+\_\+io\+\_\+bits@{proc\+\_\+stats\+\_\+register\+\_\+accumulated\+\_\+io\+\_\+bits}!proc.\+c@{proc.\+c}}
+\subsubsection[{\texorpdfstring{proc\+\_\+stats\+\_\+register\+\_\+accumulated\+\_\+io\+\_\+bits(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const proc\+\_\+frame\+\_\+ctx\+\_\+t $\ast$proc\+\_\+frame\+\_\+ctx, const proc\+\_\+io\+\_\+t proc\+\_\+io)}{proc_stats_register_accumulated_io_bits(proc_ctx_t *proc_ctx, const proc_frame_ctx_t *proc_frame_ctx, const proc_io_t proc_io)}}]{\setlength{\rightskip}{0pt plus 5cm}static void proc\+\_\+stats\+\_\+register\+\_\+accumulated\+\_\+io\+\_\+bits (
 \begin{DoxyParamCaption}
 \item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
-\item[{const {\bf proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+frame\+\_\+ctx}
+\item[{const {\bf proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+frame\+\_\+ctx, }
+\item[{const {\bf proc\+\_\+io\+\_\+t}}]{proc\+\_\+io}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{proc_8c_ae8bc9232d072fffff067c17cf4c2cf81}{}\label{proc_8c_ae8bc9232d072fffff067c17cf4c2cf81}
-Generic input statistics treatment performed at function \textquotesingle{}\hyperlink{proc_8c_a4aa53aea57e2193cedf38b7e2003fac1}{proc\+\_\+send\+\_\+frame()}\textquotesingle{}. Statistics include\+:
-\begin{DoxyItemize}
-\item input bitrate measurement; 
-\end{DoxyItemize}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{proc_8c_a074bf2d0cf4ef1228a1c1d2aff100d93}{}\label{proc_8c_a074bf2d0cf4ef1228a1c1d2aff100d93}
+Register accumulated input/output bits. This is used to compute bitrate statistics. 
 
-Definition at line 759 of file proc.\+c.
+Definition at line 828 of file proc.\+c.
 
-\index{proc.\+c@{proc.\+c}!proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+iput\+\_\+pts@{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+iput\+\_\+pts}}
-\index{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+iput\+\_\+pts@{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+iput\+\_\+pts}!proc.\+c@{proc.\+c}}
-\subsubsection[{\texorpdfstring{proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+iput\+\_\+pts(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const proc\+\_\+frame\+\_\+ctx\+\_\+t $\ast$proc\+\_\+frame\+\_\+ctx)}{proc_send_frame_stats_iput_pts(proc_ctx_t *proc_ctx, const proc_frame_ctx_t *proc_frame_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}static void proc\+\_\+send\+\_\+frame\+\_\+stats\+\_\+iput\+\_\+pts (
+\index{proc.\+c@{proc.\+c}!proc\+\_\+stats\+\_\+register\+\_\+frame\+\_\+pts@{proc\+\_\+stats\+\_\+register\+\_\+frame\+\_\+pts}}
+\index{proc\+\_\+stats\+\_\+register\+\_\+frame\+\_\+pts@{proc\+\_\+stats\+\_\+register\+\_\+frame\+\_\+pts}!proc.\+c@{proc.\+c}}
+\subsubsection[{\texorpdfstring{proc\+\_\+stats\+\_\+register\+\_\+frame\+\_\+pts(proc\+\_\+ctx\+\_\+t $\ast$proc\+\_\+ctx, const proc\+\_\+frame\+\_\+ctx\+\_\+t $\ast$proc\+\_\+frame\+\_\+ctx, const proc\+\_\+io\+\_\+t proc\+\_\+io)}{proc_stats_register_frame_pts(proc_ctx_t *proc_ctx, const proc_frame_ctx_t *proc_frame_ctx, const proc_io_t proc_io)}}]{\setlength{\rightskip}{0pt plus 5cm}static void proc\+\_\+stats\+\_\+register\+\_\+frame\+\_\+pts (
 \begin{DoxyParamCaption}
 \item[{{\bf proc\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+ctx, }
-\item[{const {\bf proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+frame\+\_\+ctx}
+\item[{const {\bf proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$}]{proc\+\_\+frame\+\_\+ctx, }
+\item[{const {\bf proc\+\_\+io\+\_\+t}}]{proc\+\_\+io}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{proc_8c_a72d4a3ad103f601e7481fbdc5ce2c860}{}\label{proc_8c_a72d4a3ad103f601e7481fbdc5ce2c860}
-Input presentation time stamps (P\+TS\textquotesingle{}s) statistics treatment performed at function \textquotesingle{}\hyperlink{proc_8c_a4aa53aea57e2193cedf38b7e2003fac1}{proc\+\_\+send\+\_\+frame()}\textquotesingle{}. 
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{proc_8c_a8108a21cdd295dab6a93f7c562e2919d}{}\label{proc_8c_a8108a21cdd295dab6a93f7c562e2919d}
+Register frame presentation time stamp (P\+TS). 
 
-Definition at line 710 of file proc.\+c.
+Definition at line 793 of file proc.\+c.
 
 \index{proc.\+c@{proc.\+c}!proc\+\_\+vopt@{proc\+\_\+vopt}}
 \index{proc\+\_\+vopt@{proc\+\_\+vopt}!proc.\+c@{proc.\+c}}
@@ -317,5 +306,5 @@ Definition at line 710 of file proc.\+c.
 )}\hypertarget{proc_8c_a720ee51d86625b42b09f508a13977f37}{}\label{proc_8c_a720ee51d86625b42b09f508a13977f37}
 The function \textquotesingle{}\hyperlink{proc_8h_a720ee51d86625b42b09f508a13977f37}{proc\+\_\+vopt()}\textquotesingle{} is the same as \hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt()} except that it is called with a va\+\_\+list instead of a variable number of arguments. This function does not call the va\+\_\+end macro. Because it invoke the va\+\_\+arg macro, the value of the argument pointer is undefined after the call. 
 
-Definition at line 359 of file proc.\+c.
+Definition at line 382 of file proc.\+c.
 

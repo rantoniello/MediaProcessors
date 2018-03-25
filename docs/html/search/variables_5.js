@@ -1,6 +1,7 @@
 var searchData=
 [
   ['fair_5flock_5fio_5farray',['fair_lock_io_array',['../structproc__ctx__s.html#a6529e1ba97566c429d658e121bb604bb',1,'proc_ctx_s::fair_lock_io_array()'],['../structprocs__reg__elem__s.html#a4de246450a9e79fe65ab600814311c6d',1,'procs_reg_elem_s::fair_lock_io_array()']]],
+  ['fd',['fd',['../structcomm__udp__ctx__s.html#a65be1c0c98d73e09419c3507a4c4535b',1,'comm_udp_ctx_s']]],
   ['ffmpeg_5faudio_5fdec_5fctx',['ffmpeg_audio_dec_ctx',['../structffmpeg__mp3__dec__ctx__s.html#a16bbe11f4a4b51208b0a2cb998a75bb7',1,'ffmpeg_mp3_dec_ctx_s']]],
   ['ffmpeg_5faudio_5fenc_5fctx',['ffmpeg_audio_enc_ctx',['../structffmpeg__mp3__enc__ctx__s.html#aadcbc8d7f34dd0577f8f1a1414419d64',1,'ffmpeg_mp3_enc_ctx_s']]],
   ['ffmpeg_5fm2v_5fdec_5fsettings_5fctx',['ffmpeg_m2v_dec_settings_ctx',['../structffmpeg__m2v__dec__ctx__s.html#a58531cef90c2ecba9e0bdf167d9929e3',1,'ffmpeg_m2v_dec_ctx_s']]],
@@ -15,8 +16,7 @@ var searchData=
   ['ffmpeg_5fx264_5fdec_5fsettings_5fctx',['ffmpeg_x264_dec_settings_ctx',['../structffmpeg__x264__dec__ctx__s.html#a4b7eeb30edd5fc36212f33c1becf9fdf',1,'ffmpeg_x264_dec_ctx_s']]],
   ['ffmpeg_5fx264_5fenc_5fsettings_5fctx',['ffmpeg_x264_enc_settings_ctx',['../structffmpeg__x264__enc__ctx__s.html#a6d22abf4f30d02f8bb4b809579595e83',1,'ffmpeg_x264_enc_ctx_s']]],
   ['fifo_5fctx_5farray',['fifo_ctx_array',['../structproc__ctx__s.html#a3b71d039235f439a87d9ec7d7b5b5549',1,'proc_ctx_s']]],
-  ['fifo_5felem_5fctx_5fdup',['FIFO_ELEM_CTX_DUP',['../structfifo__ctx__s.html#a5733ada7a9bf525cdddf6d839a4eef03',1,'fifo_ctx_s']]],
-  ['flag_5fexit',['flag_exit',['../structfifo__ctx__s.html#a4856c98e4576bd328ff3ee4063b1421a',1,'fifo_ctx_s::flag_exit()'],['../structproc__ctx__s.html#a86a21b28f6c41f7a9a4cc9586f782d68',1,'proc_ctx_s::flag_exit()']]],
+  ['flag_5fexit',['flag_exit',['../structcomm__udp__ctx__s.html#a3478e148fc2c7e2a11d0ecf1f064ad27',1,'comm_udp_ctx_s::flag_exit()'],['../structfifo__ctx__s.html#a4856c98e4576bd328ff3ee4063b1421a',1,'fifo_ctx_s::flag_exit()'],['../structproc__ctx__s.html#a86a21b28f6c41f7a9a4cc9586f782d68',1,'proc_ctx_s::flag_exit()']]],
   ['flag_5fproc_5ffeatures',['flag_proc_features',['../structproc__if__s.html#a657d976a32c34bff11070599b11c2dd7',1,'proc_if_s']]],
   ['flag_5fzerolatency',['flag_zerolatency',['../structffmpeg__x264__enc__settings__ctx__s.html#a5d8b83ae84f8419809222aed45fab94f',1,'ffmpeg_x264_enc_settings_ctx_s']]],
   ['flags',['flags',['../structfifo__ctx__s.html#a6c86ce21bbd7a84d164d9c5ecf72ac3a',1,'fifo_ctx_s']]],

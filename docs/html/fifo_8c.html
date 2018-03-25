@@ -87,6 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -94,9 +95,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="fifo_8h_source.html">fifo.h</a>&quot;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;fcntl.h&gt;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;sys/mman.h&gt;</code><br />
+<code>#include &lt;sys/shm.h&gt;</code><br />
+<code>#include &lt;sys/stat.h&gt;</code><br />
 <code>#include &lt;pthread.h&gt;</code><br />
+<code>#include &lt;errno.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="check__utils_8h_source.html">check_utils.h</a>&quot;</code><br />
 <code>#include &quot;log.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="stat__codes_8h_source.html">stat_codes.h</a>&quot;</code><br />
@@ -105,10 +113,10 @@ Include dependency graph for fifo.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="fifo_8c__incl.png" border="0" usemap="#fifo_8c" alt=""/></div>
 <map name="fifo_8c" id="fifo_8c">
-<area shape="rect" id="node2" href="fifo_8h.html" title="Simple pointer queue (FIFO) implementation. " alt="" coords="93,155,144,181"/>
-<area shape="rect" id="node8" href="check__utils_8h.html" title="check_utils.h" alt="" coords="156,80,255,107"/>
-<area shape="rect" id="node9" href="log_8h_source.html" title="log.h" alt="" coords="204,155,255,181"/>
-<area shape="rect" id="node11" href="stat__codes_8h.html" title="General status codes enumeration. " alt="" coords="569,80,666,107"/>
+<area shape="rect" id="node2" href="fifo_8h.html" title="Simple pointer queue (FIFO) implementation. " alt="" coords="33,155,84,181"/>
+<area shape="rect" id="node15" href="check__utils_8h.html" title="check_utils.h" alt="" coords="147,80,245,107"/>
+<area shape="rect" id="node16" href="log_8h_source.html" title="log.h" alt="" coords="152,155,203,181"/>
+<area shape="rect" id="node17" href="stat__codes_8h.html" title="General status codes enumeration. " alt="" coords="1151,80,1249,107"/>
 </map>
 </div>
 </div>
@@ -121,65 +129,236 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_s</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:afe4ee3f0e7e613d79afb3ccb9e552c0d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#afe4ee3f0e7e613d79afb3ccb9e552c0d">SIZEOF_FIFO_ELEM_CTX_T</a>(FLAG_USE_SHM,  CHUNK_SIZE_MAX)&#160;&#160;&#160;(size_t)(sizeof(<a class="el" href="fifo_8c.html#a3236a0200db719fdeb6d875a415ca7c9">fifo_elem_ctx_t</a>)+ (FLAG_USE_SHM== 0? 1: CHUNK_SIZE_MAX))</td></tr>
+<tr class="separator:afe4ee3f0e7e613d79afb3ccb9e552c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42708bf618db9ea973b091a2d5bdfa9e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a42708bf618db9ea973b091a2d5bdfa9e">FIFO_FILE_NAME_MAX_SIZE</a>&#160;&#160;&#160;1024</td></tr>
+<tr class="separator:a42708bf618db9ea973b091a2d5bdfa9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a3236a0200db719fdeb6d875a415ca7c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3236a0200db719fdeb6d875a415ca7c9"></a>
-typedef struct <a class="el" href="structfifo__elem__ctx__s.html">fifo_elem_ctx_s</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_elem_ctx_t</b></td></tr>
+<tr class="memitem:a3236a0200db719fdeb6d875a415ca7c9"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structfifo__elem__ctx__s.html">fifo_elem_ctx_s</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a3236a0200db719fdeb6d875a415ca7c9">fifo_elem_ctx_t</a></td></tr>
 <tr class="separator:a3236a0200db719fdeb6d875a415ca7c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf3f21e64cbabccd8420c306740820c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf3f21e64cbabccd8420c306740820c1"></a>
-typedef struct <a class="el" href="structfifo__ctx__s.html">fifo_ctx_s</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_ctx_t</b></td></tr>
+<tr class="memitem:acf3f21e64cbabccd8420c306740820c1"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structfifo__ctx__s.html">fifo_ctx_s</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a></td></tr>
 <tr class="separator:acf3f21e64cbabccd8420c306740820c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a653d3763790d5f750f801b886b4b6c64"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a653d3763790d5f750f801b886b4b6c64">fifo_close_internal</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> **ref_fifo_ctx, int flag_deinit)</td></tr>
+<tr class="separator:a653d3763790d5f750f801b886b4b6c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dcffabb4232225fed4b8a1805719288"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a2dcffabb4232225fed4b8a1805719288">fifo_init</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, size_t slots_max, size_t chunk_size_max, uint32_t flags, const char *fifo_file_name, const <a class="el" href="structfifo__elem__alloc__fxn__s.html">fifo_elem_alloc_fxn_t</a> *fifo_elem_alloc_fxn)</td></tr>
+<tr class="separator:a2dcffabb4232225fed4b8a1805719288"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6573ac4da0bc7e4ab51e2433beba806b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a6573ac4da0bc7e4ab51e2433beba806b">fifo_deinit</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx)</td></tr>
+<tr class="separator:a6573ac4da0bc7e4ab51e2433beba806b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcb545f297176708c0d59ee27aa83e07"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afcb545f297176708c0d59ee27aa83e07"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_input</b> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t elem_size, int dup_flag)</td></tr>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_input</b> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t elem_size, int dup_flag)</td></tr>
 <tr class="separator:afcb545f297176708c0d59ee27aa83e07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36259a59b4f79991a0c6983fd5306671"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a36259a59b4f79991a0c6983fd5306671"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t *ref_elem_size, int flush_flag)</td></tr>
-<tr class="separator:a36259a59b4f79991a0c6983fd5306671"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b4779d8cb0709b6aabd9294ae41035d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a7b4779d8cb0709b6aabd9294ae41035d">fifo_open</a> (uint32_t buf_max_size, uint32_t flags, const <a class="el" href="structfifo__elem__alloc__fxn__s.html">fifo_elem_alloc_fxn_t</a> *fifo_elem_alloc_fxn)</td></tr>
-<tr class="separator:a7b4779d8cb0709b6aabd9294ae41035d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2611719de8a50e56a040036114de9e88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a2611719de8a50e56a040036114de9e88">fifo_set_blocking_mode</a> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx, int do_block)</td></tr>
+<tr class="memitem:aa9de23c47bfe7b8478be73f732911854"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9de23c47bfe7b8478be73f732911854"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t *ref_elem_size, int flush_flag, int64_t tout_usecs)</td></tr>
+<tr class="separator:aa9de23c47bfe7b8478be73f732911854"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bdd78cdbb33b01fb34dae50120017c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5bdd78cdbb33b01fb34dae50120017c6"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_mutex_init</b> (pthread_mutex_t *const pthread_mutex_p, int flag_use_shm, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx)</td></tr>
+<tr class="separator:a5bdd78cdbb33b01fb34dae50120017c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af316d8192b5beffa9b3d2e565255f4fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af316d8192b5beffa9b3d2e565255f4fc"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_cond_init</b> (pthread_cond_t *const pthread_cond_p, int flag_use_shm, <a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *log_ctx)</td></tr>
+<tr class="separator:af316d8192b5beffa9b3d2e565255f4fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06a3217e8cb0f8976fa7632effed3220"><td class="memItemLeft" align="right" valign="top"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a06a3217e8cb0f8976fa7632effed3220">fifo_open</a> (size_t slots_max, size_t chunk_size_max, uint32_t flags, const <a class="el" href="structfifo__elem__alloc__fxn__s.html">fifo_elem_alloc_fxn_t</a> *fifo_elem_alloc_fxn)</td></tr>
+<tr class="separator:a06a3217e8cb0f8976fa7632effed3220"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6eed5bf3f4cadd29fae7e9fe83aed12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#aa6eed5bf3f4cadd29fae7e9fe83aed12">fifo_shm_open</a> (size_t slots_max, size_t chunk_size_max, uint32_t flags, const char *fifo_file_name)</td></tr>
+<tr class="separator:aa6eed5bf3f4cadd29fae7e9fe83aed12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cc850453cad4cb1bfb879f1c088c828"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cc850453cad4cb1bfb879f1c088c828"></a>
+<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_shm_exec_open</b> (size_t slots_max, size_t chunk_size_max, uint32_t flags, const char *fifo_file_name)</td></tr>
+<tr class="separator:a7cc850453cad4cb1bfb879f1c088c828"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b7d820309ccf81a3b39bc7984c7697a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a0b7d820309ccf81a3b39bc7984c7697a">fifo_close</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> **ref_fifo_ctx)</td></tr>
+<tr class="separator:a0b7d820309ccf81a3b39bc7984c7697a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2611719de8a50e56a040036114de9e88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a2611719de8a50e56a040036114de9e88">fifo_set_blocking_mode</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, int do_block)</td></tr>
 <tr class="separator:a2611719de8a50e56a040036114de9e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61d859a72c44a1ca7ad537435cf1388a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a61d859a72c44a1ca7ad537435cf1388a">fifo_close</a> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> **pfifo_ctx)</td></tr>
-<tr class="separator:a61d859a72c44a1ca7ad537435cf1388a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae01dccc89399239175f99002572151e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#ae01dccc89399239175f99002572151e0">fifo_put_dup</a> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx, const void *elem, size_t elem_size)</td></tr>
+<tr class="memitem:ae01dccc89399239175f99002572151e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#ae01dccc89399239175f99002572151e0">fifo_put_dup</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, const void *elem, size_t elem_size)</td></tr>
 <tr class="separator:ae01dccc89399239175f99002572151e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fe81cc19210968f18f23493a35b6a49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a2fe81cc19210968f18f23493a35b6a49">fifo_put</a> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t elem_size)</td></tr>
+<tr class="memitem:a2fe81cc19210968f18f23493a35b6a49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a2fe81cc19210968f18f23493a35b6a49">fifo_put</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t elem_size)</td></tr>
 <tr class="separator:a2fe81cc19210968f18f23493a35b6a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85a5e85ab81f3a1ea3464ff57fcf8f88"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a85a5e85ab81f3a1ea3464ff57fcf8f88">fifo_get</a> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t *ref_elem_size)</td></tr>
+<tr class="memitem:a85a5e85ab81f3a1ea3464ff57fcf8f88"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a85a5e85ab81f3a1ea3464ff57fcf8f88">fifo_get</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t *ref_elem_size)</td></tr>
 <tr class="separator:a85a5e85ab81f3a1ea3464ff57fcf8f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0793bad9ac8a0db8c1cd54a530a8e7ac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a0793bad9ac8a0db8c1cd54a530a8e7ac">fifo_show</a> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx, void **elem, size_t *elem_size)</td></tr>
-<tr class="separator:a0793bad9ac8a0db8c1cd54a530a8e7ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad11b8d4bba268df196ddd3b3a8df3033"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#ad11b8d4bba268df196ddd3b3a8df3033">fifo_get_buffer_level</a> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx)</td></tr>
+<tr class="memitem:a277fe27d1a899d61e7b1e838ffe1c784"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a277fe27d1a899d61e7b1e838ffe1c784">fifo_timedget</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t *ref_elem_size, int64_t tout_usecs)</td></tr>
+<tr class="separator:a277fe27d1a899d61e7b1e838ffe1c784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef3f90505f9d094700f99064aee174da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#aef3f90505f9d094700f99064aee174da">fifo_show</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, void **ref_elem, size_t *ref_elem_size)</td></tr>
+<tr class="separator:aef3f90505f9d094700f99064aee174da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad11b8d4bba268df196ddd3b3a8df3033"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#ad11b8d4bba268df196ddd3b3a8df3033">fifo_get_buffer_level</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx)</td></tr>
 <tr class="separator:ad11b8d4bba268df196ddd3b3a8df3033"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acebb289956cc3f7254d0e8bb5b6ca38a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#acebb289956cc3f7254d0e8bb5b6ca38a">fifo_traverse</a> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx, int elem_cnt, void(*it_fxn)(void *elem, ssize_t elem_size, int idx, void *it_arg, int *ref_flag_break), void *it_arg)</td></tr>
+<tr class="memitem:acebb289956cc3f7254d0e8bb5b6ca38a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#acebb289956cc3f7254d0e8bb5b6ca38a">fifo_traverse</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx, int elem_cnt, void(*it_fxn)(void *elem, ssize_t elem_size, int idx, void *it_arg, int *ref_flag_break), void *it_arg)</td></tr>
 <tr class="separator:acebb289956cc3f7254d0e8bb5b6ca38a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c0c91155b8d071ae30a07fa866372bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a2c0c91155b8d071ae30a07fa866372bc">fifo_empty</a> (<a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *fifo_ctx)</td></tr>
+<tr class="memitem:a2c0c91155b8d071ae30a07fa866372bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#a2c0c91155b8d071ae30a07fa866372bc">fifo_empty</a> (<a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *fifo_ctx)</td></tr>
 <tr class="separator:a2c0c91155b8d071ae30a07fa866372bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Rafael Antoniello </dd></dl>
 
 <p>Definition in file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a61d859a72c44a1ca7ad537435cf1388a"></a>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a42708bf618db9ea973b091a2d5bdfa9e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FIFO_FILE_NAME_MAX_SIZE&#160;&#160;&#160;1024</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Used only if FIFO_PROCESS_SHARED is signaled. In this case, this file-name is assigned to the shared memory object to facilitate opening FIFO from an fork-exec setting. </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00104">104</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afe4ee3f0e7e613d79afb3ccb9e552c0d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIZEOF_FIFO_ELEM_CTX_T</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">FLAG_USE_SHM, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">CHUNK_SIZE_MAX&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(size_t)(sizeof(<a class="el" href="fifo_8c.html#a3236a0200db719fdeb6d875a415ca7c9">fifo_elem_ctx_t</a>)+ (FLAG_USE_SHM== 0? 1: CHUNK_SIZE_MAX))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Size of structure type 'fifo_elem_ctx_t'. In the case FLAG_USE_SHM flag is set, <a class="el" href="structfifo__elem__ctx__s.html#a77ec4386ce2ca348e6d9c9ced4fafa92">fifo_elem_ctx_t::shm_elem_pool</a> will be actually a predefined buffer with a maximum fixed size of 'CHUNK_SIZE_MAX' octets. Otherwise, member <a class="el" href="structfifo__elem__ctx__s.html#a77ec4386ce2ca348e6d9c9ced4fafa92">fifo_elem_ctx_t::shm_elem_pool</a> will not be used (giving a minimum legacy size). </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00061">61</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="acf3f21e64cbabccd8420c306740820c1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structfifo__ctx__s.html">fifo_ctx_s</a>  <a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>FIFO context structure. </p>
+
+</div>
+</div>
+<a class="anchor" id="a3236a0200db719fdeb6d875a415ca7c9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structfifo__elem__ctx__s.html">fifo_elem_ctx_s</a>  <a class="el" href="fifo_8c.html#a3236a0200db719fdeb6d875a415ca7c9">fifo_elem_ctx_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>FIFO element context structure. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a0b7d820309ccf81a3b39bc7984c7697a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void fifo_close </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> **&#160;</td>
-          <td class="paramname"><em>pfifo_ctx</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> **&#160;</td>
+          <td class="paramname"><em>ref_fifo_ctx</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00183">183</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00327">327</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a653d3763790d5f750f801b886b4b6c64"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void fifo_close_internal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> **&#160;</td>
+          <td class="paramname"><em>ref_fifo_ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>flag_deinit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Internal FIFO closing function. Only parent process (not child) should de-initialize FIFO while closing. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ref_fifo_ctx</td><td></td></tr>
+    <tr><td class="paramname">flag_deinit</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00508">508</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6573ac4da0bc7e4ab51e2433beba806b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void fifo_deinit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramname"><em>fifo_ctx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>De-initialize FIFO context structure. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fifo_ctx</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00636">636</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -190,7 +369,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
         <tr>
           <td class="memname">void fifo_empty </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
           <td class="paramname"><em>fifo_ctx</em></td><td>)</td>
           <td></td>
         </tr>
@@ -198,7 +377,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00315">315</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00456">456</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -209,7 +388,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
         <tr>
           <td class="memname">int fifo_get </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
           <td class="paramname"><em>fifo_ctx</em>, </td>
         </tr>
         <tr>
@@ -233,7 +412,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00241">241</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00366">366</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -244,7 +423,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
         <tr>
           <td class="memname">ssize_t fifo_get_buffer_level </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
           <td class="paramname"><em>fifo_ctx</em></td><td>)</td>
           <td></td>
         </tr>
@@ -252,19 +431,92 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00251">251</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00385">385</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7b4779d8cb0709b6aabd9294ae41035d"></a>
+<a class="anchor" id="a2dcffabb4232225fed4b8a1805719288"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int fifo_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramname"><em>fifo_ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>slots_max</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>chunk_size_max</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>fifo_file_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structfifo__elem__alloc__fxn__s.html">fifo_elem_alloc_fxn_t</a> *&#160;</td>
+          <td class="paramname"><em>fifo_elem_alloc_fxn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize FIFO context structure. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fifo_ctx</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Status code (refer to 'stat_codes_ctx_t' type). </dd></dl>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00538">538</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a06a3217e8cb0f8976fa7632effed3220"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a>* fifo_open </td>
+          <td class="memname"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a>* fifo_open </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>buf_max_size</em>, </td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>slots_max</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>chunk_size_max</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -287,7 +539,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00122">122</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00195">195</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -298,7 +550,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
         <tr>
           <td class="memname">int fifo_put </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
           <td class="paramname"><em>fifo_ctx</em>, </td>
         </tr>
         <tr>
@@ -322,7 +574,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00236">236</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00361">361</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -333,7 +585,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
         <tr>
           <td class="memname">int fifo_put_dup </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
           <td class="paramname"><em>fifo_ctx</em>, </td>
         </tr>
         <tr>
@@ -357,7 +609,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00230">230</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00355">355</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -368,7 +620,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
         <tr>
           <td class="memname">void fifo_set_blocking_mode </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
           <td class="paramname"><em>fifo_ctx</em>, </td>
         </tr>
         <tr>
@@ -386,18 +638,67 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00161">161</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00332">332</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0793bad9ac8a0db8c1cd54a530a8e7ac"></a>
+<a class="anchor" id="aa6eed5bf3f4cadd29fae7e9fe83aed12"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a>* fifo_shm_open </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>slots_max</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>chunk_size_max</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>fifo_file_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slots_max</td><td></td></tr>
+    <tr><td class="paramname">chunk_size_max</td><td></td></tr>
+    <tr><td class="paramname">flags</td><td></td></tr>
+    <tr><td class="paramname">fifo_file_name</td><td>This file-name is assigned to the shared memory object to facilitate opening FIFO in a fork-exec setting. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00229">229</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aef3f90505f9d094700f99064aee174da"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int fifo_show </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
           <td class="paramname"><em>fifo_ctx</em>, </td>
         </tr>
         <tr>
@@ -421,7 +722,48 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00246">246</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00379">379</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a277fe27d1a899d61e7b1e838ffe1c784"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int fifo_timedget </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramname"><em>fifo_ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void **&#160;</td>
+          <td class="paramname"><em>ref_elem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>ref_elem_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>tout_usecs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>//TODO </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00372">372</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>
@@ -432,7 +774,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
         <tr>
           <td class="memname">int fifo_traverse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfifo__ctx__s.html">fifo_ctx_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="fifo_8c.html#acf3f21e64cbabccd8420c306740820c1">fifo_ctx_t</a> *&#160;</td>
           <td class="paramname"><em>fifo_ctx</em>, </td>
         </tr>
         <tr>
@@ -462,7 +804,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_output</b>
 </div><div class="memdoc">
 <p>//TODO </p>
 
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00266">266</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00400">400</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
 
 </div>
 </div>

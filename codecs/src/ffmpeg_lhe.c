@@ -145,10 +145,14 @@ static void ffmpeg_mlhe_dec_settings_ctx_deinit(
 const proc_if_t proc_if_ffmpeg_mlhe_enc=
 {
 	"ffmpeg_mlhe_enc", "encoder", "video/mlhe",
-	(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-			PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+	(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+			PROC_FEATURE_LATENCY),
 	ffmpeg_mlhe_enc_open,
 	ffmpeg_mlhe_enc_close,
+	proc_send_frame_default1,
+	NULL, // no 'send-no-dup'
+	proc_recv_frame_default1,
+	NULL, // no specific unblock function extension
 	ffmpeg_mlhe_enc_rest_put,
 	ffmpeg_mlhe_enc_rest_get,
 	ffmpeg_mlhe_enc_process_frame,
@@ -161,10 +165,14 @@ const proc_if_t proc_if_ffmpeg_mlhe_enc=
 const proc_if_t proc_if_ffmpeg_mlhe_dec=
 {
 	"ffmpeg_mlhe_dec", "decoder", "video/mlhe",
-	(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-			PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+	(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+			PROC_FEATURE_LATENCY),
 	ffmpeg_mlhe_dec_open,
 	ffmpeg_mlhe_dec_close,
+	proc_send_frame_default1,
+	NULL, // no 'send-no-dup'
+	proc_recv_frame_default1,
+	NULL, // no specific unblock function extension
 	ffmpeg_mlhe_dec_rest_put,
 	ffmpeg_mlhe_dec_rest_get,
 	ffmpeg_mlhe_dec_process_frame,
@@ -440,6 +448,7 @@ static int ffmpeg_mlhe_enc_rest_get(proc_ctx_t *proc_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 
@@ -772,6 +781,7 @@ static int ffmpeg_mlhe_dec_rest_get(proc_ctx_t *proc_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 

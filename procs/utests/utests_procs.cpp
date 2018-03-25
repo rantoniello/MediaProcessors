@@ -197,6 +197,7 @@ static int bypass_proc_rest_get(proc_ctx_t *proc_ctx,
 		cjson_rest= NULL; // Avoid double referencing
 		break;
 	default:
+		LOGE("Unknown format requested for processor REST\n");
 		goto end;
 	}
 
@@ -241,14 +242,21 @@ SUITE(UTESTS_PROCS)
 		int ret_code;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
+			NULL, // no specific unblock function extension
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 
 		ret_code= procs_module_open(NULL);
@@ -268,14 +276,21 @@ SUITE(UTESTS_PROCS)
 		int ret_code;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
+			NULL, // no specific unblock function extension
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		proc_if_t *proc_if_cpy= NULL;
 
@@ -308,14 +323,21 @@ SUITE(UTESTS_PROCS)
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
+			NULL, // no specific unblock function extension
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		LOG_CTX_INIT(NULL);
 
@@ -329,7 +351,7 @@ SUITE(UTESTS_PROCS)
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL);
+		procs_ctx= procs_open(NULL, 16, NULL, NULL);
 		CHECK_DO(procs_ctx!= NULL, CHECK(false); goto end);
 
 		ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",
@@ -370,25 +392,39 @@ end:
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/encoder",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
+			NULL, // no specific unblock function extension
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		const proc_if_t proc_if_bypass_proc2= {
 			"bypass_processor2", "encoder2", "application/encoder2",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
+			NULL, // no specific unblock function extension
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		LOG_CTX_INIT(NULL);
 
@@ -405,7 +441,7 @@ end:
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL);
+		procs_ctx= procs_open(NULL, 16, NULL, NULL);
 		CHECK_DO(procs_ctx!= NULL, CHECK(false); goto end);
 
 		ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",
@@ -508,14 +544,21 @@ end:
 		cJSON *cjson_rest= NULL, *cjson_aux= NULL;
 		const proc_if_t proc_if_bypass_proc= {
 			"bypass_processor", "encoder", "application/octet-stream",
-			(uint64_t)(PROC_FEATURE_RD|PROC_FEATURE_WR|PROC_FEATURE_IOSTATS|
-					PROC_FEATURE_IPUT_PTS|PROC_FEATURE_LATSTATS),
+			(uint64_t)(PROC_FEATURE_BITRATE|PROC_FEATURE_REGISTER_PTS|
+					PROC_FEATURE_LATENCY),
 			bypass_proc_open,
 			bypass_proc_close,
+			proc_send_frame_default1,
+			NULL, // no 'send-no-dup'
+			proc_recv_frame_default1,
+			NULL, // no specific unblock function extension
 			bypass_proc_rest_put,
 			bypass_proc_rest_get,
 			bypass_proc_process_frame,
-			NULL, NULL, NULL, NULL
+			NULL,
+			(void*(*)(const proc_frame_ctx_t*))proc_frame_ctx_dup,
+			(void(*)(void**))proc_frame_ctx_release,
+			(proc_frame_ctx_t*(*)(const void*))proc_frame_ctx_dup
 		};
 		proc_frame_ctx_t *proc_frame_ctx= NULL;
 		uint8_t yuv_frame[48]= { // YUV4:2:0 simple data example
@@ -554,7 +597,7 @@ end:
 		CHECK(ret_code== STAT_SUCCESS);
 
 		/* Get PROCS module's instance */
-		procs_ctx= procs_open(NULL);
+		procs_ctx= procs_open(NULL, 16, NULL, NULL);
 		CHECK_DO(procs_ctx!= NULL, CHECK(false); goto end);
 
 		ret_code= procs_opt(procs_ctx, "PROCS_POST", "bypass_processor",

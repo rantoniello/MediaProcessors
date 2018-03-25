@@ -1,0 +1,228 @@
+\hypertarget{bitparser_8c}{}\section{bitparser.\+c File Reference}
+\label{bitparser_8c}\index{bitparser.\+c@{bitparser.\+c}}
+{\ttfamily \#include \char`\"{}bitparser.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+{\ttfamily \#include $<$endian.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}log.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}stat\+\_\+codes.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}check\+\_\+utils.\+h\char`\"{}}\\*
+Include dependency graph for bitparser.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{bitparser_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries L\+OG}(...)\hypertarget{bitparser_8c_a3577749fb48d57a158b8ac1a0b3ab57e}{}\label{bitparser_8c_a3577749fb48d57a158b8ac1a0b3ab57e}
+
+\item 
+\#define {\bfseries S\+HL}(x,  y)~( ((x) $<$$<$ (y)) )\hypertarget{bitparser_8c_a80eab7d0e8f0448b76dd9f531383091c}{}\label{bitparser_8c_a80eab7d0e8f0448b76dd9f531383091c}
+
+\item 
+\#define {\bfseries S\+HR}(x,  y)~( ((y) \& D\+P\+A\+T\+HW) ? 0 \+: ((x) $>$$>$ (y)) )\hypertarget{bitparser_8c_a44b9891b1dfe126cee07835e15379e5e}{}\label{bitparser_8c_a44b9891b1dfe126cee07835e15379e5e}
+
+\item 
+\#define {\bfseries G\+L\+B\+I\+C\+\_\+\+E\+N\+D\+I\+AN}\hypertarget{bitparser_8c_aae7be4c29a9a93d88877ee8aa1b6711f}{}\label{bitparser_8c_aae7be4c29a9a93d88877ee8aa1b6711f}
+
+\item 
+\#define {\bfseries S\+W\+A\+P2}(x)~be16toh(x)\hypertarget{bitparser_8c_af43b8a3b1b980b36b07ded4e3f4f322d}{}\label{bitparser_8c_af43b8a3b1b980b36b07ded4e3f4f322d}
+
+\item 
+\#define {\bfseries S\+W\+A\+P4}(x)~be32toh(x)\hypertarget{bitparser_8c_aa8de42bd4c7b9bec58163c664aa29e28}{}\label{bitparser_8c_aa8de42bd4c7b9bec58163c664aa29e28}
+
+\item 
+\#define {\bfseries S\+W\+A\+P8}(x)~be64toh(x)\hypertarget{bitparser_8c_a5229d89ff2d909df696cbe04830bb62a}{}\label{bitparser_8c_a5229d89ff2d909df696cbe04830bb62a}
+
+\item 
+\#define {\bfseries I\+S\+\_\+\+P\+O\+W\+\_\+\+O\+F\+\_\+2}(x)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structbitparser__ctx__s}{bitparser\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{bitparser_8c_af26ccd7d3d277e8954f62897894d4d39}{bitparser\+\_\+open} (void $\ast$buf, size\+\_\+t buf\+\_\+size)
+\item 
+void \hyperlink{bitparser_8c_ab50b395e7d30cff122fbbe148b3004b9}{bitparser\+\_\+close} (\hyperlink{structbitparser__ctx__s}{bitparser\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+bitparser\+\_\+ctx)
+\item 
+void \hyperlink{bitparser_8c_ac61c1322cb8aab746f8618b29341d133}{bitparser\+\_\+flush} (\hyperlink{structbitparser__ctx__s}{bitparser\+\_\+ctx\+\_\+t} $\ast$bitparser\+\_\+ctx, size\+\_\+t n)
+\item 
+W\+O\+R\+D\+\_\+T \hyperlink{bitparser_8c_a844fac9f2863568e995dacaf42b14673}{bitparser\+\_\+get} (\hyperlink{structbitparser__ctx__s}{bitparser\+\_\+ctx\+\_\+t} $\ast$bitparser\+\_\+ctx, size\+\_\+t n)
+\item 
+W\+O\+R\+D\+\_\+T \hyperlink{bitparser_8c_a24545011cfb691796f436ea716ca3e56}{bitparser\+\_\+show} (\hyperlink{structbitparser__ctx__s}{bitparser\+\_\+ctx\+\_\+t} $\ast$bitparser\+\_\+ctx, size\+\_\+t n)
+\item 
+void $\ast$ \hyperlink{bitparser_8c_afbf0a52141277133963b46a7b3ffbe83}{bitparser\+\_\+copy\+\_\+bytes} (\hyperlink{structbitparser__ctx__s}{bitparser\+\_\+ctx\+\_\+t} $\ast$bitparser\+\_\+ctx, size\+\_\+t cnt)
+\item 
+void \hyperlink{bitparser_8c_aab7a3581adfca72d040447b208366cff}{bitparser\+\_\+align\+\_\+2byte} (\hyperlink{structbitparser__ctx__s}{bitparser\+\_\+ctx\+\_\+t} $\ast$bitparser\+\_\+ctx)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{bitparser.\+c@{bitparser.\+c}!I\+S\+\_\+\+P\+O\+W\+\_\+\+O\+F\+\_\+2@{I\+S\+\_\+\+P\+O\+W\+\_\+\+O\+F\+\_\+2}}
+\index{I\+S\+\_\+\+P\+O\+W\+\_\+\+O\+F\+\_\+2@{I\+S\+\_\+\+P\+O\+W\+\_\+\+O\+F\+\_\+2}!bitparser.\+c@{bitparser.\+c}}
+\subsubsection[{\texorpdfstring{I\+S\+\_\+\+P\+O\+W\+\_\+\+O\+F\+\_\+2}{IS_POW_OF_2}}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+S\+\_\+\+P\+O\+W\+\_\+\+O\+F\+\_\+2(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)}\hypertarget{bitparser_8c_ab103a0aa2d1cc3000e0e7833362d8813}{}\label{bitparser_8c_ab103a0aa2d1cc3000e0e7833362d8813}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+(\(\backslash\)
+        ((x)!= 0)&& (((x)& ((x)- 1))== 0)\(\backslash\)
+        )
+\end{DoxyCode}
+
+
+Definition at line 76 of file bitparser.\+c.
+
+
+
+\subsection{Function Documentation}
+\index{bitparser.\+c@{bitparser.\+c}!bitparser\+\_\+align\+\_\+2byte@{bitparser\+\_\+align\+\_\+2byte}}
+\index{bitparser\+\_\+align\+\_\+2byte@{bitparser\+\_\+align\+\_\+2byte}!bitparser.\+c@{bitparser.\+c}}
+\subsubsection[{\texorpdfstring{bitparser\+\_\+align\+\_\+2byte(bitparser\+\_\+ctx\+\_\+t $\ast$bitparser\+\_\+ctx)}{bitparser_align_2byte(bitparser_ctx_t *bitparser_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void bitparser\+\_\+align\+\_\+2byte (
+\begin{DoxyParamCaption}
+\item[{{\bf bitparser\+\_\+ctx\+\_\+t} $\ast$}]{bitparser\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{bitparser_8c_aab7a3581adfca72d040447b208366cff}{}\label{bitparser_8c_aab7a3581adfca72d040447b208366cff}
+Align bit parser to the next byte boundary 
+\begin{DoxyParams}{Parameters}
+{\em bitparser\+\_\+ctx} & Pointer to bit-\/parser context structure. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 217 of file bitparser.\+c.
+
+\index{bitparser.\+c@{bitparser.\+c}!bitparser\+\_\+close@{bitparser\+\_\+close}}
+\index{bitparser\+\_\+close@{bitparser\+\_\+close}!bitparser.\+c@{bitparser.\+c}}
+\subsubsection[{\texorpdfstring{bitparser\+\_\+close(bitparser\+\_\+ctx\+\_\+t $\ast$$\ast$ref\+\_\+bitparser\+\_\+ctx)}{bitparser_close(bitparser_ctx_t **ref_bitparser_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}void bitparser\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf bitparser\+\_\+ctx\+\_\+t} $\ast$$\ast$}]{ref\+\_\+bitparser\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{bitparser_8c_ab50b395e7d30cff122fbbe148b3004b9}{}\label{bitparser_8c_ab50b395e7d30cff122fbbe148b3004b9}
+// F\+I\+X\+M\+E!! 
+
+Definition at line 115 of file bitparser.\+c.
+
+\index{bitparser.\+c@{bitparser.\+c}!bitparser\+\_\+copy\+\_\+bytes@{bitparser\+\_\+copy\+\_\+bytes}}
+\index{bitparser\+\_\+copy\+\_\+bytes@{bitparser\+\_\+copy\+\_\+bytes}!bitparser.\+c@{bitparser.\+c}}
+\subsubsection[{\texorpdfstring{bitparser\+\_\+copy\+\_\+bytes(bitparser\+\_\+ctx\+\_\+t $\ast$bitparser\+\_\+ctx, size\+\_\+t cnt)}{bitparser_copy_bytes(bitparser_ctx_t *bitparser_ctx, size_t cnt)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ bitparser\+\_\+copy\+\_\+bytes (
+\begin{DoxyParamCaption}
+\item[{{\bf bitparser\+\_\+ctx\+\_\+t} $\ast$}]{bitparser\+\_\+ctx, }
+\item[{size\+\_\+t}]{cnt}
+\end{DoxyParamCaption}
+)}\hypertarget{bitparser_8c_afbf0a52141277133963b46a7b3ffbe83}{}\label{bitparser_8c_afbf0a52141277133963b46a7b3ffbe83}
+Copy \textquotesingle{}cnt\textquotesingle{} bytes from bit-\/parser internal buffer to a dynamically (heap) allocated memory. Important\+: note that this function requires copy operation to be byte aligned; thus, this function copies the byte block corresponding to the current value of the internal bit-\/counter. 
+\begin{DoxyParams}{Parameters}
+{\em bitparser\+\_\+ctx} & Pointer to bit-\/parser context structure \\
+\hline
+{\em cnt} & Number of bytes to copy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the copy allocation. The allocation should be freed later by the caller. 
+\end{DoxyReturn}
+
+
+Definition at line 186 of file bitparser.\+c.
+
+\index{bitparser.\+c@{bitparser.\+c}!bitparser\+\_\+flush@{bitparser\+\_\+flush}}
+\index{bitparser\+\_\+flush@{bitparser\+\_\+flush}!bitparser.\+c@{bitparser.\+c}}
+\subsubsection[{\texorpdfstring{bitparser\+\_\+flush(bitparser\+\_\+ctx\+\_\+t $\ast$bitparser\+\_\+ctx, size\+\_\+t n)}{bitparser_flush(bitparser_ctx_t *bitparser_ctx, size_t n)}}]{\setlength{\rightskip}{0pt plus 5cm}void bitparser\+\_\+flush (
+\begin{DoxyParamCaption}
+\item[{{\bf bitparser\+\_\+ctx\+\_\+t} $\ast$}]{bitparser\+\_\+ctx, }
+\item[{size\+\_\+t}]{n}
+\end{DoxyParamCaption}
+)}\hypertarget{bitparser_8c_ac61c1322cb8aab746f8618b29341d133}{}\label{bitparser_8c_ac61c1322cb8aab746f8618b29341d133}
+Flush next n bits out of buffer (Advance internal bit-\/counter by \textquotesingle{}n\textquotesingle{} bits). 
+\begin{DoxyParams}{Parameters}
+{\em bitparser\+\_\+ctx} & Pointer to bit-\/parser context structure \\
+\hline
+{\em n} & number of bits to flush. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 129 of file bitparser.\+c.
+
+\index{bitparser.\+c@{bitparser.\+c}!bitparser\+\_\+get@{bitparser\+\_\+get}}
+\index{bitparser\+\_\+get@{bitparser\+\_\+get}!bitparser.\+c@{bitparser.\+c}}
+\subsubsection[{\texorpdfstring{bitparser\+\_\+get(bitparser\+\_\+ctx\+\_\+t $\ast$bitparser\+\_\+ctx, size\+\_\+t n)}{bitparser_get(bitparser_ctx_t *bitparser_ctx, size_t n)}}]{\setlength{\rightskip}{0pt plus 5cm}W\+O\+R\+D\+\_\+T bitparser\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{{\bf bitparser\+\_\+ctx\+\_\+t} $\ast$}]{bitparser\+\_\+ctx, }
+\item[{size\+\_\+t}]{n}
+\end{DoxyParamCaption}
+)}\hypertarget{bitparser_8c_a844fac9f2863568e995dacaf42b14673}{}\label{bitparser_8c_a844fac9f2863568e995dacaf42b14673}
+Get next n bits right aligned in an unsigned 32/64-\/bit word. Bits are \char`\"{}flushed\char`\"{} from internal buffer, incrementing internal bit counter. 
+\begin{DoxyParams}{Parameters}
+{\em bitparser\+\_\+ctx} & Pointer to bit-\/parser context structure \\
+\hline
+{\em n} & Number of bits to get (internal bit counter is incremented by \textquotesingle{}n\textquotesingle{}) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Unsigned 32/64-\/bit word showing next n bits right aligned (stream bits are ordered from left to right). 
+\end{DoxyReturn}
+
+
+Definition at line 163 of file bitparser.\+c.
+
+\index{bitparser.\+c@{bitparser.\+c}!bitparser\+\_\+open@{bitparser\+\_\+open}}
+\index{bitparser\+\_\+open@{bitparser\+\_\+open}!bitparser.\+c@{bitparser.\+c}}
+\subsubsection[{\texorpdfstring{bitparser\+\_\+open(void $\ast$buf, size\+\_\+t buf\+\_\+size)}{bitparser_open(void *buf, size_t buf_size)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bitparser\+\_\+ctx\+\_\+t}$\ast$ bitparser\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{buf, }
+\item[{size\+\_\+t}]{buf\+\_\+size}
+\end{DoxyParamCaption}
+)}\hypertarget{bitparser_8c_af26ccd7d3d277e8954f62897894d4d39}{}\label{bitparser_8c_af26ccd7d3d277e8954f62897894d4d39}
+//\+F\+I\+X\+M\+E!! Initializes the bit-\/parser context attributes, getting ready for parsing. 
+\begin{DoxyParams}{Parameters}
+{\em bitparser\+\_\+ctx} & Pointer to bit-\/parser context structure \\
+\hline
+{\em buf} & Pointer to buffer to be parsed. \\
+\hline
+{\em buf\+\_\+size} & Parsing buffer size in bytes. Value M\+U\+ST be a multiple of 8. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (refer to \textquotesingle{}stat\+\_\+codes\+\_\+ctx\+\_\+t\textquotesingle{} type). 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+stat\+\_\+codes\+\_\+ctx\+\_\+t 
+\end{DoxySeeAlso}
+
+
+Definition at line 82 of file bitparser.\+c.
+
+\index{bitparser.\+c@{bitparser.\+c}!bitparser\+\_\+show@{bitparser\+\_\+show}}
+\index{bitparser\+\_\+show@{bitparser\+\_\+show}!bitparser.\+c@{bitparser.\+c}}
+\subsubsection[{\texorpdfstring{bitparser\+\_\+show(bitparser\+\_\+ctx\+\_\+t $\ast$bitparser\+\_\+ctx, size\+\_\+t n)}{bitparser_show(bitparser_ctx_t *bitparser_ctx, size_t n)}}]{\setlength{\rightskip}{0pt plus 5cm}W\+O\+R\+D\+\_\+T bitparser\+\_\+show (
+\begin{DoxyParamCaption}
+\item[{{\bf bitparser\+\_\+ctx\+\_\+t} $\ast$}]{bitparser\+\_\+ctx, }
+\item[{size\+\_\+t}]{n}
+\end{DoxyParamCaption}
+)}\hypertarget{bitparser_8c_a24545011cfb691796f436ea716ca3e56}{}\label{bitparser_8c_a24545011cfb691796f436ea716ca3e56}
+Show next n bits right aligned in an unsigned 32/64-\/bit word. Internal buffer bit counter is not modified (namely, consecutive identical calls to this function will return the same value). 
+\begin{DoxyParams}{Parameters}
+{\em bitparser\+\_\+ctx} & Pointer to bit-\/parser context structure \\
+\hline
+{\em n} & Number of bits to show \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Unsigned 32/64-\/bit word showing next n bits right aligned (stream bits are ordered from left to right). 
+\end{DoxyReturn}
+
+
+Definition at line 175 of file bitparser.\+c.
+

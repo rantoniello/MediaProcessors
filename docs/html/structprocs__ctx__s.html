@@ -95,31 +95,38 @@ Collaboration diagram for procs_ctx_s:</div>
 <div class="dyncontent">
 <div class="center"><img src="structprocs__ctx__s__coll__graph.png" border="0" usemap="#procs__ctx__s_coll__map" alt="Collaboration graph"/></div>
 <map name="procs__ctx__s_coll__map" id="procs__ctx__s_coll__map">
-<area shape="rect" id="node2" href="structprocs__reg__elem__s.html" title="procs_reg_elem_s" alt="" coords="358,332,486,359"/>
-<area shape="rect" id="node3" href="structproc__ctx__s.html" title="proc_ctx_s" alt="" coords="272,243,359,269"/>
-<area shape="rect" id="node8" href="structproc__if__s.html" title="proc_if_s" alt="" coords="246,332,321,359"/>
-<area shape="rect" id="node4" href="structfifo__ctx__s.html" title="fifo_ctx_s" alt="" coords="216,153,295,180"/>
-<area shape="rect" id="node5" href="structfifo__elem__ctx__s.html" title="fifo_elem_ctx_s" alt="" coords="198,5,313,32"/>
+<area shape="rect" id="node2" href="structprocs__reg__elem__s.html" title="procs_reg_elem_s" alt="" coords="407,332,535,359"/>
+<area shape="rect" id="node3" href="structproc__ctx__s.html" title="proc_ctx_s" alt="" coords="289,243,376,269"/>
+<area shape="rect" id="node9" href="structproc__if__s.html" title="proc_if_s" alt="" coords="295,332,370,359"/>
+<area shape="rect" id="node4" href="structfifo__ctx__s.html" title="fifo_ctx_s" alt="" coords="275,153,353,180"/>
+<area shape="rect" id="node5" href="structfifo__elem__ctx__s.html" title="fifo_elem_ctx_s" alt="" coords="257,5,371,32"/>
 <area shape="rect" id="node6" href="structlog__ctx__s.html" title="log_ctx_s" alt="" coords="5,153,84,180"/>
 <area shape="rect" id="node7" href="structllist__s.html" title="llist_s" alt="" coords="17,5,73,32"/>
-<area shape="rect" id="node9" href="structproc__frame__ctx__s.html" title="proc_frame_ctx_s" alt="" coords="35,243,161,269"/>
-<area shape="rect" id="node10" href="structfair__lock__s.html" title="fair_lock_s" alt="" coords="390,153,475,180"/>
+<area shape="rect" id="node8" href="structinterr__usleep__ctx__s.html" title="interr_usleep_ctx_s" alt="" coords="112,153,247,180"/>
+<area shape="rect" id="node10" href="structproc__frame__ctx__s.html" title="proc_frame_ctx_s" alt="" coords="76,243,203,269"/>
+<area shape="rect" id="node11" href="structfair__lock__s.html" title="fair_lock_s" alt="" coords="449,153,534,180"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a00c43e06f8805e3c392802956a3c0fce"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocs__ctx__s.html#a00c43e06f8805e3c392802956a3c0fce">prefix_name</a> [256]</td></tr>
+<tr class="separator:a00c43e06f8805e3c392802956a3c0fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb507582e7611d94d41bfaafd244b99a"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocs__ctx__s.html#adb507582e7611d94d41bfaafd244b99a">procs_href</a></td></tr>
+<tr class="separator:adb507582e7611d94d41bfaafd244b99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27330c986436226abfa1b5a00b7bdeb1"><td class="memItemLeft" align="right" valign="top">pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocs__ctx__s.html#a27330c986436226abfa1b5a00b7bdeb1">api_mutex</a></td></tr>
 <tr class="separator:a27330c986436226abfa1b5a00b7bdeb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08985565adf1f547b44b58addd85cbbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="procs_8c.html#a63a78f7c86536e71715f3fcef28e11c5">procs_reg_elem_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocs__ctx__s.html#a08985565adf1f547b44b58addd85cbbe">procs_reg_elem_array</a> [<a class="el" href="procs_8c.html#a3ed23854256df248c5c1352b3999275e">PROCS_MAX_NUM_PROC_INSTANCES</a>]</td></tr>
-<tr class="separator:a08985565adf1f547b44b58addd85cbbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ad98a927f0a5585076b32faf26a054d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="procs_8c.html#a63a78f7c86536e71715f3fcef28e11c5">procs_reg_elem_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocs__ctx__s.html#a9ad98a927f0a5585076b32faf26a054d">procs_reg_elem_array</a></td></tr>
+<tr class="separator:a9ad98a927f0a5585076b32faf26a054d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a083c965ff29e9b8af9215db80cca7c99"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocs__ctx__s.html#a083c965ff29e9b8af9215db80cca7c99">procs_reg_elem_array_size</a></td></tr>
+<tr class="separator:a083c965ff29e9b8af9215db80cca7c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5d529e82924052baf26478afca901fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlog__ctx__s.html">log_ctx_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocs__ctx__s.html#ab5d529e82924052baf26478afca901fa">log_ctx</a></td></tr>
 <tr class="separator:ab5d529e82924052baf26478afca901fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Module's instance context structure. PROCS module context structure is statically defined in the program. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00177">177</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00172">172</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a27330c986436226abfa1b5a00b7bdeb1"></a>
 <div class="memitem">
@@ -132,7 +139,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Module's instance API mutual exclusion lock. This lock is used to provide a critical section for external applications to be able to operate concurrently and asynchronously on this module. API options are available through the function <a class="el" href="procs_8c.html#a7af2e6f2788006cfc96ca8d811922ffa">procs_opt()</a>. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="procs_8h.html#a7af2e6f2788006cfc96ca8d811922ffa">procs_opt</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00185">185</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00191">191</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -147,22 +154,67 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Externally defined LOG module instance context structure. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00198">198</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00210">210</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a08985565adf1f547b44b58addd85cbbe"></a>
+<a class="anchor" id="a00c43e06f8805e3c392802956a3c0fce"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="procs_8c.html#a63a78f7c86536e71715f3fcef28e11c5">procs_reg_elem_t</a> procs_ctx_s::procs_reg_elem_array[<a class="el" href="procs_8c.html#a3ed23854256df248c5c1352b3999275e">PROCS_MAX_NUM_PROC_INSTANCES</a>]</td>
+          <td class="memname">char procs_ctx_s::prefix_name[256]</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Array listing the registered processor instances. The idea behind using an array is to have a mean to fast fetch a processor for input (receive) or output (send) operations. This array is defined with a fixed maximum size of PROCS_MAX_NUM_PROC_INSTANCES; each element of the array has a set of locks already initialized to enable concurrency. </p>
+<p>Module's API REST prefix name (256 characters maximum). This parameter can be set by '<a class="el" href="procs_8c.html#ac44b6ac931afbeadeb7f07b660e30bac">procs_open()</a>' function; if not (NULL is specified), the default name "procs" is used. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00194">194</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00178">178</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adb507582e7611d94d41bfaafd244b99a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* procs_ctx_s::procs_href</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Module's API REST href attribute specifying the URL path the API refers to. This parameter is optional (may be NULL). </p>
+
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00183">183</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9ad98a927f0a5585076b32faf26a054d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="procs_8c.html#a63a78f7c86536e71715f3fcef28e11c5">procs_reg_elem_t</a>* procs_ctx_s::procs_reg_elem_array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Array listing the registered processor instances. The idea behind using an array is to have a mean to fast fetch a processor for input (receive) or output (send) operations. This array is defined with a fixed maximum size (set when calling the function '<a class="el" href="procs_8c.html#ac44b6ac931afbeadeb7f07b660e30bac">procs_open()</a>', but limited to a maximum of PROCS_MAX_NUM_PROC_INSTANCES); each element of the array has a set of locks already initialized to enable concurrency. </p>
+
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00201">201</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a083c965ff29e9b8af9215db80cca7c99"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t procs_ctx_s::procs_reg_elem_array_size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Size of the array of registered processors. See '<a class="el" href="structprocs__ctx__s.html#a9ad98a927f0a5585076b32faf26a054d">procs_ctx_s::procs_reg_elem_array</a>' </p>
+
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00206">206</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>

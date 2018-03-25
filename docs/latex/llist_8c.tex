@@ -19,6 +19,12 @@ Include dependency graph for llist.\+c\+:\nopagebreak
 int \hyperlink{llist_8c_a51aae99f75f43a1b4a5ca3eeb15a401d}{llist\+\_\+push} (\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$$\ast$ref\+\_\+llist\+\_\+head, void $\ast$data)
 \item 
 void $\ast$ \hyperlink{llist_8c_a0d83d366ad71633395a7b1578b6537fc}{llist\+\_\+pop} (\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$$\ast$ref\+\_\+llist\+\_\+head)
+\item 
+int \hyperlink{llist_8c_ad405de668eba911caf0c6efd71dc3623}{llist\+\_\+len} (const \hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$llist\+\_\+head)
+\item 
+void $\ast$ \hyperlink{llist_8c_a900b454dc728efaa01c0c146d90b4047}{llist\+\_\+get\+\_\+nth} (const \hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$llist\+\_\+head, int index)
+\item 
+int \hyperlink{llist_8c_a64c83f1c3747824131f36f006e88d6fd}{llist\+\_\+insert\+\_\+nth} (\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$$\ast$ref\+\_\+llist\+\_\+head, int index, void $\ast$data)
 \end{DoxyCompactItemize}
 
 
@@ -29,6 +35,71 @@ Rafael Antoniello
 
 
 \subsection{Function Documentation}
+\index{llist.\+c@{llist.\+c}!llist\+\_\+get\+\_\+nth@{llist\+\_\+get\+\_\+nth}}
+\index{llist\+\_\+get\+\_\+nth@{llist\+\_\+get\+\_\+nth}!llist.\+c@{llist.\+c}}
+\subsubsection[{\texorpdfstring{llist\+\_\+get\+\_\+nth(const llist\+\_\+t $\ast$llist\+\_\+head, int index)}{llist_get_nth(const llist_t *llist_head, int index)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ llist\+\_\+get\+\_\+nth (
+\begin{DoxyParamCaption}
+\item[{const {\bf llist\+\_\+t} $\ast$}]{llist\+\_\+head, }
+\item[{int}]{index}
+\end{DoxyParamCaption}
+)}\hypertarget{llist_8c_a900b454dc728efaa01c0c146d90b4047}{}\label{llist_8c_a900b454dc728efaa01c0c146d90b4047}
+Get the \textquotesingle{}Nth\textquotesingle{} element of the list (does not delete the element). 
+\begin{DoxyParams}{Parameters}
+{\em Pointer} & to the so-\/called \char`\"{}head\char`\"{} of the list.  Position of the element within the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the element if found, N\+U\+LL otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line 113 of file llist.\+c.
+
+\index{llist.\+c@{llist.\+c}!llist\+\_\+insert\+\_\+nth@{llist\+\_\+insert\+\_\+nth}}
+\index{llist\+\_\+insert\+\_\+nth@{llist\+\_\+insert\+\_\+nth}!llist.\+c@{llist.\+c}}
+\subsubsection[{\texorpdfstring{llist\+\_\+insert\+\_\+nth(llist\+\_\+t $\ast$$\ast$ref\+\_\+llist\+\_\+head, int index, void $\ast$data)}{llist_insert_nth(llist_t **ref_llist_head, int index, void *data)}}]{\setlength{\rightskip}{0pt plus 5cm}int llist\+\_\+insert\+\_\+nth (
+\begin{DoxyParamCaption}
+\item[{{\bf llist\+\_\+t} $\ast$$\ast$}]{ref\+\_\+llist\+\_\+head, }
+\item[{int}]{index, }
+\item[{void $\ast$}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{llist_8c_a64c83f1c3747824131f36f006e88d6fd}{}\label{llist_8c_a64c83f1c3747824131f36f006e88d6fd}
+Insert the given element in the \textquotesingle{}N-\/th\textquotesingle{} position of the list. If the given index position is out of bounds, the element will be appended at the end of the list. 
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+llist\+\_\+head} & Reference to the pointer to the so-\/called \char`\"{}head\char`\"{} of the list. If the list is empty, the head pointer should be N\+U\+LL.  Position in which the element is to be inserted within the list. \\
+\hline
+{\em data} & Pointer to a new data element to be inserted in the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (refer to \textquotesingle{}stat\+\_\+codes\+\_\+ctx\+\_\+t\textquotesingle{} type). 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+stat\+\_\+codes\+\_\+ctx\+\_\+t 
+\end{DoxySeeAlso}
+
+
+Definition at line 137 of file llist.\+c.
+
+\index{llist.\+c@{llist.\+c}!llist\+\_\+len@{llist\+\_\+len}}
+\index{llist\+\_\+len@{llist\+\_\+len}!llist.\+c@{llist.\+c}}
+\subsubsection[{\texorpdfstring{llist\+\_\+len(const llist\+\_\+t $\ast$llist\+\_\+head)}{llist_len(const llist_t *llist_head)}}]{\setlength{\rightskip}{0pt plus 5cm}int llist\+\_\+len (
+\begin{DoxyParamCaption}
+\item[{const {\bf llist\+\_\+t} $\ast$}]{llist\+\_\+head}
+\end{DoxyParamCaption}
+)}\hypertarget{llist_8c_ad405de668eba911caf0c6efd71dc3623}{}\label{llist_8c_ad405de668eba911caf0c6efd71dc3623}
+Return the number of nodes in a list. 
+\begin{DoxyParams}{Parameters}
+{\em Pointer} & to the so-\/called \char`\"{}head\char`\"{} of the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of elements in the list is returned. Note that if a N\+U\+LL pointer is passed by argument, we assume that the linked list is empty (thus, returning zero). 
+\end{DoxyReturn}
+
+
+Definition at line 95 of file llist.\+c.
+
 \index{llist.\+c@{llist.\+c}!llist\+\_\+pop@{llist\+\_\+pop}}
 \index{llist\+\_\+pop@{llist\+\_\+pop}!llist.\+c@{llist.\+c}}
 \subsubsection[{\texorpdfstring{llist\+\_\+pop(llist\+\_\+t $\ast$$\ast$ref\+\_\+llist\+\_\+head)}{llist_pop(llist_t **ref_llist_head)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ llist\+\_\+pop (
