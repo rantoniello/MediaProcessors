@@ -12,7 +12,7 @@ LIBNAME = mediaprocsutils
 
 # Compiler options
 CFLAGS+=-Wall -O3
-CFLAGS+=-I$(INCLUDE_DIR)
+CFLAGS+=-I$(INCLUDE_DIR) -D_INSTALL_DIR="\"$(PREFIX)\"" \
 # 32 /64 bits architecture stuff ...
 LBITS := $(shell getconf LONG_BIT)
 ifeq ($(LBITS),64)
@@ -23,6 +23,9 @@ else
 endif
 
 LIBS= -lm -ldl -lpthread
+# shared memory stuff
+LIBS+= -lrt
+# 3rd party libraries dependencies
 LIBS+= -L$(LIB_DIR) -luriparser -lmediaprocscrc
 
 _OBJ = $(wildcard $(SRCDIR)/*.c)
@@ -32,6 +35,10 @@ LIBS_UTESTS= $(LIBS) -l$(LIBNAME) -lUnitTest++
 
 _OBJ_UTESTS_EXE = $(wildcard $(SRCDIR)/../utests/utests*.c*)
 OBJ_UTESTS_EXE = $(patsubst $(SRCDIR)/../utests/%.c*,$(BUILDDIR)/utests/%.o,$(_OBJ_UTESTS_EXE))
+
+_OBJ_UTESTS_APPS = $(wildcard $(SRCDIR)/../utests/app_utest*.c)
+OBJ_UTESTS_APPS = $(patsubst $(SRCDIR)/../utests/%.c,$(BUILDDIR)/utests/%.o,$(_OBJ_UTESTS_APPS))
+NAME_APPS = $(patsubst $(SRCDIR)/../utests/%.c,%,$(_OBJ_UTESTS_APPS))
 
 .PHONY : $(SRCDIR) $(BUILDDIR)
 
@@ -62,6 +69,7 @@ install:
 
 utest:
 	$(MAKE) $(EXE_DIR)/$(LIBNAME)_utests
+	$(MAKE) $(EXE_DIR)/$(LIBNAME)_apps_$(NAME_APPS)
 	chmod +x $(EXE_DIR)/$(LIBNAME)_utests
 	chmod +x $(SRCDIR)/../utests/utests.sh
 	$(SRCDIR)/../utests/utests.sh $(PREFIX) $(LIBNAME)_utests yes
@@ -71,6 +79,9 @@ $(BUILDDIR)/utests/%.o: $(SRCDIR)/../utests/%.c*
 
 $(EXE_DIR)/$(LIBNAME)_utests: $(OBJ_UTESTS_EXE)
 	$(CPP) -o $@ $^ $(CFLAGS) $(LIBS_UTESTS)
+
+$(EXE_DIR)/$(LIBNAME)_apps_%: $(OBJ_UTESTS_APPS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) -l$(LIBNAME)
 
 clean:
 	rm -rf $(LIB_DIR)/lib$(LIBNAME).so $(INCLUDE_DIR)/lib$(LIBNAME) $(EXE_DIR)/$(LIBNAME)_utests

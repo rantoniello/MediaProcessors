@@ -64,12 +64,6 @@ typedef void(fifo_elem_ctx_release_fxn_t)(void**);
 typedef struct fifo_elem_alloc_fxn_s {
 	fifo_elem_ctx_dup_fxn_t *elem_ctx_dup;
 	fifo_elem_ctx_release_fxn_t *elem_ctx_release;
-	/**
-	 * Used only if FIFO_PROCESS_SHARED is signaled.
-	 * In this case, this file-name is assigned to the shared memory object
-	 * to facilitate opening FIFO from an fork-exec setting.
-	 */
-	const char *fifo_file_name;
 } fifo_elem_alloc_fxn_t;
 
 /* **** Prototypes **** */
@@ -77,8 +71,21 @@ typedef struct fifo_elem_alloc_fxn_s {
 /**
  * //TODO
  */
-fifo_ctx_t* fifo_open(size_t buf_slots_max, size_t chunk_size_max,
+fifo_ctx_t* fifo_open(size_t slots_max, size_t chunk_size_max,
 		uint32_t flags, const fifo_elem_alloc_fxn_t *fifo_elem_alloc_fxn);
+
+/**
+ * @param slots_max
+ * @param chunk_size_max
+ * @param flags
+ * @param fifo_file_name This file-name is assigned to the shared memory
+ * object to facilitate opening FIFO in a fork-exec setting.
+ */
+fifo_ctx_t* fifo_shm_open(size_t slots_max, size_t chunk_size_max,
+		uint32_t flags, const char *fifo_file_name);
+fifo_ctx_t* fifo_shm_exec_open(size_t slots_max, size_t chunk_size_max,
+		uint32_t flags, const char *fifo_file_name);
+
 
 /**
  * //TODO

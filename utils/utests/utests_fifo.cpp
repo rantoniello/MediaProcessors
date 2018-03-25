@@ -23,6 +23,7 @@
  * @author Rafael Antoniello
  */
 
+#include "utests_fifo.h"
 #include <UnitTest++/UnitTest++.h>
 
 extern "C" {
@@ -42,6 +43,11 @@ extern "C" {
 #include <libmediaprocsutils/check_utils.h>
 }
 
+/** Installation directory complete path */
+#ifndef _INSTALL_DIR //HACK: "fake" path for IDE
+#define _INSTALL_DIR "./"
+#endif
+
 #define ENABLE_DEBUG_LOGS //uncomment to trace logs
 #ifdef ENABLE_DEBUG_LOGS
 	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
@@ -54,41 +60,10 @@ extern "C" {
 SUITE(UTESTS_FIFO)
 {
 
-#define FIFO_SIZE 3
 #define MAX_RUNNING_TIME_SECS 2
 
-	static void* consumer_thr(void *t)
-	{
-		fifo_ctx_t *fifo_ctx= (fifo_ctx_t*)t;
-		LOGD_CTX_INIT(NULL);
-
-		/* Read from FIFO */
-		while(1) {
-			int ret_code;
-			uint8_t *elem= NULL;
-			size_t elem_size= -1;
-
-			ret_code= fifo_get(fifo_ctx, (void**)&elem, &elem_size);
-			if(ret_code!= STAT_SUCCESS || elem== NULL || elem_size<= 0) {
-				//LOGV("ret_code: %d\n", ret_code); // comment-me
-				CHECK(ret_code== STAT_EAGAIN);
-				break;
-			}
-			LOGD("Consumer get %d characters from FIFO: '", (int)elem_size);
-			for(int c= 0; c< (int)elem_size; c++) {
-				LOGD("%c", elem[c]);
-			}
-			LOGD("'\n");
-
-			/* Release returned element */
-			if(elem!= NULL) {
-				free(elem);
-				elem= NULL;
-			}
-		}
-
-		return ((void*)(intptr_t)(STAT_SUCCESS));
-	}
+	/* Hack... declare consumer function */
+	static UTEST_FIFO_CONSUMER_THR_FXN();
 
 	static int producer(fifo_ctx_t *fifo_ctx)
 	{
@@ -102,10 +77,10 @@ SUITE(UTESTS_FIFO)
 
 		CHECK_DO(fifo_ctx!= NULL, return STAT_ERROR);
 
-	    /* Put messages on FIFO */
-	    for(int i= 0; elem[i]!= NULL; i++) {
-	    	int ret_val;
-	    	LOGD("Putting on FIFO: '%s (size: %d)\n", elem[i], (int)msg_len[i]);
+		/* Put messages on FIFO */
+		for(int i= 0; elem[i]!= NULL; i++) {
+			int ret_val;
+			LOGD("Putting on FIFO: '%s (size: %d)\n", elem[i], (int)msg_len[i]);
 
 			struct timespec time_start;
 			struct timespec time_stop;
@@ -131,23 +106,57 @@ SUITE(UTESTS_FIFO)
    		return STAT_SUCCESS;
 	}
 
-
-	TEST(FIFO_MULTI_THREADING)
+	static void main_task(int flag_use_shm, int flag_use_thr1_proc0)
 	{
 		int ret_code;
+		pthread_t consumer_thread;
 		fifo_ctx_t *fifo_ctx= NULL;
 		uint8_t *elem= NULL;
 		size_t elem_size= -1;
+		pid_t child_pid= -1; // process ID
 		LOG_CTX_INIT(NULL);
 
-	    LOGV("\n\nExecuting UTESTS_FIFO::FIFO_MULTI_THREADING...\n");
+		/* Open FIFO */
+		if(!flag_use_shm) {
+		    fifo_ctx= fifo_open(FIFO_SIZE, 0, 0, NULL);
+		} else {
+		    /* Note that GCC 5.4 only allows to specify name without '/'
+		     * character. Unless mounting "shmfs" in other place, all SHM
+		     * objects go to "/dev/shm/...".
+		     */
+		    fifo_ctx= fifo_shm_open(FIFO_SIZE, 256, 0, "/fifo_shm_utest");
+		}
 
-	    /* Open FIFO */
-	    fifo_ctx= fifo_open(FIFO_SIZE, 0, 0, NULL);
+		if(flag_use_thr1_proc0) {
+			/* Create consumer in "detach-able" thread */
+			pthread_create(&consumer_thread, NULL, utest_fifo_consumer_thr,
+					(void*)fifo_ctx);
+		} else {
+			/* Fork off the parent process */
+		    child_pid= fork();
+			if(child_pid< 0) {
+				LOGE("Could not fork process to create daemon\n");
+				exit(EXIT_FAILURE);
+			} else if(child_pid== 0) {
 
-		/* Create consumer in "detach-able" thread */
-		pthread_t consumer_thread;
-		pthread_create(&consumer_thread, NULL, consumer_thr, (void*)fifo_ctx);
+				/* **** CHILD CODE ('child_pid'== 0) **** */
+				char *const args[] = {(char *const)_INSTALL_DIR"/bin/"
+						"mediaprocsutils_apps_app_utest_fifo_consumer_thr",
+						(char *const)"/fifo_shm_utest", NULL};
+				char *const envs[] = {
+						(char *const)"LD_LIBRARY_PATH="_INSTALL_DIR"/lib",
+						NULL};
+				if((ret_code= execve(_INSTALL_DIR"/bin/"
+						"mediaprocsutils_apps_app_utest_fifo_consumer_thr",
+						args, envs))< 0) { // execve won't return if succeeded
+LOGD("\n000 %d*************************************************************************************\n", ret_code);
+					exit(ret_code);
+				}
+LOGD("\nOK OK OK*************************************************************************************\n");
+				exit(EXIT_SUCCESS);
+			}
+			/* ... Continue main task as parent code... */
+		}
 
 	    /* Put messages on FIFO */
 		producer(fifo_ctx);
@@ -156,10 +165,33 @@ SUITE(UTESTS_FIFO)
 		LOGD("Unblock FIFO now...\n");
    		fifo_set_blocking_mode(fifo_ctx, 0);
 
-    	/* Join consumer thread */
-   		LOGD("Joining consumer thread\n");
-   		pthread_join(consumer_thread, NULL);
-   		LOGD("OK\n");
+   		if(flag_use_thr1_proc0) {
+   			/* Join consumer thread */
+   			LOGD("Joining consumer thread\n");
+   			pthread_join(consumer_thread, NULL);
+   			LOGD("OK\n");
+   		} else {
+   			int status;
+   			pid_t w;
+
+   			/* Wait consumer process */
+   			LOGD("Waiting for consumer process\n");
+   			w= waitpid(child_pid, &status, WUNTRACED);
+   			if(w== -1) {
+   				LOGD("Error detected while executing 'waitpid()'");
+   				exit(EXIT_FAILURE);
+   			}
+   			if(WIFEXITED(status)) {
+   				LOGD("exited, status=%d\n", WEXITSTATUS(status));
+   			} else if(WIFSIGNALED(status)) {
+   				LOGD("killed by signal %d\n", WTERMSIG(status));
+   			} else if(WIFSTOPPED(status)) {
+   				LOGD("stopped by signal %d\n", WSTOPSIG(status));
+   			} else if(WIFCONTINUED(status)) {
+   				LOGD("continued\n");
+   			}
+   			LOGD("OK\n");
+   		}
 
    		/* Check time-out */
    		fifo_set_blocking_mode(fifo_ctx, 1); // block FIFO to use time-out
@@ -191,161 +223,28 @@ SUITE(UTESTS_FIFO)
     	/* Release FIFO */
     	fifo_close(&fifo_ctx);
 
-		LOGV("... passed O.K.\n");
+    	LOGV("... passed O.K.\n");
+	}
+
+	TEST(FIFO_MULTI_THREADING)
+	{
+		LOG_CTX_INIT(NULL);
+	    LOGV("\n\nExecuting UTESTS_FIFO::FIFO_MULTI_THREADING...\n");
+	    main_task(0/*No-SHM*/, 1/*Thread*/);
 	}
 
 	TEST(FIFO_MULTI_THREADING_WITH_MMAP)
 	{
-		int ret_code;
-		fifo_ctx_t *fifo_ctx;
-		uint8_t *elem= NULL;
-		size_t elem_size= -1;
 		LOG_CTX_INIT(NULL);
-
 	    LOGV("\n\nExecuting UTESTS_FIFO::FIFO_MULTI_THREADING_WITH_MMAP...\n");
-
-	    /* Open FIFO */
-	    fifo_ctx= fifo_open(FIFO_SIZE, 256, FIFO_PROCESS_SHARED, NULL);
-
-		/* Create consumer in "detach-able" thread */
-		pthread_t consumer_thread;
-		pthread_create(&consumer_thread, NULL, consumer_thr, (void*)fifo_ctx);
-
-	    /* Put messages on FIFO */
-		producer(fifo_ctx);
-
-   		/* Unblock FIFO before joining threads */
-		LOGD("Unblock FIFO now...\n");
-   		fifo_set_blocking_mode(fifo_ctx, 0);
-
-    	/* Join consumer thread */
-   		LOGD("Joining consumer thread\n");
-   		pthread_join(consumer_thread, NULL);
-   		LOGD("OK\n");
-
-   		/* Check time-out */
-   		fifo_set_blocking_mode(fifo_ctx, 1); // block FIFO to use time-out
-   		fifo_empty(fifo_ctx);
-   		LOGD("Performing 'fifo_timedget()' to check 2 second time-out...\n");
-   		ret_code= fifo_timedget(fifo_ctx, (void**)&elem, &elem_size,
-   				2* 1000* 1000);
-   		CHECK(ret_code== STAT_ETIMEDOUT);
-   		LOGD("OK\n");
-
-   		/* Write four messages and check overflow */
-   		LOGD("Checking overflow (maximum FIFO size is: %d)\n", FIFO_SIZE);
-	    /* Put messages on FIFO */
-   		fifo_set_blocking_mode(fifo_ctx, 0); // unblock FIFO to overflow
-	    for(int i= 0; i<= FIFO_SIZE; i++) {
-	    	const char *msg= "Message to test FIFO overflow!.\0";
-	    	size_t msg_len= strlen(msg);
-	    	int ret_val;
-	    	LOGD("Putting on FIFO: '%s (size: %d)\n", msg, (int)msg_len);
-	    	ret_val= fifo_put_dup(fifo_ctx, msg, msg_len);
-	    	if(i< FIFO_SIZE)
-	    		CHECK(ret_val== STAT_SUCCESS);
-	    	else {
-	    	    LOGD("Return code: %d\n", (int)ret_val);
-	    	    CHECK(ret_val== STAT_ENOMEM);
-	    	}
-	    }
-
-    	/* Release FIFO */
-    	fifo_close(&fifo_ctx);
-
-		LOGV("... passed O.K.\n");
+	    main_task(1/*SHM*/, 1/*Thread*/);
 	}
 
 	TEST(FIFO_FORK_WITH_MMAP)
 	{
-		int ret_code;
-		fifo_ctx_t *fifo_ctx;
-		pid_t child_pid= 0; // process ID
 		LOG_CTX_INIT(NULL);
-
 	    LOGV("\n\nExecuting UTESTS_FIFO::FIFO_FORK_WITH_MMAP...\n");
-
-	    /* Open FIFO */
-	    fifo_ctx= fifo_open(FIFO_SIZE, 256, FIFO_PROCESS_SHARED, NULL);
-
-		/* Fork off the parent process */
-	    child_pid= fork();
-		if(child_pid< 0) {
-			LOGE("Could not fork process to create daemon\n");
-			exit(EXIT_FAILURE);
-		} else if(child_pid== 0) {
-
-			/* **** CHILD CODE **** */
-
-			/* Create consumer in "detach-able" thread */
-			consumer_thr((void*)fifo_ctx);
-
-			exit(EXIT_SUCCESS);
-		} else {
-			int status;
-			pid_t w;
-			uint8_t *elem= NULL;
-			size_t elem_size= -1;
-
-			/* **** PARENT CODE **** */
-
-		    /* Put messages on FIFO */
-			producer(fifo_ctx);
-
-	   		/* Unblock FIFO before joining threads */
-			LOGD("Unblock FIFO now...\n");
-	   		fifo_set_blocking_mode(fifo_ctx, 0);
-
-	    	/* Wait consumer process */
-	   		LOGD("Waiting for consumer process\n");
-            w= waitpid(child_pid, &status, WUNTRACED);
-            if(w== -1) {
-            	LOGD("Error detected while executing 'waitpid()'");
-                exit(EXIT_FAILURE);
-            }
-            if(WIFEXITED(status)) {
-            	LOGD("exited, status=%d\n", WEXITSTATUS(status));
-            } else if(WIFSIGNALED(status)) {
-            	LOGD("killed by signal %d\n", WTERMSIG(status));
-            } else if(WIFSTOPPED(status)) {
-            	LOGD("stopped by signal %d\n", WSTOPSIG(status));
-            } else if(WIFCONTINUED(status)) {
-            	LOGD("continued\n");
-            }
-            LOGD("OK\n");
-
-       		/* Check time-out */
-       		fifo_set_blocking_mode(fifo_ctx, 1); // block FIFO to use time-out
-       		fifo_empty(fifo_ctx);
-       		LOGD("Performing 'fifo_timedget()' to check 2 second time-out...\n");
-       		ret_code= fifo_timedget(fifo_ctx, (void**)&elem, &elem_size,
-       				2* 1000* 1000);
-       		CHECK(ret_code== STAT_ETIMEDOUT);
-       		LOGD("OK\n");
-
-	   		/* Write four messages and check overflow */
-	   		LOGD("Checking overflow (maximum FIFO size is: %d)\n", FIFO_SIZE);
-		    /* Put messages on FIFO */
-	   		fifo_set_blocking_mode(fifo_ctx, 0); // unblock FIFO to overflow
-		    for(int i= 0; i<= FIFO_SIZE; i++) {
-		    	const char *msg= "Message to test FIFO overflow!.\0";
-		    	size_t msg_len= strlen(msg);
-		    	int ret_val;
-		    	LOGD("Putting on FIFO: '%s (size: %d)\n", msg, (int)msg_len);
-		    	ret_val= fifo_put_dup(fifo_ctx, msg, msg_len);
-		    	if(i< FIFO_SIZE)
-		    		CHECK(ret_val== STAT_SUCCESS);
-		    	else {
-		    	    LOGD("Return code: %d\n", (int)ret_val);
-		    	    CHECK(ret_val== STAT_ENOMEM);
-		    	}
-		    }
-
-	    	/* Release FIFO */
-	    	fifo_close(&fifo_ctx);
-
-			LOGV("... passed O.K.\n");
-		}
+	    main_task(1/*SHM*/, 0/*Process-forked*/);
 	}
 
 	TEST(FIFO_WITH_MMAP_OPEN_ERRORS1)
@@ -359,7 +258,7 @@ SUITE(UTESTS_FIFO)
 	    LOGV("\n\nExecuting UTESTS_FIFO::FIFO_WITH_MMAP_OPEN_ERRORS1...\n");
 
 	    /* Erroneously open FIFO */
-	    fifo_ctx= fifo_open(FIFO_SIZE, 0, FIFO_PROCESS_SHARED, NULL);
+	    fifo_ctx= fifo_shm_open(FIFO_SIZE, 0, 0, "/fifo_shm_utest");
 	    CHECK(fifo_ctx== NULL);
 
 	    fifo_elem_alloc_fxn.elem_ctx_dup= (fifo_elem_ctx_dup_fxn_t*)

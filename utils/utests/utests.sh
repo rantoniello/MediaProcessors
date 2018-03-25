@@ -10,7 +10,7 @@ GENERIC_ERROR_CODE=255
 TESTDIR=tests
 USE_VALGRIND=$3
 
-VALGRIND_OPTIONS="--error-exitcode=$VALGRIND_ERROR_CODE --leak-check=full"
+VALGRIND_OPTIONS="--error-exitcode=$VALGRIND_ERROR_CODE --leak-check=full --trace-children=yes"
 #--show-reachable=yes --track-origins=yes"
 #--log-file="my log file full path and name"
 #-v --track-origins=yes
