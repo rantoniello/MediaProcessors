@@ -3,18 +3,42 @@
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-void $\ast$ {\bfseries elem}\hypertarget{structfifo__elem__ctx__s_ae5add7272abafb06c8bc1a810c4b7719}{}\label{structfifo__elem__ctx__s_ae5add7272abafb06c8bc1a810c4b7719}
-
+ssize\+\_\+t \hyperlink{structfifo__elem__ctx__s_af24ec8cd7ee7365d825ed9148ff2e50a}{size}
 \item 
-ssize\+\_\+t {\bfseries size}\hypertarget{structfifo__elem__ctx__s_af24ec8cd7ee7365d825ed9148ff2e50a}{}\label{structfifo__elem__ctx__s_af24ec8cd7ee7365d825ed9148ff2e50a}
-
+void $\ast$ \hyperlink{structfifo__elem__ctx__s_ae5add7272abafb06c8bc1a810c4b7719}{elem}
+\item 
+uint8\+\_\+t \hyperlink{structfifo__elem__ctx__s_a77ec4386ce2ca348e6d9c9ced4fafa92}{shm\+\_\+elem\+\_\+pool} \mbox{[}$\,$\mbox{]}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
+F\+I\+FO element context structure. 
+
+Definition at line 67 of file fifo.\+c.
 
 
-Definition at line 48 of file fifo.\+c.
+
+\subsection{Member Data Documentation}
+\index{fifo\+\_\+elem\+\_\+ctx\+\_\+s@{fifo\+\_\+elem\+\_\+ctx\+\_\+s}!elem@{elem}}
+\index{elem@{elem}!fifo\+\_\+elem\+\_\+ctx\+\_\+s@{fifo\+\_\+elem\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{elem}{elem}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ fifo\+\_\+elem\+\_\+ctx\+\_\+s\+::elem}\hypertarget{structfifo__elem__ctx__s_ae5add7272abafb06c8bc1a810c4b7719}{}\label{structfifo__elem__ctx__s_ae5add7272abafb06c8bc1a810c4b7719}
+Element pointer. 
+
+Definition at line 75 of file fifo.\+c.
+
+\index{fifo\+\_\+elem\+\_\+ctx\+\_\+s@{fifo\+\_\+elem\+\_\+ctx\+\_\+s}!shm\+\_\+elem\+\_\+pool@{shm\+\_\+elem\+\_\+pool}}
+\index{shm\+\_\+elem\+\_\+pool@{shm\+\_\+elem\+\_\+pool}!fifo\+\_\+elem\+\_\+ctx\+\_\+s@{fifo\+\_\+elem\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{shm\+\_\+elem\+\_\+pool}{shm_elem_pool}}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t fifo\+\_\+elem\+\_\+ctx\+\_\+s\+::shm\+\_\+elem\+\_\+pool\mbox{[}$\,$\mbox{]}}\hypertarget{structfifo__elem__ctx__s_a77ec4386ce2ca348e6d9c9ced4fafa92}{}\label{structfifo__elem__ctx__s_a77ec4386ce2ca348e6d9c9ced4fafa92}
+Only used in the case of shared memory; \hyperlink{structfifo__elem__ctx__s_ae5add7272abafb06c8bc1a810c4b7719}{fifo\+\_\+elem\+\_\+ctx\+\_\+t\+::elem} will point to this memory pool of a fixed maximum size (\hyperlink{structfifo__elem__ctx__s_af24ec8cd7ee7365d825ed9148ff2e50a}{fifo\+\_\+elem\+\_\+ctx\+\_\+t\+::size} $<$= pool maximum size) 
+
+Definition at line 81 of file fifo.\+c.
+
+\index{fifo\+\_\+elem\+\_\+ctx\+\_\+s@{fifo\+\_\+elem\+\_\+ctx\+\_\+s}!size@{size}}
+\index{size@{size}!fifo\+\_\+elem\+\_\+ctx\+\_\+s@{fifo\+\_\+elem\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{size}{size}}]{\setlength{\rightskip}{0pt plus 5cm}ssize\+\_\+t fifo\+\_\+elem\+\_\+ctx\+\_\+s\+::size}\hypertarget{structfifo__elem__ctx__s_af24ec8cd7ee7365d825ed9148ff2e50a}{}\label{structfifo__elem__ctx__s_af24ec8cd7ee7365d825ed9148ff2e50a}
+Element size in bytes. 
+
+Definition at line 71 of file fifo.\+c.
 
 
 

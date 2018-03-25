@@ -95,14 +95,15 @@ Collaboration diagram for procs_reg_elem_s:</div>
 <div class="dyncontent">
 <div class="center"><img src="structprocs__reg__elem__s__coll__graph.png" border="0" usemap="#procs__reg__elem__s_coll__map" alt="Collaboration graph"/></div>
 <map name="procs__reg__elem__s_coll__map" id="procs__reg__elem__s_coll__map">
-<area shape="rect" id="node2" href="structproc__ctx__s.html" title="proc_ctx_s" alt="" coords="279,243,365,269"/>
-<area shape="rect" id="node7" href="structproc__if__s.html" title="proc_if_s" alt="" coords="229,332,303,359"/>
-<area shape="rect" id="node3" href="structfifo__ctx__s.html" title="fifo_ctx_s" alt="" coords="161,153,240,180"/>
-<area shape="rect" id="node4" href="structfifo__elem__ctx__s.html" title="fifo_elem_ctx_s" alt="" coords="143,5,258,32"/>
-<area shape="rect" id="node5" href="structlog__ctx__s.html" title="log_ctx_s" alt="" coords="276,153,355,180"/>
-<area shape="rect" id="node6" href="structllist__s.html" title="llist_s" alt="" coords="287,5,343,32"/>
-<area shape="rect" id="node8" href="structproc__frame__ctx__s.html" title="proc_frame_ctx_s" alt="" coords="5,243,132,269"/>
-<area shape="rect" id="node9" href="structfair__lock__s.html" title="fair_lock_s" alt="" coords="427,153,513,180"/>
+<area shape="rect" id="node2" href="structproc__ctx__s.html" title="proc_ctx_s" alt="" coords="255,243,341,269"/>
+<area shape="rect" id="node8" href="structproc__if__s.html" title="proc_if_s" alt="" coords="229,332,303,359"/>
+<area shape="rect" id="node3" href="structfifo__ctx__s.html" title="fifo_ctx_s" alt="" coords="31,153,109,180"/>
+<area shape="rect" id="node4" href="structfifo__elem__ctx__s.html" title="fifo_elem_ctx_s" alt="" coords="11,5,126,32"/>
+<area shape="rect" id="node5" href="structlog__ctx__s.html" title="log_ctx_s" alt="" coords="136,153,215,180"/>
+<area shape="rect" id="node6" href="structllist__s.html" title="llist_s" alt="" coords="150,5,206,32"/>
+<area shape="rect" id="node7" href="structinterr__usleep__ctx__s.html" title="interr_usleep_ctx_s" alt="" coords="239,153,373,180"/>
+<area shape="rect" id="node9" href="structproc__frame__ctx__s.html" title="proc_frame_ctx_s" alt="" coords="5,243,132,269"/>
+<area shape="rect" id="node10" href="structfair__lock__s.html" title="fair_lock_s" alt="" coords="457,153,542,180"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -118,7 +119,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Processors registration structure. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00140">140</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00135">135</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a9b7bb6d12868ba74184d95f1a2fdd2ab"></a>
 <div class="memitem">
@@ -131,7 +132,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Processor's API mutual exclusion lock. This lock is used to provide a critical section for external applications to be able to use the processor's API concurrently and asynchronously on any of the registered processor instances. Processor's API options are available through the function '<a class="el" href="proc_8c.html#a0367a65712bcd2e762ec1e9e3035cb3b">proc_opt()</a>' (see .<a class="el" href="proc_8h.html" title="Generic processor (PROC) module. ">proc.h</a>). This lock is initialized when opening this module, and is kept through the whole life of the module. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00151">151</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00146">146</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -146,7 +147,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>A pair of locks used to provide a critical section to execute, in mutual exclusion, the processor's instantiating operations (register/unregister) and the input/output operations (send/receive). These locks are initialized when opening this module, and are kept through the whole life of the module. </p>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00159">159</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00154">154</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>
@@ -163,7 +164,7 @@ Public Attributes</h2></td></tr>
 <dd>
 procs_reg_elem_array </dd></dl>
 
-<p>Definition at line <a class="el" href="procs_8c_source.html#l00170">170</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
+<p>Definition at line <a class="el" href="procs_8c_source.html#l00165">165</a> of file <a class="el" href="procs_8c_source.html">procs.c</a>.</p>
 
 </div>
 </div>

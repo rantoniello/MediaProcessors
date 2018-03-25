@@ -61,6 +61,9 @@ typedef struct \hyperlink{structfair__lock__s}{fair\+\_\+lock\+\_\+s} {\bfseries
 typedef struct \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+s} {\bfseries proc\+\_\+frame\+\_\+ctx\+\_\+t}\hypertarget{proc_8h_aac34f37074877acd40892cfb99d6298d}{}\label{proc_8h_aac34f37074877acd40892cfb99d6298d}
 
 \item 
+typedef struct \hyperlink{structinterr__usleep__ctx__s}{interr\+\_\+usleep\+\_\+ctx\+\_\+s} {\bfseries interr\+\_\+usleep\+\_\+ctx\+\_\+t}\hypertarget{proc_8h_aa50cf7f3dbb2547f58dc8a8af0744f5f}{}\label{proc_8h_aa50cf7f3dbb2547f58dc8a8af0744f5f}
+
+\item 
 typedef struct \hyperlink{structproc__ctx__s}{proc\+\_\+ctx\+\_\+s} \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t}
 \end{DoxyCompactItemize}
 \subsection*{Enumerations}
@@ -92,7 +95,7 @@ int {\bfseries proc\+\_\+send\+\_\+frame\+\_\+default1} (\hyperlink{proc_8h_ae26
 int {\bfseries proc\+\_\+recv\+\_\+frame\+\_\+default1} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+frame\+\_\+ctx)\hypertarget{proc_8h_a8ec368fc617b0066b9fab8a788ec92db}{}\label{proc_8h_a8ec368fc617b0066b9fab8a788ec92db}
 
 \item 
-void {\bfseries proc\+\_\+acc\+\_\+latency\+\_\+measure} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const int64\+\_\+t oput\+\_\+frame\+\_\+pts)\hypertarget{proc_8h_a0b8d892a67c4ba670cedc9a569f8387b}{}\label{proc_8h_a0b8d892a67c4ba670cedc9a569f8387b}
+void {\bfseries proc\+\_\+stats\+\_\+register\+\_\+accumulated\+\_\+latency} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const int64\+\_\+t oput\+\_\+frame\+\_\+pts)\hypertarget{proc_8h_aba1da2484ea0dbf14bc238c8ea776737}{}\label{proc_8h_aba1da2484ea0dbf14bc238c8ea776737}
 
 \end{DoxyCompactItemize}
 
@@ -120,14 +123,14 @@ A typical application would use a generic processor as follows\+:~\newline
 )~c\+J\+S\+O\+N\+\_\+\+Print(C\+J\+S\+O\+N\+\_\+\+P\+TR)}\hypertarget{proc_8h_a123c203ae476d5abf664207895880d98}{}\label{proc_8h_a123c203ae476d5abf664207895880d98}
 c\+J\+S\+ON to character string conversion function definition. String can be formated or minimized (removing whitespace, carriage return, ...). 
 
-Definition at line 69 of file proc.\+h.
+Definition at line 70 of file proc.\+h.
 
 \index{proc.\+h@{proc.\+h}!I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE@{I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE}}
 \index{I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE@{I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE}!proc.\+h@{proc.\+h}}
 \subsubsection[{\texorpdfstring{I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE}{IPUT_PTS_ARRAY_SIZE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+P\+U\+T\+\_\+\+P\+T\+S\+\_\+\+A\+R\+R\+A\+Y\+\_\+\+S\+I\+ZE~128}\hypertarget{proc_8h_af53db00bc88282285037381807cc5c1d}{}\label{proc_8h_af53db00bc88282285037381807cc5c1d}
 Array registering the last input presentation time-\/stamps (P\+TS\textquotesingle{}s). Each P\+TS is registered together with the system-\/time clock (S\+TC) corresponding to the registration instant. 
 
-Definition at line 130 of file proc.\+h.
+Definition at line 131 of file proc.\+h.
 
 
 
@@ -150,7 +153,7 @@ Definition at line 58 of file proc.\+h.
 \subsubsection[{\texorpdfstring{proc\+\_\+io\+\_\+t}{proc_io_t}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf proc\+\_\+io\+\_\+t}}\hypertarget{proc_8h_ad9d50caaae50c1832dd22f487331657a}{}\label{proc_8h_ad9d50caaae50c1832dd22f487331657a}
 Processor input-\/output type enumerator. 
 
-Definition at line 75 of file proc.\+h.
+Definition at line 76 of file proc.\+h.
 
 
 
@@ -169,7 +172,7 @@ Ends processing thread, de-\/initialize and release the generic processor (P\+R\
 \end{DoxyParams}
 
 
-Definition at line 194 of file proc.\+c.
+Definition at line 208 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+open@{proc\+\_\+open}}
 \index{proc\+\_\+open@{proc\+\_\+open}!proc.\+h@{proc.\+h}}
@@ -203,7 +206,7 @@ Pointer to the generic processor context structure on success, N\+U\+LL if fails
 \end{DoxyReturn}
 
 
-Definition at line 95 of file proc.\+c.
+Definition at line 87 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+opt@{proc\+\_\+opt}}
 \index{proc\+\_\+opt@{proc\+\_\+opt}!proc.\+h@{proc.\+h}}
@@ -262,7 +265,7 @@ Tag \char`\"{}\+P\+R\+O\+C\+\_\+\+P\+U\+T\char`\"{}\+: ~\newline
 
 \end{DoxyItemize}
 
-Definition at line 334 of file proc.\+c.
+Definition at line 368 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+recv\+\_\+frame@{proc\+\_\+recv\+\_\+frame}}
 \index{proc\+\_\+recv\+\_\+frame@{proc\+\_\+recv\+\_\+frame}!proc.\+h@{proc.\+h}}
@@ -284,7 +287,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 289 of file proc.\+c.
+Definition at line 323 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+send\+\_\+frame@{proc\+\_\+send\+\_\+frame}}
 \index{proc\+\_\+send\+\_\+frame@{proc\+\_\+send\+\_\+frame}!proc.\+h@{proc.\+h}}
@@ -306,7 +309,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 253 of file proc.\+c.
+Definition at line 287 of file proc.\+c.
 
 \index{proc.\+h@{proc.\+h}!proc\+\_\+vopt@{proc\+\_\+vopt}}
 \index{proc\+\_\+vopt@{proc\+\_\+vopt}!proc.\+h@{proc.\+h}}
@@ -319,5 +322,5 @@ Definition at line 253 of file proc.\+c.
 )}\hypertarget{proc_8h_a720ee51d86625b42b09f508a13977f37}{}\label{proc_8h_a720ee51d86625b42b09f508a13977f37}
 The function \textquotesingle{}\hyperlink{proc_8h_a720ee51d86625b42b09f508a13977f37}{proc\+\_\+vopt()}\textquotesingle{} is the same as \hyperlink{proc_8h_a0367a65712bcd2e762ec1e9e3035cb3b}{proc\+\_\+opt()} except that it is called with a va\+\_\+list instead of a variable number of arguments. This function does not call the va\+\_\+end macro. Because it invoke the va\+\_\+arg macro, the value of the argument pointer is undefined after the call. 
 
-Definition at line 348 of file proc.\+c.
+Definition at line 382 of file proc.\+c.
 

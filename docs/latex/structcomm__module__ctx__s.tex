@@ -1,0 +1,50 @@
+\hypertarget{structcomm__module__ctx__s}{}\section{comm\+\_\+module\+\_\+ctx\+\_\+s Struct Reference}
+\label{structcomm__module__ctx__s}\index{comm\+\_\+module\+\_\+ctx\+\_\+s@{comm\+\_\+module\+\_\+ctx\+\_\+s}}
+
+
+Collaboration diagram for comm\+\_\+module\+\_\+ctx\+\_\+s\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{structcomm__module__ctx__s__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+pthread\+\_\+mutex\+\_\+t \hyperlink{structcomm__module__ctx__s_a065cf60f09cc13971556a494dc35425f}{module\+\_\+api\+\_\+mutex}
+\item 
+\hyperlink{llist_8h_a90862badf6f9cc4e3d6348b7d60ce4f0}{llist\+\_\+t} $\ast$ \hyperlink{structcomm__module__ctx__s_aca7d8c9e08de7feabe5818c35abd2244}{comm\+\_\+if\+\_\+llist}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Module\textquotesingle{}s context structure. This structure is statically defined in the program. 
+
+Definition at line 62 of file comm.\+c.
+
+
+
+\subsection{Member Data Documentation}
+\index{comm\+\_\+module\+\_\+ctx\+\_\+s@{comm\+\_\+module\+\_\+ctx\+\_\+s}!comm\+\_\+if\+\_\+llist@{comm\+\_\+if\+\_\+llist}}
+\index{comm\+\_\+if\+\_\+llist@{comm\+\_\+if\+\_\+llist}!comm\+\_\+module\+\_\+ctx\+\_\+s@{comm\+\_\+module\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{comm\+\_\+if\+\_\+llist}{comm_if_llist}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf llist\+\_\+t}$\ast$ comm\+\_\+module\+\_\+ctx\+\_\+s\+::comm\+\_\+if\+\_\+llist}\hypertarget{structcomm__module__ctx__s_aca7d8c9e08de7feabe5818c35abd2244}{}\label{structcomm__module__ctx__s_aca7d8c9e08de7feabe5818c35abd2244}
+List of supported/registered communication protocols. Each registered protocol will have a static interface (IF) entry in this linked list. \begin{DoxySeeAlso}{See also}
+\hyperlink{comm_8h_a0d96b9368107e517ea8253837384faf5}{comm\+\_\+if\+\_\+t} 
+\end{DoxySeeAlso}
+
+
+Definition at line 77 of file comm.\+c.
+
+\index{comm\+\_\+module\+\_\+ctx\+\_\+s@{comm\+\_\+module\+\_\+ctx\+\_\+s}!module\+\_\+api\+\_\+mutex@{module\+\_\+api\+\_\+mutex}}
+\index{module\+\_\+api\+\_\+mutex@{module\+\_\+api\+\_\+mutex}!comm\+\_\+module\+\_\+ctx\+\_\+s@{comm\+\_\+module\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{module\+\_\+api\+\_\+mutex}{module_api_mutex}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+mutex\+\_\+t comm\+\_\+module\+\_\+ctx\+\_\+s\+::module\+\_\+api\+\_\+mutex}\hypertarget{structcomm__module__ctx__s_a065cf60f09cc13971556a494dc35425f}{}\label{structcomm__module__ctx__s_a065cf60f09cc13971556a494dc35425f}
+Module\textquotesingle{}s A\+PI mutual exclusion lock. This lock is used to provide a critical section for external applications to be able to operate concurrently and asynchronously on this module. A\+PI options are available through the function \hyperlink{comm_8c_a21edd1aa9b38d7eadecb70b5f963f437}{comm\+\_\+module\+\_\+opt()}. 
+
+Definition at line 70 of file comm.\+c.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{comm_8c}{comm.\+c}\end{DoxyCompactItemize}

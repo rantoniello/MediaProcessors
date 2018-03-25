@@ -35,11 +35,13 @@ int($\ast$ {\bfseries send\+\_\+frame\+\_\+nodup} )(\hyperlink{proc_8h_ae264f89b
 \item 
 int($\ast$ \hyperlink{structproc__if__s_a43115b2b1fa63fbfca191c18f28f2fea}{recv\+\_\+frame} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structproc__frame__ctx__s}{proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+frame\+\_\+ctx)
 \item 
+int($\ast$ \hyperlink{structproc__if__s_a19d63c8db2cbfb227134f5a5bd5c8561}{unblock} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx)
+\item 
 int($\ast$ \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{rest\+\_\+put} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
 int($\ast$ \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{rest\+\_\+get} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{proc__if_8h_a9bea3dae53a91f2a3e3a459d1d3e22b3}{proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t} rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)
 \item 
-int($\ast$ \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{process\+\_\+frame} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+iput, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+oput)
+int($\ast$ \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{process\+\_\+frame} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+iput, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+oput)
 \item 
 int($\ast$ \hyperlink{structproc__if__s_a4ca0939d6721f368d2560851197fca36}{opt} )(\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$tag, va\+\_\+list arg)
 \item 
@@ -54,7 +56,7 @@ void($\ast$ \hyperlink{structproc__if__s_aec3bf948ff945ac2f5a4c834ea3b57da}{iput
 \subsection{Detailed Description}
 P\+R\+OC interface structure prototype. Each P\+R\+OC type will define a static and unambiguous interface of this type. 
 
-Definition at line 168 of file proc\+\_\+if.\+h.
+Definition at line 169 of file proc\+\_\+if.\+h.
 
 
 
@@ -69,14 +71,14 @@ Ends processing thread, de-\/initialize and release the processor (P\+R\+OC) con
 \end{DoxyParams}
 
 
-Definition at line 216 of file proc\+\_\+if.\+h.
+Definition at line 217 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!flag\+\_\+proc\+\_\+features@{flag\+\_\+proc\+\_\+features}}
 \index{flag\+\_\+proc\+\_\+features@{flag\+\_\+proc\+\_\+features}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
 \subsubsection[{\texorpdfstring{flag\+\_\+proc\+\_\+features}{flag_proc_features}}]{\setlength{\rightskip}{0pt plus 5cm}uint64\+\_\+t proc\+\_\+if\+\_\+s\+::flag\+\_\+proc\+\_\+features}\hypertarget{structproc__if__s_a657d976a32c34bff11070599b11c2dd7}{}\label{structproc__if__s_a657d976a32c34bff11070599b11c2dd7}
 Processor features flags. 
 
-Definition at line 189 of file proc\+\_\+if.\+h.
+Definition at line 190 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup@{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}}
 \index{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup@{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
@@ -88,7 +90,7 @@ This callback is registered in the F\+I\+FO management A\+PI and is used to inte
 \end{DoxyParams}
 
 
-Definition at line 306 of file proc\+\_\+if.\+h.
+Definition at line 311 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release@{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release}}
 \index{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release@{iput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+release}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
@@ -100,7 +102,7 @@ This callback is registered in the F\+I\+FO management A\+PI and is complementar
 \end{DoxyParams}
 
 
-Definition at line 319 of file proc\+\_\+if.\+h.
+Definition at line 324 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!open@{open}}
 \index{open@{open}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
@@ -121,7 +123,7 @@ Pointer to the processor context structure on success, N\+U\+LL if fails.
 \end{DoxyReturn}
 
 
-Definition at line 206 of file proc\+\_\+if.\+h.
+Definition at line 207 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!opt@{opt}}
 \index{opt@{opt}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
@@ -138,7 +140,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 290 of file proc\+\_\+if.\+h.
+Definition at line 295 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup@{oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}}
 \index{oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup@{oput\+\_\+fifo\+\_\+elem\+\_\+opaque\+\_\+dup}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
@@ -150,33 +152,33 @@ This callback is registered in the F\+I\+FO management A\+PI and is used to inte
 \end{DoxyParams}
 
 
-Definition at line 334 of file proc\+\_\+if.\+h.
+Definition at line 339 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!proc\+\_\+mime@{proc\+\_\+mime}}
 \index{proc\+\_\+mime@{proc\+\_\+mime}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
 \subsubsection[{\texorpdfstring{proc\+\_\+mime}{proc_mime}}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ proc\+\_\+if\+\_\+s\+::proc\+\_\+mime}\hypertarget{structproc__if__s_afdb204f8c976ed829466774aaa6cdf89}{}\label{structproc__if__s_afdb204f8c976ed829466774aaa6cdf89}
 Media type and sub-\/type (formerly known as M\+I\+ME types and sub-\/type). See \href{http://www.iana.org/assignments/media-types/media-types.xhtml}{\tt http\+://www.\+iana.\+org/assignments/media-\/types/media-\/types.\+xhtml}. For muxers we use by default\+: \char`\"{}application/octet-\/stream\char`\"{} This field is mandatory (can not be set to N\+U\+LL). 
 
-Definition at line 185 of file proc\+\_\+if.\+h.
+Definition at line 186 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!proc\+\_\+name@{proc\+\_\+name}}
 \index{proc\+\_\+name@{proc\+\_\+name}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
 \subsubsection[{\texorpdfstring{proc\+\_\+name}{proc_name}}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ proc\+\_\+if\+\_\+s\+::proc\+\_\+name}\hypertarget{structproc__if__s_aa284f1d0bdde2fae0b51101f658430ee}{}\label{structproc__if__s_aa284f1d0bdde2fae0b51101f658430ee}
 Unambiguous P\+R\+OC identifier name (character string). This field is mandatory (can not be set to N\+U\+LL). 
 
-Definition at line 173 of file proc\+\_\+if.\+h.
+Definition at line 174 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!proc\+\_\+type@{proc\+\_\+type}}
 \index{proc\+\_\+type@{proc\+\_\+type}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
 \subsubsection[{\texorpdfstring{proc\+\_\+type}{proc_type}}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ proc\+\_\+if\+\_\+s\+::proc\+\_\+type}\hypertarget{structproc__if__s_a3a8a04d2e81ca4dfa55a8526644dd729}{}\label{structproc__if__s_a3a8a04d2e81ca4dfa55a8526644dd729}
 Processor type\+: encoder, decoder, multiplexer, demultiplexer. This field is mandatory (can not be set to N\+U\+LL). 
 
-Definition at line 178 of file proc\+\_\+if.\+h.
+Definition at line 179 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!process\+\_\+frame@{process\+\_\+frame}}
 \index{process\+\_\+frame@{process\+\_\+frame}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
 \subsubsection[{\texorpdfstring{process\+\_\+frame}{process_frame}}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ proc\+\_\+if\+\_\+s\+::process\+\_\+frame) ({\bf proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, {\bf fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+iput, {\bf fifo\+\_\+ctx\+\_\+t} $\ast$fifo\+\_\+ctx\+\_\+oput)}\hypertarget{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{}\label{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}
-Process one frame of data. The frame is read from the input F\+I\+FO buffer and is completely processed. If an output frame is produced, is written to the output F\+I\+FO buffer. This callback is mandatory (cannot be N\+U\+LL). 
+Process one frame of data. The frame is read from the input F\+I\+FO buffer and is completely processed. If an output frame is produced, is written to the output F\+I\+FO buffer. This callback is optional (can be set to N\+U\+LL). 
 \begin{DoxyParams}{Parameters}
 {\em proc\+\_\+ctx} & Pointer to the processor (P\+R\+OC) context structure obtained in a previous call to the \textquotesingle{}\hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{open()}\textquotesingle{} callback method. \\
 \hline
@@ -190,14 +192,14 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 274 of file proc\+\_\+if.\+h.
+Definition at line 279 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!recv\+\_\+frame@{recv\+\_\+frame}}
 \index{recv\+\_\+frame@{recv\+\_\+frame}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
 \subsubsection[{\texorpdfstring{recv\+\_\+frame}{recv_frame}}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ proc\+\_\+if\+\_\+s\+::recv\+\_\+frame) ({\bf proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, {\bf proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+frame\+\_\+ctx)}\hypertarget{structproc__if__s_a43115b2b1fa63fbfca191c18f28f2fea}{}\label{structproc__if__s_a43115b2b1fa63fbfca191c18f28f2fea}
 //\+T\+O\+DO This callback is optional (can be set to N\+U\+LL). 
 
-Definition at line 229 of file proc\+\_\+if.\+h.
+Definition at line 230 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!rest\+\_\+get@{rest\+\_\+get}}
 \index{rest\+\_\+get@{rest\+\_\+get}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
@@ -216,7 +218,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 260 of file proc\+\_\+if.\+h.
+Definition at line 265 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!rest\+\_\+put@{rest\+\_\+put}}
 \index{rest\+\_\+put@{rest\+\_\+put}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
@@ -233,14 +235,21 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 243 of file proc\+\_\+if.\+h.
+Definition at line 248 of file proc\+\_\+if.\+h.
 
 \index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!send\+\_\+frame@{send\+\_\+frame}}
 \index{send\+\_\+frame@{send\+\_\+frame}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
 \subsubsection[{\texorpdfstring{send\+\_\+frame}{send_frame}}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ proc\+\_\+if\+\_\+s\+::send\+\_\+frame) ({\bf proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const {\bf proc\+\_\+frame\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+frame\+\_\+ctx)}\hypertarget{structproc__if__s_a0393cc5e598e19951d447a926c364e3f}{}\label{structproc__if__s_a0393cc5e598e19951d447a926c364e3f}
 // T\+O\+DO This callback is optional (can be set to N\+U\+LL). 
 
-Definition at line 221 of file proc\+\_\+if.\+h.
+Definition at line 222 of file proc\+\_\+if.\+h.
+
+\index{proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}!unblock@{unblock}}
+\index{unblock@{unblock}!proc\+\_\+if\+\_\+s@{proc\+\_\+if\+\_\+s}}
+\subsubsection[{\texorpdfstring{unblock}{unblock}}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ proc\+\_\+if\+\_\+s\+::unblock) ({\bf proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx)}\hypertarget{structproc__if__s_a19d63c8db2cbfb227134f5a5bd5c8561}{}\label{structproc__if__s_a19d63c8db2cbfb227134f5a5bd5c8561}
+//\+T\+O\+DO 
+
+Definition at line 235 of file proc\+\_\+if.\+h.
 
 
 

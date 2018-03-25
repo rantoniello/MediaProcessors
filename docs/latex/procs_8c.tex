@@ -45,7 +45,7 @@ struct \hyperlink{structprocs__ctx__s}{procs\+\_\+ctx\+\_\+s}
 \item 
 \#define \hyperlink{procs_8c_a8995a191e541088a47aec1798a8cec4b}{T\+A\+G\+\_\+\+H\+AS}(N\+E\+E\+D\+LE)~(strstr(tag, N\+E\+E\+D\+LE)!= N\+U\+LL)
 \item 
-\#define \hyperlink{procs_8c_a914faae84f39085695352bd45c0fca62}{T\+A\+G\+\_\+\+IS}(T\+AG)~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)
+\#define \hyperlink{procs_8c_a914faae84f39085695352bd45c0fca62}{T\+A\+G\+\_\+\+IS}(T\+AG)~(strcmp(tag, T\+AG)== 0)
 \item 
 \#define \hyperlink{procs_8c_abdd647e5ff1dd03cfe69fa57635e9537}{L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+C\+T\+X\+\_\+\+A\+PI}(P\+R\+O\+C\+S\+\_\+\+C\+TX)~\hyperlink{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{A\+S\+S\+E\+RT}(pthread\+\_\+mutex\+\_\+lock(\&P\+R\+O\+C\+S\+\_\+\+C\+TX-\/$>$api\+\_\+mutex)== 0);
 \item 
@@ -55,12 +55,10 @@ struct \hyperlink{structprocs__ctx__s}{procs\+\_\+ctx\+\_\+s}
 \item 
 \#define \hyperlink{procs_8c_aa7da6bd2b61be2ae1325d7eb349bc6f0}{U\+N\+L\+O\+C\+K\+\_\+\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+\_\+\+E\+L\+E\+M\+\_\+\+A\+PI}(R\+E\+G\+\_\+\+E\+L\+EM)~\hyperlink{check__utils_8h_a903f9b298be75defd8a3043ebf62bd99}{A\+S\+S\+E\+RT}(pthread\+\_\+mutex\+\_\+unlock(\&R\+E\+G\+\_\+\+E\+L\+EM-\/$>$api\+\_\+mutex)== 0);
 \item 
-\#define \hyperlink{procs_8c_a3ed23854256df248c5c1352b3999275e}{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}~16
+\#define \hyperlink{procs_8c_a3ed23854256df248c5c1352b3999275e}{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}~8192
 \item 
 \#define {\bfseries P\+R\+O\+C\+S\+\_\+\+F\+I\+F\+O\+\_\+\+S\+I\+ZE}~2\hypertarget{procs_8c_a979ef9763a231c76f8155bbac05ea794}{}\label{procs_8c_a979ef9763a231c76f8155bbac05ea794}
 
-\item 
-\#define \hyperlink{procs_8c_a23010124f664c002283d937ea522c509}{P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH}~\char`\"{}/procs/\char`\"{}
 \item 
 \#define {\bfseries P\+R\+O\+C\+\_\+\+I\+D\+\_\+\+S\+T\+R\+\_\+\+F\+MT}~\char`\"{}\{\textbackslash{}\char`\"{}proc\+\_\+id\textbackslash{}\char`\"{}\+:\%d\}\char`\"{}\hypertarget{procs_8c_a54cbf5496734caa93dd096e26a796049}{}\label{procs_8c_a54cbf5496734caa93dd096e26a796049}
 
@@ -89,7 +87,7 @@ static const \hyperlink{proc_8h_a679816cf30e0b7a8f3e7464e67a6a844}{proc\+\_\+if\
 static int {\bfseries procs\+\_\+instance\+\_\+opt} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, const char $\ast$tag, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)\hypertarget{procs_8c_a036dcc658ae54a6f39ad6fd68fe9fb83}{}\label{procs_8c_a036dcc658ae54a6f39ad6fd68fe9fb83}
 
 \item 
-static int {\bfseries procs\+\_\+rest\+\_\+get} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, char $\ast$$\ast$ref\+\_\+rest\+\_\+str)\hypertarget{procs_8c_ab23e8e0af57d40b81a10f7a1282e1503}{}\label{procs_8c_ab23e8e0af57d40b81a10f7a1282e1503}
+static int {\bfseries procs\+\_\+rest\+\_\+get} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, char $\ast$$\ast$ref\+\_\+rest\+\_\+str, const char $\ast$filter\+\_\+str)\hypertarget{procs_8c_a9ee758d039dc408ea9ee8eae94db3da1}{}\label{procs_8c_a9ee758d039dc408ea9ee8eae94db3da1}
 
 \item 
 static int {\bfseries proc\+\_\+register} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$procs\+\_\+ctx, const char $\ast$proc\+\_\+name, const char $\ast$settings\+\_\+str, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, int $\ast$ref\+\_\+id, va\+\_\+list arg)\hypertarget{procs_8c_a240395d512aeacbb8fc4592569277ff8}{}\label{procs_8c_a240395d512aeacbb8fc4592569277ff8}
@@ -112,7 +110,7 @@ void \hyperlink{procs_8c_a0947527d95117e432f21354103c390a6}{procs\+\_\+module\+\
 \item 
 int \hyperlink{procs_8c_a226ac6dfd7598a59b9ceab3a92239a80}{procs\+\_\+module\+\_\+opt} (const char $\ast$tag,...)
 \item 
-\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{procs_8c_a6fae33560b633113d848f6ec5e8461e5}{procs\+\_\+open} (\hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{procs_8c_ac44b6ac931afbeadeb7f07b660e30bac}{procs\+\_\+open} (\hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, size\+\_\+t max\+\_\+procs\+\_\+num, const char $\ast$prefix\+\_\+name, const char $\ast$procs\+\_\+href)
 \item 
 void \hyperlink{procs_8c_a0806c10ed3203ce53115ffb1a89e83d3}{procs\+\_\+close} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+procs\+\_\+ctx)
 \item 
@@ -169,17 +167,10 @@ Definition at line 85 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES@{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}}
 \index{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES@{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}!procs.\+c@{procs.\+c}}
-\subsubsection[{\texorpdfstring{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}{PROCS_MAX_NUM_PROC_INSTANCES}}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES~16}\hypertarget{procs_8c_a3ed23854256df248c5c1352b3999275e}{}\label{procs_8c_a3ed23854256df248c5c1352b3999275e}
+\subsubsection[{\texorpdfstring{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}{PROCS_MAX_NUM_PROC_INSTANCES}}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES~8192}\hypertarget{procs_8c_a3ed23854256df248c5c1352b3999275e}{}\label{procs_8c_a3ed23854256df248c5c1352b3999275e}
 Limit value for the maximum number of processors that can be instantiated in the system. This value may be just modified, in compilation, if needed. 
 
 Definition at line 102 of file procs.\+c.
-
-\index{procs.\+c@{procs.\+c}!P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH@{P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH}}
-\index{P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH@{P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH}!procs.\+c@{procs.\+c}}
-\subsubsection[{\texorpdfstring{P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH}{PROCS_URL_BASE_PATH}}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+R\+O\+C\+S\+\_\+\+U\+R\+L\+\_\+\+B\+A\+S\+E\+\_\+\+P\+A\+TH~\char`\"{}/procs/\char`\"{}}\hypertarget{procs_8c_a23010124f664c002283d937ea522c509}{}\label{procs_8c_a23010124f664c002283d937ea522c509}
-P\+R\+O\+CS module U\+RL base-\/path. 
-
-Definition at line 113 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!T\+A\+G\+\_\+\+H\+AS@{T\+A\+G\+\_\+\+H\+AS}}
 \index{T\+A\+G\+\_\+\+H\+AS@{T\+A\+G\+\_\+\+H\+AS}!procs.\+c@{procs.\+c}}
@@ -198,7 +189,7 @@ Definition at line 61 of file procs.\+c.
 \begin{DoxyParamCaption}
 \item[{}]{T\+AG}
 \end{DoxyParamCaption}
-)~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)}\hypertarget{procs_8c_a914faae84f39085695352bd45c0fca62}{}\label{procs_8c_a914faae84f39085695352bd45c0fca62}
+)~(strcmp(tag, T\+AG)== 0)}\hypertarget{procs_8c_a914faae84f39085695352bd45c0fca62}{}\label{procs_8c_a914faae84f39085695352bd45c0fca62}
 Returns non-\/zero if \textquotesingle{}tag\textquotesingle{} string is equal to given T\+AG string. 
 
 Definition at line 66 of file procs.\+c.
@@ -249,12 +240,12 @@ Processors registration structure.
 )}\hypertarget{procs_8c_a0806c10ed3203ce53115ffb1a89e83d3}{}\label{procs_8c_a0806c10ed3203ce53115ffb1a89e83d3}
 De-\/initialize and release the processors (P\+R\+O\+CS) module instance context structure. 
 \begin{DoxyParams}{Parameters}
-{\em ref\+\_\+procs\+\_\+ctx} & Reference to the pointer to the processors (P\+R\+O\+CS) module instance context structure to be release, obtained in a previous call to the \textquotesingle{}\hyperlink{procs_8h_a6fae33560b633113d848f6ec5e8461e5}{procs\+\_\+open()}\textquotesingle{} function. Pointer is set to N\+U\+LL on return. \\
+{\em ref\+\_\+procs\+\_\+ctx} & Reference to the pointer to the processors (P\+R\+O\+CS) module instance context structure to be release, obtained in a previous call to the \textquotesingle{}\hyperlink{procs_8h_ac44b6ac931afbeadeb7f07b660e30bac}{procs\+\_\+open()}\textquotesingle{} function. Pointer is set to N\+U\+LL on return. \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line 369 of file procs.\+c.
+Definition at line 417 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx@{procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx}}
 \index{procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx@{procs\+\_\+id\+\_\+opt\+\_\+fetch\+\_\+proc\+\_\+ctx}!procs.\+c@{procs.\+c}}
@@ -269,7 +260,7 @@ Definition at line 369 of file procs.\+c.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{procs_8c_a6c006d44b4e414ce9cfb73cedf5e74b5}{}\label{procs_8c_a6c006d44b4e414ce9cfb73cedf5e74b5}
 This function fetches the processor context structure to be used for A\+PI options requests. As a special case to take into account, this function checks if a new processor name is specified on an eventual P\+UT settings (namely, it checks if \textquotesingle{}proc\+\_\+name\textquotesingle{} setting is present on a P\+UT operation, and if it is the case, checks if \textquotesingle{}proc\+\_\+name\textquotesingle{} actually changes). If a new processor name is requested, the current processor should be released and substituted by a new processor of the new type given (recycling the same processors register slot). Substituted processor settings are backup, and set to the new one. This way, if some setting on the old processor apply, will be set on the new processor. Otherwise, not applicable settings will be just ignored. 
 
-Definition at line 1066 of file procs.\+c.
+Definition at line 1218 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+module\+\_\+close@{procs\+\_\+module\+\_\+close}}
 \index{procs\+\_\+module\+\_\+close@{procs\+\_\+module\+\_\+close}!procs.\+c@{procs.\+c}}
@@ -280,7 +271,7 @@ Definition at line 1066 of file procs.\+c.
 )}\hypertarget{procs_8c_a0947527d95117e432f21354103c390a6}{}\label{procs_8c_a0947527d95117e432f21354103c390a6}
 Close P\+R\+O\+CS module. This is a global function and should be called only once at the end of the life of the application. 
 
-Definition at line 261 of file procs.\+c.
+Definition at line 273 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+module\+\_\+open@{procs\+\_\+module\+\_\+open}}
 \index{procs\+\_\+module\+\_\+open@{procs\+\_\+module\+\_\+open}!procs.\+c@{procs.\+c}}
@@ -299,7 +290,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 232 of file procs.\+c.
+Definition at line 244 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+module\+\_\+opt@{procs\+\_\+module\+\_\+opt}}
 \index{procs\+\_\+module\+\_\+opt@{procs\+\_\+module\+\_\+opt}!procs.\+c@{procs.\+c}}
@@ -330,7 +321,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 
 \begin{DoxyItemize}
 \item {\bfseries Tag \char`\"{}\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+T\+Y\+P\+E\char`\"{}\+:}~\newline
- Register interface of an specific processor type.~\newline
+ Register the interface of an specific processor type.~\newline
  Additional variable arguments for function \hyperlink{procs_8h_a226ac6dfd7598a59b9ceab3a92239a80}{procs\+\_\+module\+\_\+opt()} are\+:~\newline
  
 \begin{DoxyParams}{Parameters}
@@ -388,26 +379,43 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyParams}
 
 
-Definition at line 282 of file procs.\+c.
+Definition at line 294 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+open@{procs\+\_\+open}}
 \index{procs\+\_\+open@{procs\+\_\+open}!procs.\+c@{procs.\+c}}
-\subsubsection[{\texorpdfstring{procs\+\_\+open(log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{procs_open(log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+ctx\+\_\+t}$\ast$ procs\+\_\+open (
+\subsubsection[{\texorpdfstring{procs\+\_\+open(log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx, size\+\_\+t max\+\_\+procs\+\_\+num, const char $\ast$prefix\+\_\+name, const char $\ast$procs\+\_\+href)}{procs_open(log_ctx_t *log_ctx, size_t max_procs_num, const char *prefix_name, const char *procs_href)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+ctx\+\_\+t}$\ast$ procs\+\_\+open (
 \begin{DoxyParamCaption}
-\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx, }
+\item[{size\+\_\+t}]{max\+\_\+procs\+\_\+num, }
+\item[{const char $\ast$}]{prefix\+\_\+name, }
+\item[{const char $\ast$}]{procs\+\_\+href}
 \end{DoxyParamCaption}
-)}\hypertarget{procs_8c_a6fae33560b633113d848f6ec5e8461e5}{}\label{procs_8c_a6fae33560b633113d848f6ec5e8461e5}
+)}\hypertarget{procs_8c_ac44b6ac931afbeadeb7f07b660e30bac}{}\label{procs_8c_ac44b6ac931afbeadeb7f07b660e30bac}
 Allocates and initializes processors (P\+R\+O\+CS) module instance context structure. 
 \begin{DoxyParams}{Parameters}
 {\em log\+\_\+ctx} & Pointer to the L\+OG module context structure. \\
 \hline
+{\em max\+\_\+procs\+\_\+num} & Maximum number of processors that can be created (and managed) by this instance. \\
+\hline
+{\em prefix\+\_\+name} & Module\textquotesingle{}s A\+PI R\+E\+ST prefix name (256 characters maximum). This parameter is optional (N\+U\+LL may be passed); if not specified, the default name \char`\"{}procs\char`\"{} is used. \\
+\hline
+{\em procs\+\_\+href} & Module\textquotesingle{}s A\+PI R\+E\+ST href attribute specifying the U\+RL path the A\+PI refers to. This parameter is optional (N\+U\+LL may be passed). \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Pointer to the processors context structure on success, N\+U\+LL if fails. 
+Pointer to the processors context structure on success, N\+U\+LL if fails. Code example\+:~\newline
+ The following call creates a \char`\"{}processors module instance\char`\"{} capable of handling 16 processors. Prefix name \char`\"{}video\+\_\+processors\char`\"{} suggest we will use this module instance to handle only \char`\"{}video processors\char`\"{}, and we give an href such that the module\textquotesingle{}s A\+PI may be used applying on the following U\+RL\+: G\+E\+T/\+P\+U\+T/\+P\+O\+S\+T/\+D\+E\+L\+E\+TE -\/$>$ 127.\+0.\+0.\+1/video\+\_\+processors.json~\newline
+ 
+\begin{DoxyCode}
+1 procs\_ctx\_t *procs\_ctx;
+2 ...
+3 procs\_ctx= procs\_open(log\_ctx, 16, "video\_processors", "127.0.0.1");
+\end{DoxyCode}
+ 
 \end{DoxyReturn}
 
 
-Definition at line 324 of file procs.\+c.
+Definition at line 336 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+opt@{procs\+\_\+opt}}
 \index{procs\+\_\+opt@{procs\+\_\+opt}!procs.\+c@{procs.\+c}}
@@ -468,13 +476,19 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
  Additional variable arguments for function \hyperlink{procs_8h_a7af2e6f2788006cfc96ca8d811922ffa}{procs\+\_\+opt()} are\+:~\newline
  
 \begin{DoxyParams}{Parameters}
-{\em ref\+\_\+str} & Reference to the pointer to a character string returning the processors list representational state. Code example\+: 
+{\em ref\+\_\+str} & Reference to the pointer to a character string returning the processors list representational state. \\
+\hline
+{\em filter\+\_\+str} & Character string indicating one of the following filters apply\+:
+\begin{DoxyItemize}
+\item \char`\"{}proc\+\_\+name==x\char`\"{}\+: Filter the returning list discarding all the processors that are not of the type \textquotesingle{}x\textquotesingle{};
+\item \char`\"{}proc\+\_\+name!=x\char`\"{}\+: Filter the returning list discarding all the processors that {\itshape are} of the type \textquotesingle{}x\textquotesingle{}. This parameter is optional, and can be set to N\+U\+LL (no filter apply). Code example\+: 
 \begin{DoxyCode}
 1 char *rest\_str= NULL;
 2 ...
-3 ret\_code= procs\_opt(procs\_ctx, "PROCS\_GET", &rest\_str);
+3 ret\_code= procs\_opt(procs\_ctx, "PROCS\_GET", &rest\_str, NULL);
 \end{DoxyCode}
-\\
+
+\end{DoxyItemize}\\
 \hline
 \end{DoxyParams}
 
@@ -525,7 +539,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 
 \end{DoxyItemize}
 
-Definition at line 413 of file procs.\+c.
+Definition at line 474 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+recv\+\_\+frame@{procs\+\_\+recv\+\_\+frame}}
 \index{procs\+\_\+recv\+\_\+frame@{procs\+\_\+recv\+\_\+frame}!procs.\+c@{procs.\+c}}
@@ -550,7 +564,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 483 of file procs.\+c.
+Definition at line 545 of file procs.\+c.
 
 \index{procs.\+c@{procs.\+c}!procs\+\_\+send\+\_\+frame@{procs\+\_\+send\+\_\+frame}}
 \index{procs\+\_\+send\+\_\+frame@{procs\+\_\+send\+\_\+frame}!procs.\+c@{procs.\+c}}
@@ -575,7 +589,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 443 of file procs.\+c.
+Definition at line 504 of file procs.\+c.
 
 
 
@@ -585,5 +599,5 @@ Definition at line 443 of file procs.\+c.
 \subsubsection[{\texorpdfstring{procs\+\_\+module\+\_\+ctx}{procs_module_ctx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+module\+\_\+ctx\+\_\+t}$\ast$ procs\+\_\+module\+\_\+ctx = N\+U\+LL\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{procs_8c_a5e1a3210584f8735da101ba984f5e4aa}{}\label{procs_8c_a5e1a3210584f8735da101ba984f5e4aa}
 P\+R\+O\+CS module static instance. 
 
-Definition at line 230 of file procs.\+c.
+Definition at line 242 of file procs.\+c.
 

@@ -12,9 +12,15 @@ Collaboration diagram for procs\+\_\+ctx\+\_\+s\+:\nopagebreak
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
+char \hyperlink{structprocs__ctx__s_a00c43e06f8805e3c392802956a3c0fce}{prefix\+\_\+name} \mbox{[}256\mbox{]}
+\item 
+char $\ast$ \hyperlink{structprocs__ctx__s_adb507582e7611d94d41bfaafd244b99a}{procs\+\_\+href}
+\item 
 pthread\+\_\+mutex\+\_\+t \hyperlink{structprocs__ctx__s_a27330c986436226abfa1b5a00b7bdeb1}{api\+\_\+mutex}
 \item 
-\hyperlink{procs_8c_a63a78f7c86536e71715f3fcef28e11c5}{procs\+\_\+reg\+\_\+elem\+\_\+t} \hyperlink{structprocs__ctx__s_a08985565adf1f547b44b58addd85cbbe}{procs\+\_\+reg\+\_\+elem\+\_\+array} \mbox{[}\hyperlink{procs_8c_a3ed23854256df248c5c1352b3999275e}{P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}\mbox{]}
+\hyperlink{procs_8c_a63a78f7c86536e71715f3fcef28e11c5}{procs\+\_\+reg\+\_\+elem\+\_\+t} $\ast$ \hyperlink{structprocs__ctx__s_a9ad98a927f0a5585076b32faf26a054d}{procs\+\_\+reg\+\_\+elem\+\_\+array}
+\item 
+size\+\_\+t \hyperlink{structprocs__ctx__s_a083c965ff29e9b8af9215db80cca7c99}{procs\+\_\+reg\+\_\+elem\+\_\+array\+\_\+size}
 \item 
 \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{structprocs__ctx__s_ab5d529e82924052baf26478afca901fa}{log\+\_\+ctx}
 \end{DoxyCompactItemize}
@@ -23,7 +29,7 @@ pthread\+\_\+mutex\+\_\+t \hyperlink{structprocs__ctx__s_a27330c986436226abfa1b5
 \subsection{Detailed Description}
 Module\textquotesingle{}s instance context structure. P\+R\+O\+CS module context structure is statically defined in the program. 
 
-Definition at line 177 of file procs.\+c.
+Definition at line 172 of file procs.\+c.
 
 
 
@@ -36,21 +42,42 @@ Module\textquotesingle{}s instance A\+PI mutual exclusion lock. This lock is use
 \end{DoxySeeAlso}
 
 
-Definition at line 185 of file procs.\+c.
+Definition at line 191 of file procs.\+c.
 
 \index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!log\+\_\+ctx@{log\+\_\+ctx}}
 \index{log\+\_\+ctx@{log\+\_\+ctx}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
 \subsubsection[{\texorpdfstring{log\+\_\+ctx}{log_ctx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf log\+\_\+ctx\+\_\+t}$\ast$ procs\+\_\+ctx\+\_\+s\+::log\+\_\+ctx}\hypertarget{structprocs__ctx__s_ab5d529e82924052baf26478afca901fa}{}\label{structprocs__ctx__s_ab5d529e82924052baf26478afca901fa}
 Externally defined L\+OG module instance context structure. 
 
-Definition at line 198 of file procs.\+c.
+Definition at line 210 of file procs.\+c.
+
+\index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!prefix\+\_\+name@{prefix\+\_\+name}}
+\index{prefix\+\_\+name@{prefix\+\_\+name}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{prefix\+\_\+name}{prefix_name}}]{\setlength{\rightskip}{0pt plus 5cm}char procs\+\_\+ctx\+\_\+s\+::prefix\+\_\+name\mbox{[}256\mbox{]}}\hypertarget{structprocs__ctx__s_a00c43e06f8805e3c392802956a3c0fce}{}\label{structprocs__ctx__s_a00c43e06f8805e3c392802956a3c0fce}
+Module\textquotesingle{}s A\+PI R\+E\+ST prefix name (256 characters maximum). This parameter can be set by \textquotesingle{}\hyperlink{procs_8c_ac44b6ac931afbeadeb7f07b660e30bac}{procs\+\_\+open()}\textquotesingle{} function; if not (N\+U\+LL is specified), the default name \char`\"{}procs\char`\"{} is used. 
+
+Definition at line 178 of file procs.\+c.
+
+\index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!procs\+\_\+href@{procs\+\_\+href}}
+\index{procs\+\_\+href@{procs\+\_\+href}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{procs\+\_\+href}{procs_href}}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ procs\+\_\+ctx\+\_\+s\+::procs\+\_\+href}\hypertarget{structprocs__ctx__s_adb507582e7611d94d41bfaafd244b99a}{}\label{structprocs__ctx__s_adb507582e7611d94d41bfaafd244b99a}
+Module\textquotesingle{}s A\+PI R\+E\+ST href attribute specifying the U\+RL path the A\+PI refers to. This parameter is optional (may be N\+U\+LL). 
+
+Definition at line 183 of file procs.\+c.
 
 \index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!procs\+\_\+reg\+\_\+elem\+\_\+array@{procs\+\_\+reg\+\_\+elem\+\_\+array}}
 \index{procs\+\_\+reg\+\_\+elem\+\_\+array@{procs\+\_\+reg\+\_\+elem\+\_\+array}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
-\subsubsection[{\texorpdfstring{procs\+\_\+reg\+\_\+elem\+\_\+array}{procs_reg_elem_array}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+reg\+\_\+elem\+\_\+t} procs\+\_\+ctx\+\_\+s\+::procs\+\_\+reg\+\_\+elem\+\_\+array\mbox{[}{\bf P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES}\mbox{]}}\hypertarget{structprocs__ctx__s_a08985565adf1f547b44b58addd85cbbe}{}\label{structprocs__ctx__s_a08985565adf1f547b44b58addd85cbbe}
-Array listing the registered processor instances. The idea behind using an array is to have a mean to fast fetch a processor for input (receive) or output (send) operations. This array is defined with a fixed maximum size of P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES; each element of the array has a set of locks already initialized to enable concurrency. 
+\subsubsection[{\texorpdfstring{procs\+\_\+reg\+\_\+elem\+\_\+array}{procs_reg_elem_array}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+reg\+\_\+elem\+\_\+t}$\ast$ procs\+\_\+ctx\+\_\+s\+::procs\+\_\+reg\+\_\+elem\+\_\+array}\hypertarget{structprocs__ctx__s_a9ad98a927f0a5585076b32faf26a054d}{}\label{structprocs__ctx__s_a9ad98a927f0a5585076b32faf26a054d}
+Array listing the registered processor instances. The idea behind using an array is to have a mean to fast fetch a processor for input (receive) or output (send) operations. This array is defined with a fixed maximum size (set when calling the function \textquotesingle{}\hyperlink{procs_8c_ac44b6ac931afbeadeb7f07b660e30bac}{procs\+\_\+open()}\textquotesingle{}, but limited to a maximum of P\+R\+O\+C\+S\+\_\+\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+P\+R\+O\+C\+\_\+\+I\+N\+S\+T\+A\+N\+C\+ES); each element of the array has a set of locks already initialized to enable concurrency. 
 
-Definition at line 194 of file procs.\+c.
+Definition at line 201 of file procs.\+c.
+
+\index{procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}!procs\+\_\+reg\+\_\+elem\+\_\+array\+\_\+size@{procs\+\_\+reg\+\_\+elem\+\_\+array\+\_\+size}}
+\index{procs\+\_\+reg\+\_\+elem\+\_\+array\+\_\+size@{procs\+\_\+reg\+\_\+elem\+\_\+array\+\_\+size}!procs\+\_\+ctx\+\_\+s@{procs\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{procs\+\_\+reg\+\_\+elem\+\_\+array\+\_\+size}{procs_reg_elem_array_size}}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t procs\+\_\+ctx\+\_\+s\+::procs\+\_\+reg\+\_\+elem\+\_\+array\+\_\+size}\hypertarget{structprocs__ctx__s_a083c965ff29e9b8af9215db80cca7c99}{}\label{structprocs__ctx__s_a083c965ff29e9b8af9215db80cca7c99}
+Size of the array of registered processors. See \textquotesingle{}\hyperlink{structprocs__ctx__s_a9ad98a927f0a5585076b32faf26a054d}{procs\+\_\+ctx\+\_\+s\+::procs\+\_\+reg\+\_\+elem\+\_\+array}\textquotesingle{} 
+
+Definition at line 206 of file procs.\+c.
 
 
 

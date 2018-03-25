@@ -1,0 +1,223 @@
+\hypertarget{comm_8h}{}\section{comm.\+h File Reference}
+\label{comm_8h}\index{comm.\+h@{comm.\+h}}
+
+
+Generic communication module.  
+
+
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$stdarg.\+h$>$}\\*
+Include dependency graph for comm.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{comm_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{comm_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcomm__if__s}{comm\+\_\+if\+\_\+s}
+\item 
+struct \hyperlink{structcomm__ctx__s}{comm\+\_\+ctx\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+s} {\bfseries log\+\_\+ctx\+\_\+t}\hypertarget{comm_8h_a01e036219a22bb5933ddbc277cee8776}{}\label{comm_8h_a01e036219a22bb5933ddbc277cee8776}
+
+\item 
+typedef struct \hyperlink{structcomm__ctx__s}{comm\+\_\+ctx\+\_\+s} \hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t}
+\item 
+typedef enum \hyperlink{comm_8h_a1d692d7421c4351b2aaf92b823bb7e29}{comm\+\_\+mode\+\_\+enum} \hyperlink{comm_8h_a2604d892f8ab29dfc96bd68e2cc3086f}{comm\+\_\+mode\+\_\+t}
+\item 
+typedef struct \hyperlink{structcomm__if__s}{comm\+\_\+if\+\_\+s} \hyperlink{comm_8h_a0d96b9368107e517ea8253837384faf5}{comm\+\_\+if\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{comm_8h_a1d692d7421c4351b2aaf92b823bb7e29}{comm\+\_\+mode\+\_\+enum} \{ {\bfseries C\+O\+M\+M\+\_\+\+M\+O\+D\+E\+\_\+\+I\+P\+UT} = 0, 
+{\bfseries C\+O\+M\+M\+\_\+\+M\+O\+D\+E\+\_\+\+O\+P\+UT}, 
+{\bfseries C\+O\+M\+M\+\_\+\+M\+O\+D\+E\+\_\+\+M\+AX}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{comm_8h_a80ab733009abbbe6feec774dff3485b3}{comm\+\_\+module\+\_\+open} (\hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\item 
+void \hyperlink{comm_8h_ae7235878eac99238a0c19ac7e0672413}{comm\+\_\+module\+\_\+close} ()
+\item 
+int \hyperlink{comm_8h_a21edd1aa9b38d7eadecb70b5f963f437}{comm\+\_\+module\+\_\+opt} (const char $\ast$tag,...)
+\item 
+\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$ {\bfseries comm\+\_\+open} (const char $\ast$url, const char $\ast$local\+\_\+url, \hyperlink{comm_8h_a2604d892f8ab29dfc96bd68e2cc3086f}{comm\+\_\+mode\+\_\+t} comm\+\_\+mode, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx,...)\hypertarget{comm_8h_a1b4ee842a6dbaefc66a776808aa331ca}{}\label{comm_8h_a1b4ee842a6dbaefc66a776808aa331ca}
+
+\item 
+void {\bfseries comm\+\_\+close} (\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+comm\+\_\+ctx)\hypertarget{comm_8h_a9215f79ed7599d103cd2a8b9be4835d1}{}\label{comm_8h_a9215f79ed7599d103cd2a8b9be4835d1}
+
+\item 
+int {\bfseries comm\+\_\+send} (\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$comm\+\_\+ctx, const void $\ast$buf, size\+\_\+t count, struct timeval $\ast$timeout)\hypertarget{comm_8h_a4d493ddf6a804a2e03be3a5cf8980af0}{}\label{comm_8h_a4d493ddf6a804a2e03be3a5cf8980af0}
+
+\item 
+int {\bfseries comm\+\_\+recv} (\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$comm\+\_\+ctx, void $\ast$$\ast$ref\+\_\+buf, size\+\_\+t $\ast$ref\+\_\+count, char $\ast$$\ast$ref\+\_\+from, struct timeval $\ast$timeout)\hypertarget{comm_8h_afe57fe056dcf3c4f4966d0ee404c4985}{}\label{comm_8h_afe57fe056dcf3c4f4966d0ee404c4985}
+
+\item 
+int {\bfseries comm\+\_\+unblock} (\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$comm\+\_\+ctx)\hypertarget{comm_8h_a0a472f3879b3e2ea6f9575775d4a7191}{}\label{comm_8h_a0a472f3879b3e2ea6f9575775d4a7191}
+
+\item 
+int {\bfseries comm\+\_\+open\+\_\+external} (pthread\+\_\+mutex\+\_\+t $\ast$comm\+\_\+ctx\+\_\+mutex\+\_\+external, const char $\ast$url, const char $\ast$local\+\_\+url, \hyperlink{comm_8h_a2604d892f8ab29dfc96bd68e2cc3086f}{comm\+\_\+mode\+\_\+t} comm\+\_\+mode, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, \hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+comm\+\_\+ctx,...)\hypertarget{comm_8h_a67e1b0e92ba8fff6319e179bd80364f7}{}\label{comm_8h_a67e1b0e92ba8fff6319e179bd80364f7}
+
+\item 
+void {\bfseries comm\+\_\+close\+\_\+external} (pthread\+\_\+mutex\+\_\+t $\ast$comm\+\_\+ctx\+\_\+mutex\+\_\+external, \hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+comm\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{comm_8h_a2309f8c1635f6b334f2b22982ae80627}{}\label{comm_8h_a2309f8c1635f6b334f2b22982ae80627}
+
+\item 
+int {\bfseries comm\+\_\+reset\+\_\+external} (pthread\+\_\+mutex\+\_\+t $\ast$comm\+\_\+ctx\+\_\+mutex\+\_\+external, const char $\ast$new\+\_\+url, const char $\ast$local\+\_\+url, \hyperlink{comm_8h_a2604d892f8ab29dfc96bd68e2cc3086f}{comm\+\_\+mode\+\_\+t} comm\+\_\+mode, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, \hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+comm\+\_\+ctx\+\_\+curr,...)\hypertarget{comm_8h_a09186e043867c111cc9acbc5307e3173}{}\label{comm_8h_a09186e043867c111cc9acbc5307e3173}
+
+\item 
+int {\bfseries comm\+\_\+recv\+\_\+external} (pthread\+\_\+mutex\+\_\+t $\ast$comm\+\_\+ctx\+\_\+mutex\+\_\+external, \hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+comm\+\_\+ctx, void $\ast$$\ast$ref\+\_\+buf, size\+\_\+t $\ast$ref\+\_\+count, char $\ast$$\ast$ref\+\_\+from, struct timeval $\ast$timeout, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)\hypertarget{comm_8h_a8e0f63e9aba94ec4dbd092bdbc35716c}{}\label{comm_8h_a8e0f63e9aba94ec4dbd092bdbc35716c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Generic communication module. 
+
+\begin{DoxyAuthor}{Author}
+Rafael Antoniello 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{comm.\+h@{comm.\+h}!comm\+\_\+ctx\+\_\+t@{comm\+\_\+ctx\+\_\+t}}
+\index{comm\+\_\+ctx\+\_\+t@{comm\+\_\+ctx\+\_\+t}!comm.\+h@{comm.\+h}}
+\subsubsection[{\texorpdfstring{comm\+\_\+ctx\+\_\+t}{comm_ctx_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf comm\+\_\+ctx\+\_\+s} {\bf comm\+\_\+ctx\+\_\+t}}\hypertarget{comm_8h_aacc0873718a86d8ef4658bad2500d091}{}\label{comm_8h_aacc0873718a86d8ef4658bad2500d091}
+Communication module instance context structure (\textquotesingle{}handler\textquotesingle{}). 
+
+Definition at line 48 of file comm.\+h.
+
+\index{comm.\+h@{comm.\+h}!comm\+\_\+if\+\_\+t@{comm\+\_\+if\+\_\+t}}
+\index{comm\+\_\+if\+\_\+t@{comm\+\_\+if\+\_\+t}!comm.\+h@{comm.\+h}}
+\subsubsection[{\texorpdfstring{comm\+\_\+if\+\_\+t}{comm_if_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf comm\+\_\+if\+\_\+s}  {\bf comm\+\_\+if\+\_\+t}}\hypertarget{comm_8h_a0d96b9368107e517ea8253837384faf5}{}\label{comm_8h_a0d96b9368107e517ea8253837384faf5}
+Communication protocol interface structure prototype. Each specific communication module implementation will define a static and unambiguous interface of this type. \index{comm.\+h@{comm.\+h}!comm\+\_\+mode\+\_\+t@{comm\+\_\+mode\+\_\+t}}
+\index{comm\+\_\+mode\+\_\+t@{comm\+\_\+mode\+\_\+t}!comm.\+h@{comm.\+h}}
+\subsubsection[{\texorpdfstring{comm\+\_\+mode\+\_\+t}{comm_mode_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef enum {\bf comm\+\_\+mode\+\_\+enum}  {\bf comm\+\_\+mode\+\_\+t}}\hypertarget{comm_8h_a2604d892f8ab29dfc96bd68e2cc3086f}{}\label{comm_8h_a2604d892f8ab29dfc96bd68e2cc3086f}
+Indicates the communication module instance mode\+: input or output. 
+
+\subsection{Enumeration Type Documentation}
+\index{comm.\+h@{comm.\+h}!comm\+\_\+mode\+\_\+enum@{comm\+\_\+mode\+\_\+enum}}
+\index{comm\+\_\+mode\+\_\+enum@{comm\+\_\+mode\+\_\+enum}!comm.\+h@{comm.\+h}}
+\subsubsection[{\texorpdfstring{comm\+\_\+mode\+\_\+enum}{comm_mode_enum}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf comm\+\_\+mode\+\_\+enum}}\hypertarget{comm_8h_a1d692d7421c4351b2aaf92b823bb7e29}{}\label{comm_8h_a1d692d7421c4351b2aaf92b823bb7e29}
+Indicates the communication module instance mode\+: input or output. 
+
+Definition at line 53 of file comm.\+h.
+
+
+
+\subsection{Function Documentation}
+\index{comm.\+h@{comm.\+h}!comm\+\_\+module\+\_\+close@{comm\+\_\+module\+\_\+close}}
+\index{comm\+\_\+module\+\_\+close@{comm\+\_\+module\+\_\+close}!comm.\+h@{comm.\+h}}
+\subsubsection[{\texorpdfstring{comm\+\_\+module\+\_\+close()}{comm_module_close()}}]{\setlength{\rightskip}{0pt plus 5cm}void comm\+\_\+module\+\_\+close (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{comm_8h_ae7235878eac99238a0c19ac7e0672413}{}\label{comm_8h_ae7235878eac99238a0c19ac7e0672413}
+Close communication module. This is a global function and should be called only once at the end of the life of the application. 
+
+Definition at line 129 of file comm.\+c.
+
+\index{comm.\+h@{comm.\+h}!comm\+\_\+module\+\_\+open@{comm\+\_\+module\+\_\+open}}
+\index{comm\+\_\+module\+\_\+open@{comm\+\_\+module\+\_\+open}!comm.\+h@{comm.\+h}}
+\subsubsection[{\texorpdfstring{comm\+\_\+module\+\_\+open(log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{comm_module_open(log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}int comm\+\_\+module\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\end{DoxyParamCaption}
+)}\hypertarget{comm_8h_a80ab733009abbbe6feec774dff3485b3}{}\label{comm_8h_a80ab733009abbbe6feec774dff3485b3}
+Open communication module. This is a global function and should be called only once at the very beginning and during the life of the application. 
+\begin{DoxyParams}{Parameters}
+{\em log\+\_\+ctx} & Pointer to a externally defined L\+OG module context structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}). 
+\end{DoxyReturn}
+
+
+Definition at line 101 of file comm.\+c.
+
+\index{comm.\+h@{comm.\+h}!comm\+\_\+module\+\_\+opt@{comm\+\_\+module\+\_\+opt}}
+\index{comm\+\_\+module\+\_\+opt@{comm\+\_\+module\+\_\+opt}!comm.\+h@{comm.\+h}}
+\subsubsection[{\texorpdfstring{comm\+\_\+module\+\_\+opt(const char $\ast$tag,...)}{comm_module_opt(const char *tag,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int comm\+\_\+module\+\_\+opt (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{tag, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\hypertarget{comm_8h_a21edd1aa9b38d7eadecb70b5f963f437}{}\label{comm_8h_a21edd1aa9b38d7eadecb70b5f963f437}
+Communication module options. This function represents the A\+PI of the communication module. This function is thread-\/safe and can be called concurrently.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tag} & Option tag, namely, option identifier string. The following options are available\+:
+\begin{DoxyEnumerate}
+\item \char`\"{}\+C\+O\+M\+M\+\_\+\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+P\+R\+O\+T\+O\char`\"{}
+\item \char`\"{}\+C\+O\+M\+M\+\_\+\+U\+N\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+P\+R\+O\+T\+O\char`\"{}
+\end{DoxyEnumerate}\\
+\hline
+{\em ...} & Variable list of parameters according to selected option. Refer to {\bfseries Tags description} below to see the different additional parameters corresponding to each option tag. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for other code values please refer to .\hyperlink{stat__codes_8h}{stat\+\_\+codes.\+h}).
+\end{DoxyReturn}
+\paragraph*{Tags description (additional variable arguments per tag)}
+
+
+\begin{DoxyItemize}
+\item {\bfseries Tag \char`\"{}\+C\+O\+M\+M\+\_\+\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+P\+R\+O\+T\+O\char`\"{}\+:}~\newline
+ Register the interface of an specific communication protocol.~\newline
+ Additional variable arguments for function \hyperlink{comm_8h_a21edd1aa9b38d7eadecb70b5f963f437}{comm\+\_\+module\+\_\+opt()} are\+:~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em comm\+\_\+if} & Pointer to the protocol interface structure (static and unambiguous interface implementation of the type \textquotesingle{}comm\+\_\+if\+\_\+t\textquotesingle{}). Code example\+: 
+\begin{DoxyCode}
+1 ...
+2 const comm\_if\_t comm\_if\_udp= \{
+3     "udp",
+4     comm\_udp\_open,
+5     comm\_udp\_close,
+6     comm\_udp\_send,
+7     comm\_udp\_recv,
+8     comm\_udp\_unblock
+9 \};
+10 ...
+11 ret\_code= comm\_module\_opt("COMM\_REGISTER\_PROTO", &comm\_if\_udp);
+\end{DoxyCode}
+\\
+\hline
+\end{DoxyParams}
+
+\item {\bfseries Tag \char`\"{}\+C\+O\+M\+M\+\_\+\+U\+N\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+P\+R\+O\+T\+O\char`\"{}\+:}~\newline
+ Unregister the interface of an specific communication protocol.~\newline
+ Additional variable arguments for function \hyperlink{comm_8h_a21edd1aa9b38d7eadecb70b5f963f437}{comm\+\_\+module\+\_\+opt()} are\+:~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em scheme} & Pointer to a character string with the unambiguous protocol scheme name (for example\+: \char`\"{}udp\char`\"{}, \char`\"{}file\char`\"{}, ...). Code example\+: 
+\begin{DoxyCode}
+1 ret\_code= comm\_module\_opt("COMM\_UNREGISTER\_PROTO", "udp");
+\end{DoxyCode}
+ \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}
+
+Definition at line 150 of file comm.\+c.
+

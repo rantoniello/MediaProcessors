@@ -1,0 +1,65 @@
+\hypertarget{structcomm__udp__ctx__s}{}\section{comm\+\_\+udp\+\_\+ctx\+\_\+s Struct Reference}
+\label{structcomm__udp__ctx__s}\index{comm\+\_\+udp\+\_\+ctx\+\_\+s@{comm\+\_\+udp\+\_\+ctx\+\_\+s}}
+
+
+Collaboration diagram for comm\+\_\+udp\+\_\+ctx\+\_\+s\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=275pt]{structcomm__udp__ctx__s__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcomm__ctx__s}{comm\+\_\+ctx\+\_\+s} \hyperlink{structcomm__udp__ctx__s_a3732c33a70c43d9f270ab912cc23d94b}{comm\+\_\+ctx}
+\item 
+int \hyperlink{structcomm__udp__ctx__s_a65be1c0c98d73e09419c3507a4c4535b}{fd}
+\item 
+volatile int \hyperlink{structcomm__udp__ctx__s_a3478e148fc2c7e2a11d0ecf1f064ad27}{flag\+\_\+exit}
+\item 
+int \hyperlink{structcomm__udp__ctx__s_af98857f20d566dca629dbe52a7f8e57c}{pipe\+\_\+exit\+\_\+signal} \mbox{[}2\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Module instance context structure 
+
+Definition at line 65 of file comm\+\_\+udp.\+c.
+
+
+
+\subsection{Member Data Documentation}
+\index{comm\+\_\+udp\+\_\+ctx\+\_\+s@{comm\+\_\+udp\+\_\+ctx\+\_\+s}!comm\+\_\+ctx@{comm\+\_\+ctx}}
+\index{comm\+\_\+ctx@{comm\+\_\+ctx}!comm\+\_\+udp\+\_\+ctx\+\_\+s@{comm\+\_\+udp\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{comm\+\_\+ctx}{comm_ctx}}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf comm\+\_\+ctx\+\_\+s} comm\+\_\+udp\+\_\+ctx\+\_\+s\+::comm\+\_\+ctx}\hypertarget{structcomm__udp__ctx__s_a3732c33a70c43d9f270ab912cc23d94b}{}\label{structcomm__udp__ctx__s_a3732c33a70c43d9f270ab912cc23d94b}
+Generic communication interface structure. {\itshape M\+U\+ST} be the first field in order to be able to cast to both comm\+\_\+udp\+\_\+ctx\+\_\+t or comm\+\_\+udp\+\_\+ctx\+\_\+t. 
+
+Definition at line 71 of file comm\+\_\+udp.\+c.
+
+\index{comm\+\_\+udp\+\_\+ctx\+\_\+s@{comm\+\_\+udp\+\_\+ctx\+\_\+s}!fd@{fd}}
+\index{fd@{fd}!comm\+\_\+udp\+\_\+ctx\+\_\+s@{comm\+\_\+udp\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{fd}{fd}}]{\setlength{\rightskip}{0pt plus 5cm}int comm\+\_\+udp\+\_\+ctx\+\_\+s\+::fd}\hypertarget{structcomm__udp__ctx__s_a65be1c0c98d73e09419c3507a4c4535b}{}\label{structcomm__udp__ctx__s_a65be1c0c98d73e09419c3507a4c4535b}
+Socket file descriptor 
+
+Definition at line 75 of file comm\+\_\+udp.\+c.
+
+\index{comm\+\_\+udp\+\_\+ctx\+\_\+s@{comm\+\_\+udp\+\_\+ctx\+\_\+s}!flag\+\_\+exit@{flag\+\_\+exit}}
+\index{flag\+\_\+exit@{flag\+\_\+exit}!comm\+\_\+udp\+\_\+ctx\+\_\+s@{comm\+\_\+udp\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{flag\+\_\+exit}{flag_exit}}]{\setlength{\rightskip}{0pt plus 5cm}volatile int comm\+\_\+udp\+\_\+ctx\+\_\+s\+::flag\+\_\+exit}\hypertarget{structcomm__udp__ctx__s_a3478e148fc2c7e2a11d0ecf1f064ad27}{}\label{structcomm__udp__ctx__s_a3478e148fc2c7e2a11d0ecf1f064ad27}
+Exit flag\+: if set to non-\/zero value, module should finish/unblock transactions as fast as possible 
+
+Definition at line 80 of file comm\+\_\+udp.\+c.
+
+\index{comm\+\_\+udp\+\_\+ctx\+\_\+s@{comm\+\_\+udp\+\_\+ctx\+\_\+s}!pipe\+\_\+exit\+\_\+signal@{pipe\+\_\+exit\+\_\+signal}}
+\index{pipe\+\_\+exit\+\_\+signal@{pipe\+\_\+exit\+\_\+signal}!comm\+\_\+udp\+\_\+ctx\+\_\+s@{comm\+\_\+udp\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{pipe\+\_\+exit\+\_\+signal}{pipe_exit_signal}}]{\setlength{\rightskip}{0pt plus 5cm}int comm\+\_\+udp\+\_\+ctx\+\_\+s\+::pipe\+\_\+exit\+\_\+signal\mbox{[}2\mbox{]}}\hypertarget{structcomm__udp__ctx__s_af98857f20d566dca629dbe52a7f8e57c}{}\label{structcomm__udp__ctx__s_af98857f20d566dca629dbe52a7f8e57c}
+This pipe is used exclusively for the purpose of abruptly closing U\+D\+P-\/com module; the pipe is used to wake-\/up any \textquotesingle{}select()\textquotesingle{} waiting for incoming data. 
+
+Definition at line 86 of file comm\+\_\+udp.\+c.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{comm__udp_8c}{comm\+\_\+udp.\+c}\end{DoxyCompactItemize}

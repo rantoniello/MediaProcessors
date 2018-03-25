@@ -80,7 +80,7 @@ class \hyperlink{classDummySink}{Dummy\+Sink}
 \item 
 \#define \hyperlink{live555__rtsp_8cpp_a8995a191e541088a47aec1798a8cec4b}{T\+A\+G\+\_\+\+H\+AS}(N\+E\+E\+D\+LE)~(strstr(tag, N\+E\+E\+D\+LE)!= N\+U\+LL)
 \item 
-\#define \hyperlink{live555__rtsp_8cpp_a914faae84f39085695352bd45c0fca62}{T\+A\+G\+\_\+\+IS}(T\+AG)~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)
+\#define \hyperlink{live555__rtsp_8cpp_a914faae84f39085695352bd45c0fca62}{T\+A\+G\+\_\+\+IS}(T\+AG)~(strcmp(tag, T\+AG)== 0)
 \item 
 \#define {\bfseries P\+R\+O\+C\+\_\+\+I\+D\+\_\+\+S\+T\+R\+\_\+\+F\+MT}~\char`\"{}\{\textbackslash{}\char`\"{}elementary\+\_\+stream\+\_\+id\textbackslash{}\char`\"{}\+:\%d\}\char`\"{}\hypertarget{live555__rtsp_8cpp_a54cbf5496734caa93dd096e26a796049}{}\label{live555__rtsp_8cpp_a54cbf5496734caa93dd096e26a796049}
 
@@ -114,7 +114,7 @@ static void \hyperlink{live555__rtsp_8cpp_ae36c82c14b171460aad0cdf9b167c5b0}{liv
 \item 
 static void \hyperlink{live555__rtsp_8cpp_a30be2a6d7c8e8c64b7c3d3ca4d712584}{live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings} (\hyperlink{live555__rtsp_8cpp_a6261967be7712af24d2a808785fca955}{live555\+\_\+rtsp\+\_\+mux\+\_\+ctx\+\_\+t} $\ast$live555\+\_\+rtsp\+\_\+mux\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
-static int \hyperlink{live555__rtsp_8cpp_ad71374130a2220d19874d40b086b1631}{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+static int \hyperlink{live555__rtsp_8cpp_ad71374130a2220d19874d40b086b1631}{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
 \item 
 static int \hyperlink{live555__rtsp_8cpp_abe47b6b8febe17d311ecede4da45aea0}{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
@@ -137,7 +137,7 @@ static \hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+
 \item 
 static void \hyperlink{live555__rtsp_8cpp_a5ecc6f5de6844803a83fab12a13476a2}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+proc\+\_\+ctx)
 \item 
-static int \hyperlink{live555__rtsp_8cpp_abb290dc91efdc5ecf11447a219348321}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+static int \hyperlink{live555__rtsp_8cpp_abb290dc91efdc5ecf11447a219348321}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
 \item 
 static int \hyperlink{live555__rtsp_8cpp_ab43b1de001e299f5a71b7c6ca41c3835}{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
@@ -161,7 +161,7 @@ static void {\bfseries live555\+\_\+rtsp\+\_\+dmux\+\_\+deinit\+\_\+except\+\_\+
 \item 
 static int \hyperlink{live555__rtsp_8cpp_a1dff06c81ab4c1f15bdc768ffb06fe51}{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const \hyperlink{proc__if_8h_a9bea3dae53a91f2a3e3a459d1d3e22b3}{proc\+\_\+if\+\_\+rest\+\_\+fmt\+\_\+t} rest\+\_\+fmt, void $\ast$$\ast$ref\+\_\+reponse)
 \item 
-static int \hyperlink{live555__rtsp_8cpp_a7424e763a4f50f3b4563f86b28569f9d}{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
+static int \hyperlink{live555__rtsp_8cpp_a7424e763a4f50f3b4563f86b28569f9d}{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$iput\+\_\+fifo\+\_\+ctx, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx)
 \item 
 static int \hyperlink{live555__rtsp_8cpp_abd61654410d5c9ce8d3d7fc52430d8be}{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, const char $\ast$str)
 \item 
@@ -230,7 +230,7 @@ Definition at line 78 of file live555\+\_\+rtsp.\+cpp.
 \begin{DoxyParamCaption}
 \item[{}]{T\+AG}
 \end{DoxyParamCaption}
-)~(strncmp(tag, T\+AG, strlen(T\+AG))== 0)}\hypertarget{live555__rtsp_8cpp_a914faae84f39085695352bd45c0fca62}{}\label{live555__rtsp_8cpp_a914faae84f39085695352bd45c0fca62}
+)~(strcmp(tag, T\+AG)== 0)}\hypertarget{live555__rtsp_8cpp_a914faae84f39085695352bd45c0fca62}{}\label{live555__rtsp_8cpp_a914faae84f39085695352bd45c0fca62}
 Returns non-\/zero if \textquotesingle{}tag\textquotesingle{} string is equal to given T\+AG string. 
 
 Definition at line 83 of file live555\+\_\+rtsp.\+cpp.
@@ -262,7 +262,7 @@ Live555\textquotesingle{}s R\+T\+SP multiplexer settings context structure.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a6725a20c83725a3080c2eca916800dab}{}\label{live555__rtsp_8cpp_a6725a20c83725a3080c2eca916800dab}
 Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 2193 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2198 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+open@{live555\+\_\+rtsp\+\_\+dmux\+\_\+open}}
 \index{live555\+\_\+rtsp\+\_\+dmux\+\_\+open@{live555\+\_\+rtsp\+\_\+dmux\+\_\+open}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -276,7 +276,7 @@ Definition at line 2193 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a47ff243b0d13dd2e2fa45e543957d4e5}{}\label{live555__rtsp_8cpp_a47ff243b0d13dd2e2fa45e543957d4e5}
 Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 2105 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2110 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame}}
 \index{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+dmux\+\_\+process\+\_\+frame}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -289,7 +289,7 @@ Definition at line 2105 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a7424e763a4f50f3b4563f86b28569f9d}{}\label{live555__rtsp_8cpp_a7424e763a4f50f3b4563f86b28569f9d}
 Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 2418 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2424 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get}}
 \index{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+get}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -302,7 +302,7 @@ Definition at line 2418 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a1dff06c81ab4c1f15bdc768ffb06fe51}{}\label{live555__rtsp_8cpp_a1dff06c81ab4c1f15bdc768ffb06fe51}
 Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 2255 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2260 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put}}
 \index{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+dmux\+\_\+rest\+\_\+put}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -314,7 +314,7 @@ Definition at line 2255 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_abd61654410d5c9ce8d3d7fc52430d8be}{}\label{live555__rtsp_8cpp_abd61654410d5c9ce8d3d7fc52430d8be}
 Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 2510 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2516 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit}}
 \index{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+deinit}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -333,7 +333,7 @@ Release specific Live555 R\+T\+SP de-\/multiplexer settings (allocated in heap m
 \end{DoxyParams}
 
 
-Definition at line 2586 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2592 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init}}
 \index{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init@{live555\+\_\+rtsp\+\_\+dmux\+\_\+settings\+\_\+ctx\+\_\+init}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -355,7 +355,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 2555 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2561 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close}}
 \index{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+close}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -366,7 +366,7 @@ Definition at line 2555 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a5ecc6f5de6844803a83fab12a13476a2}{}\label{live555__rtsp_8cpp_a5ecc6f5de6844803a83fab12a13476a2}
 Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 1382 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 1386 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame}}
 \index{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+process\+\_\+frame}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -379,7 +379,7 @@ Definition at line 1382 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_abb290dc91efdc5ecf11447a219348321}{}\label{live555__rtsp_8cpp_abb290dc91efdc5ecf11447a219348321}
 Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 1413 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 1417 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get}}
 \index{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+get}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -392,7 +392,7 @@ Definition at line 1413 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a56e14bf531cf71bcc507f3f19d1f6d26}{}\label{live555__rtsp_8cpp_a56e14bf531cf71bcc507f3f19d1f6d26}
 Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 1570 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 1574 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put}}
 \index{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+es\+\_\+mux\+\_\+rest\+\_\+put}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -404,7 +404,7 @@ Definition at line 1570 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ab43b1de001e299f5a71b7c6ca41c3835}{}\label{live555__rtsp_8cpp_ab43b1de001e299f5a71b7c6ca41c3835}
 Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 1465 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 1469 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+close@{live555\+\_\+rtsp\+\_\+mux\+\_\+close}}
 \index{live555\+\_\+rtsp\+\_\+mux\+\_\+close@{live555\+\_\+rtsp\+\_\+mux\+\_\+close}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -415,7 +415,7 @@ Definition at line 1465 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ae36c82c14b171460aad0cdf9b167c5b0}{}\label{live555__rtsp_8cpp_ae36c82c14b171460aad0cdf9b167c5b0}
 Implements the \hyperlink{structproc__if__s_af5971ac1d09d1c6ec3508c36fb286c19}{proc\+\_\+if\+\_\+s\+::close} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 745 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 748 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings@{live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings}}
 \index{live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings@{live555\+\_\+rtsp\+\_\+mux\+\_\+deinit\+\_\+except\+\_\+settings}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -427,7 +427,7 @@ Definition at line 745 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a30be2a6d7c8e8c64b7c3d3ca4d712584}{}\label{live555__rtsp_8cpp_a30be2a6d7c8e8c64b7c3d3ca4d712584}
 Release R\+T\+SP multiplexer at the exception of its settings context structure. 
 
-Definition at line 776 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 779 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+open@{live555\+\_\+rtsp\+\_\+mux\+\_\+open}}
 \index{live555\+\_\+rtsp\+\_\+mux\+\_\+open@{live555\+\_\+rtsp\+\_\+mux\+\_\+open}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -441,7 +441,7 @@ Definition at line 776 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a2f593befac270f3c0f87fd59306c9a07}{}\label{live555__rtsp_8cpp_a2f593befac270f3c0f87fd59306c9a07}
 Implements the \hyperlink{structproc__if__s_a34999576771394dfb721463c8455ba06}{proc\+\_\+if\+\_\+s\+::open} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 610 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 613 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+opt@{live555\+\_\+rtsp\+\_\+mux\+\_\+opt}}
 \index{live555\+\_\+rtsp\+\_\+mux\+\_\+opt@{live555\+\_\+rtsp\+\_\+mux\+\_\+opt}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -454,7 +454,7 @@ Definition at line 610 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ad353f75943a3ca57089e984dd6a63821}{}\label{live555__rtsp_8cpp_ad353f75943a3ca57089e984dd6a63821}
 Implements the \hyperlink{structproc__if__s_a4ca0939d6721f368d2560851197fca36}{proc\+\_\+if\+\_\+s\+::opt} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 908 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 911 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame}}
 \index{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame@{live555\+\_\+rtsp\+\_\+mux\+\_\+process\+\_\+frame}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -467,7 +467,7 @@ Definition at line 908 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ad71374130a2220d19874d40b086b1631}{}\label{live555__rtsp_8cpp_ad71374130a2220d19874d40b086b1631}
 Implements the \hyperlink{structproc__if__s_ab67b4061f94b6f15ae40c796b6b33597}{proc\+\_\+if\+\_\+s\+::process\+\_\+frame} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 854 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 857 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get}}
 \index{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get@{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+get}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -480,7 +480,7 @@ Definition at line 854 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a79702efb465218250b0e0b47968daa19}{}\label{live555__rtsp_8cpp_a79702efb465218250b0e0b47968daa19}
 Implements the \hyperlink{structproc__if__s_a1e45b33c52b931954f7a0d8a14f0db53}{proc\+\_\+if\+\_\+s\+::rest\+\_\+get} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 1015 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 1018 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put}}
 \index{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put@{live555\+\_\+rtsp\+\_\+mux\+\_\+rest\+\_\+put}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -492,7 +492,7 @@ Definition at line 1015 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_abe47b6b8febe17d311ecede4da45aea0}{}\label{live555__rtsp_8cpp_abe47b6b8febe17d311ecede4da45aea0}
 Implements the \hyperlink{structproc__if__s_acb4d2c240c52904ebd6904f54b1a9b78}{proc\+\_\+if\+\_\+s\+::rest\+\_\+put} callback. See .\hyperlink{proc__if_8h}{proc\+\_\+if.\+h} for further details. 
 
-Definition at line 973 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 976 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit}}
 \index{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+deinit}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -511,7 +511,7 @@ Release specific Live555 R\+T\+SP multiplexer settings (allocated in heap memory
 \end{DoxyParams}
 
 
-Definition at line 1260 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 1264 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init}}
 \index{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init@{live555\+\_\+rtsp\+\_\+mux\+\_\+settings\+\_\+ctx\+\_\+init}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -533,7 +533,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 1229 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 1233 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!setup\+Next\+Subsession@{setup\+Next\+Subsession}}
 \index{setup\+Next\+Subsession@{setup\+Next\+Subsession}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -544,7 +544,7 @@ Definition at line 1229 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a25d0e5450a3553a50ca44562cdae755d}{}\label{live555__rtsp_8cpp_a25d0e5450a3553a50ca44562cdae755d}
 Iterate through each stream\textquotesingle{}s \textquotesingle{}sub-\/sessions\textquotesingle{}, setting up each one. 
 
-Definition at line 2664 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2670 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!shutdown\+Stream@{shutdown\+Stream}}
 \index{shutdown\+Stream@{shutdown\+Stream}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -556,7 +556,7 @@ Definition at line 2664 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a745d51722cac48201443f303b01506c9}{}\label{live555__rtsp_8cpp_a745d51722cac48201443f303b01506c9}
 Used to shut down and close a stream (including its \char`\"{}\+R\+T\+S\+P\+Client\char`\"{} object). 
 
-Definition at line 2865 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2871 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!subsession\+After\+Playing@{subsession\+After\+Playing}}
 \index{subsession\+After\+Playing@{subsession\+After\+Playing}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -567,7 +567,7 @@ Definition at line 2865 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_a48b85c08a53c246bf3b9e8353b04676b}{}\label{live555__rtsp_8cpp_a48b85c08a53c246bf3b9e8353b04676b}
 called when a stream\textquotesingle{}s sub-\/session (e.\+g., audio or video sub-\/stream) ends. 
 
-Definition at line 2812 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2818 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!subsession\+Bye\+Handler@{subsession\+Bye\+Handler}}
 \index{subsession\+Bye\+Handler@{subsession\+Bye\+Handler}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -578,7 +578,7 @@ Definition at line 2812 of file live555\+\_\+rtsp.\+cpp.
 )\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{live555__rtsp_8cpp_ac3ec7faed4d59081b32fbd1dc93d2a68}{}\label{live555__rtsp_8cpp_ac3ec7faed4d59081b32fbd1dc93d2a68}
 Called when a R\+T\+CP \char`\"{}\+B\+Y\+E\char`\"{} is received for a sub-\/session. 
 
-Definition at line 2842 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 2848 of file live555\+\_\+rtsp.\+cpp.
 
 
 
@@ -597,18 +597,19 @@ Definition at line 2842 of file live555\+\_\+rtsp.\+cpp.
     NULL, 
     NULL, 
     proc\_recv\_frame\_default1,
+    NULL, 
     \hyperlink{live555__rtsp_8cpp_abd61654410d5c9ce8d3d7fc52430d8be}{live555\_rtsp\_dmux\_rest\_put},
     \hyperlink{live555__rtsp_8cpp_a1dff06c81ab4c1f15bdc768ffb06fe51}{live555\_rtsp\_dmux\_rest\_get},
     \hyperlink{live555__rtsp_8cpp_a7424e763a4f50f3b4563f86b28569f9d}{live555\_rtsp\_dmux\_process\_frame},
     NULL, 
-    NULL, 
-    NULL, 
-    NULL, 
+    (\textcolor{keywordtype}{void}*(*)(\textcolor{keyword}{const} \hyperlink{structproc__frame__ctx__s}{proc\_frame\_ctx\_t}*))\hyperlink{proc__if_8c_a778c0de8151b30abc17305131d149932}{proc\_frame\_ctx\_dup},
+    (void(*)(\textcolor{keywordtype}{void}**))\hyperlink{proc__if_8c_afad6906a6da22ba369b736863c1e204e}{proc\_frame\_ctx\_release},
+    (\hyperlink{structproc__frame__ctx__s}{proc\_frame\_ctx\_t}*(*)(const \textcolor{keywordtype}{void}*))\hyperlink{proc__if_8c_a778c0de8151b30abc17305131d149932}{proc\_frame\_ctx\_dup}
 \}
 \end{DoxyCode}
 Processor interface implementing the wrapper of the live555 R\+T\+SP de-\/multiplexer. 
 
-Definition at line 587 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 589 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux}}
 \index{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+es\+\_\+mux}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -625,17 +626,18 @@ Definition at line 587 of file live555\+\_\+rtsp.\+cpp.
     NULL, 
     NULL, 
     NULL, 
+    NULL, 
     \hyperlink{live555__rtsp_8cpp_a56e14bf531cf71bcc507f3f19d1f6d26}{live555\_rtsp\_es\_mux\_rest\_get},
     \hyperlink{live555__rtsp_8cpp_abb290dc91efdc5ecf11447a219348321}{live555\_rtsp\_es\_mux\_process\_frame},
     NULL, 
-    NULL,
-    NULL,
-    NULL,
+    (\textcolor{keywordtype}{void}*(*)(\textcolor{keyword}{const} \hyperlink{structproc__frame__ctx__s}{proc\_frame\_ctx\_t}*))\hyperlink{proc__if_8c_a778c0de8151b30abc17305131d149932}{proc\_frame\_ctx\_dup},
+    (void(*)(\textcolor{keywordtype}{void}**))\hyperlink{proc__if_8c_afad6906a6da22ba369b736863c1e204e}{proc\_frame\_ctx\_release},
+    (\hyperlink{structproc__frame__ctx__s}{proc\_frame\_ctx\_t}*(*)(const \textcolor{keywordtype}{void}*))\hyperlink{proc__if_8c_a778c0de8151b30abc17305131d149932}{proc\_frame\_ctx\_dup}
 \}
 \end{DoxyCode}
 
 
-Definition at line 569 of file live555\+\_\+rtsp.\+cpp.
+Definition at line 570 of file live555\+\_\+rtsp.\+cpp.
 
 \index{live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}!proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux}}
 \index{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux@{proc\+\_\+if\+\_\+live555\+\_\+rtsp\+\_\+mux}!live555\+\_\+rtsp.\+cpp@{live555\+\_\+rtsp.\+cpp}}
@@ -651,13 +653,14 @@ Definition at line 569 of file live555\+\_\+rtsp.\+cpp.
     proc\_send\_frame\_default1,
     NULL, 
     NULL, 
+    NULL, 
     \hyperlink{live555__rtsp_8cpp_abe47b6b8febe17d311ecede4da45aea0}{live555\_rtsp\_mux\_rest\_put},
     \hyperlink{live555__rtsp_8cpp_a79702efb465218250b0e0b47968daa19}{live555\_rtsp\_mux\_rest\_get},
     \hyperlink{live555__rtsp_8cpp_ad71374130a2220d19874d40b086b1631}{live555\_rtsp\_mux\_process\_frame},
     \hyperlink{live555__rtsp_8cpp_ad353f75943a3ca57089e984dd6a63821}{live555\_rtsp\_mux\_opt},
-    NULL, 
-    NULL, 
-    NULL, 
+    (\textcolor{keywordtype}{void}*(*)(\textcolor{keyword}{const} \hyperlink{structproc__frame__ctx__s}{proc\_frame\_ctx\_t}*))\hyperlink{proc__if_8c_a778c0de8151b30abc17305131d149932}{proc\_frame\_ctx\_dup},
+    (void(*)(\textcolor{keywordtype}{void}**))\hyperlink{proc__if_8c_afad6906a6da22ba369b736863c1e204e}{proc\_frame\_ctx\_release},
+    (\hyperlink{structproc__frame__ctx__s}{proc\_frame\_ctx\_t}*(*)(const \textcolor{keywordtype}{void}*))\hyperlink{proc__if_8c_a778c0de8151b30abc17305131d149932}{proc\_frame\_ctx\_dup}
 \}
 \end{DoxyCode}
 Processor interface implementing the wrapper of the live555 R\+T\+SP multiplexer. 

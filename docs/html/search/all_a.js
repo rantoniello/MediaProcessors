@@ -4,7 +4,7 @@ var searchData=
   ['m_5feventtriggerid',['m_eventTriggerId',['../classSimpleFramedSource.html#a6de7be242a550522e914316487fa112e',1,'SimpleFramedSource']]],
   ['m_5ffifo_5fctx',['m_fifo_ctx',['../classSimpleFramedSource.html#ab93999240c393d2d3035dc7e5292eb2c',1,'SimpleFramedSource']]],
   ['mem_5futils_2eh',['mem_utils.h',['../mem__utils_8h.html',1,'']]],
-  ['module_5fapi_5fmutex',['module_api_mutex',['../structprocs__module__ctx__s.html#a10c3a0b462ead663af1b117abdfdadaa',1,'procs_module_ctx_s']]],
+  ['module_5fapi_5fmutex',['module_api_mutex',['../structcomm__module__ctx__s.html#a065cf60f09cc13971556a494dc35425f',1,'comm_module_ctx_s::module_api_mutex()'],['../structprocs__module__ctx__s.html#a10c3a0b462ead663af1b117abdfdadaa',1,'procs_module_ctx_s::module_api_mutex()']]],
   ['mutex',['mutex',['../structlog__ctx__s.html#a4b1f68253562a2a0bb7f40f8d9f51aee',1,'log_ctx_s']]],
   ['mux_5fthr',['mux_thr',['../codecs__muxers__loopback_8c.html#a494104de8b24b4783b3e8de4609c761e',1,'codecs_muxers_loopback.c']]],
   ['muxers_5fsettings_2ec',['muxers_settings.c',['../muxers__settings_8c.html',1,'']]],

@@ -93,17 +93,64 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae5add7272abafb06c8bc1a810c4b7719"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5add7272abafb06c8bc1a810c4b7719"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>elem</b></td></tr>
-<tr class="separator:ae5add7272abafb06c8bc1a810c4b7719"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af24ec8cd7ee7365d825ed9148ff2e50a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af24ec8cd7ee7365d825ed9148ff2e50a"></a>
-ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:af24ec8cd7ee7365d825ed9148ff2e50a"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__elem__ctx__s.html#af24ec8cd7ee7365d825ed9148ff2e50a">size</a></td></tr>
 <tr class="separator:af24ec8cd7ee7365d825ed9148ff2e50a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5add7272abafb06c8bc1a810c4b7719"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__elem__ctx__s.html#ae5add7272abafb06c8bc1a810c4b7719">elem</a></td></tr>
+<tr class="separator:ae5add7272abafb06c8bc1a810c4b7719"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77ec4386ce2ca348e6d9c9ced4fafa92"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfifo__elem__ctx__s.html#a77ec4386ce2ca348e6d9c9ced4fafa92">shm_elem_pool</a> []</td></tr>
+<tr class="separator:a77ec4386ce2ca348e6d9c9ced4fafa92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="fifo_8c_source.html#l00048">48</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<div class="textblock"><p>FIFO element context structure. </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00067">67</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ae5add7272abafb06c8bc1a810c4b7719"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* fifo_elem_ctx_s::elem</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Element pointer. </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00075">75</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a77ec4386ce2ca348e6d9c9ced4fafa92"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t fifo_elem_ctx_s::shm_elem_pool[]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Only used in the case of shared memory; <a class="el" href="structfifo__elem__ctx__s.html#ae5add7272abafb06c8bc1a810c4b7719">fifo_elem_ctx_t::elem</a> will point to this memory pool of a fixed maximum size (<a class="el" href="structfifo__elem__ctx__s.html#af24ec8cd7ee7365d825ed9148ff2e50a">fifo_elem_ctx_t::size</a> &lt;= pool maximum size) </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00081">81</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af24ec8cd7ee7365d825ed9148ff2e50a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t fifo_elem_ctx_s::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Element size in bytes. </p>
+
+<p>Definition at line <a class="el" href="fifo_8c_source.html#l00071">71</a> of file <a class="el" href="fifo_8c_source.html">fifo.c</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="fifo_8c_source.html">fifo.c</a></li>
 </ul>
 </div><!-- contents -->

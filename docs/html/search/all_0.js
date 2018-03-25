@@ -1,7 +1,7 @@
 var searchData=
 [
   ['allocate_5fframe_5fvideo',['allocate_frame_video',['../proc__frame__2__ffmpeg_8c.html#a49cb3d8a3699061fad962b8a28fb6259',1,'allocate_frame_video(int pix_fmt, int width, int height):&#160;proc_frame_2_ffmpeg.c'],['../proc__frame__2__ffmpeg_8h.html#a49cb3d8a3699061fad962b8a28fb6259',1,'allocate_frame_video(int pix_fmt, int width, int height):&#160;proc_frame_2_ffmpeg.c']]],
-  ['api_5fmutex',['api_mutex',['../structfifo__ctx__s.html#a27be272ae3fa045dfb5e64778a484725',1,'fifo_ctx_s::api_mutex()'],['../structproc__ctx__s.html#aea90c57d9b0a303b638a51ce7efa9a1e',1,'proc_ctx_s::api_mutex()'],['../structprocs__reg__elem__s.html#a9b7bb6d12868ba74184d95f1a2fdd2ab',1,'procs_reg_elem_s::api_mutex()'],['../structprocs__ctx__s.html#a27330c986436226abfa1b5a00b7bdeb1',1,'procs_ctx_s::api_mutex()']]],
+  ['api_5fmutex',['api_mutex',['../structcomm__ctx__s.html#a87f4bc5b93d50488325c43f384cb9d61',1,'comm_ctx_s::api_mutex()'],['../structfifo__ctx__s.html#a27be272ae3fa045dfb5e64778a484725',1,'fifo_ctx_s::api_mutex()'],['../structproc__ctx__s.html#aea90c57d9b0a303b638a51ce7efa9a1e',1,'proc_ctx_s::api_mutex()'],['../structprocs__reg__elem__s.html#a9b7bb6d12868ba74184d95f1a2fdd2ab',1,'procs_reg_elem_s::api_mutex()'],['../structprocs__ctx__s.html#a27330c986436226abfa1b5a00b7bdeb1',1,'procs_ctx_s::api_mutex()']]],
   ['assert',['ASSERT',['../check__utils_8h.html#a903f9b298be75defd8a3043ebf62bd99',1,'check_utils.h']]],
   ['audio_5fsettings_2ec',['audio_settings.c',['../audio__settings_8c.html',1,'']]],
   ['audio_5fsettings_2eh',['audio_settings.h',['../audio__settings_8h.html',1,'']]],

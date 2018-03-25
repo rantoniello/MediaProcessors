@@ -43,7 +43,7 @@ void \hyperlink{procs_8h_a0947527d95117e432f21354103c390a6}{procs\+\_\+module\+\
 \item 
 int \hyperlink{procs_8h_a226ac6dfd7598a59b9ceab3a92239a80}{procs\+\_\+module\+\_\+opt} (const char $\ast$tag,...)
 \item 
-\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{procs_8h_a6fae33560b633113d848f6ec5e8461e5}{procs\+\_\+open} (\hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{procs_8h_ac44b6ac931afbeadeb7f07b660e30bac}{procs\+\_\+open} (\hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, size\+\_\+t max\+\_\+procs\+\_\+num, const char $\ast$prefix\+\_\+name, const char $\ast$procs\+\_\+href)
 \item 
 void \hyperlink{procs_8h_a0806c10ed3203ce53115ffb1a89e83d3}{procs\+\_\+close} (\hyperlink{procs_8c_a9dcafd40720bff127bdc596e9c6dd6cd}{procs\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+procs\+\_\+ctx)
 \item 
@@ -73,12 +73,12 @@ Rafael Antoniello
 )}\hypertarget{procs_8h_a0806c10ed3203ce53115ffb1a89e83d3}{}\label{procs_8h_a0806c10ed3203ce53115ffb1a89e83d3}
 De-\/initialize and release the processors (P\+R\+O\+CS) module instance context structure. 
 \begin{DoxyParams}{Parameters}
-{\em ref\+\_\+procs\+\_\+ctx} & Reference to the pointer to the processors (P\+R\+O\+CS) module instance context structure to be release, obtained in a previous call to the \textquotesingle{}\hyperlink{procs_8h_a6fae33560b633113d848f6ec5e8461e5}{procs\+\_\+open()}\textquotesingle{} function. Pointer is set to N\+U\+LL on return. \\
+{\em ref\+\_\+procs\+\_\+ctx} & Reference to the pointer to the processors (P\+R\+O\+CS) module instance context structure to be release, obtained in a previous call to the \textquotesingle{}\hyperlink{procs_8h_ac44b6ac931afbeadeb7f07b660e30bac}{procs\+\_\+open()}\textquotesingle{} function. Pointer is set to N\+U\+LL on return. \\
 \hline
 \end{DoxyParams}
 
 
-Definition at line 369 of file procs.\+c.
+Definition at line 417 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+module\+\_\+close@{procs\+\_\+module\+\_\+close}}
 \index{procs\+\_\+module\+\_\+close@{procs\+\_\+module\+\_\+close}!procs.\+h@{procs.\+h}}
@@ -89,7 +89,7 @@ Definition at line 369 of file procs.\+c.
 )}\hypertarget{procs_8h_a0947527d95117e432f21354103c390a6}{}\label{procs_8h_a0947527d95117e432f21354103c390a6}
 Close P\+R\+O\+CS module. This is a global function and should be called only once at the end of the life of the application. 
 
-Definition at line 261 of file procs.\+c.
+Definition at line 273 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+module\+\_\+open@{procs\+\_\+module\+\_\+open}}
 \index{procs\+\_\+module\+\_\+open@{procs\+\_\+module\+\_\+open}!procs.\+h@{procs.\+h}}
@@ -108,7 +108,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 232 of file procs.\+c.
+Definition at line 244 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+module\+\_\+opt@{procs\+\_\+module\+\_\+opt}}
 \index{procs\+\_\+module\+\_\+opt@{procs\+\_\+module\+\_\+opt}!procs.\+h@{procs.\+h}}
@@ -139,7 +139,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 
 \begin{DoxyItemize}
 \item {\bfseries Tag \char`\"{}\+P\+R\+O\+C\+S\+\_\+\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+T\+Y\+P\+E\char`\"{}\+:}~\newline
- Register interface of an specific processor type.~\newline
+ Register the interface of an specific processor type.~\newline
  Additional variable arguments for function \hyperlink{procs_8h_a226ac6dfd7598a59b9ceab3a92239a80}{procs\+\_\+module\+\_\+opt()} are\+:~\newline
  
 \begin{DoxyParams}{Parameters}
@@ -197,26 +197,43 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyParams}
 
 
-Definition at line 282 of file procs.\+c.
+Definition at line 294 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+open@{procs\+\_\+open}}
 \index{procs\+\_\+open@{procs\+\_\+open}!procs.\+h@{procs.\+h}}
-\subsubsection[{\texorpdfstring{procs\+\_\+open(log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx)}{procs_open(log_ctx_t *log_ctx)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+ctx\+\_\+t}$\ast$ procs\+\_\+open (
+\subsubsection[{\texorpdfstring{procs\+\_\+open(log\+\_\+ctx\+\_\+t $\ast$log\+\_\+ctx, size\+\_\+t max\+\_\+procs\+\_\+num, const char $\ast$prefix\+\_\+name, const char $\ast$procs\+\_\+href)}{procs_open(log_ctx_t *log_ctx, size_t max_procs_num, const char *prefix_name, const char *procs_href)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf procs\+\_\+ctx\+\_\+t}$\ast$ procs\+\_\+open (
 \begin{DoxyParamCaption}
-\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx}
+\item[{{\bf log\+\_\+ctx\+\_\+t} $\ast$}]{log\+\_\+ctx, }
+\item[{size\+\_\+t}]{max\+\_\+procs\+\_\+num, }
+\item[{const char $\ast$}]{prefix\+\_\+name, }
+\item[{const char $\ast$}]{procs\+\_\+href}
 \end{DoxyParamCaption}
-)}\hypertarget{procs_8h_a6fae33560b633113d848f6ec5e8461e5}{}\label{procs_8h_a6fae33560b633113d848f6ec5e8461e5}
+)}\hypertarget{procs_8h_ac44b6ac931afbeadeb7f07b660e30bac}{}\label{procs_8h_ac44b6ac931afbeadeb7f07b660e30bac}
 Allocates and initializes processors (P\+R\+O\+CS) module instance context structure. 
 \begin{DoxyParams}{Parameters}
 {\em log\+\_\+ctx} & Pointer to the L\+OG module context structure. \\
 \hline
+{\em max\+\_\+procs\+\_\+num} & Maximum number of processors that can be created (and managed) by this instance. \\
+\hline
+{\em prefix\+\_\+name} & Module\textquotesingle{}s A\+PI R\+E\+ST prefix name (256 characters maximum). This parameter is optional (N\+U\+LL may be passed); if not specified, the default name \char`\"{}procs\char`\"{} is used. \\
+\hline
+{\em procs\+\_\+href} & Module\textquotesingle{}s A\+PI R\+E\+ST href attribute specifying the U\+RL path the A\+PI refers to. This parameter is optional (N\+U\+LL may be passed). \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Pointer to the processors context structure on success, N\+U\+LL if fails. 
+Pointer to the processors context structure on success, N\+U\+LL if fails. Code example\+:~\newline
+ The following call creates a \char`\"{}processors module instance\char`\"{} capable of handling 16 processors. Prefix name \char`\"{}video\+\_\+processors\char`\"{} suggest we will use this module instance to handle only \char`\"{}video processors\char`\"{}, and we give an href such that the module\textquotesingle{}s A\+PI may be used applying on the following U\+RL\+: G\+E\+T/\+P\+U\+T/\+P\+O\+S\+T/\+D\+E\+L\+E\+TE -\/$>$ 127.\+0.\+0.\+1/video\+\_\+processors.json~\newline
+ 
+\begin{DoxyCode}
+1 procs\_ctx\_t *procs\_ctx;
+2 ...
+3 procs\_ctx= procs\_open(log\_ctx, 16, "video\_processors", "127.0.0.1");
+\end{DoxyCode}
+ 
 \end{DoxyReturn}
 
 
-Definition at line 324 of file procs.\+c.
+Definition at line 336 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+opt@{procs\+\_\+opt}}
 \index{procs\+\_\+opt@{procs\+\_\+opt}!procs.\+h@{procs.\+h}}
@@ -277,13 +294,19 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
  Additional variable arguments for function \hyperlink{procs_8h_a7af2e6f2788006cfc96ca8d811922ffa}{procs\+\_\+opt()} are\+:~\newline
  
 \begin{DoxyParams}{Parameters}
-{\em ref\+\_\+str} & Reference to the pointer to a character string returning the processors list representational state. Code example\+: 
+{\em ref\+\_\+str} & Reference to the pointer to a character string returning the processors list representational state. \\
+\hline
+{\em filter\+\_\+str} & Character string indicating one of the following filters apply\+:
+\begin{DoxyItemize}
+\item \char`\"{}proc\+\_\+name==x\char`\"{}\+: Filter the returning list discarding all the processors that are not of the type \textquotesingle{}x\textquotesingle{};
+\item \char`\"{}proc\+\_\+name!=x\char`\"{}\+: Filter the returning list discarding all the processors that {\itshape are} of the type \textquotesingle{}x\textquotesingle{}. This parameter is optional, and can be set to N\+U\+LL (no filter apply). Code example\+: 
 \begin{DoxyCode}
 1 char *rest\_str= NULL;
 2 ...
-3 ret\_code= procs\_opt(procs\_ctx, "PROCS\_GET", &rest\_str);
+3 ret\_code= procs\_opt(procs\_ctx, "PROCS\_GET", &rest\_str, NULL);
 \end{DoxyCode}
-\\
+
+\end{DoxyItemize}\\
 \hline
 \end{DoxyParams}
 
@@ -334,7 +357,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 
 \end{DoxyItemize}
 
-Definition at line 413 of file procs.\+c.
+Definition at line 474 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+recv\+\_\+frame@{procs\+\_\+recv\+\_\+frame}}
 \index{procs\+\_\+recv\+\_\+frame@{procs\+\_\+recv\+\_\+frame}!procs.\+h@{procs.\+h}}
@@ -359,7 +382,7 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 483 of file procs.\+c.
+Definition at line 545 of file procs.\+c.
 
 \index{procs.\+h@{procs.\+h}!procs\+\_\+send\+\_\+frame@{procs\+\_\+send\+\_\+frame}}
 \index{procs\+\_\+send\+\_\+frame@{procs\+\_\+send\+\_\+frame}!procs.\+h@{procs.\+h}}
@@ -384,5 +407,5 @@ Status code (S\+T\+A\+T\+\_\+\+S\+U\+C\+C\+E\+SS code in case of success, for ot
 \end{DoxyReturn}
 
 
-Definition at line 443 of file procs.\+c.
+Definition at line 504 of file procs.\+c.
 

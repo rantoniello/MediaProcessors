@@ -1,0 +1,48 @@
+\hypertarget{structcomm__if__s}{}\section{comm\+\_\+if\+\_\+s Struct Reference}
+\label{structcomm__if__s}\index{comm\+\_\+if\+\_\+s@{comm\+\_\+if\+\_\+s}}
+
+
+{\ttfamily \#include $<$comm.\+h$>$}
+
+
+
+Collaboration diagram for comm\+\_\+if\+\_\+s\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=285pt]{structcomm__if__s__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ {\bfseries scheme}\hypertarget{structcomm__if__s_a46d130ec366e00c748848f1666bd168e}{}\label{structcomm__if__s_a46d130ec366e00c748848f1666bd168e}
+
+\item 
+\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$($\ast$ {\bfseries open} )(const char $\ast$url, const char $\ast$local\+\_\+url, \hyperlink{comm_8h_a2604d892f8ab29dfc96bd68e2cc3086f}{comm\+\_\+mode\+\_\+t} comm\+\_\+mode, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx, va\+\_\+list arg)\hypertarget{structcomm__if__s_ac8bba953c88fa636aeff682e116fa9d1}{}\label{structcomm__if__s_ac8bba953c88fa636aeff682e116fa9d1}
+
+\item 
+void($\ast$ {\bfseries close} )(\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$$\ast$ref\+\_\+comm\+\_\+ctx)\hypertarget{structcomm__if__s_a077eba49a8a8189a250868920e925956}{}\label{structcomm__if__s_a077eba49a8a8189a250868920e925956}
+
+\item 
+int($\ast$ {\bfseries send} )(\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$comm\+\_\+ctx, const void $\ast$buf, size\+\_\+t count, struct timeval $\ast$timeout)\hypertarget{structcomm__if__s_aea8ef75cc832cd88f0a8f8fcccc00f48}{}\label{structcomm__if__s_aea8ef75cc832cd88f0a8f8fcccc00f48}
+
+\item 
+int($\ast$ {\bfseries recv} )(\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$comm\+\_\+ctx, void $\ast$$\ast$ref\+\_\+buf, size\+\_\+t $\ast$ref\+\_\+count, char $\ast$$\ast$ref\+\_\+from, struct timeval $\ast$timeout)\hypertarget{structcomm__if__s_a28e7de5768bc096208c18aaf41c1e2a1}{}\label{structcomm__if__s_a28e7de5768bc096208c18aaf41c1e2a1}
+
+\item 
+int($\ast$ {\bfseries unblock} )(\hyperlink{comm_8h_aacc0873718a86d8ef4658bad2500d091}{comm\+\_\+ctx\+\_\+t} $\ast$comm\+\_\+ctx)\hypertarget{structcomm__if__s_ad5d4d1d4399aef10770a07372455ca80}{}\label{structcomm__if__s_ad5d4d1d4399aef10770a07372455ca80}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Communication protocol interface structure prototype. Each specific communication module implementation will define a static and unambiguous interface of this type. 
+
+Definition at line 64 of file comm.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{comm_8h}{comm.\+h}\end{DoxyCompactItemize}

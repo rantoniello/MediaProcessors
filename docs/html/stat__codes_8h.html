@@ -101,13 +101,16 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="stat__codes_8h__dep__incl.png" border="0" usemap="#stat__codes_8hdep" alt=""/></div>
 <map name="stat__codes_8hdep" id="stat__codes_8hdep">
-<area shape="rect" id="node2" href="fair__lock_8c.html" title="fair_lock.c" alt="" coords="5,80,88,107"/>
-<area shape="rect" id="node3" href="fifo_8c.html" title="fifo.c" alt="" coords="112,80,163,107"/>
-<area shape="rect" id="node4" href="interr__usleep_8c.html" title="interr_usleep.c" alt="" coords="187,80,293,107"/>
-<area shape="rect" id="node5" href="llist_8c.html" title="llist.c" alt="" coords="317,80,371,107"/>
-<area shape="rect" id="node6" href="log_8c_source.html" title="log.c" alt="" coords="395,80,445,107"/>
-<area shape="rect" id="node7" href="stat__codes_8c.html" title="stat_codes.c" alt="" coords="470,80,567,107"/>
-<area shape="rect" id="node8" href="uri__parser_8c.html" title="uri_parser.c" alt="" coords="592,80,683,107"/>
+<area shape="rect" id="node2" href="bitparser_8c.html" title="bitparser.c" alt="" coords="5,80,88,107"/>
+<area shape="rect" id="node3" href="comm_8c.html" title="comm.c" alt="" coords="112,80,181,107"/>
+<area shape="rect" id="node4" href="comm__udp_8c.html" title="comm_udp.c" alt="" coords="206,80,303,107"/>
+<area shape="rect" id="node5" href="fair__lock_8c.html" title="fair_lock.c" alt="" coords="328,80,411,107"/>
+<area shape="rect" id="node6" href="fifo_8c.html" title="fifo.c" alt="" coords="435,80,485,107"/>
+<area shape="rect" id="node7" href="interr__usleep_8c.html" title="interr_usleep.c" alt="" coords="509,80,616,107"/>
+<area shape="rect" id="node8" href="llist_8c.html" title="llist.c" alt="" coords="640,80,693,107"/>
+<area shape="rect" id="node9" href="log_8c_source.html" title="log.c" alt="" coords="717,80,768,107"/>
+<area shape="rect" id="node10" href="stat__codes_8c.html" title="stat_codes.c" alt="" coords="793,80,890,107"/>
+<area shape="rect" id="node11" href="uri__parser_8c.html" title="uri_parser.c" alt="" coords="915,80,1005,107"/>
 </map>
 </div>
 </div>
@@ -116,12 +119,12 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a852bc7f62194c290e8d08cbda3205b4f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a852bc7f62194c290e8d08cbda3205b4f"></a>
-typedef enum stat_codes_ctx_s&#160;</td><td class="memItemRight" valign="bottom"><b>stat_codes_ctx_t</b></td></tr>
+typedef enum <a class="el" href="stat__codes_8h.html#a6acf55f4eeae6e27ab854552a32748be">stat_codes_ctx_s</a>&#160;</td><td class="memItemRight" valign="bottom"><b>stat_codes_ctx_t</b></td></tr>
 <tr class="separator:a852bc7f62194c290e8d08cbda3205b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a6acf55f4eeae6e27ab854552a32748be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6acf55f4eeae6e27ab854552a32748be"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>stat_codes_ctx_s</b> { <br />
+<tr class="memitem:a6acf55f4eeae6e27ab854552a32748be"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__codes_8h.html#a6acf55f4eeae6e27ab854552a32748be">stat_codes_ctx_s</a> { <br />
 &#160;&#160;<b>STAT_SUCCESS</b> = 0, 
 <b>STAT_NOTMODIFIED</b>, 
 <b>STAT_ERROR</b>, 
@@ -138,6 +141,12 @@ Enumerations</h2></td></tr>
 <b>STAT_ETIMEDOUT</b>, 
 <br />
 &#160;&#160;<b>STAT_EINTR</b>, 
+<b>STAT_ENOPROTOOPT</b>, 
+<b>STAT_EAFNOSUPPORT</b>, 
+<a class="el" href="stat__codes_8h.html#a6acf55f4eeae6e27ab854552a32748bea6ae294a3cb824f8a48164b8b9cdf0a55">STAT_EAFNOSUPPORT_HOSTNAME</a>, 
+<br />
+&#160;&#160;<a class="el" href="stat__codes_8h.html#a6acf55f4eeae6e27ab854552a32748bea5669219efcd5824216d0d4336a39efcc">STAT_EAFNOSUPPORT_PORT</a>, 
+<b>STAT_ENODATA</b>, 
 <b>STAT_CODES_MAX</b>
 <br />
  }</td></tr>
@@ -154,7 +163,30 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>stat_codes_ge
 <dl class="section author"><dt>Author</dt><dd>Rafael Antoniello </dd></dl>
 
 <p>Definition in file <a class="el" href="stat__codes_8h_source.html">stat_codes.h</a>.</p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<a class="anchor" id="a6acf55f4eeae6e27ab854552a32748be"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="stat__codes_8h.html#a6acf55f4eeae6e27ab854552a32748be">stat_codes_ctx_s</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a6acf55f4eeae6e27ab854552a32748bea6ae294a3cb824f8a48164b8b9cdf0a55"></a>STAT_EAFNOSUPPORT_HOSTNAME&#160;</td><td class="fielddoc">
+<p>Address family not supported: need to specify host IP </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a6acf55f4eeae6e27ab854552a32748bea5669219efcd5824216d0d4336a39efcc"></a>STAT_EAFNOSUPPORT_PORT&#160;</td><td class="fielddoc">
+<p>Address family not supported: need to specify port </p>
+</td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="stat__codes_8h_source.html#l00039">39</a> of file <a class="el" href="stat__codes_8h_source.html">stat_codes.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

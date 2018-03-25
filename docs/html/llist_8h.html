@@ -109,8 +109,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="llist_8h__dep__incl.png" border="0" usemap="#llist_8hdep" alt=""/></div>
 <map name="llist_8hdep" id="llist_8hdep">
-<area shape="rect" id="node2" href="llist_8c.html" title="llist.c" alt="" coords="5,80,59,107"/>
-<area shape="rect" id="node3" href="log_8c_source.html" title="log.c" alt="" coords="83,80,133,107"/>
+<area shape="rect" id="node2" href="comm_8c.html" title="comm.c" alt="" coords="5,80,75,107"/>
+<area shape="rect" id="node3" href="llist_8c.html" title="llist.c" alt="" coords="99,80,152,107"/>
+<area shape="rect" id="node4" href="log_8c_source.html" title="log.c" alt="" coords="176,80,227,107"/>
 </map>
 </div>
 </div>
@@ -139,6 +140,12 @@ Functions</h2></td></tr>
 <tr class="separator:a51aae99f75f43a1b4a5ca3eeb15a401d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d83d366ad71633395a7b1578b6537fc"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llist_8h.html#a0d83d366ad71633395a7b1578b6537fc">llist_pop</a> (<a class="el" href="llist_8h.html#a90862badf6f9cc4e3d6348b7d60ce4f0">llist_t</a> **ref_llist_head)</td></tr>
 <tr class="separator:a0d83d366ad71633395a7b1578b6537fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad405de668eba911caf0c6efd71dc3623"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llist_8h.html#ad405de668eba911caf0c6efd71dc3623">llist_len</a> (const <a class="el" href="llist_8h.html#a90862badf6f9cc4e3d6348b7d60ce4f0">llist_t</a> *llist_head)</td></tr>
+<tr class="separator:ad405de668eba911caf0c6efd71dc3623"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a900b454dc728efaa01c0c146d90b4047"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llist_8h.html#a900b454dc728efaa01c0c146d90b4047">llist_get_nth</a> (const <a class="el" href="llist_8h.html#a90862badf6f9cc4e3d6348b7d60ce4f0">llist_t</a> *llist_head, int index)</td></tr>
+<tr class="separator:a900b454dc728efaa01c0c146d90b4047"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64c83f1c3747824131f36f006e88d6fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llist_8h.html#a64c83f1c3747824131f36f006e88d6fd">llist_insert_nth</a> (<a class="el" href="llist_8h.html#a90862badf6f9cc4e3d6348b7d60ce4f0">llist_t</a> **ref_llist_head, int index, void *data)</td></tr>
+<tr class="separator:a64c83f1c3747824131f36f006e88d6fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Simple linked-list utility implementation. </p>
@@ -199,7 +206,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd>stat_codes_ctx_t </dd></dl>
 
-<p>Definition at line <a class="el" href="llist_8h_source.html#l00091">91</a> of file <a class="el" href="llist_8h_source.html">llist.h</a>.</p>
+<p>Definition at line <a class="el" href="llist_8h_source.html#l00121">121</a> of file <a class="el" href="llist_8h_source.html">llist.h</a>.</p>
 
 </div>
 </div>
@@ -243,7 +250,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="llist_8h_source.html#l00135">135</a> of file <a class="el" href="llist_8h_source.html">llist.h</a>.</p>
+<p>Definition at line <a class="el" href="llist_8h_source.html#l00165">165</a> of file <a class="el" href="llist_8h_source.html">llist.h</a>.</p>
 
 </div>
 </div>
@@ -264,6 +271,109 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a900b454dc728efaa01c0c146d90b4047"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* llist_get_nth </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="llist_8h.html#a90862badf6f9cc4e3d6348b7d60ce4f0">llist_t</a> *&#160;</td>
+          <td class="paramname"><em>llist_head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the 'Nth' element of the list (does not delete the element). </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Pointer</td><td>to the so-called "head" of the list.  Position of the element within the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the element if found, NULL otherwise. </dd></dl>
+
+<p>Definition at line <a class="el" href="llist_8c_source.html#l00113">113</a> of file <a class="el" href="llist_8c_source.html">llist.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a64c83f1c3747824131f36f006e88d6fd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int llist_insert_nth </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="llist_8h.html#a90862badf6f9cc4e3d6348b7d60ce4f0">llist_t</a> **&#160;</td>
+          <td class="paramname"><em>ref_llist_head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Insert the given element in the 'N-th' position of the list. If the given index position is out of bounds, the element will be appended at the end of the list. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ref_llist_head</td><td>Reference to the pointer to the so-called "head" of the list. If the list is empty, the head pointer should be NULL.  Position in which the element is to be inserted within the list. </td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to a new data element to be inserted in the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Status code (refer to 'stat_codes_ctx_t' type). </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>stat_codes_ctx_t </dd></dl>
+
+<p>Definition at line <a class="el" href="llist_8c_source.html#l00137">137</a> of file <a class="el" href="llist_8c_source.html">llist.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad405de668eba911caf0c6efd71dc3623"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int llist_len </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="llist_8h.html#a90862badf6f9cc4e3d6348b7d60ce4f0">llist_t</a> *&#160;</td>
+          <td class="paramname"><em>llist_head</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the number of nodes in a list. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Pointer</td><td>to the so-called "head" of the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of elements in the list is returned. Note that if a NULL pointer is passed by argument, we assume that the linked list is empty (thus, returning zero). </dd></dl>
+
+<p>Definition at line <a class="el" href="llist_8c_source.html#l00095">95</a> of file <a class="el" href="llist_8c_source.html">llist.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a0d83d366ad71633395a7b1578b6537fc"></a>
 <div class="memitem">
 <div class="memproto">

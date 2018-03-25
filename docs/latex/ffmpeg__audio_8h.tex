@@ -60,13 +60,13 @@ int \hyperlink{ffmpeg__audio_8h_a5ea9904072e0f6d4d8541c7b2e6aa9b1}{ffmpeg\+\_\+a
 \item 
 void \hyperlink{ffmpeg__audio_8h_aa637324b98054a600615fee6daef5210}{ffmpeg\+\_\+audio\+\_\+enc\+\_\+ctx\+\_\+deinit} (\hyperlink{ffmpeg__audio_8h_af0c12772b557383de7013dd6027c9159}{ffmpeg\+\_\+audio\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+audio\+\_\+enc\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
-int \hyperlink{ffmpeg__audio_8h_ac5fff0cac63a5f7321d1a5f5f5651cc3}{ffmpeg\+\_\+audio\+\_\+enc\+\_\+frame} (\hyperlink{ffmpeg__audio_8h_af0c12772b557383de7013dd6027c9159}{ffmpeg\+\_\+audio\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+audio\+\_\+enc\+\_\+ctx, A\+V\+Frame $\ast$avframe\+\_\+iput, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+int \hyperlink{ffmpeg__audio_8h_ac5fff0cac63a5f7321d1a5f5f5651cc3}{ffmpeg\+\_\+audio\+\_\+enc\+\_\+frame} (\hyperlink{ffmpeg__audio_8h_af0c12772b557383de7013dd6027c9159}{ffmpeg\+\_\+audio\+\_\+enc\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+audio\+\_\+enc\+\_\+ctx, A\+V\+Frame $\ast$avframe\+\_\+iput, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
 int \hyperlink{ffmpeg__audio_8h_a536a23cea72fb5fe9c85a36c94f675eb}{ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+init} (\hyperlink{ffmpeg__audio_8h_a0c3f685b68ceba5d1e0b2d449f1c9ab9}{ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx, int avcodecid, const \hyperlink{audio__settings_8h_a1ec2b2e83ade2c4fc33cfb910bc007ad}{audio\+\_\+settings\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$audio\+\_\+settings\+\_\+dec\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
 void \hyperlink{ffmpeg__audio_8h_a8894753c3491a559764c560a0298d769}{ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+deinit} (\hyperlink{ffmpeg__audio_8h_a0c3f685b68ceba5d1e0b2d449f1c9ab9}{ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
-int \hyperlink{ffmpeg__audio_8h_acef47e1a651e9b2d2ce572411832da3d}{ffmpeg\+\_\+audio\+\_\+dec\+\_\+frame} (\hyperlink{ffmpeg__audio_8h_a0c3f685b68ceba5d1e0b2d449f1c9ab9}{ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx, A\+V\+Packet $\ast$avpacket\+\_\+iput, \hyperlink{structfifo__ctx__s}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
+int \hyperlink{ffmpeg__audio_8h_acef47e1a651e9b2d2ce572411832da3d}{ffmpeg\+\_\+audio\+\_\+dec\+\_\+frame} (\hyperlink{ffmpeg__audio_8h_a0c3f685b68ceba5d1e0b2d449f1c9ab9}{ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx\+\_\+t} $\ast$ffmpeg\+\_\+audio\+\_\+dec\+\_\+ctx, A\+V\+Packet $\ast$avpacket\+\_\+iput, \hyperlink{fifo_8c_acf3f21e64cbabccd8420c306740820c1}{fifo\+\_\+ctx\+\_\+t} $\ast$oput\+\_\+fifo\+\_\+ctx, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \item 
 void \hyperlink{ffmpeg__audio_8h_aea2fe752df5b895e05beaa30aa7a4422}{ffmpeg\+\_\+audio\+\_\+reset\+\_\+on\+\_\+new\+\_\+settings} (\hyperlink{proc_8h_ae264f89be30fc03f5053bc16d58cba05}{proc\+\_\+ctx\+\_\+t} $\ast$proc\+\_\+ctx, volatile void $\ast$audio\+\_\+settings\+\_\+opaque, int flag\+\_\+is\+\_\+encoder, \hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$log\+\_\+ctx)
 \end{DoxyCompactItemize}
@@ -263,5 +263,5 @@ F\+Fmpeg audio C\+O\+D\+E\+CS are not generally designed to accept changing sett
 \end{DoxyParams}
 
 
-Definition at line 391 of file ffmpeg\+\_\+audio.\+c.
+Definition at line 392 of file ffmpeg\+\_\+audio.\+c.
 

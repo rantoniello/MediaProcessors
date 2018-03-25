@@ -1,0 +1,87 @@
+\hypertarget{structcomm__ctx__s}{}\section{comm\+\_\+ctx\+\_\+s Struct Reference}
+\label{structcomm__ctx__s}\index{comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}}
+
+
+{\ttfamily \#include $<$comm.\+h$>$}
+
+
+
+Collaboration diagram for comm\+\_\+ctx\+\_\+s\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=193pt]{structcomm__ctx__s__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{comm_8h_a0d96b9368107e517ea8253837384faf5}{comm\+\_\+if\+\_\+t} $\ast$ \hyperlink{structcomm__ctx__s_ada6c987982f09f27479ce375b5050534}{comm\+\_\+if}
+\item 
+pthread\+\_\+mutex\+\_\+t \hyperlink{structcomm__ctx__s_a87f4bc5b93d50488325c43f384cb9d61}{api\+\_\+mutex}
+\item 
+\hyperlink{structlog__ctx__s}{log\+\_\+ctx\+\_\+t} $\ast$ \hyperlink{structcomm__ctx__s_a8ac71b7c3edcbbf9eb98f8668f9fe572}{log\+\_\+ctx}
+\item 
+\hyperlink{comm_8h_a2604d892f8ab29dfc96bd68e2cc3086f}{comm\+\_\+mode\+\_\+t} \hyperlink{structcomm__ctx__s_a8e47d99809ed21c0d63e53529b3d0596}{comm\+\_\+mode}
+\item 
+char $\ast$ \hyperlink{structcomm__ctx__s_afa1c9d723a19d1ec55d4ff2e9f8d17e0}{local\+\_\+url}
+\item 
+char $\ast$ \hyperlink{structcomm__ctx__s_aa5fe745b2131be751f5a0e4528c946d3}{url}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Communication module instance context structure (\textquotesingle{}handler\textquotesingle{}). 
+
+Definition at line 79 of file comm.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\index{comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}!api\+\_\+mutex@{api\+\_\+mutex}}
+\index{api\+\_\+mutex@{api\+\_\+mutex}!comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{api\+\_\+mutex}{api_mutex}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+mutex\+\_\+t comm\+\_\+ctx\+\_\+s\+::api\+\_\+mutex}\hypertarget{structcomm__ctx__s_a87f4bc5b93d50488325c43f384cb9d61}{}\label{structcomm__ctx__s_a87f4bc5b93d50488325c43f384cb9d61}
+Module instance A\+PI mutual exclusion lock. 
+
+Definition at line 87 of file comm.\+h.
+
+\index{comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}!comm\+\_\+if@{comm\+\_\+if}}
+\index{comm\+\_\+if@{comm\+\_\+if}!comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{comm\+\_\+if}{comm_if}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf comm\+\_\+if\+\_\+t}$\ast$ comm\+\_\+ctx\+\_\+s\+::comm\+\_\+if}\hypertarget{structcomm__ctx__s_ada6c987982f09f27479ce375b5050534}{}\label{structcomm__ctx__s_ada6c987982f09f27479ce375b5050534}
+Communication interface structure prototype. 
+
+Definition at line 83 of file comm.\+h.
+
+\index{comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}!comm\+\_\+mode@{comm\+\_\+mode}}
+\index{comm\+\_\+mode@{comm\+\_\+mode}!comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{comm\+\_\+mode}{comm_mode}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf comm\+\_\+mode\+\_\+t} comm\+\_\+ctx\+\_\+s\+::comm\+\_\+mode}\hypertarget{structcomm__ctx__s_a8e47d99809ed21c0d63e53529b3d0596}{}\label{structcomm__ctx__s_a8e47d99809ed21c0d63e53529b3d0596}
+Module instance mode. 
+
+Definition at line 95 of file comm.\+h.
+
+\index{comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}!local\+\_\+url@{local\+\_\+url}}
+\index{local\+\_\+url@{local\+\_\+url}!comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{local\+\_\+url}{local_url}}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ comm\+\_\+ctx\+\_\+s\+::local\+\_\+url}\hypertarget{structcomm__ctx__s_afa1c9d723a19d1ec55d4ff2e9f8d17e0}{}\label{structcomm__ctx__s_afa1c9d723a19d1ec55d4ff2e9f8d17e0}
+Local U\+RL. 
+
+Definition at line 99 of file comm.\+h.
+
+\index{comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}!log\+\_\+ctx@{log\+\_\+ctx}}
+\index{log\+\_\+ctx@{log\+\_\+ctx}!comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{log\+\_\+ctx}{log_ctx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf log\+\_\+ctx\+\_\+t}$\ast$ comm\+\_\+ctx\+\_\+s\+::log\+\_\+ctx}\hypertarget{structcomm__ctx__s_a8ac71b7c3edcbbf9eb98f8668f9fe572}{}\label{structcomm__ctx__s_a8ac71b7c3edcbbf9eb98f8668f9fe572}
+External L\+OG module context structure instance. 
+
+Definition at line 91 of file comm.\+h.
+
+\index{comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}!url@{url}}
+\index{url@{url}!comm\+\_\+ctx\+\_\+s@{comm\+\_\+ctx\+\_\+s}}
+\subsubsection[{\texorpdfstring{url}{url}}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ comm\+\_\+ctx\+\_\+s\+::url}\hypertarget{structcomm__ctx__s_aa5fe745b2131be751f5a0e4528c946d3}{}\label{structcomm__ctx__s_aa5fe745b2131be751f5a0e4528c946d3}
+Input/output U\+RL. 
+
+Definition at line 103 of file comm.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{comm_8h}{comm.\+h}\end{DoxyCompactItemize}
