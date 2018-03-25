@@ -149,11 +149,8 @@ SUITE(UTESTS_FIFO)
 				if((ret_code= execve(_INSTALL_DIR"/bin/"
 						"mediaprocsutils_apps_app_utest_fifo_consumer_thr",
 						args, envs))< 0) { // execve won't return if succeeded
-LOGD("\n000 %d*************************************************************************************\n", ret_code);
 					exit(ret_code);
 				}
-LOGD("\nOK OK OK*************************************************************************************\n");
-				exit(EXIT_SUCCESS);
 			}
 			/* ... Continue main task as parent code... */
 		}
