@@ -108,6 +108,11 @@
 #define PROCS_FIFO_SIZE 2
 
 /**
+ * Maximum 'href' string path length.
+ */
+#define PROCS_HREF_MAX_LEN 2048
+
+/**
  * Module's context structure.
  * PROCS module context structure is statically defined in the program.
  */
@@ -743,7 +748,6 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 	cJSON *cjson_rest= NULL, *cjson_proc= NULL;
 	cJSON *cjson_aux= NULL, *cjson_procs; // Do not release
 	const char *filter_proc_name= NULL, *filter_proc_notname= NULL;
-	char href[1024]= {0};
 	LOG_CTX_INIT(log_ctx);
 
 	/* Check arguments */
@@ -801,6 +805,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 		proc_ctx_t *proc_ctx= NULL;
 		procs_reg_elem_t *procs_reg_elem=
 				&procs_ctx->procs_reg_elem_array[i];
+		char href[PROCS_HREF_MAX_LEN+ sizeof(".json")]= {0};
 
 		if((proc_ctx= procs_reg_elem->proc_ctx)== NULL)
 			continue;
@@ -853,9 +858,7 @@ static int procs_rest_get(procs_ctx_t *procs_ctx, log_ctx_t *log_ctx,
 		CHECK_DO(cjson_aux!= NULL, goto end);
 		cJSON_AddItemToObject(cjson_link, "rel", cjson_aux);
 
-		snprintf(href, sizeof(href), "%s/%s/%d.json",
-				procs_ctx->procs_href!= NULL? procs_ctx->procs_href: "",
-						procs_ctx->prefix_name, proc_instance_index);
+		snprintf(href, sizeof(href), "%s.json", proc_ctx->href);
 		cjson_aux= cJSON_CreateString(href);
 		CHECK_DO(cjson_aux!= NULL, goto end);
 		cJSON_AddItemToObject(cjson_link, "href", cjson_aux);
@@ -891,6 +894,7 @@ static int proc_register(procs_ctx_t *procs_ctx, const char *proc_name,
 	cJSON *cjson_aux= NULL; // Do not release
 	proc_ctx_t *proc_ctx= NULL;
 	uint32_t fifo_ctx_maxsize[PROC_IO_NUM]= {PROCS_FIFO_SIZE, PROCS_FIFO_SIZE};
+	char href[PROCS_HREF_MAX_LEN]= {0};
 	LOG_CTX_INIT(log_ctx);
 
 	/* Check arguments */
@@ -979,8 +983,13 @@ static int proc_register(procs_ctx_t *procs_ctx, const char *proc_name,
 		goto end;
 	}
 
+	/* Compose processor 'href' */
+	snprintf(href, sizeof(href), "%s/%s/%d",
+			procs_ctx->procs_href!= NULL? procs_ctx->procs_href: "",
+			procs_ctx->prefix_name, proc_id);
+
 	/* Open processor */
-	proc_ctx= proc_open(proc_if, settings_str, proc_id, fifo_ctx_maxsize,
+	proc_ctx= proc_open(proc_if, settings_str, proc_id, href, fifo_ctx_maxsize,
 			LOG_CTX_GET(), arg);
 	CHECK_DO(proc_ctx!= NULL, goto end);
 
@@ -1349,8 +1358,8 @@ static proc_ctx_t* procs_id_opt_fetch_proc_ctx(procs_ctx_t *procs_ctx,
 	 * processor type will be just ignored.
 	 */
 	proc_ctx_new= proc_open(proc_if_new, settings_str_curr,
-			proc_ctx_curr->proc_instance_index, fifo_ctx_maxsize,
-			LOG_CTX_GET(), va_list_empty);
+			proc_ctx_curr->proc_instance_index, proc_ctx_curr->href,
+			fifo_ctx_maxsize, LOG_CTX_GET(), va_list_empty);
 	CHECK_DO(proc_ctx_new!= NULL, goto end);
 
 	/* Unblock current processor input/output FIFOs to be able to acquire

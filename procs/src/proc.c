@@ -85,8 +85,9 @@ static void proc_stats_register_accumulated_io_bits(proc_ctx_t *proc_ctx,
 /* **** Implementations **** */
 
 proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
-		int proc_instance_index, uint32_t fifo_ctx_maxsize[PROC_IO_NUM],
-		log_ctx_t *log_ctx, va_list arg)
+		int proc_instance_index, const char* href,
+		uint32_t fifo_ctx_maxsize[PROC_IO_NUM], log_ctx_t *log_ctx,
+		va_list arg)
 {
 	uint64_t flag_proc_features;
 	int i, ret_code, end_code= STAT_ERROR;
@@ -97,8 +98,10 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 	/* Check arguments */
 	CHECK_DO(proc_if!= NULL, return NULL);
 	CHECK_DO(settings_str!= NULL, return NULL);
+	CHECK_DO(proc_instance_index>= 0, return NULL);
+	// Parameter 'href' is allowed to be NULL
 	CHECK_DO(fifo_ctx_maxsize!= NULL , return NULL);
-	// Note: 'log_ctx' is allowed to be NULL
+	// Parameter 'log_ctx' is allowed to be NULL
 
 	/* Check mandatory call-backs existence */
 	CHECK_DO(proc_if->open!= NULL, goto end);
@@ -113,6 +116,12 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 
 	/* Set PROC register index. */
 	proc_ctx->proc_instance_index= proc_instance_index;
+
+	/* Set processor 'href' */
+	if(href!= NULL && strlen(href)> 0) {
+		proc_ctx->href= strdup(href);
+		CHECK_DO(proc_ctx->href!= NULL, goto end);
+	}
 
 	/* API mutual exclusion lock */
 	ret_code= pthread_mutex_init(&proc_ctx->api_mutex, NULL);
@@ -255,6 +264,12 @@ void proc_close(proc_ctx_t **ref_proc_ctx)
 		}
 		interr_usleep_close(&proc_ctx->interr_usleep_ctx);
 		LOGD("joined O.K.\n"); // comment-me
+
+		/* Release processor 'href' if applicable */
+		if(proc_ctx->href!= NULL) {
+			free(proc_ctx->href);
+			proc_ctx->href= NULL;
+		}
 
 		/* Release API mutual exclusion lock */
 		ASSERT(pthread_mutex_destroy(&proc_ctx->api_mutex)== 0);

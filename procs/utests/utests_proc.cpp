@@ -156,7 +156,7 @@ SUITE(UTESTS_PROC)
 
 		/* Open processor */
 		proc_ctx= proc_open(&proc_if_bypass_proc, ""/*settings*/, 0/*index*/,
-				fifo_ctx_maxsize, NULL/*LOG*/, NULL);
+				NULL/*'href'*/, fifo_ctx_maxsize, NULL/*LOG*/, NULL);
 		CHECK(proc_ctx!= NULL);
 		if(proc_ctx== NULL)
 			return;

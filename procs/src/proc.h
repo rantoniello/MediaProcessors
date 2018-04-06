@@ -94,6 +94,10 @@ typedef struct proc_ctx_s {
 	 */
 	int proc_instance_index;
 	/**
+	 * Processor 'href'.
+	 */
+	char *href;
+	/**
 	 * Processor API mutual exclusion lock.
 	 */
 	pthread_mutex_t api_mutex;
@@ -194,6 +198,7 @@ typedef struct proc_ctx_s {
  * array with a specific index (managed and assigned from outside this module).
  * The idea behind using an array is to fetch as fast as possible the PROC
  * instance to perform i/o operations.
+ * @param href Processor 'href'.
  * @param fifo_ctx_maxsize Maximum size, in number of queued elements, for the
  * input and output FIFOs of the processor.
  * @param log_ctx Pointer to the LOG module context structure.
@@ -202,8 +207,9 @@ typedef struct proc_ctx_s {
  * NULL if fails.
  */
 proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
-		int proc_instance_index, uint32_t fifo_ctx_maxsize[PROC_IO_NUM],
-		log_ctx_t *log_ctx, va_list arg);
+		int proc_instance_index, const char* href,
+		uint32_t fifo_ctx_maxsize[PROC_IO_NUM], log_ctx_t *log_ctx,
+		va_list arg);
 
 /**
  * Ends processing thread, de-initialize and release the generic processor
