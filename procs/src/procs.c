@@ -108,11 +108,6 @@
 #define PROCS_FIFO_SIZE 2
 
 /**
- * Maximum 'href' string path length.
- */
-#define PROCS_HREF_MAX_LEN 2048
-
-/**
  * Module's context structure.
  * PROCS module context structure is statically defined in the program.
  */

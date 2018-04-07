@@ -205,7 +205,7 @@ typedef struct proc_if_s {
 	 * fails.
 	 */
 	proc_ctx_t* (*open)(const proc_if_t *proc_if, const char *settings_str,
-			log_ctx_t *log_ctx, va_list arg);
+			const char* href, log_ctx_t *log_ctx, va_list arg);
 	/**
 	 * Ends processing thread, de-initialize and release the processor (PROC)
 	 * context structure and all the related resources.

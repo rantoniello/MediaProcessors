@@ -80,6 +80,11 @@ typedef enum {
 } proc_io_t;
 
 /**
+ * Maximum 'href' string path length.
+ */
+#define PROCS_HREF_MAX_LEN 2048
+
+/**
  * Generic processor (PROC) context structure.
  */
 typedef struct proc_ctx_s {

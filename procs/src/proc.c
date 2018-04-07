@@ -108,7 +108,7 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 	CHECK_DO(proc_if->close!= NULL, goto end);
 
 	/* Open (allocate) the specific processor (PROC) instance */
-	proc_ctx= proc_if->open(proc_if, settings_str, LOG_CTX_GET(), arg);
+	proc_ctx= proc_if->open(proc_if, settings_str, href, LOG_CTX_GET(), arg);
 	CHECK_DO(proc_ctx!= NULL, goto end);
 
 	/* Set processor (PROC) interface context structure */

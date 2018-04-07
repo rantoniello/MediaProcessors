@@ -62,7 +62,8 @@ typedef struct bypass_proc_ctx_s {
 } bypass_proc_ctx_t;
 
 static proc_ctx_t* bypass_proc_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg)
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg)
 {
 	int ret_code, end_code= STAT_ERROR;
 	bypass_proc_ctx_t *bypass_proc_ctx= NULL;
@@ -71,6 +72,8 @@ static proc_ctx_t* bypass_proc_open(const proc_if_t *proc_if,
 	/* CHeck arguments */
 	if(proc_if== NULL || settings_str== NULL)
 		return NULL;
+	// Parameter 'href' is allowed to be NULL
+	// Parameter 'log_ctx' is allowed to be NULL
 
 	/* Allocate processor context structure */
 	bypass_proc_ctx= (bypass_proc_ctx_t*)calloc(1, sizeof(bypass_proc_ctx_t));

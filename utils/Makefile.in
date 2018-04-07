@@ -72,7 +72,7 @@ utest:
 	$(MAKE) $(EXE_DIR)/$(LIBNAME)_apps_$(NAME_APPS)
 	chmod +x $(EXE_DIR)/$(LIBNAME)_utests
 	chmod +x $(SRCDIR)/../utests/utests.sh
-	$(SRCDIR)/../utests/utests.sh $(PREFIX) $(LIBNAME)_utests yes
+	$(SRCDIR)/../utests/utests.sh $(PREFIX) $(LIBNAME)_utests yes || (echo "utests failed (code $$?)"; exit 1)
 
 $(BUILDDIR)/utests/%.o: $(SRCDIR)/../utests/%.c*
 	$(CPP) -c -o $@ $< $(CFLAGS)

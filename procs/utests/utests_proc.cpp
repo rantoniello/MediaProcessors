@@ -43,7 +43,7 @@ extern "C" {
 /* **** Define a very simple bypass processor **** */
 
 static proc_ctx_t* bypass_proc_open(const proc_if_t*, const char *settings_str,
-		log_ctx_t *log_ctx, va_list arg)
+		const char* href, log_ctx_t *log_ctx, va_list arg)
 {
 	return (proc_ctx_t*)calloc(1, sizeof(proc_ctx_t));
 }

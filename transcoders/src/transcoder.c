@@ -95,7 +95,8 @@ typedef struct transcoder_ctx_s {
 /* **** Prototypes **** */
 
 static proc_ctx_t* transcoder_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg);
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg);
 static void transcoder_close(proc_ctx_t **ref_proc_ctx);
 static int transcoder_send_frame(proc_ctx_t *proc_ctx,
 		const proc_frame_ctx_t *proc_frame_ctx);
@@ -153,7 +154,8 @@ const proc_if_t proc_if_transcoder=
  * and cannot be modified later.
  */
 static proc_ctx_t* transcoder_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg)
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg)
 {
 	char *transcoder_subtype_arg;
 	int proc_id_dec, proc_id_enc, ret_code, end_code= STAT_ERROR;
@@ -168,7 +170,8 @@ static proc_ctx_t* transcoder_open(const proc_if_t *proc_if,
 	/* Check arguments */
 	CHECK_DO(proc_if!= NULL, return NULL);
 	CHECK_DO(settings_str!= NULL, return NULL);
-	// Note: 'log_ctx' is allowed to be NULL
+	// Parameter 'href' is allowed to be NULL
+	// Parameter 'log_ctx' is allowed to be NULL
 
 	/* Allocate context structure */
 	transcoder_ctx= (transcoder_ctx_t*)calloc(1, sizeof(transcoder_ctx_t));

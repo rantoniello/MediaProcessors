@@ -42,7 +42,7 @@ extern "C" {
 /* **** Define dummy callback's for the interface **** */
 
 static proc_ctx_t* dummy_proc_open(const proc_if_t*, const char *settings_str,
-		log_ctx_t *log_ctx, va_list arg)
+		const char* href, log_ctx_t *log_ctx, va_list arg)
 {
 	return NULL;
 }

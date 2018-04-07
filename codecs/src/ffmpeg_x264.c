@@ -110,7 +110,8 @@ typedef struct ffmpeg_x264_dec_ctx_s {
 
 /* **** Encoder **** */
 static proc_ctx_t* ffmpeg_x264_enc_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg);
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg);
 static void ffmpeg_x264_enc_close(proc_ctx_t **ref_proc_ctx);
 static int ffmpeg_x264_enc_process_frame(proc_ctx_t *proc_ctx,
 		fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx);
@@ -129,7 +130,8 @@ static void ffmpeg_x264_enc_settings_ctx_deinit(
 /* **** Decoder **** */
 
 static proc_ctx_t* ffmpeg_x264_dec_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg);
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg);
 static void ffmpeg_x264_dec_close(proc_ctx_t **ref_proc_ctx);
 static int ffmpeg_x264_dec_process_frame(proc_ctx_t *proc_ctx,
 		fifo_ctx_t* iput_fifo_ctx, fifo_ctx_t* oput_fifo_ctx);
@@ -192,7 +194,8 @@ const proc_if_t proc_if_ffmpeg_x264_dec=
  * See .proc_if.h for further details.
  */
 static proc_ctx_t* ffmpeg_x264_enc_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg)
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg)
 {
 	int ret_code, end_code= STAT_ERROR;
 	ffmpeg_x264_enc_ctx_t *ffmpeg_x264_enc_ctx= NULL;
@@ -206,7 +209,8 @@ static proc_ctx_t* ffmpeg_x264_enc_open(const proc_if_t *proc_if,
 	/* Check arguments */
 	CHECK_DO(proc_if!= NULL, return NULL);
 	CHECK_DO(settings_str!= NULL, return NULL);
-	// Note: 'log_ctx' is allowed to be NULL
+	// Parameter 'href' is allowed to be NULL
+	// Parameter 'log_ctx' is allowed to be NULL
 
 	/* Allocate context structure */
 	ffmpeg_x264_enc_ctx= (ffmpeg_x264_enc_ctx_t*)calloc(1, sizeof(
@@ -589,7 +593,8 @@ static void ffmpeg_x264_enc_settings_ctx_deinit(
  * See .proc_if.h for further details.
  */
 static proc_ctx_t* ffmpeg_x264_dec_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg)
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg)
 {
 	int ret_code, end_code= STAT_ERROR;
 	ffmpeg_x264_dec_ctx_t *ffmpeg_x264_dec_ctx= NULL;
@@ -603,7 +608,8 @@ static proc_ctx_t* ffmpeg_x264_dec_open(const proc_if_t *proc_if,
 	/* Check arguments */
 	CHECK_DO(proc_if!= NULL, return NULL);
 	CHECK_DO(settings_str!= NULL, return NULL);
-	// Note: 'log_ctx' is allowed to be NULL
+	// Parameter 'href' is allowed to be NULL
+	// Parameter 'log_ctx' is allowed to be NULL
 
 	/* Allocate context structure */
 	ffmpeg_x264_dec_ctx= (ffmpeg_x264_dec_ctx_t*)calloc(1, sizeof(

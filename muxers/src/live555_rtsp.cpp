@@ -240,7 +240,8 @@ typedef struct live555_rtsp_dmux_ctx_s {
 /* **** Multiplexer **** */
 
 static proc_ctx_t* live555_rtsp_mux_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg);
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg);
 static int live555_rtsp_mux_init_given_settings(
 		live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx,
 		const muxers_settings_mux_ctx_t *muxers_settings_mux_ctx,
@@ -267,7 +268,8 @@ static void live555_rtsp_mux_settings_ctx_deinit(
 static void* taskScheduler_thr(void *t);
 
 static proc_ctx_t* live555_rtsp_es_mux_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg);
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg);
 static void live555_rtsp_es_mux_close(proc_ctx_t **ref_proc_ctx);
 static int live555_rtsp_es_mux_process_frame(proc_ctx_t *proc_ctx,
 		fifo_ctx_t *iput_fifo_ctx, fifo_ctx_t *oput_fifo_ctx);
@@ -396,7 +398,8 @@ private:
 /* **** De-multiplexer **** */
 
 static proc_ctx_t* live555_rtsp_dmux_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg);
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg);
 static int live555_rtsp_dmux_init_given_settings(
 		live555_rtsp_dmux_ctx_t *live555_rtsp_dmux_ctx,
 		const muxers_settings_dmux_ctx_t *muxers_settings_dmux_ctx,
@@ -611,7 +614,8 @@ const proc_if_t proc_if_live555_rtsp_dmux=
  * See .proc_if.h for further details.
  */
 static proc_ctx_t* live555_rtsp_mux_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg)
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg)
 {
 	int ret_code, end_code= STAT_ERROR;
 	live555_rtsp_mux_ctx_t *live555_rtsp_mux_ctx= NULL;
@@ -624,7 +628,8 @@ static proc_ctx_t* live555_rtsp_mux_open(const proc_if_t *proc_if,
 	/* Check arguments */
 	CHECK_DO(proc_if!= NULL, return NULL);
 	CHECK_DO(settings_str!= NULL, return NULL);
-	// Note: 'log_ctx' is allowed to be NULL
+	// Parameter 'href' is allowed to be NULL
+	// Parameter 'log_ctx' is allowed to be NULL
 
 	/* Allocate context structure */
 	live555_rtsp_mux_ctx= (live555_rtsp_mux_ctx_t*)calloc(1, sizeof(
@@ -1315,7 +1320,8 @@ static void* taskScheduler_thr(void *t)
 /* **** Elementary stream instance related implementation **** */
 
 static proc_ctx_t* live555_rtsp_es_mux_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg)
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg)
 {
 	int ret_code, end_code= STAT_ERROR;
 	live555_rtsp_es_mux_ctx_t *live555_rtsp_es_mux_ctx= NULL;
@@ -1328,7 +1334,8 @@ static proc_ctx_t* live555_rtsp_es_mux_open(const proc_if_t *proc_if,
 	/* Check arguments */
 	CHECK_DO(proc_if!= NULL, return NULL);
 	CHECK_DO(settings_str!= NULL, return NULL);
-	// Note: 'log_ctx' is allowed to be NULL
+	// Parameter 'href' is allowed to be NULL
+	// Parameter 'log_ctx' is allowed to be NULL
 
 	/* Allocate context structure */
 	live555_rtsp_es_mux_ctx= (live555_rtsp_es_mux_ctx_t*)calloc(1, sizeof(
@@ -2108,7 +2115,8 @@ end:
  * See .proc_if.h for further details.
  */
 static proc_ctx_t* live555_rtsp_dmux_open(const proc_if_t *proc_if,
-		const char *settings_str, log_ctx_t *log_ctx, va_list arg)
+		const char *settings_str, const char* href, log_ctx_t *log_ctx,
+		va_list arg)
 {
 	int ret_code, end_code= STAT_ERROR;
 	live555_rtsp_dmux_ctx_t *live555_rtsp_dmux_ctx= NULL;
@@ -2121,7 +2129,8 @@ static proc_ctx_t* live555_rtsp_dmux_open(const proc_if_t *proc_if,
 	/* Check arguments */
 	CHECK_DO(proc_if!= NULL, return NULL);
 	CHECK_DO(settings_str!= NULL, return NULL);
-	// Note: 'log_ctx' is allowed to be NULL
+	// Parameter 'href' is allowed to be NULL
+	// Parameter 'log_ctx' is allowed to be NULL
 
 	/* Allocate context structure */
 	live555_rtsp_dmux_ctx= (live555_rtsp_dmux_ctx_t*)calloc(1, sizeof(
