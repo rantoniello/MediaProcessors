@@ -83,6 +83,7 @@ int main(int argc, char *argv[], char *envp[])
 
 	end_code= (int)(intptr_t)utest_fifo_consumer_thr(fifo_ctx);
 
+	fifo_shm_exec_close(&fifo_ctx);
 	log_module_close();
 	return (end_code== STAT_SUCCESS)? EXIT_SUCCESS: EXIT_FAILURE;
 }

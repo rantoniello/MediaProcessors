@@ -91,6 +91,7 @@ fifo_ctx_t* fifo_shm_exec_open(size_t slots_max, size_t chunk_size_max,
  * //TODO
  */
 void fifo_close(fifo_ctx_t **ref_fifo_ctx);
+void fifo_shm_exec_close(fifo_ctx_t **ref_fifo_ctx);
 
 /**
  * //TODO

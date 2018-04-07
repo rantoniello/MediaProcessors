@@ -231,7 +231,7 @@ fifo_ctx_t* fifo_shm_open(size_t slots_max, size_t chunk_size_max,
 {
 	size_t fifo_ctx_size;
 	fifo_ctx_t *fifo_ctx= NULL;
-	int shm_fd, ret_code, end_code= STAT_ERROR;
+	int ret_code, end_code= STAT_ERROR, shm_fd= -1;
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
@@ -286,7 +286,7 @@ fifo_ctx_t* fifo_shm_exec_open(size_t slots_max, size_t chunk_size_max,
 {
 	size_t fifo_ctx_size;
 	fifo_ctx_t *fifo_ctx= NULL;
-	int shm_fd, end_code= STAT_ERROR;
+	int end_code= STAT_ERROR, shm_fd= -1;
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments */
@@ -318,15 +318,19 @@ end:
 	if(shm_fd>= 0) {
 		ASSERT(close(shm_fd)== 0);
 	}
-	if(end_code!= STAT_SUCCESS) {
-		fifo_close_internal(&fifo_ctx, 0);
-	}
+	if(end_code!= STAT_SUCCESS)
+		fifo_shm_exec_close(&fifo_ctx);
 	return fifo_ctx;
 }
 
 void fifo_close(fifo_ctx_t **ref_fifo_ctx)
 {
 	fifo_close_internal(ref_fifo_ctx, 1);
+}
+
+void fifo_shm_exec_close(fifo_ctx_t **ref_fifo_ctx)
+{
+	fifo_close_internal(ref_fifo_ctx, 0);
 }
 
 void fifo_set_blocking_mode(fifo_ctx_t *fifo_ctx, int do_block)
