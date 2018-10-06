@@ -33,21 +33,13 @@ extern "C" {
 #include <string.h>
 #include <pthread.h>
 
+#define ENABLE_DEBUG_LOGS //uncomment to trace logs
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
 #include <libmediaprocsutils/check_utils.h>
 #include <libmediaprocsutils/comm.h>
 #include <libmediaprocsutils/comm_udp.h>
 }
-
-#define ENABLE_DEBUG_LOGS //uncomment to trace logs
-#ifdef ENABLE_DEBUG_LOGS
-	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
-	#define LOGD(FORMAT, ...) LOG(FORMAT, ##__VA_ARGS__)
-#else
-	#define LOGD_CTX_INIT(CTX)
-	#define LOGD(...)
-#endif
 
 SUITE(UTESTS_UDP_COMM)
 {

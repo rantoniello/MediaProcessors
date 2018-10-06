@@ -108,6 +108,18 @@ typedef struct llist_s llist_t;
 #define LOGE(FORMAT, ...) _LOG(LOG_ERROR, FORMAT, ##__VA_ARGS__)
 #define LOGEV(FORMAT, ...) _LOG(LOG_EVENT, FORMAT, ##__VA_ARGS__)
 
+/**
+ * Define 'ENABLE_DEBUG_LOGS' in source files where 'log.h' is included to
+ * enable this debugging traces (define just before including log header file).
+ */
+#ifdef ENABLE_DEBUG_LOGS
+	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
+	#define LOGD(FORMAT, ...) LOG(FORMAT, ##__VA_ARGS__)
+#else
+	#define LOGD_CTX_INIT(CTX)
+	#define LOGD(...)
+#endif
+
 /* **** Prototypes **** */
 
 /**

@@ -35,17 +35,9 @@ extern "C" {
 #include <sys/stat.h>
 #include <string.h>
 
+#define ENABLE_DEBUG_LOGS //uncomment to trace logs
 #include <libmediaprocsutils/log.h>
 }
-
-#define ENABLE_DEBUG_LOGS //uncomment to trace logs
-#ifdef ENABLE_DEBUG_LOGS
-	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
-	#define LOGD(FORMAT, ...) LOG(FORMAT, ##__VA_ARGS__)
-#else
-	#define LOGD_CTX_INIT(CTX)
-	#define LOGD(...)
-#endif
 
 SUITE(UTESTS_CRC_CALCULATOR)
 {

@@ -36,6 +36,8 @@ extern "C" {
 #include <signal.h>
 
 #include <libmediaprocsutils/fifo.h>
+
+#define ENABLE_DEBUG_LOGS //uncomment to trace logs
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
 #include <libmediaprocsutils/check_utils.h>
@@ -44,15 +46,6 @@ extern "C" {
 
 #ifdef __cplusplus
 } //extern "C"
-#endif
-
-#define ENABLE_DEBUG_LOGS //uncomment to trace logs
-#ifdef ENABLE_DEBUG_LOGS
-	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
-	#define LOGD(FORMAT, ...) LOG(FORMAT, ##__VA_ARGS__)
-#else
-	#define LOGD_CTX_INIT(CTX)
-	#define LOGD(...)
 #endif
 
 /* Hack... declare consumer function */

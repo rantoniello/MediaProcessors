@@ -38,6 +38,7 @@ extern "C" {
 #include <sys/wait.h>
 
 #include <libmediaprocsutils/fifo.h>
+#define ENABLE_DEBUG_LOGS //uncomment to trace logs
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
 #include <libmediaprocsutils/check_utils.h>
@@ -46,15 +47,6 @@ extern "C" {
 /** Installation directory complete path */
 #ifndef _INSTALL_DIR //HACK: "fake" path for IDE
 #define _INSTALL_DIR "./"
-#endif
-
-#define ENABLE_DEBUG_LOGS //uncomment to trace logs
-#ifdef ENABLE_DEBUG_LOGS
-	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
-	#define LOGD(FORMAT, ...) LOG(FORMAT, ##__VA_ARGS__)
-#else
-	#define LOGD_CTX_INIT(CTX)
-	#define LOGD(...)
 #endif
 
 SUITE(UTESTS_FIFO)
