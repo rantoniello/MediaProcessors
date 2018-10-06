@@ -45,7 +45,7 @@
 
 /* **** Definitions **** */
 
-//#define ENABLE_DEBUG_LOGS
+#define ENABLE_DEBUG_LOGS
 #ifdef ENABLE_DEBUG_LOGS
 	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
 	#define LOGD(FORMAT, ...) LOGV(FORMAT, ##__VA_ARGS__)
@@ -92,7 +92,6 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 	uint64_t flag_proc_features;
 	int i, ret_code, end_code= STAT_ERROR;
 	proc_ctx_t *proc_ctx= NULL;
-	fifo_elem_alloc_fxn_t fifo_elem_alloc_fxn= {0};
 	LOG_CTX_INIT(log_ctx);
 
 	/* Check arguments */
@@ -141,23 +140,39 @@ proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
 		proc_ctx->log_ctx= LOG_CTX_GET();
 	}
 
-	/* Initialize input FIFO buffer */
-	fifo_elem_alloc_fxn.elem_ctx_dup= (fifo_elem_ctx_dup_fxn_t*)
-			proc_if->iput_fifo_elem_opaque_dup;
-	fifo_elem_alloc_fxn.elem_ctx_release= (fifo_elem_ctx_release_fxn_t*)
-			proc_if->iput_fifo_elem_opaque_release;
-	proc_ctx->fifo_ctx_array[PROC_IPUT]= fifo_open(fifo_ctx_maxsize[PROC_IPUT],
-			0/*unlimited chunk size*/, 0, &fifo_elem_alloc_fxn);
-	CHECK_DO(proc_ctx->fifo_ctx_array[PROC_IPUT]!= NULL, goto end);
+	/* Initialize input FIFO buffer.
+	 * IMPORTANT NOTE: Any specific implementation may instantiate its own FIFO
+	 * internally, so we check it before overwriting what was set at
+	 * 'proc_if_t::open'.
+	 */
+	if(proc_ctx->fifo_ctx_array[PROC_IPUT]== NULL) {
+		fifo_elem_alloc_fxn_t fifo_elem_alloc_fxn= {0};
+		fifo_elem_alloc_fxn.elem_ctx_dup= (fifo_elem_ctx_dup_fxn_t*)
+				proc_if->iput_fifo_elem_opaque_dup;
+		fifo_elem_alloc_fxn.elem_ctx_release= (fifo_elem_ctx_release_fxn_t*)
+				proc_if->iput_fifo_elem_opaque_release;
+		proc_ctx->fifo_ctx_array[PROC_IPUT]= fifo_open(
+				fifo_ctx_maxsize[PROC_IPUT], 0/*unlimited chunk size*/, 0,
+				&fifo_elem_alloc_fxn);
+		CHECK_DO(proc_ctx->fifo_ctx_array[PROC_IPUT]!= NULL, goto end);
+	} else {
+		LOGD("WARNING: using specific input FIFO implementation!\n");
+	}
 
 	/* Initialize output FIFO buffer */
-	fifo_elem_alloc_fxn.elem_ctx_dup= (fifo_elem_ctx_dup_fxn_t*)
-			proc_if->oput_fifo_elem_opaque_dup;
-	fifo_elem_alloc_fxn.elem_ctx_release= (fifo_elem_ctx_release_fxn_t*)
-			proc_frame_ctx_release;
-	proc_ctx->fifo_ctx_array[PROC_OPUT]= fifo_open(fifo_ctx_maxsize[PROC_OPUT],
-			0/*unlimited chunk size*/, 0, &fifo_elem_alloc_fxn);
-	CHECK_DO(proc_ctx->fifo_ctx_array[PROC_OPUT]!= NULL, goto end);
+	if(proc_ctx->fifo_ctx_array[PROC_OPUT]== NULL) {
+		fifo_elem_alloc_fxn_t fifo_elem_alloc_fxn= {0};
+		fifo_elem_alloc_fxn.elem_ctx_dup= (fifo_elem_ctx_dup_fxn_t*)
+				proc_if->oput_fifo_elem_opaque_dup;
+		fifo_elem_alloc_fxn.elem_ctx_release= (fifo_elem_ctx_release_fxn_t*)
+				proc_frame_ctx_release;
+		proc_ctx->fifo_ctx_array[PROC_OPUT]= fifo_open(
+				fifo_ctx_maxsize[PROC_OPUT], 0/*unlimited chunk size*/, 0,
+				&fifo_elem_alloc_fxn);
+		CHECK_DO(proc_ctx->fifo_ctx_array[PROC_OPUT]!= NULL, goto end);
+	} else {
+		LOGD("WARNING: using specific output FIFO implementation!\n");
+	}
 
 	/* Initialize input/output fair-locks */
 	for(i= 0; i< PROC_IO_NUM; i++) {
