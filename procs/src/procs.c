@@ -35,6 +35,7 @@
 
 #include <libcjson/cJSON.h>
 #include <libmediaprocsutils/uri_parser.h>
+//#define ENABLE_DEBUG_LOGS //uncomment to trace logs
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
 #include <libmediaprocsutils/check_utils.h>
@@ -45,15 +46,6 @@
 #include "proc_if.h"
 
 /* **** Definitions **** */
-
-//#define ENABLE_DEBUG_LOGS
-#ifdef ENABLE_DEBUG_LOGS
-	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
-	#define LOGD(FORMAT, ...) LOGV(FORMAT, ##__VA_ARGS__)
-#else
-	#define LOGD_CTX_INIT(CTX)
-	#define LOGD(...)
-#endif
 
 /**
  * Returns non-zero if given 'tag' string contains 'needle' sub-string.
@@ -419,7 +411,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx)
 	procs_ctx_t *procs_ctx;
 	int procs_reg_elem_array_size, proc_id, i;
 	LOG_CTX_INIT(NULL);
-	LOGD(">>%s\n", __FUNCTION__); //comment-me
+	LOGD(">>%s\n", __FUNCTION__);
 
 	if(ref_procs_ctx== NULL || (procs_ctx= *ref_procs_ctx)== NULL)
 		return;
@@ -434,7 +426,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx)
 	LOCK_PROCS_CTX_API(procs_ctx);
 	if(procs_ctx->procs_reg_elem_array!= NULL) {
 		for(proc_id= 0; proc_id< procs_reg_elem_array_size; proc_id++) {
-			LOGD("unregistering proc with Id.: %d\n", proc_id); //comment-me
+			LOGD("unregistering proc with Id.: %d\n", proc_id);
 			proc_unregister(procs_ctx, proc_id, LOG_CTX_GET());
 		}
 	}
@@ -468,7 +460,7 @@ void procs_close(procs_ctx_t **ref_procs_ctx)
 	free(procs_ctx);
 	*ref_procs_ctx= NULL;
 
-	LOGD("<<%s\n", __FUNCTION__); //comment-me
+	LOGD("<<%s\n", __FUNCTION__);
 }
 
 int procs_opt(procs_ctx_t *procs_ctx, const char *tag, ...)
@@ -1021,7 +1013,7 @@ static int proc_unregister(procs_ctx_t *procs_ctx, int proc_id,
 	int procs_reg_elem_array_size, ret_code;
 	proc_ctx_t *proc_ctx= NULL;
 	LOG_CTX_INIT(log_ctx);
-	LOGD(">>%s\n", __FUNCTION__); //comment-me
+	LOGD(">>%s\n", __FUNCTION__);
 
 	/* Check arguments */
 	CHECK_DO(procs_module_ctx!= NULL, return STAT_ERROR);
@@ -1068,7 +1060,7 @@ static int proc_unregister(procs_ctx_t *procs_ctx, int proc_id,
 	 */
 	proc_close(&proc_ctx);
 	ASSERT(proc_ctx== NULL);
-	LOGD("<<%s\n", __FUNCTION__); //comment-me
+	LOGD("<<%s\n", __FUNCTION__);
 	return STAT_SUCCESS;
 }
 

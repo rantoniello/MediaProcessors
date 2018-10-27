@@ -83,12 +83,9 @@ int procs_api_http_req_handler(procs_ctx_t *procs_ctx, const char *url,
 		const char *query_string, const char *request_method, char *content,
 		size_t content_len, char **ref_str_response)
 {
-	int http_code;
-	const char *http_status_str, *msg_str;
-	size_t response_size;
 	int proc_id, ret_code, end_code= STAT_ERROR;
-	char *proc_name_str= NULL, *response_str= NULL, *data_obj_str= NULL;
 	int64_t aux_id= -1;
+	char *proc_name_str= NULL, *data_obj_str= NULL, *response_str= NULL;
 	LOG_CTX_INIT(NULL);
 
 	/* Check arguments.
@@ -164,12 +161,39 @@ int procs_api_http_req_handler(procs_ctx_t *procs_ctx, const char *url,
 		end_code= STAT_ENOTFOUND;
 	}
 
+	response_str= wrap_response(end_code, data_obj_str, request_method,
+			LOG_CTX_GET());
+	*ref_str_response= response_str;
+	response_str= NULL; // Avoid double referencing
+
 end:
+	if(proc_name_str!= NULL)
+		free(proc_name_str);
+	if(data_obj_str!= NULL)
+		free(data_obj_str);
+	if(response_str!= NULL)
+		free(response_str);
+return end_code;
+}
+
+char* wrap_response(int stat_code, const char *data_obj_str,
+		const char *request_method, log_ctx_t *log_ctx)
+{
+	int http_code;
+	const char *http_status_str, *msg_str;
+	size_t response_size;
+	char *response_str= NULL;
+	int end_code= STAT_ERROR;
+	LOG_CTX_INIT(log_ctx);
+
+	/* Check arguments */
+	// TODO
+
 	/* Translate end-code to HTTP status code and get related description.
 	 * The translation table is as follows:
 	 *
 	 * HTTP method | HTTP status code
-	 * -------------------------------------------------------------
+	 * ------------+------------------------------------------------
 	 * GET         | 200 (OK), 404 (Not Found), 304 (Not Modified)
 	 * POST        | 201 (Created), 404 (Not Found), 409 (Conflict)
 	 * PUT         | 200 (OK), 204 (No Content), 404 (Not Found)
@@ -177,7 +201,7 @@ end:
 	 *
 	 * Any other combination is assumed to be 404- "Not Found".
 	 */
-	switch(end_code) {
+	switch(stat_code) {
 	case STAT_SUCCESS:
 		if(URL_METHOD_IS("POST")) {
 			http_code= 201; http_status_str= HTTP_CREATED;
@@ -211,29 +235,25 @@ end:
 	}
 
 	/* Compose response */
-	msg_str= stat_codes_get_description(end_code); // Do not release (static)
+	msg_str= stat_codes_get_description(stat_code); // Do not release (static)
 	response_size= strlen(RESPONSE_FMT)+ sizeof(http_code);
 	response_size+= http_status_str!= NULL? strlen(http_status_str): 4/*null*/;
 	response_size+= msg_str!= NULL? strlen(msg_str): 4/*null*/;
 	response_size+= data_obj_str!= NULL? strlen(data_obj_str): 4/*null*/;
-	ASSERT((response_str= (char*)malloc(response_size))!= NULL);
-	if(response_str!= NULL) {
-		snprintf(response_str, response_size, RESPONSE_FMT, http_code,
-				http_status_str!= NULL? http_status_str: "null",
-				msg_str!= NULL && strlen(msg_str)> 0? msg_str: "null",
-				data_obj_str!= NULL? data_obj_str: "null");
-		*ref_str_response= response_str;
-		response_str= NULL; // Avoid double referencing
+	CHECK_DO((response_str= (char*)malloc(response_size))!= NULL, goto end);
+	snprintf(response_str, response_size, RESPONSE_FMT, http_code,
+			http_status_str!= NULL? http_status_str: "null",
+			msg_str!= NULL && strlen(msg_str)> 0? msg_str: "null",
+			data_obj_str!= NULL? data_obj_str: "null");
+
+	end_code= STAT_SUCCESS;
+end:
+	if(end_code!= STAT_SUCCESS) {
+		if(response_str!= NULL) {
+			free(response_str);
+			response_str= NULL;
+		}
 	}
-
-	if(response_str!= NULL)
-		free(response_str);
-	if(proc_name_str!= NULL)
-		free(proc_name_str);
-	if(data_obj_str!= NULL)
-		free(data_obj_str);
-
-	//LOGV("'%s' returns: \n'%s'\n", __func__, *ref_str_response!= NULL?
-	//		*ref_str_response: "NULL"); //comment-me
-	return end_code;
+	LOGD("Response: '%s'\n", response_str!= NULL? response_str: "NULL");
+	return response_str;
 }

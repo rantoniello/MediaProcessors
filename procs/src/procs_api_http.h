@@ -28,7 +28,9 @@
 
 #include <sys/types.h>
 
+/* Forward declarations */
 typedef struct procs_ctx_s procs_ctx_t;
+typedef struct log_ctx_s log_ctx_t;
 
 /**
  * HTTP-API request handler function.
@@ -46,5 +48,11 @@ typedef struct procs_ctx_s procs_ctx_t;
 int procs_api_http_req_handler(procs_ctx_t *procs_ctx, const char *url,
 		const char *query_string, const char *request_method, char *content,
 		size_t content_len, char **ref_str_response);
+
+/**
+ * //TODO
+ */
+char* wrap_response(int stat_code, const char *data_obj_str,
+		const char *request_method, log_ctx_t *log_ctx);
 
 #endif /* MEDIAPROCESSORS_SRC_PROCS_API_HTTP_H_ */

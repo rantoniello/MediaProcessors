@@ -755,7 +755,7 @@ static inline int fifo_input(fifo_ctx_t *fifo_ctx, void **ref_elem,
 	}
 	if(fifo_ctx->slots_used_cnt>= buf_slots_max &&
 			(fifo_ctx->flags& FIFO_O_NONBLOCK)) {
-		//LOGV("FIFO buffer overflow!\n"); //Comment-me
+		LOGD("FIFO buffer overflow!\n");
 		end_code= STAT_ENOMEM;
 		goto end;
 	}
@@ -861,7 +861,7 @@ static inline int fifo_output(fifo_ctx_t *fifo_ctx, void **ref_elem,
 	 */
 	while(fifo_ctx->slots_used_cnt<= 0 && !(fifo_ctx->flags& FIFO_O_NONBLOCK)
 			&& fifo_ctx->flag_exit== 0) {
-		//LOGV("FIFO buffer underrun!\n"); //comment-me
+		LOGD("FIFO buffer underrun!\n");
 		pthread_cond_broadcast(&fifo_ctx->buf_get_signal);
 		if(tout_usecs>= 0) {
 			ret_code= pthread_cond_timedwait(&fifo_ctx->buf_put_signal,
@@ -878,7 +878,7 @@ static inline int fifo_output(fifo_ctx_t *fifo_ctx, void **ref_elem,
 		}
 	}
 	if(fifo_ctx->slots_used_cnt<= 0 && (fifo_ctx->flags& FIFO_O_NONBLOCK)) {
-		//LOGV("FIFO buffer underrun!\n"); //comment-me
+		LOGD("FIFO buffer underrun!\n");
 		end_code= STAT_EAGAIN;
 		goto end;
 	}

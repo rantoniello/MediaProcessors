@@ -33,6 +33,7 @@
 
 #include <libcjson/cJSON.h>
 
+#define ENABLE_DEBUG_LOGS //uncomment to trace logs
 #include <libmediaprocsutils/log.h>
 #include <libmediaprocsutils/stat_codes.h>
 #include <libmediaprocsutils/check_utils.h>
@@ -44,15 +45,6 @@
 #include "proc_if.h"
 
 /* **** Definitions **** */
-
-#define ENABLE_DEBUG_LOGS
-#ifdef ENABLE_DEBUG_LOGS
-	#define LOGD_CTX_INIT(CTX) LOG_CTX_INIT(CTX)
-	#define LOGD(FORMAT, ...) LOGV(FORMAT, ##__VA_ARGS__)
-#else
-	#define LOGD_CTX_INIT(CTX)
-	#define LOGD(...)
-#endif
 
 /**
  * Returns non-zero if given 'tag' string contains 'needle' sub-string.
@@ -231,87 +223,86 @@ end:
 
 void proc_close(proc_ctx_t **ref_proc_ctx)
 {
+	const proc_if_t *proc_if;
 	proc_ctx_t *proc_ctx= NULL;
+	int (*unblock)(proc_ctx_t *proc_ctx)= NULL;
+	void *thread_end_code= NULL;
 	LOG_CTX_INIT(NULL);
-	LOGD(">>%s\n", __FUNCTION__); //comment-me
 
-	if(ref_proc_ctx== NULL)
+	if(ref_proc_ctx== NULL || (proc_ctx= *ref_proc_ctx)== NULL)
 		return;
 
-	if((proc_ctx= *ref_proc_ctx)!= NULL) {
-		int (*unblock)(proc_ctx_t *proc_ctx)= NULL;
-		const proc_if_t *proc_if= proc_ctx->proc_if;
-		void *thread_end_code= NULL;
-		LOG_CTX_SET(proc_ctx->log_ctx);
+	proc_if= proc_ctx->proc_if;
+	LOG_CTX_SET(proc_ctx->log_ctx);
+	LOGD(">>%s\n", __FUNCTION__);
 
-		/* Join processing thread first
-		 * - set flag to notify we are exiting processing;
-		 * - unlock input/output FIFO's and unblock processor;
-		 * - join thread.
-		 */
-		proc_ctx->flag_exit= 1;
-		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_IPUT], 0);
-		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 0);
-		if(proc_if!= NULL && (unblock= proc_if->unblock)!= NULL) {
-			ASSERT(unblock(proc_ctx)== STAT_SUCCESS);
-		}
-		LOGD("Waiting processor thread to join... "); // comment-me
-		pthread_join(proc_ctx->proc_thread, &thread_end_code);
-		if(thread_end_code!= NULL) {
-			ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
-			free(thread_end_code);
-			thread_end_code= NULL;
-		}
-		LOGD("joined O.K; "
-				"Waiting statistics thread to join... "); // comment-me
-		/* Join periodical statistics thread:
-		 * - Unlock interruptible usleep module instance;
-		 * - Join the statistics thread;
-		 * - Release (close) the interruptible usleep module instance.
-		 */
-		if(proc_ctx->interr_usleep_ctx!= NULL)
-			interr_usleep_unblock(proc_ctx->interr_usleep_ctx);
-		pthread_join(proc_ctx->stats_thread, &thread_end_code);
-		if(thread_end_code!= NULL) {
-			ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
-			free(thread_end_code);
-			thread_end_code= NULL;
-		}
-		interr_usleep_close(&proc_ctx->interr_usleep_ctx);
-		LOGD("joined O.K.\n"); // comment-me
-
-		/* Release processor 'href' if applicable */
-		if(proc_ctx->href!= NULL) {
-			free(proc_ctx->href);
-			proc_ctx->href= NULL;
-		}
-
-		/* Release API mutual exclusion lock */
-		ASSERT(pthread_mutex_destroy(&proc_ctx->api_mutex)== 0);
-
-		/* Release input and output FIFO's */
-		fifo_close(&proc_ctx->fifo_ctx_array[PROC_IPUT]);
-		fifo_close(&proc_ctx->fifo_ctx_array[PROC_OPUT]);
-
-		/* Release input/output fair locks */
-		fair_lock_close(&proc_ctx->fair_lock_io_array[PROC_IPUT]);
-		fair_lock_close(&proc_ctx->fair_lock_io_array[PROC_OPUT]);
-
-		/* Release input/output MUTEX for bitrate statistics related */
-		ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_IPUT])
-				== 0);
-		ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_OPUT])
-				== 0);
-
-		/* Release latency measurement related variables */
-		ASSERT(pthread_mutex_destroy(&proc_ctx->latency_mutex)== 0);
-
-		/* Close the specific PROC instance */
-		CHECK_DO(proc_if!= NULL, return); // sanity check
-		CHECK_DO(proc_if->close!= NULL, return); // sanity check
-		proc_if->close(ref_proc_ctx);
+	/* Join processing thread first
+	 * - set flag to notify we are exiting processing;
+	 * - unlock input/output FIFO's and unblock processor;
+	 * - join thread.
+	 */
+	proc_ctx->flag_exit= 1;
+	fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_IPUT], 0);
+	fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 0);
+	if(proc_if!= NULL && (unblock= proc_if->unblock)!= NULL) {
+		ASSERT(unblock(proc_ctx)== STAT_SUCCESS);
 	}
-	LOGD("<<%s\n", __FUNCTION__); //comment-me
+	LOGD("Waiting processor thread to join... ");
+	pthread_join(proc_ctx->proc_thread, &thread_end_code);
+	if(thread_end_code!= NULL) {
+		ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
+		free(thread_end_code);
+		thread_end_code= NULL;
+	}
+	LOGD("joined O.K;\nWaiting statistics thread to join... ");
+	/* Join periodical statistics thread:
+	 * - Unlock interruptible usleep module instance;
+	 * - Join the statistics thread;
+	 * - Release (close) the interruptible usleep module instance.
+	 */
+	if(proc_ctx->interr_usleep_ctx!= NULL)
+		interr_usleep_unblock(proc_ctx->interr_usleep_ctx);
+	pthread_join(proc_ctx->stats_thread, &thread_end_code);
+	if(thread_end_code!= NULL) {
+		ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
+		free(thread_end_code);
+		thread_end_code= NULL;
+	}
+	interr_usleep_close(&proc_ctx->interr_usleep_ctx);
+	LOGD("joined O.K.\n");
+
+	/* Release processor 'href' if applicable */
+	if(proc_ctx->href!= NULL) {
+		free(proc_ctx->href);
+		proc_ctx->href= NULL;
+	}
+
+	/* Release API mutual exclusion lock */
+	ASSERT(pthread_mutex_destroy(&proc_ctx->api_mutex)== 0);
+
+	/* Release input and output FIFO's */
+	fifo_close(&proc_ctx->fifo_ctx_array[PROC_IPUT]);
+	fifo_close(&proc_ctx->fifo_ctx_array[PROC_OPUT]);
+
+	/* Release input/output fair locks */
+	fair_lock_close(&proc_ctx->fair_lock_io_array[PROC_IPUT]);
+	fair_lock_close(&proc_ctx->fair_lock_io_array[PROC_OPUT]);
+
+	/* Release input/output MUTEX for bitrate statistics related */
+	ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_IPUT])
+			== 0);
+	ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_OPUT])
+			== 0);
+
+	/* Release latency measurement related variables */
+	ASSERT(pthread_mutex_destroy(&proc_ctx->latency_mutex)== 0);
+
+	/* Close the specific PROC instance */
+	CHECK_DO(proc_if!= NULL, return); // sanity check
+	CHECK_DO(proc_if->close!= NULL, return); // sanity check
+	proc_if->close(ref_proc_ctx);
+
+	LOGD("<<%s\n", __FUNCTION__);
 }
 
 int proc_send_frame(proc_ctx_t *proc_ctx,
