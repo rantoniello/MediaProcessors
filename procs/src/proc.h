@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018, 2019, 2020 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -73,9 +73,9 @@ typedef struct proc_frame_ctx_s proc_frame_ctx_t;
  * Processor input-output type enumerator.
  */
 typedef enum {
-    PROC_IPUT= 0,
-	PROC_OPUT= 1,
-	PROC_IO_NUM= 2
+    PROC_IPUT = 0,
+	PROC_OPUT,
+	PROC_IO_NUM
 } proc_io_t;
 
 /**

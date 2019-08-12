@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018, 2019, 2020 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -37,6 +37,11 @@ typedef struct proc_ctx_s proc_ctx_t;
 typedef struct proc_if_s proc_if_t;
 typedef struct log_ctx_s log_ctx_t;
 typedef struct fifo_ctx_s fifo_ctx_t;
+typedef void* (fifo_elem_ctx_memcpy_fxn_t)(void *opaque, void *dest,
+        const void *src, size_t size, log_ctx_t *log_ctx);
+typedef int (fifo_elem_ctx_dequeue_fxn_t)(void *opaque, void **ref_elem,
+        size_t *ref_elem_size, const void *src, size_t size,
+        log_ctx_t *log_ctx);
 
 /**
  * Maximum width for the input/output processor frame.
@@ -274,34 +279,30 @@ typedef struct proc_if_s {
 	 */
 	int (*opt)(proc_ctx_t *proc_ctx, const char *tag, va_list arg);
 	/**
-	 * This callback is registered in the FIFO management API and is used to
-	 * internally duplicate the input frame structure when it is pushed to the
-	 * processor input FIFO. Typically, this callback is used to transform the
-	 * input type proc_frame_ctx_t to another structure type that will be
-	 * actually allocated in the FIFO.
+	 * This callback is registered in the FIFO extended parameters API and is
+	 * used to internally copy the input frame structure when it is pushed to
+	 * the processor input FIFO. For example, this callback can be used to
+	 * transform the input type 'proc_frame_ctx_t' to another structure type
+	 * that will be actually allocated in the FIFO.
 	 * This callback is optional, and can be set to NULL. In that case, the
 	 * processor input frame structure is assumed to be of type
-	 * proc_frame_ctx_t (thus will be duplicated using function
-	 * 'proc_frame_ctx_allocate()').
-	 * @param proc_frame_ctx Processor frame context structure (see
-	 * proc_frame_ctx_t).
-	 * return Opaque structure (can be private format) duplicating the input
-	 * frame. This structure will be pushed to the processor input FIFO.
+	 * 'proc_frame_ctx_t*' and will be copied using default function
+	 * 'proc_if_fifo_elem_ctox_memcpy_default()'.
+	 * @see 'fifo_elem_ctx_memcpy_fxn_t' for callback prototype details.
 	 */
-	void* (*iput_fifo_elem_opaque_dup)(const proc_frame_ctx_t* proc_frame_ctx);
+	fifo_elem_ctx_memcpy_fxn_t *iput_fifo_elem_ctx_memcpy_fxn;
 	/**
-	 * This callback is registered in the FIFO management API and is
-	 * complementary to the callback 'iput_fifo_elem_opaque_dup()': it is the
-	 * function used to release the elements duplicated and stored in the
-	 * processor input FIFO using 'iput_fifo_elem_opaque_dup()'.
+	 * This callback is registered in the FIFO extended parameters API and is
+	 * complementary to the callback 'iput_fifo_elem_ctx_memcpy_fxn': it is the
+	 * function used to dequeue the elements stored in the processor input
+	 * FIFO.
 	 * This callback is optional, and can be set to NULL. In that case, the
 	 * processor input frame structure is assumed to be of type
-	 * proc_frame_ctx_t (thus will be released using function
-	 * 'proc_frame_ctx_release()').
-	 * @param ref_t Opaque reference to a pointer to the structure type to be
-	 * released.
+	 * 'proc_frame_ctx_t*' and will be dequeued using default function
+	 * 'proc_if_fifo_elem_ctx_dequeue_default()'.
+	 * @see 'fifo_elem_ctx_dequeue_fxn_t' for callback prototype details.
 	 */
-	void (*iput_fifo_elem_opaque_release)(void **ref_t);
+	fifo_elem_ctx_dequeue_fxn_t *iput_fifo_elem_ctx_dequeue_fxn;
 	/**
 	 * This callback is registered in the FIFO management API and is used to
 	 * internally duplicate the processor's output frame structure when it is
@@ -383,5 +384,18 @@ int proc_if_cmp(const proc_if_t* proc_if1, const proc_if_t* proc_if2);
  * to be released. Pointer is set to NULL on return.
  */
 void proc_if_release(proc_if_t **ref_proc_if);
+
+/**
+ * //TODO
+ */
+void* proc_if_fifo_elem_ctx_memcpy_default(void *opaque, void *dest,
+        const void *src, size_t size, log_ctx_t *log_ctx);
+
+/**
+ * //TODO
+ */
+int proc_if_fifo_elem_ctx_dequeue_default(void *opaque, void **ref_elem,
+        size_t *ref_elem_size, const void *src, size_t size,
+        log_ctx_t *log_ctx);
 
 #endif /* MEDIAPROCESSORS_SRC_PROC_IF_H_ */

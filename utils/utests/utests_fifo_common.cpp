@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018, 2019, 2020 Rafael Antoniello
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,34 +28,6 @@
  */
 
 /**
- * @file check_utils.h
+ * @file utests_fifo_common.cpp
  * @author Rafael Antoniello
  */
-
-#ifndef UTILS_SRC_CHECK_UTILS_H_
-#define UTILS_SRC_CHECK_UTILS_H_
-
-#include "log.h"
-
-/* Internal MACRO: do not use directly */
-#define CHECK_UTILS_DO_(COND, ACTION, LOG) \
-    if(!(COND)) {\
-        LOG;\
-        ACTION;\
-    }
-
-/**
- * Simple ASSERT implementation: does not exit the program but just outputs
- * an error trace.
- * ** To be deprecated **
- */
-#define ASSERT(COND) \
-    CHECK_UTILS_DO_(COND, , LOGE("Check point failed.\n"))
-
-/**
- * Generic trace for tracking check-points failures.
- */
-#define CHECK_DO(COND, ACTION) \
-    CHECK_UTILS_DO_(COND, ACTION, LOGE("Check point failed.\n"))
-
-#endif /* UTILS_SRC_CHECK_UTILS_H_ */

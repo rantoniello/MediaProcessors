@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018, 2019, 2020 Rafael Antoniello
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,34 +28,90 @@
  */
 
 /**
- * @file check_utils.h
- * @author Rafael Antoniello
+ * @file utests_fifo_common.h
  */
 
-#ifndef UTILS_SRC_CHECK_UTILS_H_
-#define UTILS_SRC_CHECK_UTILS_H_
+#ifndef UTILS_UTESTS_UTESTS_FIFO_COMMON_H_
+#define UTILS_UTESTS_UTESTS_FIFO_COMMON_H_
 
-#include "log.h"
+#include <cstddef>
 
-/* Internal MACRO: do not use directly */
-#define CHECK_UTILS_DO_(COND, ACTION, LOG) \
-    if(!(COND)) {\
-        LOG;\
-        ACTION;\
-    }
+#define UTESTS_FIFO_SHM_FILENAME "/fifo_shm_utest"
+#define UTESTS_FIFO_MESSAGE_MAX_LEN 17
 
-/**
- * Simple ASSERT implementation: does not exit the program but just outputs
- * an error trace.
- * ** To be deprecated **
- */
-#define ASSERT(COND) \
-    CHECK_UTILS_DO_(COND, , LOGE("Check point failed.\n"))
+const char *utests_fifo_messages_list_1[]=
+{
+        "Hello, world!.\0",
+        "How are you?.\0",
+        "abcdefghijklmnop\0", /* Test max length UTESTS_FIFO_MESSAGE_MAX_LEN */
+        "123456789\0",
+        "__ABCD__1234_\0",
+        "_            _\0",
+        "_/)=:;.\"·#{+]\0",
+        "{\"key\":\"val\"}\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"\0",
+		"#\0",
+		"##\0",
+		"###\0",
+		"####\0",
+		"#####\0",
+		"######\0",
+		"#######\0",
+		"########\0",
+		"#########\0",
+		"##########\0",
+		"###########\0",
+		"############\0",
+		"#############\0",
+		"##############\0",
+		"###############\0",
+		"################\0", /* Test max length UTESTS_FIFO_MESSAGE_MAX_LEN */
+        "Goodbye.\0",
+        NULL
+};
 
-/**
- * Generic trace for tracking check-points failures.
- */
-#define CHECK_DO(COND, ACTION) \
-    CHECK_UTILS_DO_(COND, ACTION, LOGE("Check point failed.\n"))
+const char *utests_fifo_messages_list_2[]=
+{
+        "IIIIIIIIIIIIIIIIIIIIIIIII\0", // Exceed maximum length -fail to push-
+        NULL
+};
 
-#endif /* UTILS_SRC_CHECK_UTILS_H_ */
+#endif /* UTILS_UTESTS_UTESTS_FIFO_COMMON_H_ */

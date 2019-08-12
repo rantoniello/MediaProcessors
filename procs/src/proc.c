@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Rafael Antoniello
+ * Copyright (c) 2017, 2018, 2019, 2020 Rafael Antoniello
  *
  * This file is part of MediaProcessors.
  *
@@ -92,254 +92,249 @@ static void proc_send_frame_stats_io(proc_ctx_t *proc_ctx,
 
 /* **** Implementations **** */
 
+
 proc_ctx_t* proc_open(const proc_if_t *proc_if, const char *settings_str,
-		int proc_instance_index, uint32_t fifo_ctx_maxsize[PROC_IO_NUM],
-		log_ctx_t *log_ctx, va_list arg)
+        int proc_instance_index, uint32_t fifo_ctx_maxsize[PROC_IO_NUM],
+        log_ctx_t *log_ctx, va_list arg)
 {
-	int i, ret_code, end_code= STAT_ERROR;
-	proc_ctx_t *proc_ctx= NULL;
-	fifo_elem_alloc_fxn_t fifo_elem_alloc_fxn= {0};
-	LOG_CTX_INIT(log_ctx);
+    int ret_code, end_code = STAT_ERROR;
+    proc_ctx_t *proc_ctx = NULL;
+    fifo_extend_param_ctx_t fifo_extend_param_ctx = {0};
+    LOG_CTX_INIT(log_ctx);
 
-	/* Check arguments */
-	CHECK_DO(proc_if!= NULL, return NULL);
-	CHECK_DO(settings_str!= NULL, return NULL);
-	CHECK_DO(fifo_ctx_maxsize!= NULL , return NULL);
-		// Note: 'log_ctx' is allowed to be NULL
+    /* Check arguments */
+    CHECK_DO(proc_if != NULL, return NULL);
+    CHECK_DO(settings_str != NULL, return NULL);
+    CHECK_DO(fifo_ctx_maxsize != NULL , return NULL);
+    // Note: 'log_ctx' is allowed to be NULL
 
-	/* Check mandatory call-backs existence */
-	CHECK_DO(proc_if->open!= NULL, goto end);
-	CHECK_DO(proc_if->close!= NULL, goto end);
-	CHECK_DO(proc_if->process_frame!= NULL, goto end);
+    /* Check mandatory call-backs existence */
+    CHECK_DO(proc_if->open != NULL, goto end);
+    CHECK_DO(proc_if->close != NULL, goto end);
+    CHECK_DO(proc_if->process_frame != NULL, goto end);
 
-	/* Open (allocate) the specific processor (PROC) instance */
-	proc_ctx= proc_if->open(proc_if, settings_str, LOG_CTX_GET(), arg);
-	CHECK_DO(proc_ctx!= NULL, goto end);
+    /* Open (allocate) the specific processor (PROC) instance */
+    proc_ctx = proc_if->open(proc_if, settings_str, LOG_CTX_GET(), arg);
+    CHECK_DO(proc_ctx != NULL, goto end);
 
-	/* Set processor (PROC) interface context structure */
-	proc_ctx->proc_if= proc_if;
+    /* Set processor (PROC) interface context structure */
+    proc_ctx->proc_if = proc_if;
 
-	/* Set PROC register index. */
-	proc_ctx->proc_instance_index= proc_instance_index;
+    /* Set PROC register index. */
+    proc_ctx->proc_instance_index = proc_instance_index;
 
-	/* API mutual exclusion lock */
-	ret_code= pthread_mutex_init(&proc_ctx->api_mutex, NULL);
-	CHECK_DO(ret_code== 0, goto end);
+    /* API mutual exclusion lock */
+    ret_code = pthread_mutex_init(&proc_ctx->api_mutex, NULL);
+    CHECK_DO(ret_code == 0, goto end);
 
-	/* Set external LOG module */
-	proc_ctx->log_ctx= LOG_CTX_GET();
+    /* Set external LOG module */
+    proc_ctx->log_ctx = LOG_CTX_GET();
 
-	/* Initialize input FIFO buffer */
-	fifo_elem_alloc_fxn.elem_ctx_dup=
-			proc_if->iput_fifo_elem_opaque_dup!= NULL?
-			(fifo_elem_ctx_dup_fxn_t*)proc_if->iput_fifo_elem_opaque_dup:
-			(fifo_elem_ctx_dup_fxn_t*)proc_frame_ctx_dup;
-	fifo_elem_alloc_fxn.elem_ctx_release=
-			proc_if->iput_fifo_elem_opaque_release!= NULL?
-			(fifo_elem_ctx_release_fxn_t*)
-			proc_if->iput_fifo_elem_opaque_release:
-			(fifo_elem_ctx_release_fxn_t*)proc_frame_ctx_release;
+    /* Initialize i/o FIFO buffers */
+    fifo_extend_param_ctx.elem_ctx_memcpy =
+            proc_if->iput_fifo_elem_ctx_memcpy_fxn != NULL ?
+                    proc_if->iput_fifo_elem_ctx_memcpy_fxn :
+                    proc_if_fifo_elem_ctx_memcpy_default;
+    fifo_extend_param_ctx.elem_ctx_dequeue =
+            proc_if->iput_fifo_elem_ctx_dequeue_fxn != NULL ?
+                    proc_if->iput_fifo_elem_ctx_dequeue_fxn :
+                    proc_if_fifo_elem_ctx_dequeue_default;
 
-	proc_ctx->fifo_ctx_array[PROC_IPUT]= fifo_open(
-			fifo_ctx_maxsize[PROC_IPUT], 0, &fifo_elem_alloc_fxn);
-	CHECK_DO(proc_ctx->fifo_ctx_array[PROC_IPUT]!= NULL, goto end);
+    for (int i = 0; i < PROC_IO_NUM; i++) {
+        fifo_ctx_t *fifo_ctx_tmp = fifo_open(fifo_ctx_maxsize[i], 0,
+                &fifo_extend_param_ctx, LOG_CTX_GET());
+        CHECK_DO(fifo_ctx_tmp != NULL, goto end);
+        proc_ctx->fifo_ctx_array[i] = fifo_ctx_tmp;
+    }
 
-	/* Initialize output FIFO buffer */
-	fifo_elem_alloc_fxn.elem_ctx_dup=
-			proc_if->oput_fifo_elem_opaque_dup!= NULL?
-			(fifo_elem_ctx_dup_fxn_t*)proc_if->oput_fifo_elem_opaque_dup:
-			(fifo_elem_ctx_dup_fxn_t*)proc_frame_ctx_dup;
-	fifo_elem_alloc_fxn.elem_ctx_release=
-			(fifo_elem_ctx_release_fxn_t*)proc_frame_ctx_release;
-	proc_ctx->fifo_ctx_array[PROC_OPUT]= fifo_open(
-			fifo_ctx_maxsize[PROC_OPUT], 0, &fifo_elem_alloc_fxn);
-	CHECK_DO(proc_ctx->fifo_ctx_array[PROC_OPUT]!= NULL, goto end);
+    /* Initialize i/o fair-locks */
+    for (int i = 0; i < PROC_IO_NUM; i++) {
+        fair_lock_t *fair_lock = fair_lock_open();
+        CHECK_DO(fair_lock != NULL, goto end);
+        proc_ctx->fair_lock_io_array[i] = fair_lock;
+    }
 
-	/* Initialize input/output fair-locks */
-	for(i= 0; i< PROC_IO_NUM; i++) {
-		fair_lock_t *fair_lock= fair_lock_open();
-		CHECK_DO(fair_lock!= NULL, goto end);
-		proc_ctx->fair_lock_io_array[i]= fair_lock;
-	}
+    /* Initialize i/o MUTEX for bitrate statistics related */
+    ret_code= pthread_mutex_init(&proc_ctx->acc_io_bits_mutex[PROC_IPUT], NULL);
+    CHECK_DO(ret_code== 0, goto end);
+    ret_code= pthread_mutex_init(&proc_ctx->acc_io_bits_mutex[PROC_OPUT], NULL);
+    CHECK_DO(ret_code== 0, goto end);
 
-	/* Initialize input/output MUTEX for bitrate statistics related */
-	ret_code= pthread_mutex_init(&proc_ctx->acc_io_bits_mutex[PROC_IPUT], NULL);
-	CHECK_DO(ret_code== 0, goto end);
-	ret_code= pthread_mutex_init(&proc_ctx->acc_io_bits_mutex[PROC_OPUT], NULL);
-	CHECK_DO(ret_code== 0, goto end);
+    /* Initialize array registering input presentation time-stamps (PTS's) */
+    proc_ctx->iput_pts_array_idx= 0;
+    memset(proc_ctx->iput_pts_array, -1, sizeof(proc_ctx->iput_pts_array));
 
-	/* Initialize array registering input presentation time-stamps (PTS's) */
-	proc_ctx->iput_pts_array_idx= 0;
-	memset(proc_ctx->iput_pts_array, -1, sizeof(proc_ctx->iput_pts_array));
+    /* Initialize latency measurement related variables */
+    proc_ctx->acc_latency_nsec= 0;
+    proc_ctx->acc_latency_cnt= 0;
+    ret_code= pthread_mutex_init(&proc_ctx->latency_mutex, NULL);
+    CHECK_DO(ret_code== 0, goto end);
 
-	/* Initialize latency measurement related variables */
-	proc_ctx->acc_latency_nsec= 0;
-	proc_ctx->acc_latency_cnt= 0;
-	ret_code= pthread_mutex_init(&proc_ctx->latency_mutex, NULL);
-	CHECK_DO(ret_code== 0, goto end);
+    /* At last, launch PROC thread */
+    proc_ctx->flag_exit= 0;
+    proc_ctx->start_routine= (const void*(*)(void*))proc_thr;
+    ret_code= pthread_create(&proc_ctx->proc_thread, NULL, proc_thr, proc_ctx);
+    CHECK_DO(ret_code== 0, goto end);
 
-	/* At last, launch PROC thread */
-	proc_ctx->flag_exit= 0;
-	proc_ctx->start_routine= (const void*(*)(void*))proc_thr;
-	ret_code= pthread_create(&proc_ctx->proc_thread, NULL, proc_thr, proc_ctx);
-	CHECK_DO(ret_code== 0, goto end);
-
-	end_code= STAT_SUCCESS;
+    end_code= STAT_SUCCESS;
 end:
-	if(end_code!= STAT_SUCCESS)
-		proc_if->close(&proc_ctx);
-	return proc_ctx;
+    if(end_code!= STAT_SUCCESS)
+        proc_if->close(&proc_ctx);
+    return proc_ctx;
 }
 
 void proc_close(proc_ctx_t **ref_proc_ctx)
 {
-	proc_ctx_t *proc_ctx= NULL;
-	LOG_CTX_INIT(NULL);
-	LOGD(">>%s\n", __FUNCTION__); //comment-me
+    proc_ctx_t *proc_ctx= NULL;
+    LOG_CTX_INIT(NULL);
+    LOGD(">>%s\n", __FUNCTION__); //comment-me
 
-	if(ref_proc_ctx== NULL)
-		return;
+    if(ref_proc_ctx== NULL)
+        return;
 
-	if((proc_ctx= *ref_proc_ctx)!= NULL) {
-		const proc_if_t *proc_if;
-		void *thread_end_code= NULL;
-		LOG_CTX_SET(proc_ctx->log_ctx);
+    if((proc_ctx= *ref_proc_ctx)!= NULL) {
+        const proc_if_t *proc_if;
+        void *thread_end_code= NULL;
+        LOG_CTX_SET(proc_ctx->log_ctx);
 
-		/* Join processing thread first
-		 * - set flag to notify we are exiting processing;
-		 * - unlock input and output FIFO's;
-		 * - join thread.
-		 */
-		proc_ctx->flag_exit= 1;
-		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_IPUT], 0);
-		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 0);
-		LOGD("Waiting thread to join... "); // comment-me
-		pthread_join(proc_ctx->proc_thread, &thread_end_code);
-		if(thread_end_code!= NULL) {
-			ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
-			free(thread_end_code);
-			thread_end_code= NULL;
-		}
-		LOGD("joined O.K.\n"); // comment-me
+        /* Join processing thread first
+         * - set flag to notify we are exiting processing;
+         * - unlock input and output FIFO's;
+         * - join thread.
+         */
+        proc_ctx->flag_exit= 1;
 
-		/* Release API mutual exclusion lock */
-		ASSERT(pthread_mutex_destroy(&proc_ctx->api_mutex)== 0);
+        for (int i = 0; i < PROC_IO_NUM; i++)
+            fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[i], 0,
+                    LOG_CTX_GET());
 
-		/* Release input and output FIFO's */
-		fifo_close(&proc_ctx->fifo_ctx_array[PROC_IPUT]);
-		fifo_close(&proc_ctx->fifo_ctx_array[PROC_OPUT]);
+        LOGD("Waiting thread to join... "); // comment-me
+        pthread_join(proc_ctx->proc_thread, &thread_end_code);
+        if(thread_end_code!= NULL) {
+            ASSERT(*((int*)thread_end_code)== STAT_SUCCESS);
+            free(thread_end_code);
+            thread_end_code= NULL;
+        }
+        LOGD("joined O.K.\n"); // comment-me
 
-		/* Release input/output fair locks */
-		fair_lock_close(&proc_ctx->fair_lock_io_array[PROC_IPUT]);
-		fair_lock_close(&proc_ctx->fair_lock_io_array[PROC_OPUT]);
+        /* Release API mutual exclusion lock */
+        ASSERT(pthread_mutex_destroy(&proc_ctx->api_mutex) == 0);
 
-		/* Release input/output MUTEX for bitrate statistics related */
-		ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_IPUT])
-				== 0);
-		ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_OPUT])
-				== 0);
+        /* Release input and output FIFO's */
+        for (int i = 0; i < PROC_IO_NUM; i++)
+            fifo_close(&proc_ctx->fifo_ctx_array[i], LOG_CTX_GET());
 
-		/* Release latency measurement related variables */
-		ASSERT(pthread_mutex_destroy(&proc_ctx->latency_mutex)== 0);
+        /* Release input/output fair locks */
+        for (int i = 0; i < PROC_IO_NUM; i++)
+            fair_lock_close(&proc_ctx->fair_lock_io_array[i]);
 
-		/* Close the specific PROC instance */
-		CHECK_DO((proc_if= proc_ctx->proc_if)!= NULL, return); // sanity check
-		CHECK_DO(proc_if->close!= NULL, return); // sanity check
-		proc_if->close(ref_proc_ctx);
-	}
-	LOGD("<<%s\n", __FUNCTION__); //comment-me
+        /* Release input/output MUTEX for bitrate statistics related */
+        ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_IPUT])
+                == 0);
+        ASSERT(pthread_mutex_destroy(&proc_ctx->acc_io_bits_mutex[PROC_OPUT])
+                == 0);
+
+        /* Release latency measurement related variables */
+        ASSERT(pthread_mutex_destroy(&proc_ctx->latency_mutex)== 0);
+
+        /* Close the specific PROC instance */
+        CHECK_DO((proc_if= proc_ctx->proc_if)!= NULL, return); // sanity check
+        CHECK_DO(proc_if->close!= NULL, return); // sanity check
+        proc_if->close(ref_proc_ctx);
+    }
+    LOGD("<<%s\n", __FUNCTION__); //comment-me
 }
 
 int proc_send_frame(proc_ctx_t *proc_ctx,
-		const proc_frame_ctx_t *proc_frame_ctx)
+        const proc_frame_ctx_t *proc_frame_ctx)
 {
-	int end_code;
-	LOG_CTX_INIT(NULL);
+    int end_code;
+    LOG_CTX_INIT(NULL);
 
-	/* Check arguments */
-	CHECK_DO(proc_ctx!= NULL, return STAT_ERROR);
-	CHECK_DO(proc_frame_ctx!= NULL, return STAT_ERROR);
+    /* Check arguments */
+    CHECK_DO(proc_ctx != NULL, return STAT_ERROR);
+    CHECK_DO(proc_frame_ctx != NULL, return STAT_ERROR);
 
-	fair_lock(proc_ctx->fair_lock_io_array[PROC_IPUT]);
+    fair_lock(proc_ctx->fair_lock_io_array[PROC_IPUT]);
 
-	LOG_CTX_SET(proc_ctx->log_ctx);
+    LOG_CTX_SET(proc_ctx->log_ctx);
 
-	/* Treat input frame statistics */
-	proc_send_frame_stats_iput_pts(proc_ctx, proc_frame_ctx);
-	proc_send_frame_stats_io(proc_ctx, proc_frame_ctx);
+    /* Treat input frame statistics */
+    proc_send_frame_stats_iput_pts(proc_ctx, proc_frame_ctx);
+    proc_send_frame_stats_io(proc_ctx, proc_frame_ctx);
 
-	/* Write frame to input FIFO */
-	end_code= fifo_put_dup(proc_ctx->fifo_ctx_array[PROC_IPUT],
-			proc_frame_ctx, sizeof(void*));
+    /* Write frame to input FIFO */
+    end_code = fifo_push(proc_ctx->fifo_ctx_array[PROC_IPUT],
+            (void**)&proc_frame_ctx, sizeof(void*), LOG_CTX_GET());
 
-	fair_unlock(proc_ctx->fair_lock_io_array[PROC_IPUT]);
-	return end_code;
+    fair_unlock(proc_ctx->fair_lock_io_array[PROC_IPUT]);
+    return end_code;
 }
 
 int proc_recv_frame(proc_ctx_t *proc_ctx,
-		proc_frame_ctx_t **ref_proc_frame_ctx)
+        proc_frame_ctx_t **ref_proc_frame_ctx)
 {
-	int ret_code, end_code= STAT_ERROR;
-	size_t fifo_elem_size= 0;
-	proc_frame_ctx_t *proc_frame_ctx= NULL; // Do not release
-	LOG_CTX_INIT(NULL);
+    int ret_code, end_code = STAT_ERROR;
+    size_t fifo_elem_size = 0;
+    proc_frame_ctx_t *proc_frame_ctx = NULL; // Do not release
+    LOG_CTX_INIT(NULL);
 
-	/* Check arguments */
-	CHECK_DO(proc_ctx!= NULL, return STAT_ERROR);
-	CHECK_DO(ref_proc_frame_ctx!= NULL, return STAT_ERROR);
+    /* Check arguments */
+    CHECK_DO(proc_ctx != NULL, return STAT_ERROR);
+    CHECK_DO(ref_proc_frame_ctx != NULL, return STAT_ERROR);
 
-	fair_lock(proc_ctx->fair_lock_io_array[PROC_OPUT]);
+    fair_lock(proc_ctx->fair_lock_io_array[PROC_OPUT]);
 
-	LOG_CTX_SET(proc_ctx->log_ctx);
+    LOG_CTX_SET(proc_ctx->log_ctx);
 
-	*ref_proc_frame_ctx= NULL;
+    *ref_proc_frame_ctx = NULL;
 
-	/* Read a frame from the output FIFO */
-	ret_code= fifo_get(proc_ctx->fifo_ctx_array[PROC_OPUT],
-			(void**)ref_proc_frame_ctx, &fifo_elem_size);
-	if(ret_code!= STAT_SUCCESS) {
-		end_code= ret_code;
-		goto end;
-	}
+    /* Read a frame from the output FIFO */
+    ret_code = fifo_pull(proc_ctx->fifo_ctx_array[PROC_OPUT],
+            (void**)ref_proc_frame_ctx, &fifo_elem_size, -1, LOG_CTX_GET());
+    if(ret_code != STAT_SUCCESS) {
+        end_code = ret_code;
+        goto end;
+    }
 
-	/* Update processor's output bitrate statistics
-	 * (note we are "receiving frame *from* the processor").
-	 * For most processors implementation (specially for encoders and
-	 * decoders), measuring traffic at this point would be precise.
-	 * Nevertheless, for certain processors, as is the case of multiplexers,
-	 * this function ('proc_recv_frame()') is not used thus input bitrate
-	 * should be measured at some other point of the specific implementation
-	 * (e.g. when sending data to an INET socket).
-	 */
-	if((proc_frame_ctx= *ref_proc_frame_ctx)!= NULL) {
-		register int i;
-		register uint32_t byte_cnt_oput, bit_cnt_oput;
-		register size_t width;
-		pthread_mutex_t *acc_io_bits_mutex_p=
-				&proc_ctx->acc_io_bits_mutex[PROC_OPUT];
+    /* Update processor's output bitrate statistics
+     * (note we are "receiving frame *from* the processor").
+     * For most processors implementation (specially for encoders and
+     * decoders), measuring traffic at this point would be precise.
+     * Nevertheless, for certain processors, as is the case of multiplexers,
+     * this function ('proc_recv_frame()') is not used thus input bitrate
+     * should be measured at some other point of the specific implementation
+     * (e.g. when sending data to an INET socket).
+     */
+    if((proc_frame_ctx= *ref_proc_frame_ctx)!= NULL) {
+        register int i;
+        register uint32_t byte_cnt_oput, bit_cnt_oput;
+        register size_t width;
+        pthread_mutex_t *acc_io_bits_mutex_p=
+                &proc_ctx->acc_io_bits_mutex[PROC_OPUT];
 
-		/* Get frame size (we "unroll" for the most common cases) */
-		byte_cnt_oput= (proc_frame_ctx->width[0]* proc_frame_ctx->height[0])+
-				(proc_frame_ctx->width[1]* proc_frame_ctx->height[1])+
-				(proc_frame_ctx->width[2]* proc_frame_ctx->height[2]);
-		// We do the rest in a loop...
-		for(i= 3; (width= proc_frame_ctx->width[i])> 0 &&
-				i< PROC_FRAME_NUM_DATA_POINTERS; i++)
-			byte_cnt_oput+= width* proc_frame_ctx->height[i];
+        /* Get frame size (we "unroll" for the most common cases) */
+        byte_cnt_oput= (proc_frame_ctx->width[0]* proc_frame_ctx->height[0])+
+                (proc_frame_ctx->width[1]* proc_frame_ctx->height[1])+
+                (proc_frame_ctx->width[2]* proc_frame_ctx->height[2]);
+        // We do the rest in a loop...
+        for(i= 3; (width= proc_frame_ctx->width[i])> 0 &&
+        i< PROC_FRAME_NUM_DATA_POINTERS; i++)
+            byte_cnt_oput+= width* proc_frame_ctx->height[i];
 
-		/* Update currently accumulated bit value */
-		bit_cnt_oput= (byte_cnt_oput<< 3);
-		ASSERT(pthread_mutex_lock(acc_io_bits_mutex_p)== 0);
-		proc_ctx->acc_io_bits[PROC_OPUT]+= bit_cnt_oput;
-		ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_p)== 0);
-	}
+        /* Update currently accumulated bit value */
+        bit_cnt_oput= (byte_cnt_oput<< 3);
+        ASSERT(pthread_mutex_lock(acc_io_bits_mutex_p)== 0);
+        proc_ctx->acc_io_bits[PROC_OPUT]+= bit_cnt_oput;
+        ASSERT(pthread_mutex_unlock(acc_io_bits_mutex_p)== 0);
+    }
 
-	end_code= STAT_SUCCESS;
+    end_code = STAT_SUCCESS;
 end:
-	fair_unlock(proc_ctx->fair_lock_io_array[PROC_OPUT]);
-	if(end_code!= STAT_SUCCESS)
-		proc_frame_ctx_release(ref_proc_frame_ctx);
-	return end_code;
+    fair_unlock(proc_ctx->fair_lock_io_array[PROC_OPUT]);
+    if(end_code != STAT_SUCCESS)
+        proc_frame_ctx_release(ref_proc_frame_ctx);
+    return end_code;
 }
 
 int proc_opt(proc_ctx_t *proc_ctx, const char *tag, ...)
@@ -375,8 +370,9 @@ int proc_vopt(proc_ctx_t *proc_ctx, const char *tag, va_list arg)
 	proc_if= proc_ctx->proc_if;
 
 	if(TAG_IS("PROC_UNBLOCK")) {
-		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_IPUT], 0);
-		fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[PROC_OPUT], 0);
+        for (int i = 0; i < PROC_IO_NUM; i++)
+            fifo_set_blocking_mode(proc_ctx->fifo_ctx_array[i], 0,
+                    LOG_CTX_GET());
 		end_code= STAT_SUCCESS;
 	} else if(TAG_IS("PROC_GET")) {
 		proc_if_rest_fmt_t rest_fmt= va_arg(arg, proc_if_rest_fmt_t);
