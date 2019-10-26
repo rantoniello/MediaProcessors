@@ -20,7 +20,6 @@ version tested and license is specified in parenthesis):
 > uriparser (0.8.2.; The 3-Clause BSD)<br>
 > valgrind (3.13.0, GPL)<br>
 > x264 (July, 2017 , GPL)<br>
-> yasm (1.3.0, BSD)<br>
 
 GPL dependencies are linked only if configuration option --enable-gpl is enabled; 
 otherwise, all the rest of the dependencies are used provided compatibility with 
@@ -56,7 +55,7 @@ Dependencies:
 > cjson<br>
 > lame<br>
 > x264<br>
-> FFmpeg libraries and its dependencies (nasm, yasm)<br>
+> FFmpeg libraries and its dependencies (nasm)<br>
 > mongoose, valgrind, unittest-cpp for unit-testing
 
 4.- muxers: Wrappers and implementations of several multimedia 
